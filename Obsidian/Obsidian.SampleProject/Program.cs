@@ -73,7 +73,7 @@ namespace Obsidian.SampleProject
             var environment = new JinjaEnvironment(loader: loader);
             environment.Settings.LStripBlocks = lstripBlocks;
             environment.Settings.TrimBlocks = trimBlocks;
-            var template = environment.GetTemplate("Base.html", _Variables);
+            var template = environment.GetTemplate("Child.html", _Variables);
             //template.Compile();
 
             var result = template.Render(_Variables);

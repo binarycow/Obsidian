@@ -62,6 +62,9 @@ namespace Obsidian.Lexing
             { "else".ToCharArray(), TokenTypes.Keyword_Else },
             { "elif".ToCharArray(), TokenTypes.Keyword_Elif },
             { "endif".ToCharArray(), TokenTypes.Keyword_Endif },
+            { "block".ToCharArray(), TokenTypes.Keyword_Block },
+            { "endblock".ToCharArray(), TokenTypes.Keyword_EndBlock },
+            { "extends".ToCharArray(), TokenTypes.Keyword_Extends },
         };
         private bool TryKeyword(ILookaroundEnumerator<char> enumerator, out Token? token)
         {
@@ -93,7 +96,8 @@ namespace Obsidian.Lexing
         }
         public IEnumerable<Token> Tokenize(IEnumerable<char> source)
         {
-            var enumerator = LookaroundEnumeratorFactory.CreateLookaroundEnumerator(source, 5);
+            var maximumLength = _KeywordLookups.Keys.Max(keyword => keyword.Length);
+            var enumerator = LookaroundEnumeratorFactory.CreateLookaroundEnumerator(source, (byte)maximumLength);
             return Tokenize(enumerator);
         }
 

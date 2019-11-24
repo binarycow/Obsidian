@@ -43,7 +43,9 @@ namespace Obsidian.OutputCombiner
                     case ExpressionNode _:
                     case IfNode _:
                     case ConditionalNode _:
-                        if(pendingOutput.Count > 0)
+                    case BlockNode _:
+                    case ContainerNode _:
+                        if (pendingOutput.Count > 0)
                         {
                             do
                             {
@@ -94,6 +96,53 @@ namespace Obsidian.OutputCombiner
         }
 
         public ASTNode Transform(CommentNode item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ASTNode Transform(BlockNode item)
+        {
+            using var checkoutItem = StringBuilderPool.Instance.Checkout();
+            var stringBuilder = checkoutItem.CheckedOutObject;
+
+            var children = new Queue<ASTNode>();
+            var pendingOutput = new Queue<ASTNode>();
+            foreach (var child in item.Children)
+            {
+                switch (child)
+                {
+                    case NewLineNode _:
+                    case OutputNode _:
+                    case WhiteSpaceNode _:
+                        pendingOutput.Enqueue(child);
+                        break;
+                    case ForNode _:
+                    case ExpressionNode _:
+                    case IfNode _:
+                    case ConditionalNode _:
+                    case BlockNode _:
+                    case ContainerNode _:
+                        if (pendingOutput.Count > 0)
+                        {
+                            do
+                            {
+                                stringBuilder.Append(pendingOutput.Dequeue().ToString());
+                            } while (pendingOutput.Count > 0);
+                            children.Enqueue(OutputNode.FromString(stringBuilder.ToString()));
+                            stringBuilder.Clear();
+                        }
+                        children.Enqueue(child.Transform(this));
+                        break;
+                    case CommentNode _:
+                        break;
+                    default:
+                        throw new NotImplementedException();
+                }
+            }
+            return new ContainerNode(children, item.StartWhiteSpace, item.EndWhiteSpace);
+        }
+
+        public ASTNode Transform(ExtendsNode item)
         {
             throw new NotImplementedException();
         }

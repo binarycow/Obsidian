@@ -22,6 +22,16 @@ namespace ExpressionParser.Configuration
             return new SpecialOperatorDefinition(text, precedence, SpecialOperatorType.MemberAccess);
         }
 
+        internal static OperatorDefinition CreateMethod(string startText, string endText, int precedence)
+        {
+            return new SpecialOperatorDefinition(startText, precedence, SpecialOperatorType.MemberAccess, endText);
+        }
+
+        internal static OperatorDefinition CreateIndex(string startText, string endText, int precedence)
+        {
+            return new SpecialOperatorDefinition(startText, precedence, SpecialOperatorType.MemberAccess, endText);
+        }
+
         public static OperatorDefinition CreateBinary(string text, int precedence, OperatorType operatorType)
         {
             return new StandardOperatorDefinition(text, precedence, operatorType, OperandCount.Binary);

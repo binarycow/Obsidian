@@ -82,6 +82,10 @@ namespace Obsidian.WhiteSpaceControl
         {
             return item;
         }
+        public ASTNode Transform(BlockNode item)
+        {
+            return item;
+        }
 
         public ASTNode Transform(ConditionalNode item)
         {
@@ -92,5 +96,10 @@ namespace Obsidian.WhiteSpaceControl
         {
             return item;
         }
+        public ASTNode Transform(ExtendsNode item)
+        {
+            return item;
+        }
+
     }
 }

@@ -1,11 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using ExpressionParser.Scopes;
 using ExpressionParser.VariableManagement;
-using ExpressionToString;
 
 namespace ExpressionParser
 {
@@ -52,7 +49,7 @@ namespace ExpressionParser
 
         public object? Evaluate(IDictionary<string, object?> variables)
         {
-            var debug = ExpressionTree.ToString("C#");
+            //var debug = ExpressionTree.ToString("C#");
             var args = GetArgArray(variables);
 
             if (_CompiledFunction != null)

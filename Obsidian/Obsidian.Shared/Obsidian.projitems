@@ -16,6 +16,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\ExpressionNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\MiscNodes\CommentNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\MiscNodes\ConditionalNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\Statements\ExtendsNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\MiscNodes\NewLineNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\MiscNodes\WhiteSpaceNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\OutputNode.cs" />

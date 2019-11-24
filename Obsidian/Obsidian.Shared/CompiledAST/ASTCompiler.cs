@@ -8,7 +8,6 @@ using Common;
 using Common.ExpressionCreators;
 using ExpressionParser;
 using ExpressionParser.Scopes;
-using ExpressionToString;
 using Obsidian.AST;
 using Obsidian.AST.Nodes;
 using Obsidian.AST.Nodes.MiscNodes;
@@ -82,7 +81,7 @@ namespace Obsidian.CompiledAST
             var toString = Expression.Call(stringBuilderVariable, typeof(StringBuilder).GetMethod("ToString", Type.EmptyTypes));
             var allContent = new[] { assignExpression }.Concat(compiledNodes).Concat(toString);
             var finalBlock = Expression.Block(stringBuilderVariable.YieldOne(), allContent);
-            var debug = finalBlock.ToString("C#");
+            //var debug = finalBlock.ToString("C#");
             return ExpressionData.CreateCompiled(finalBlock, compiler.CurrentScope.FindRootScope());
         }
 
@@ -231,5 +230,15 @@ namespace Obsidian.CompiledAST
             throw new NotImplementedException();
         }
 
+        public Expression Transform(BlockNode item)
+        {
+            // TODO: Actually process this...
+            return item.BlockContents.Transform(this);
+        }
+
+        public Expression Transform(ExtendsNode item)
+        {
+            return Expression.Constant(item.TemplateName);
+        }
     }
 }

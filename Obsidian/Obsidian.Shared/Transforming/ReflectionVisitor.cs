@@ -146,6 +146,16 @@ namespace Obsidian.Transforming
         {
             yield break;
         }
+
+        public IEnumerable<RenderObj> Transform(BlockNode item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<RenderObj> Transform(ExtendsNode item)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }

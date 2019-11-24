@@ -80,5 +80,15 @@ namespace Obsidian.CommentRemover
         {
             throw new NotImplementedException();
         }
+
+        public ASTNode Transform(BlockNode item)
+        {
+            var contents = new ContainerNode(TransformExceptComment(item.BlockContents.Children), item.BlockContents.StartWhiteSpace, item.BlockContents.EndWhiteSpace);
+            return new BlockNode(item.Name, contents, item.StartWhiteSpace, item.EndWhiteSpace);
+        }
+        public ASTNode Transform(ExtendsNode item)
+        {
+            return item;
+        }
     }
 }

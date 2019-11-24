@@ -9,6 +9,7 @@
     <Import_RootNamespace>ExpressionParser</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Configuration\MethodOperatorDefinition.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\SpecialOperatorDefinition.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\SpecialOperatorType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionData.cs" />

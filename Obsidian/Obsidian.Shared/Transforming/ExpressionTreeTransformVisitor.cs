@@ -66,5 +66,14 @@ namespace Obsidian.Transforming
         {
             throw new NotImplementedException();
         }
+
+        public Expression Transform(BlockNode item)
+        {
+            throw new NotImplementedException();
+        }
+        public Expression Transform(ExtendsNode item)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -18,5 +18,7 @@ namespace Obsidian.Transforming
         TOutput Transform(IfNode item);
         TOutput Transform(ConditionalNode item);
         TOutput Transform(CommentNode item);
+        TOutput Transform(BlockNode item);
+        TOutput Transform(ExtendsNode item);
     }
 }

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using ExpressionParser;
-using ExpressionToString;
 using Obsidian.AST;
 using Obsidian.AST.Nodes;
 using Obsidian.CommentRemover;
@@ -16,6 +15,7 @@ using Obsidian.Rendering.RenderObjects;
 using Obsidian.Rendering.Visitors;
 using Obsidian.Transforming;
 using Obsidian.WhiteSpaceControl;
+using Obsidian.AST.Nodes.Statements;
 
 namespace Obsidian
 {
@@ -64,8 +64,8 @@ namespace Obsidian
             var templateNode = ASTGenerator.ParseTemplate(environmentTrimmed);
             var commentsRemoved = templateNode.Transform(CommentRemoverTransformer.Instance);
             var controlledWhiteSpace = WhiteSpaceController.ControlWhiteSpace(commentsRemoved);
-            var outputCombined = controlledWhiteSpace.Transform(OutputCombineVisitor.Instance);
-            var compiled = ASTCompiler.Compile(environment, outputCombined, variableTemplate);
+           // var outputCombined = controlledWhiteSpace.Transform(OutputCombineVisitor.Instance);
+            var compiled = ASTCompiler.Compile(environment, controlledWhiteSpace, variableTemplate);
             return new Template(environment, compiled, templateName, templatePath);
         }
 

@@ -17,6 +17,7 @@ namespace ExpressionParser.Parsing
         {
             LanguageDefinition = languageDefinition;
             _PrecedenceGroups = LanguageDefinition.Operators
+                .Where(op => !(op is MethodOperatorDefinition))
                 .GroupBy(op => op.Precedence)
                 .OrderBy(grp => grp.Key)
                 .ToArray();
@@ -79,6 +80,7 @@ namespace ExpressionParser.Parsing
                     return true;
                 }
             }
+
             if (currentPrecedence >= _PrecedenceGroups.Length)
             {
                 return TryParseBraces(enumerator, out parsedNode);

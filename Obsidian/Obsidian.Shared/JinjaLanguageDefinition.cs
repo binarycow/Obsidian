@@ -20,6 +20,8 @@ namespace Obsidian
         public OperatorDefinition[] Operators => new OperatorDefinition[]
         {
             OperatorDefinition.CreateMemberAccess(".", 160),
+            OperatorDefinition.CreateMethod("(", ")", 160),
+            OperatorDefinition.CreateIndex("[", "]", 160),
             OperatorDefinition.CreateBinary("+", 10, OperatorType.Add),
         };
 
