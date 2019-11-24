@@ -1,0 +1,16 @@
+{% for name in names %}
+======== BEGIN ITERATION ========
+
+{{ name }}
+	loop.index => {{ loop.index }}
+	loop.index0 => {{ loop.index0 }}
+	loop.revindex => {{ loop.revindex }}
+	loop.revindex0 => {{ loop.revindex0 }}
+	loop.first => {{ loop.first }}
+	loop.last => {{ loop.last }}
+	loop.length => {{ loop.length }}
+	loop.previtem => {{ loop.previtem }}
+	loop.nextitem => {{ loop.nextitem }}
+
+========= END ITERATION =========
+{% endfor %}

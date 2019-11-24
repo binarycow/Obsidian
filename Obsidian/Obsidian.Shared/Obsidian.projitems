@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>503c013b-2686-4819-ba24-0f3f2008936d</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Obsidian</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)AST\ASTGenerator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\ASTNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\AbstractContainerNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\ContainerNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\ExpressionNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\MiscNodes\CommentNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\MiscNodes\ConditionalNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\MiscNodes\NewLineNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\MiscNodes\WhiteSpaceNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\OutputNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\StatementNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\Statements\ForNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\Statements\IfNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CommentRemover\CommentRemoverTransformer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CompiledAST\ASTCompiler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EnvironmentSettings.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\LoaderNotDefinedException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\TemplateNotFoundException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpressionParserExt\JinjaLexer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpressionParserExt\JinjaParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\Templating.Lexing\TokenTypesExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)JinjaEnvironment.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)JinjaLanguageDefinition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Lexing\Lexer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Lexing\Token.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Lexing\TokenTypes.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Loaders\BaseLoader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Loaders\FileSystemLoader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LoopInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OutputCombiner\OutputCombineVisitor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Parsing\Parser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Parsing\ParsingNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Parsing\ParsingNodeType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\RenderObjects\LiteralRenderObj.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\RenderObjects\NewLineRenderObj.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\RenderObjects\RenderObj.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\RenderObjects\WhiteSpaceControlRenderObj.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\RenderObjects\WhiteSpaceRenderObj.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\Visitors\IRenderable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\Visitors\IRenderVisitor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\Visitors\StringRenderVisitor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Template.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TemplateInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TemporaryStuff\RuntimeScope.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Transforming\ExpressionTreeTransformVisitor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Transforming\ITransformable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Transforming\ITransformVisitor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Transforming\ReflectionVisitor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\DisableStripBlocksVisitor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\EnvironmentTrimming.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\ManualTrimAfterVisitor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\ManualTrimBeforeVisitor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\WhiteSpaceController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\WhiteSpaceControlMode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\WhiteSpaceControlPosition.cs" />
+  </ItemGroup>
+</Project>

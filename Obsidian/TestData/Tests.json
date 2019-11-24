@@ -1,0 +1,122 @@
+[
+  {
+    "categoryName": "Basic Tests",
+    "children": [
+      {
+        "testName": "Basic Template",
+        "rootPath": "Basic Tests\\Basic Template",
+        "inputFile": "input.html",
+        "expectedFile": "expected.html",
+        "actualFile": "actual.html",
+        "variablesFile": "Variables.json"
+      },
+      {
+        "testName": "Inheritance",
+        "rootPath": "Basic Tests\\Inheritance",
+        "inputFile": "child.html",
+        "expectedFile": "expected.html",
+        "actualFile": "actual.html"
+      }
+    ]
+  },
+  {
+    "categoryName": "Feature Tests",
+    "children": [
+      {
+        "testName": "For Loop Variables",
+        "rootPath": "Feature Tests\\For Loop Variables",
+        "inputFile": "input.txt",
+        "expectedFile": "expected.txt",
+        "actualFile": "actual.txt",
+        "variablesFile": "variables.json"
+      },
+      {
+        "categoryName": "Null Master Fallback",
+        "children": [
+          {
+            "testName": "Standalone",
+            "rootPath": "Feature Tests\\Null Master Fallback",
+            "inputFile": "child.html",
+            "expectedFile": "standalone_expected.html",
+            "actualFile": "standalone_actual.html",
+            "variablesFile": "standalone_Variables.json"
+          },
+          {
+            "testName": "Master",
+            "rootPath": "Feature Tests\\Null Master Fallback",
+            "inputFile": "child.html",
+            "expectedFile": "master_expected.html",
+            "actualFile": "master_actual.html",
+            "variablesFile": "master_Variables.json"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "categoryName": "Other Tests",
+    "children": [
+      {
+        "testName": "Test1",
+        "rootPath": "Other Tests\\Test1",
+        "inputFile": "template.html",
+        "expectedFile": "expected.html",
+        "actualFile": "actual.html",
+        "variablesFile": "variables.json"
+      },
+      {
+        "testName": "Test2",
+        "rootPath": "Other Tests\\Test2",
+        "inputFile": "template.html",
+        "expectedFile": "expected.html",
+        "actualFile": "actual.html",
+        "variablesFile": "variables.json"
+      }
+    ]
+  },
+  {
+    "categoryName": "WhiteSpace",
+    "children": [
+      {
+        "testName": "Defaults",
+        "rootPath": "Whitespace\\Defaults",
+        "inputFile": "template.html",
+        "expectedFile": "expected.html",
+        "actualFile": "actual.html"
+      },
+      {
+        "testName": "TrimBlocks",
+        "rootPath": "Whitespace\\TrimBlocks",
+        "inputFile": "template.html",
+        "expectedFile": "expected.html",
+        "actualFile": "actual.html",
+        "trim_blocks": true
+      },
+      {
+        "testName": "LStrip",
+        "rootPath": "Whitespace\\LStrip",
+        "inputFile": "template.html",
+        "expectedFile": "expected.html",
+        "actualFile": "actual.html",
+        "lstrip_blocks": true
+      },
+      {
+        "testName": "LStrip And Trim",
+        "rootPath": "Whitespace\\LStrip And Trim",
+        "inputFile": "template.html",
+        "expectedFile": "expected.html",
+        "actualFile": "actual.html",
+        "lstrip_blocks": true,
+        "trim_blocks": true
+      },
+      {
+        "testName": "Manual Strip",
+        "rootPath": "Whitespace\\ManualStrip",
+        "inputFile": "template.html",
+        "expectedFile": "expected.html",
+        "actualFile": "actual.html",
+        "variablesFile": "Variables.json"
+      }
+    ]
+  }
+]

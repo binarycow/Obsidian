@@ -1,0 +1,17 @@
+{
+  "a_variable": "Hello, World!",
+  "navigation": [
+    {
+      "href": "www.google.com",
+      "caption": "Google"
+    },
+    {
+      "href": "www.yahoo.com",
+      "caption": "Yahoo"
+    },
+    {
+      "href": "www.bing.com",
+      "caption": "Bing"
+    }
+  ]
+}

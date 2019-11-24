@@ -1,0 +1,76 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29411.108
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Obsidian", "Obsidian", "{42E440BC-EDB9-4A68-93BC-758818BB8E54}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ExpressionParser", "ExpressionParser", "{8FCCA90D-BE46-48AA-B789-25AB4CEDD331}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{6549D8F4-B210-4152-A573-DBF3943CF5A5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Obsidian.SampleProject", "Obsidian\Obsidian.SampleProject\Obsidian.SampleProject.csproj", "{82A52CB7-F2E6-4A17-AEE5-1DCD378BC71C}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Obsidian.Shared", "Obsidian\Obsidian.Shared\Obsidian.Shared.shproj", "{503C013B-2686-4819-BA24-0F3F2008936D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Obsidian.Tests", "Obsidian\Obsidian.Tests\Obsidian.Tests.csproj", "{AF101AE9-EC86-44A9-AFEB-F1AF330319EC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpressionParser", "ExpressionParser\ExpressionParser\ExpressionParser.csproj", "{C52702BB-F4BA-4203-98A4-AA39AC9C6386}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpressionParser.SampleProject", "ExpressionParser\ExpressionParser.SampleProject\ExpressionParser.SampleProject.csproj", "{2D7173F5-24D1-4592-A9F9-8F4F356096FC}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "ExpressionParser.Shared", "ExpressionParser\ExpressionParser.Shared\ExpressionParser.Shared.shproj", "{757FE399-0164-4816-8AEF-0D44437C0756}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Common.Shared", "Common\Common.Shared\Common.Shared.shproj", "{068CA3E1-8D08-4482-8F6A-067EE028C56D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Obsidian", "Obsidian\Obsidian\Obsidian.csproj", "{C79AB4D9-92C4-46BE-BBF7-77ABBB2EAB0E}"
+EndProject
+Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Common\Common.Shared\Common.projitems*{068ca3e1-8d08-4482-8f6a-067ee028c56d}*SharedItemsImports = 13
+		Obsidian\Obsidian.Shared\Obsidian.projitems*{503c013b-2686-4819-ba24-0f3f2008936d}*SharedItemsImports = 13
+		ExpressionParser\ExpressionParser.Shared\ExpressionParser.projitems*{757fe399-0164-4816-8aef-0d44437c0756}*SharedItemsImports = 13
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{82A52CB7-F2E6-4A17-AEE5-1DCD378BC71C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82A52CB7-F2E6-4A17-AEE5-1DCD378BC71C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82A52CB7-F2E6-4A17-AEE5-1DCD378BC71C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82A52CB7-F2E6-4A17-AEE5-1DCD378BC71C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF101AE9-EC86-44A9-AFEB-F1AF330319EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF101AE9-EC86-44A9-AFEB-F1AF330319EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF101AE9-EC86-44A9-AFEB-F1AF330319EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF101AE9-EC86-44A9-AFEB-F1AF330319EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C52702BB-F4BA-4203-98A4-AA39AC9C6386}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C52702BB-F4BA-4203-98A4-AA39AC9C6386}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C52702BB-F4BA-4203-98A4-AA39AC9C6386}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C52702BB-F4BA-4203-98A4-AA39AC9C6386}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D7173F5-24D1-4592-A9F9-8F4F356096FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D7173F5-24D1-4592-A9F9-8F4F356096FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D7173F5-24D1-4592-A9F9-8F4F356096FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D7173F5-24D1-4592-A9F9-8F4F356096FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C79AB4D9-92C4-46BE-BBF7-77ABBB2EAB0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C79AB4D9-92C4-46BE-BBF7-77ABBB2EAB0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C79AB4D9-92C4-46BE-BBF7-77ABBB2EAB0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C79AB4D9-92C4-46BE-BBF7-77ABBB2EAB0E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{82A52CB7-F2E6-4A17-AEE5-1DCD378BC71C} = {42E440BC-EDB9-4A68-93BC-758818BB8E54}
+		{503C013B-2686-4819-BA24-0F3F2008936D} = {42E440BC-EDB9-4A68-93BC-758818BB8E54}
+		{AF101AE9-EC86-44A9-AFEB-F1AF330319EC} = {42E440BC-EDB9-4A68-93BC-758818BB8E54}
+		{C52702BB-F4BA-4203-98A4-AA39AC9C6386} = {8FCCA90D-BE46-48AA-B789-25AB4CEDD331}
+		{2D7173F5-24D1-4592-A9F9-8F4F356096FC} = {8FCCA90D-BE46-48AA-B789-25AB4CEDD331}
+		{757FE399-0164-4816-8AEF-0D44437C0756} = {8FCCA90D-BE46-48AA-B789-25AB4CEDD331}
+		{068CA3E1-8D08-4482-8F6A-067EE028C56D} = {6549D8F4-B210-4152-A573-DBF3943CF5A5}
+		{C79AB4D9-92C4-46BE-BBF7-77ABBB2EAB0E} = {42E440BC-EDB9-4A68-93BC-758818BB8E54}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {58F950AD-6683-46DA-9152-AE378D0C260F}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,45 @@
+
+======== BEGIN ITERATION ========
+
+Alice
+	loop.index => 1
+	loop.index0 => 0
+	loop.revindex => 3
+	loop.revindex0 => 2
+	loop.first => True
+	loop.last => False
+	loop.length => 3
+	loop.previtem => 
+	loop.nextitem => Bob
+
+========= END ITERATION =========
+
+======== BEGIN ITERATION ========
+
+Bob
+	loop.index => 2
+	loop.index0 => 1
+	loop.revindex => 2
+	loop.revindex0 => 1
+	loop.first => False
+	loop.last => False
+	loop.length => 3
+	loop.previtem => Alice
+	loop.nextitem => Eve
+
+========= END ITERATION =========
+
+======== BEGIN ITERATION ========
+
+Eve
+	loop.index => 3
+	loop.index0 => 2
+	loop.revindex => 1
+	loop.revindex0 => 0
+	loop.first => False
+	loop.last => True
+	loop.length => 3
+	loop.previtem => Bob
+	loop.nextitem => 
+
+========= END ITERATION =========

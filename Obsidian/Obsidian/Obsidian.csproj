@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <LangVersion>8.0</LangVersion>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+  <Import Project="..\..\Common\Common.Shared\Common.projitems" Label="Shared" />
+  <Import Project="..\..\ExpressionParser\ExpressionParser.Shared\ExpressionParser.projitems" Label="Shared" />
+  <Import Project="..\Obsidian.Shared\Obsidian.projitems" Label="Shared" />
+  <ItemGroup>
+    <PackageReference Include="ExpressionTreeToString" Version="1.5.67" />
+    <PackageReference Include="Nullable" Version="1.1.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+</Project>
