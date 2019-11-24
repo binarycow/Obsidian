@@ -127,10 +127,12 @@ namespace Obsidian.AST.Nodes.Statements
                                     startWhiteSpace = token.TokenType == TokenTypes.Minus ? WhiteSpaceControlMode.Trim : WhiteSpaceControlMode.Keep;
                                     state = States.Keyword;
                                     continue;
-                                case TokenTypes.Keyword_If:
-                                    state = States.Expression;
-                                    continue;
                                 default:
+                                    if (token.TokenType == keywordType)
+                                    {
+                                        state = States.Expression;
+                                        continue;
+                                    }
                                     return false;
                             }
                         case States.Keyword:
