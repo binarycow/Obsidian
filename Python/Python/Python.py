@@ -48,7 +48,7 @@ def ProcessTestDictionary(rootPath, dictionary, parentCategories=[]):
 
 
 repoRootPath = Path(__file__).parents[0].parents[0].parents[0]
-testDataPath = repoRootPath.joinpath("Templating\TestData")
+testDataPath = repoRootPath.joinpath("Obsidian\TestData")
 rootPath = Path(testDataPath.absolute().as_posix())
 testCases = GetTestCases(rootPath)
 for dictionaryItem in testCases:
