@@ -20,6 +20,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\MiscNodes\WhiteSpaceNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\OutputNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\StatementNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\Statements\BlockNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\Statements\ForNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\Statements\IfNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CommentRemover\CommentRemoverTransformer.cs" />

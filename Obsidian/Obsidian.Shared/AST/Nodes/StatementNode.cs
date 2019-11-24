@@ -33,6 +33,10 @@ namespace Obsidian.AST.Nodes
             {
                 return true;
             }
+            if (BlockNode.TryParseBlock(enumerator, out parsedNode))
+            {
+                return true;
+            }
             return false;
         }
 

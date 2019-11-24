@@ -18,6 +18,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Base.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Child.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Template.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
