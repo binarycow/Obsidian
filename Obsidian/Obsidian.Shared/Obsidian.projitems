@@ -27,7 +27,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\TemplateNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Block.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CommentRemover\CommentRemoverTransformer.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)CompiledAST\ASTCompiler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SpecialVariableInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Transforming\ASTCompiler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EnvironmentSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\LoaderNotDefinedException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\TemplateNotFoundException.cs" />
@@ -63,12 +64,15 @@
     <Compile Include="$(MSBuildThisFileDirectory)Template.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TemplateInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TemporaryStuff\RuntimeScope.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Transforming\BaseASTTransformer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\ExpressionTreeTransformVisitor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\IForceTransformable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\IForceTransformVisitor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\ITransformable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\ITransformVisitor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Transforming\NewASTCompiler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\ReflectionVisitor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Transforming\TemplateContainerAssembler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\DisableStripBlocksVisitor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\EnvironmentTrimming.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\ManualTrimAfterVisitor.cs" />

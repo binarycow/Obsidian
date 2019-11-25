@@ -7,7 +7,6 @@ using ExpressionParser;
 using Obsidian.AST;
 using Obsidian.AST.Nodes;
 using Obsidian.CommentRemover;
-using Obsidian.CompiledAST;
 using Obsidian.Lexing;
 using Obsidian.OutputCombiner;
 using Obsidian.Parsing;
@@ -16,6 +15,7 @@ using Obsidian.Rendering.Visitors;
 using Obsidian.Transforming;
 using Obsidian.WhiteSpaceControl;
 using Obsidian.AST.Nodes.Statements;
+using ExpressionParser.Scopes;
 
 namespace Obsidian
 {
@@ -55,13 +55,32 @@ namespace Obsidian
         {
             throw new NotImplementedException();
         }
+        //internal static Template LoadTemplate(JinjaEnvironment environment, string templateText, IDictionary<string, object?> variableTemplate, string? templateName, string? templatePath)
+        //{
+        //    var expr = ToExpression(environment, templateText, variableTemplate, out var compiler);
+        //    return new Template(environment, compiler.Compile(expr), templateName, templatePath);
+        //}
         internal static Template LoadTemplate(JinjaEnvironment environment, string templateText, IDictionary<string, object?> variableTemplate, string? templateName, string? templatePath)
         {
-            var expr = ToExpression(environment, templateText, variableTemplate, out var compiler);
-            return new Template(environment, compiler.Compile(expr), templateName, templatePath);
+            var expr = ToExpression(environment, templateText, variableTemplate);
+            return new Template(environment, ExpressionData.CreateCompiled(expr, RootScope.CreateRootScope(variableTemplate)), templateName, templatePath);
         }
 
-        internal static Expression ToExpression(JinjaEnvironment environment, string templateText, IDictionary<string, object?> variableTemplate, out ASTCompiler compiler)
+        //internal static Expression ToExpression(JinjaEnvironment environment, string templateText, IDictionary<string, object?> variableTemplate, out ASTCompiler compiler)
+        //{
+        //    var lexer = new Lexer(environment);
+        //    var tokens = lexer.Tokenize(templateText).ToArray();
+        //    var parsed = Parser.Parse(tokens).ToArray();
+        //    var environmentTrimmed = EnvironmentTrimming.EnvironmentTrim(parsed, environment.Settings).ToArray();
+        //    var templateNode = ASTGenerator.ParseTemplate(environmentTrimmed);
+        //    var commentsRemoved = templateNode.Transform(CommentRemoverTransformer.Instance);
+        //    var controlledWhiteSpace = WhiteSpaceController.ControlWhiteSpace(commentsRemoved);
+        //    var containerAssembled = controlledWhiteSpace.Transform(TemplateContainerAssembler.Instance);
+
+        //    var finished = NewASTCompiler.ToExpression(environment, containerAssembled, variableTemplate, out var newcompiler);
+        //    throw new NotImplementedException();
+        //}
+        internal static Expression ToExpression(JinjaEnvironment environment, string templateText, IDictionary<string, object?> variableTemplate)
         {
             var lexer = new Lexer(environment);
             var tokens = lexer.Tokenize(templateText).ToArray();
@@ -70,7 +89,10 @@ namespace Obsidian
             var templateNode = ASTGenerator.ParseTemplate(environmentTrimmed);
             var commentsRemoved = templateNode.Transform(CommentRemoverTransformer.Instance);
             var controlledWhiteSpace = WhiteSpaceController.ControlWhiteSpace(commentsRemoved);
-            return ASTCompiler.ToExpression(environment, controlledWhiteSpace, variableTemplate, out compiler);
+            var containerAssembled = controlledWhiteSpace.Transform(TemplateContainerAssembler.Instance);
+
+            var finished = NewASTCompiler.ToExpression(environment, containerAssembled, variableTemplate, out var newcompiler);
+            return finished;
         }
 
 

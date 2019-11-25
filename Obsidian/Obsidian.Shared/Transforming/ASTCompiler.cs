@@ -18,7 +18,7 @@ using ExpressionToString;
 using static System.Linq.Expressions.Expression;
 using static Common.ExpressionEx;
 
-namespace Obsidian.CompiledAST
+namespace Obsidian
 {
     public class ASTCompiler : ITransformVisitor<Expression>, IForceTransformVisitor<Expression>
     {
@@ -266,46 +266,13 @@ namespace Obsidian.CompiledAST
         public Expression Transform(BlockNode item) => Transform(item, false);
         public Expression Transform(BlockNode item, bool forceRender)
         {
-            var blockExpression = item.BlockContents.Transform(this, forceRender);
-            var debug = blockExpression.ToString("C#");
-            // TODO: Actually process this...
-            if (forceRender)
-            {
-                return blockExpression;
-            }
-
-            return IfInDirectRenderMode(
-                blockExpression,
-                SpecialVariables.Self.AddBlock(item.Name, blockExpression)
-            );
+            throw new NotImplementedException();
         }
 
         public Expression Transform(ExtendsNode item) => Transform(item, false);
         public Expression Transform(ExtendsNode item, bool forceRender)
         {
-            Expression template;
-            ;
-            if (_Environment.Evaluation.IsLiteralValue(item.Template.Expression))
-            {
-                var resolved = _Environment.Evaluation.EvaluateAs<string>(item.Template.Expression);
-                template = _Environment.GetTemplateExpression(resolved, new Dictionary<string, object?>(), out _);
-            }
-            else
-            {
-                template = item.Template.Transform(this, forceRender);
-                if (template.Type != typeof(Template))
-                {
-                    throw new NotImplementedException();
-                }
-            }
-            if (forceRender)
-            {
-                return SpecialVariables.Self.EnqueueIntoTemplateQueue(Expression.Constant(template));
-            }
-            return Expression.Block(
-                SpecialVariables.Self.EnqueueIntoTemplateQueue(Expression.Constant(template)),
-                SpecialVariables.Self.SetRenderMode(RenderMode.ParentAtCompletion)
-            );
+            throw new NotImplementedException();
         }
 
 
@@ -414,20 +381,7 @@ namespace Obsidian.CompiledAST
         public Expression Transform(TemplateNode item) => Transform(item, false);
         public Expression Transform(TemplateNode item, bool forceRender)
         {
-            var children = TransformAll(item.Children, forceRender);
-
-            var loopBreak = Label("breakLabel");
-            var loopContents = Block(
-                IfThen(
-                    Equal(SpecialVariables.Self.HasQueuedTemplates(), Expression.Constant(false)),
-                    Break(loopBreak)
-                ),
-                SpecialVariables.Self.SetRenderMode(RenderMode.Direct),
-                SpecialVariables.StringBuilder.AppendLine(SpecialVariables.Self.DequeueTemplate())
-
-            );
-
-            return Expression.Block(children.Concat(Expression.Loop(loopContents, loopBreak)));
+            throw new NotImplementedException();
         }
     }
 }
