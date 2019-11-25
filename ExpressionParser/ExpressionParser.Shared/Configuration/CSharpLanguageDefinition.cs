@@ -60,5 +60,7 @@ namespace ExpressionParser.Configuration
         public IDictionary<char, TokenType> SingleCharTokens => LanguageDefinition.StandardSingleCharacterTokens;
 
         public bool AllowStringIndexersAsProperties => false;
+
+        public FunctionDefinition[] Functions => new FunctionDefinition[] { };
     }
 }

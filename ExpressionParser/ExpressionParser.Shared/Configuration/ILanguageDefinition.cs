@@ -10,7 +10,7 @@ namespace ExpressionParser.Configuration
         KeywordDefinition[] Keywords { get; }
         OperatorDefinition[] Operators { get; }
         IDictionary<char,TokenType> SingleCharTokens { get; }
-
-        public bool AllowStringIndexersAsProperties { get; }
+        bool AllowStringIndexersAsProperties { get; }
+        FunctionDefinition[] Functions { get; }
     }
 }

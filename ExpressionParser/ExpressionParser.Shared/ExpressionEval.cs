@@ -17,6 +17,7 @@ namespace ExpressionParser
     {
         public ExpressionEval(ILanguageDefinition languageDefinition, Lexer? lexer = null, Parser? parser = null)
         {
+            languageDefinition.Validate();
             LanguageDefinition = languageDefinition;
             Lexer = lexer ?? new Lexer(LanguageDefinition);
             Parser = parser ?? new Parser(LanguageDefinition);
@@ -35,7 +36,18 @@ namespace ExpressionParser
             return astNode.Transform(transformer);
         }
 
-
+        public bool IsLiteralValue(string expressionText)
+        {
+            switch(Lexer.TryReadOnlyOneToken(expressionText, out var firstToken))
+            {
+                case null:
+                    return false;
+                case false:
+                    return false;
+                case true:
+                    return firstToken != null && firstToken.TokenType.IsLiteral();
+            }
+        }
 
         public ExpressionData Compile(string expressionText, Scope scope)
         {

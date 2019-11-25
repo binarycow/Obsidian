@@ -20,13 +20,20 @@ namespace Obsidian
         public OperatorDefinition[] Operators => new OperatorDefinition[]
         {
             OperatorDefinition.CreateMemberAccess(".", 160),
-            OperatorDefinition.CreateMethod("(", ")", 160),
-            OperatorDefinition.CreateIndex("[", "]", 160),
+            OperatorDefinition.CreateMethod("(", TokenType.Comma, TokenType.Paren_Close, 160),
+            OperatorDefinition.CreateIndex("[", TokenType.Comma, TokenType.SquareBrace_Close, 160),
             OperatorDefinition.CreateBinary("+", 10, OperatorType.Add),
         };
 
         public IDictionary<char, TokenType> SingleCharTokens => LanguageDefinition.StandardSingleCharacterTokens;
 
         public bool AllowStringIndexersAsProperties => true;
+
+        public FunctionDefinition[] Functions => new FunctionDefinition[]
+        {
+            FunctionDefinition.Create("super",
+                OverloadDefinition.CreateEmpty(JinjaFunctions.Super, typeof(string))
+            )
+        };
     }
 }

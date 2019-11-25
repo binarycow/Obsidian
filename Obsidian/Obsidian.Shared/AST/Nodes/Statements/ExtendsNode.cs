@@ -14,13 +14,14 @@ namespace Obsidian.AST.Nodes.MiscNodes
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public class ExtendsNode : ASTNode
     {
-        public ExtendsNode(string templateName, ParsingNode parsingNode) : base(parsingNode)
+        public ExtendsNode(string templateName, ExpressionNode template, ParsingNode parsingNode) : base(parsingNode)
         {
             TemplateName = templateName;
+            Template = template;
         }
 
         public string TemplateName { get; }
-
+        public ExpressionNode Template { get; }
 
         private string DebuggerDisplay => $"{nameof(ExtendsNode)} : {TemplateName}";
 
@@ -92,7 +93,7 @@ namespace Obsidian.AST.Nodes.MiscNodes
                     }
                 }
                 var templateName = string.Join(string.Empty, templateQueue.Select(token => token.Value)).Trim();
-                parsedNode = new ExtendsNode(templateName, currentNode);
+                parsedNode = new ExtendsNode(templateName, ExpressionNode.FromString(templateName), currentNode);
                 return true;
             }
         }

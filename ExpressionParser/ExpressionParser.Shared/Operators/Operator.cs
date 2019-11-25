@@ -23,7 +23,7 @@ namespace ExpressionParser.Operators
                 case StandardOperatorDefinition standardOperator:
                     return new StandardOperator(token, standardOperator.OperatorType);
                 case SpecialOperatorDefinition specialOperator:
-                    return new SpecialOperator(token, specialOperator.OperatorType, SpecialOperatorSubType.Unknown);
+                    return new SpecialOperator(token, specialOperator.OperatorType);
                 default:
                     throw new NotImplementedException();
             }
@@ -38,9 +38,9 @@ namespace ExpressionParser.Operators
                     throw new NotImplementedException();
             }
         }
-        internal static Operator CreateMemberAccess(SpecialOperatorDefinition specialOperator, Token operatorToken, SpecialOperatorSubType subType)
+        internal static Operator CreateSpecial(SpecialOperatorDefinition specialOperator, Token operatorToken)
         {
-            return new SpecialOperator(operatorToken, specialOperator.OperatorType, subType);
+            return new SpecialOperator(operatorToken, specialOperator.OperatorType);
         }
 
         public abstract TOutput Transform<TInput, TOutput>(IOperatorTransformVisitor<TInput, TOutput> visitor, TInput[] arguments);

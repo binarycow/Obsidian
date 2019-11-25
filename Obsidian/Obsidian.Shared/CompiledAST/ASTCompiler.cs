@@ -19,19 +19,63 @@ namespace Obsidian.CompiledAST
 {
     public class ASTCompiler : ITransformVisitor<Expression>
     {
-        private ASTCompiler(ExpressionExtensionData<StringBuilder> stringBuilder, JinjaEnvironment environment, IDictionary<string, object?> variableTemplate)
+        private class SpecialVariableInfo
+        {
+            public class AssignInfo<T> : AssignInfo
+            {
+                public AssignInfo(ExpressionExtensionData<T> extensionData, BinaryExpression assignmentExpression) : base(extensionData, assignmentExpression)
+                {
+                    TypedExtensionData = extensionData;
+                }
+                public ExpressionExtensionData<T> TypedExtensionData { get; }
+            }
+            public class AssignInfo
+            {
+                public AssignInfo(ExpressionExtensionData extensionData, BinaryExpression assignmentExpression)
+                {
+                    ExtensionData = extensionData;
+                    AssignmentExpression = assignmentExpression;
+                }
+                public ExpressionExtensionData ExtensionData { get; }
+                public BinaryExpression AssignmentExpression { get; }
+            }
+
+            public SpecialVariableInfo(AssignInfo<StringBuilder> stringBuilder, AssignInfo<Self> self)
+            {
+                _StringBuilder = stringBuilder;
+                _Self = self;
+            }
+
+            private AssignInfo<StringBuilder> _StringBuilder;
+            private AssignInfo<Self> _Self;
+
+            public ExpressionExtensionData<StringBuilder> StringBuilder => _StringBuilder.TypedExtensionData;
+            public ExpressionExtensionData<Self> Self => _Self.TypedExtensionData;
+
+            public IEnumerable<AssignInfo> AllAssignInfo => new AssignInfo[]
+            {
+                _StringBuilder,
+                _Self,
+            };
+
+            public IEnumerable<ParameterExpression> AllVariables => AllAssignInfo.Select(x => x.ExtensionData.ParameterExpression);
+            public IEnumerable<BinaryExpression> AllAssignments => AllAssignInfo.Select(x => x.AssignmentExpression);
+        }
+
+
+        private ASTCompiler(SpecialVariableInfo specialVariables, JinjaEnvironment environment, IDictionary<string, object?> variableTemplate)
         {
             _RootScope = RootScope.CreateRootScope(variableTemplate);
             _Scopes = new Stack<Scope>();
             _Scopes.Push(_RootScope);
             _Environment = environment;
-            _StringBuilder = stringBuilder;
+            SpecialVariables = specialVariables;
         }
 
         private JinjaEnvironment _Environment;
         private RootScope _RootScope;
         private Stack<Scope> _Scopes;
-        private ExpressionExtensionData<StringBuilder> _StringBuilder;
+        private SpecialVariableInfo SpecialVariables { get; }
         public Scope CurrentScope => _Scopes.Peek();
 
         public void PushScope(string name)
@@ -59,33 +103,179 @@ namespace Obsidian.CompiledAST
 
         internal static ExpressionData Compile(JinjaEnvironment environment, ASTNode node, IDictionary<string, object?> variableTemplate)
         {
-
-            var stringBuilderVariable = Expression.Variable(typeof(StringBuilder), "stringBuilder");
-            if (ExpressionExtensionData.TryCreate<StringBuilder>(stringBuilderVariable, out var stringBuilderExpressionExtensionData,
-                out var newExpression) == false || stringBuilderExpressionExtensionData == null)
-            {
-                throw new NotImplementedException(); // Couldn't create variable
-            }
-            var assignExpression = Expression.Assign(stringBuilderVariable, newExpression);
-
-
-
-            //var stringBuilderVariable = Expression.Variable(typeof(StringBuilder), "stringBuilder");
-            //var assignStringBuilder = Expression.Assign(stringBuilderVariable, Expression.New(typeof(StringBuilder)));
-
-
-
-            var compiler = new ASTCompiler(stringBuilderExpressionExtensionData, environment, variableTemplate);
-            var children = new Queue<Expression>();
+            var specialVariables = SetupVariables();
+            var compiler = new ASTCompiler(specialVariables, environment, variableTemplate);
             var compiledNodes = node.Transform(compiler);
-            var toString = Expression.Call(stringBuilderVariable, typeof(StringBuilder).GetMethod("ToString", Type.EmptyTypes));
-            var allContent = new[] { assignExpression }.Concat(compiledNodes).Concat(toString);
-            var finalBlock = Expression.Block(stringBuilderVariable.YieldOne(), allContent);
+            var toString = Expression.Call(specialVariables.StringBuilder.ParameterExpression, 
+                typeof(StringBuilder).GetMethod("ToString", Type.EmptyTypes)
+            );
+            var allContent = specialVariables.AllAssignments.Concat(compiledNodes).Concat(toString);
+            var finalBlock = Expression.Block(specialVariables.AllVariables, allContent);
             //var debug = finalBlock.ToString("C#");
             return ExpressionData.CreateCompiled(finalBlock, compiler.CurrentScope.FindRootScope());
         }
 
+        private static SpecialVariableInfo SetupVariables()
+        {
+            return new SpecialVariableInfo(
+                CreateParameterless<StringBuilder>("stringBuilder"),
+                CreateParameterless<Self>("self")
+            );
 
+            SpecialVariableInfo.AssignInfo<T> CreateParameterless<T>(string name)
+            {
+                var variable = Expression.Variable(typeof(T), name);
+                if (ExpressionExtensionData.TryCreate<T>(variable, out var extensionData,
+                    out var newExpression) == false || extensionData == null)
+                {
+                    throw new NotImplementedException(); // Couldn't create variable
+                }
+                var assign = Expression.Assign(variable, newExpression);
+                return new SpecialVariableInfo.AssignInfo<T>(extensionData, assign);
+            }
+        }
+
+
+
+
+        public Expression Transform(ContainerNode item)
+        {
+            return IfInDirectRenderMode(
+                Expression.Block(TransformAll(item.Children)),
+                Expression.Empty()
+            );
+        }
+
+        public Expression Transform(ExpressionNode item)
+        {
+            var expression = _Environment.Evaluation.ToExpression(item.Expression, CurrentScope);
+            if (item.Output)
+            {
+                expression = IfInDirectRenderMode(
+                    SpecialVariables.StringBuilder.Append(item.ToString()),
+                    Expression.Empty()
+                );
+            }
+            return expression;
+        }
+
+        public Expression Transform(NewLineNode item)
+        {
+            return IfInDirectRenderMode(
+                SpecialVariables.StringBuilder.Append(item.ToString()),
+                Expression.Empty()
+            );
+        }
+
+        public Expression Transform(OutputNode item)
+        {
+            return IfInDirectRenderMode(
+                SpecialVariables.StringBuilder.Append(item.Value),
+                Expression.Empty()
+            );
+        }
+
+        public Expression Transform(WhiteSpaceNode item)
+        {
+            return IfInDirectRenderMode(
+                SpecialVariables.StringBuilder.Append(item.ToString()),
+                Expression.Empty()
+            );
+        }
+
+        public Expression Transform(IfNode item)
+        {
+            if(item.Conditions.Length == 1)
+            {
+                var onlyCondition = item.Conditions[0].Expression.Transform(this);
+                var body = Expression.Block(item.Conditions[0].Children.Select(child => child.Transform(this)));
+                return Expression.IfThen(onlyCondition, body);
+            }
+            var conditions = item.Conditions;
+
+
+            var condition = conditions[conditions.Length - 1].Expression.Transform(this);
+            var block = Expression.Block(conditions[conditions.Length - 1].Children.Select(child => child.Transform(this)));
+
+            var ifBlock = Expression.IfThen(condition, block);
+
+
+            for(int i = conditions.Length - 2; i >= 0; --i)
+            {
+                condition = conditions[i].Expression.Transform(this);
+                block = Expression.Block(conditions[i].Children.Select(child => child.Transform(this)));
+                ifBlock = Expression.IfThenElse(condition, block, ifBlock);
+            }
+
+
+            return IfInDirectRenderMode(
+                ifBlock,
+                Expression.Empty()
+            );
+        }
+
+        public Expression Transform(ConditionalNode item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Expression Transform(CommentNode item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Expression Transform(BlockNode item)
+        {
+            var blockExpression = item.BlockContents.Transform(this);
+            // TODO: Actually process this...
+            return IfInDirectRenderMode(
+                blockExpression,
+                SpecialVariables.Self.AddBlock(item.Name, new Block(item.Name, 0, blockExpression))
+            );
+        }
+
+        public Expression Transform(ExtendsNode item)
+        {
+
+
+            !!!!!!!!!!!!! TEST THIS !!!!!!!!!!!!!!
+
+            Expression template;
+            if (_Environment.Evaluation.IsLiteralValue(item.Template.Expression))
+            {
+                template = Expression.Constant(_Environment.GetTemplate(item.Template.Expression, new Dictionary<string, object?>()));
+            }
+            else
+            {
+                template = item.Template.Transform(this);
+                if (template.Type != typeof(Template))
+                {
+                    throw new NotImplementedException();
+                }
+            }
+
+            var property = Expression.Property(template, nameof(Template.TemplateNode));
+
+            return Expression.Block(
+                SpecialVariables.Self.EnqueueIntoTemplateQueue(property),
+                SpecialVariables.Self.SetRenderMode(RenderMode.ParentAtCompletion)
+            );
+        }
+
+
+        private Expression IfInDirectRenderMode(Expression ifInDirectRenderMode, Expression ifNotInDirectRenderMode)
+        {
+            return Expression.IfThenElse(
+                Expression.Equal(SpecialVariables.Self.GetRenderMode(), Expression.Constant(RenderMode.Direct)),
+                ifInDirectRenderMode,
+                ifNotInDirectRenderMode
+            );
+        }
+
+        private IEnumerable<Expression> TransformAll(IEnumerable<ASTNode> nodes)
+        {
+            return nodes.Select(node => node.Transform(this));
+        }
 
         public Expression Transform(ForNode item)
         {
@@ -124,7 +314,7 @@ namespace Obsidian.CompiledAST
                     out setLoopInfoVar);
             }
 
-            
+
             var usersBlock = PopScope("For Loop - Contents",
                 setItem,
                 setLoopInfoVar,
@@ -161,84 +351,32 @@ namespace Obsidian.CompiledAST
                 overall = Expression.IfThenElse(enumerateClause, whileLoop, item.ElseBlock.Transform(this));
             }
 
-            return PopScope("For Loop - Overall", arrayAssignment, overall);
+            var forLoop = PopScope("For Loop - Overall", arrayAssignment, overall);
+
+
+            return IfInDirectRenderMode(
+                forLoop,
+                Expression.Empty()
+            );
         }
 
-        public Expression Transform(ContainerNode item)
+
+        public Expression Transform(TemplateNode item)
         {
-            return Expression.Block(item.Children.Select(child => child.Transform(this)));
-        }
+            var children = TransformAll(item.Children);
 
-        public Expression Transform(ExpressionNode item)
-        {
-            var expression = _Environment.Evaluation.ToExpression(item.Expression, CurrentScope);
-            if (item.Output)
-            {
-                expression = _StringBuilder.Append(expression);
-            }
-            return expression;
-        }
+            var loopBreak = Expression.Label("breakLabel");
 
-        public Expression Transform(NewLineNode item)
-        {
-            return _StringBuilder.Append(Expression.Constant(item.ToString()));
-        }
+            var loopContents = Expression.Block(
+                Expression.IfThen(
+                    Expression.Equal(SpecialVariables.Self.HasQueuedTemplates(), Expression.Constant(false)),
+                    Expression.Break(loopBreak)
+                ),
+                SpecialVariables.Self.SetRenderMode(RenderMode.Direct),
+                SpecialVariables.StringBuilder.Append(SpecialVariables.Self.DequeueTemplate())
+            );
 
-        public Expression Transform(OutputNode item)
-        {
-            return _StringBuilder.Append(Expression.Constant(item.Value));
-        }
-
-        public Expression Transform(WhiteSpaceNode item)
-        {
-            return _StringBuilder.Append(Expression.Constant(item.ToString()));
-        }
-
-        public Expression Transform(IfNode item)
-        {
-            if(item.Conditions.Length == 1)
-            {
-                var onlyCondition = item.Conditions[0].Expression.Transform(this);
-                var body = Expression.Block(item.Conditions[0].Children.Select(child => child.Transform(this)));
-                return Expression.IfThen(onlyCondition, body);
-            }
-            var conditions = item.Conditions;
-
-
-            var condition = conditions[conditions.Length - 1].Expression.Transform(this);
-            var block = Expression.Block(conditions[conditions.Length - 1].Children.Select(child => child.Transform(this)));
-
-            var ifBlock = Expression.IfThen(condition, block);
-
-
-            for(int i = conditions.Length - 2; i >= 0; --i)
-            {
-                condition = conditions[i].Expression.Transform(this);
-                block = Expression.Block(conditions[i].Children.Select(child => child.Transform(this)));
-                ifBlock = Expression.IfThenElse(condition, block, ifBlock);
-            }
-            return ifBlock;
-        }
-
-        public Expression Transform(ConditionalNode item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Expression Transform(CommentNode item)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Expression Transform(BlockNode item)
-        {
-            // TODO: Actually process this...
-            return item.BlockContents.Transform(this);
-        }
-
-        public Expression Transform(ExtendsNode item)
-        {
-            return Expression.Constant(item.TemplateName);
+            return Expression.Block(children.Concat(Expression.Loop(loopContents, loopBreak)));
         }
     }
 }

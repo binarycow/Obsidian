@@ -146,5 +146,10 @@ namespace Obsidian.OutputCombiner
         {
             throw new NotImplementedException();
         }
+
+        public ASTNode Transform(TemplateNode item)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

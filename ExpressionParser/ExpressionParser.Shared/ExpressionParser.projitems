@@ -9,9 +9,13 @@
     <Import_RootNamespace>ExpressionParser</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Configuration\FunctionDefinition.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\MethodOperatorDefinition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Configuration\MultiTypeOverloadDefinition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Configuration\OverloadDefinition.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\SpecialOperatorDefinition.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\SpecialOperatorType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Configuration\SingleTypeOverloadDefinition.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\CSharpLanguageDefinition.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\ILanguageDefinition.cs" />
@@ -24,15 +28,19 @@
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\LexingException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\ParseException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionEval.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\ExpressionParser.Configuration\ILanguageDefinitionExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ExpressionParser.Lexing\TokenTypeExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LanguageDefinition.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Lexing\Lexer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Lexing\Token.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Lexing\TokenType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Parsing\ArgumentSetNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)References\ExpressionMethodGroup.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)References\FunctionMethodGroup.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)References\MethodGroup.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Operators\Operator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Operators\OperatorExecution.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Operators\SpecialOperator.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Operators\SpecialOperatorSubType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Operators\StandardOperator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Parsing\ASTNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Parsing\BinaryASTNode.cs" />

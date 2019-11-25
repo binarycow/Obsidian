@@ -9,6 +9,20 @@ namespace ExpressionParser.Lexing
     public static class TokenTypeExtensions
     {
 
+        public static bool IsLiteral(this TokenType tokenType)
+        {
+            return tokenType switch
+            {
+                TokenType.CharacterLiteral => true,
+                TokenType.StringLiteral => true,
+                TokenType.FloatingLiteral => true,
+                TokenType.IntegerLiteral => true,
+                TokenType.NullLiteral => true,
+                _ => false
+            };
+        }
+
+
         public static bool IsTerminal(this TokenType tokenType)
         {
             return tokenType switch

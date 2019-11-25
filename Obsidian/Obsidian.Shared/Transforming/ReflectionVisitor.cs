@@ -156,6 +156,11 @@ namespace Obsidian.Transforming
         {
             throw new NotImplementedException();
         }
+
+        public IEnumerable<RenderObj> Transform(TemplateNode item)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }

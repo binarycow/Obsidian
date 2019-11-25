@@ -13,5 +13,9 @@ namespace System.Text
         {
             return ExpressionEx.StringBuilder.Append(stringBuilder, expr);
         }
+        public static Expression Append(this ExpressionExtensionData<StringBuilder> stringBuilder, object? expr)
+        {
+            return ExpressionEx.StringBuilder.Append(stringBuilder, Expression.Constant(expr));
+        }
     }
 }

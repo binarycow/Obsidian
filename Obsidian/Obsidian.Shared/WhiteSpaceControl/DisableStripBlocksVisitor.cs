@@ -19,6 +19,78 @@ namespace Obsidian.WhiteSpaceControl
             return item;
         }
 
+
+        public ASTNode Transform(TemplateNode item)
+        {
+            // TODO: See if we can fix all these switch statements...
+            var children = new Queue<ASTNode>();
+            var pendingWhiteSpace = new Queue<WhiteSpaceNode>();
+            foreach (var child in item.Children)
+            {
+                switch (child)
+                {
+                    case NewLineNode _:
+                        children.Enqueue(pendingWhiteSpace);
+                        pendingWhiteSpace.Clear();
+                        children.Enqueue(child);
+                        break;
+                    case WhiteSpaceNode whiteSpaceNode:
+                        pendingWhiteSpace.Enqueue(whiteSpaceNode);
+                        break;
+                    case ContainerNode _:
+                    case OutputNode _:
+                    case ExtendsNode _:
+                        children.Enqueue(pendingWhiteSpace);
+                        pendingWhiteSpace.Clear();
+                        children.Enqueue(child);
+                        break;
+                    case AbstractContainerNode containerNode:
+                        if (containerNode.StartWhiteSpace == WhiteSpaceControlMode.Keep)
+                        {
+                            children.Enqueue(pendingWhiteSpace.Select(ws =>
+                            {
+                                ws.WhiteSpaceControlMode = WhiteSpaceControlMode.Keep;
+                                return ws;
+                            }));
+                        }
+                        children.Enqueue(pendingWhiteSpace);
+                        pendingWhiteSpace.Clear();
+                        children.Enqueue(containerNode.Transform(this));
+                        break;
+                    case StatementNode statementNode:
+                        if (statementNode.StartWhiteSpace == WhiteSpaceControlMode.Keep)
+                        {
+                            children.Enqueue(pendingWhiteSpace.Select(ws =>
+                            {
+                                ws.WhiteSpaceControlMode = WhiteSpaceControlMode.Keep;
+                                return ws;
+                            }));
+                        }
+                        children.Enqueue(pendingWhiteSpace);
+                        pendingWhiteSpace.Clear();
+                        children.Enqueue(statementNode.Transform(this));
+                        break;
+                    case ExpressionNode expressionNode:
+                        if (expressionNode.StartWhiteSpace == WhiteSpaceControlMode.Keep)
+                        {
+                            children.Enqueue(pendingWhiteSpace.Select(ws =>
+                            {
+                                ws.WhiteSpaceControlMode = WhiteSpaceControlMode.Keep;
+                                return ws;
+                            }));
+                        }
+                        children.Enqueue(pendingWhiteSpace);
+                        pendingWhiteSpace.Clear();
+                        children.Enqueue(expressionNode.Transform(this));
+                        break;
+                    default:
+                        throw new NotImplementedException();
+                }
+            }
+
+            return new TemplateNode(children);
+        }
+
         public ASTNode Transform(ContainerNode item)
         {
             // TODO: See if we can fix all these switch statements...
@@ -133,6 +205,5 @@ namespace Obsidian.WhiteSpaceControl
         {
             throw new NotImplementedException();
         }
-
     }
 }

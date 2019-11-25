@@ -36,5 +36,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Reflection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StringBuilderPool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TEMP.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TypeCoercion.cs" />
   </ItemGroup>
 </Project>

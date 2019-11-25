@@ -6,6 +6,7 @@ using System.Text;
 using ExpressionParser.Configuration;
 using ExpressionParser.Operators;
 using ExpressionParser.Parsing;
+using ExpressionParser.References;
 using ExpressionParser.Scopes;
 using ExpressionParser.Transforming.Operators;
 using ExpressionParser.VariableManagement;
@@ -47,6 +48,11 @@ namespace ExpressionParser.Transforming.Nodes
             if(valueKeyword != null)
             {
                 return Expression.Constant(valueKeyword.Value);
+            }
+            var functionDefinition = LanguageDefinition.Functions.Where(func => func.Name == item.TextValue).FirstOrDefault();
+            if(functionDefinition != null)
+            {
+                return Expression.Constant(MethodGroup.Create(functionDefinition));
             }
             if (CurrentScope.TryGetVariable(item.TextValue, out var expression))
             {

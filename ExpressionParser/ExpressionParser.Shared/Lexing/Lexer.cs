@@ -43,6 +43,7 @@ namespace ExpressionParser.Lexing
 
         public delegate bool TryReadDelegate(ILookaroundEnumerator<char> enumerator, [NotNullWhen(true)]out Token? token);
 
+
         public IEnumerable<Token> Tokenize(IEnumerable<char> inputText)
         {
             using var enumerator = LookaroundEnumeratorFactory.CreateLookaroundEnumerator(inputText, _LookaheadCount);
@@ -242,6 +243,31 @@ namespace ExpressionParser.Lexing
             return true;
         }
 
-        
+
+        public bool? TryReadOnlyOneToken(IEnumerable<char> inputText, [NotNullWhen(true)]out Token? firstToken)
+        {
+            firstToken = default;
+            bool? result = null;
+            using var enumerator = LookaroundEnumeratorFactory.CreateLookaroundEnumerator(inputText, _LookaheadCount);
+            var continueLoop = true;
+            while (continueLoop && enumerator.MoveNext())
+            {
+                foreach(var del in Delegates)
+                {
+                    if(del(enumerator, out firstToken))
+                    {
+                        continueLoop = false;
+                        result = true;
+                        continue;
+                    }
+                }
+            }
+            if(enumerator.State != EnumeratorState.Complete)
+            {
+                result = false;
+            }
+            return result;
+        }
+
     }
 }
