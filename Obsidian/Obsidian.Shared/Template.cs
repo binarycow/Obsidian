@@ -57,6 +57,12 @@ namespace Obsidian
         }
         internal static Template LoadTemplate(JinjaEnvironment environment, string templateText, IDictionary<string, object?> variableTemplate, string? templateName, string? templatePath)
         {
+            var expr = ToExpression(environment, templateText, variableTemplate, out var compiler);
+            return new Template(environment, compiler.Compile(expr), templateName, templatePath);
+        }
+
+        internal static Expression ToExpression(JinjaEnvironment environment, string templateText, IDictionary<string, object?> variableTemplate, out ASTCompiler compiler)
+        {
             var lexer = new Lexer(environment);
             var tokens = lexer.Tokenize(templateText).ToArray();
             var parsed = Parser.Parse(tokens).ToArray();
@@ -64,24 +70,13 @@ namespace Obsidian
             var templateNode = ASTGenerator.ParseTemplate(environmentTrimmed);
             var commentsRemoved = templateNode.Transform(CommentRemoverTransformer.Instance);
             var controlledWhiteSpace = WhiteSpaceController.ControlWhiteSpace(commentsRemoved);
-           // var outputCombined = controlledWhiteSpace.Transform(OutputCombineVisitor.Instance);
-            var compiled = ASTCompiler.Compile(environment, controlledWhiteSpace, variableTemplate);
-            return new Template(environment, compiled, templateName, templatePath);
+            return ASTCompiler.ToExpression(environment, controlledWhiteSpace, variableTemplate, out compiler);
         }
 
 
         public string Render(IDictionary<string, object?> variables)
         {
             return TemplateNode.Evaluate(variables)?.ToString() ?? string.Empty;
-            //if (Compiled)
-            //{
-            //    return RenderCompiled(variables);
-            //}
-            //var visitor = new StringRenderVisitor();
-            //ITransformVisitor<IEnumerable<RenderObj>> renderVisitor = new ReflectionVisitor(Environment, variables);
-            //var rendered = TemplateNode.Transform(renderVisitor).ToArray();
-            //var strings = rendered.SelectMany(renderObj => renderObj.Render(visitor)).ToArray();
-            //return string.Join(string.Empty, strings);
         }
 
     }

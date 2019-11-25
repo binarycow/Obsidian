@@ -12,7 +12,7 @@ namespace Obsidian
     {
         public RenderMode RenderMode { get; set; } = RenderMode.Direct;
         private Dictionary<string, List<Block>> Blocks { get; } = new Dictionary<string, List<Block>>();
-        public Queue<ExpressionData> TemplateQueue { get; } = new Queue<ExpressionData>();
+        public Queue<Expression> TemplateQueue { get; } = new Queue<Expression>();
 
         public Block this[string name]
         {
@@ -22,11 +22,11 @@ namespace Obsidian
             }
         }
 
-        public void EnqueueTemplate(ExpressionData template)
+        public void EnqueueTemplate(Expression template)
         {
             TemplateQueue.Enqueue(template);
         }
-        public ExpressionData DequeueTemplate()
+        public Expression DequeueTemplate()
         {
             return TemplateQueue.Dequeue();
         }

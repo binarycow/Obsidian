@@ -47,5 +47,10 @@ namespace Common
             }
             throw new NotImplementedException();
         }
+
+        public static Expression ToString(Expression obj)
+        {
+            return Expression.Call(obj, "ToString", Type.EmptyTypes);
+        }
     }
 }

@@ -10,11 +10,12 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="..\TestData\APIInfo_Actual.json" Link="APIInfo_Actual.json" />
     <Content Include="..\TestData\Tests.json" Link="Tests.json" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="ExpressionTreeToString" Version="1.5.67" />
+    <PackageReference Include="ExpressionTreeToString" Version="1.5.65" />
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.7">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

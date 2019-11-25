@@ -14,6 +14,9 @@ using Obsidian.AST.Nodes.MiscNodes;
 using Obsidian.AST.Nodes.Statements;
 using Obsidian.Transforming;
 using StringBuilder = System.Text.StringBuilder;
+using ExpressionToString;
+using static System.Linq.Expressions.Expression;
+using static Common.ExpressionEx;
 
 namespace Obsidian.CompiledAST
 {
@@ -101,18 +104,22 @@ namespace Obsidian.CompiledAST
             return PopScope(name, child.YieldOne());
         }
 
-        internal static ExpressionData Compile(JinjaEnvironment environment, ASTNode node, IDictionary<string, object?> variableTemplate)
+        internal ExpressionData Compile(Expression expression)
+        {
+            return ExpressionData.CreateCompiled(expression, CurrentScope.FindRootScope());
+        }
+        internal static Expression ToExpression(JinjaEnvironment environment, ASTNode node, IDictionary<string, object?> variableTemplate, 
+            out ASTCompiler compiler)
         {
             var specialVariables = SetupVariables();
-            var compiler = new ASTCompiler(specialVariables, environment, variableTemplate);
+            compiler = new ASTCompiler(specialVariables, environment, variableTemplate);
             var compiledNodes = node.Transform(compiler);
-            var toString = Expression.Call(specialVariables.StringBuilder.ParameterExpression, 
+            var toString = Expression.Call(specialVariables.StringBuilder.ParameterExpression,
                 typeof(StringBuilder).GetMethod("ToString", Type.EmptyTypes)
             );
             var allContent = specialVariables.AllAssignments.Concat(compiledNodes).Concat(toString);
             var finalBlock = Expression.Block(specialVariables.AllVariables, allContent);
-            //var debug = finalBlock.ToString("C#");
-            return ExpressionData.CreateCompiled(finalBlock, compiler.CurrentScope.FindRootScope());
+            return finalBlock;
         }
 
         private static SpecialVariableInfo SetupVariables()
@@ -259,12 +266,14 @@ namespace Obsidian.CompiledAST
         public Expression Transform(BlockNode item) => Transform(item, false);
         public Expression Transform(BlockNode item, bool forceRender)
         {
-            var blockExpression = this.Transform(item.BlockContents, forceRender: true);
+            var blockExpression = item.BlockContents.Transform(this, forceRender);
+            var debug = blockExpression.ToString("C#");
             // TODO: Actually process this...
             if (forceRender)
             {
                 return blockExpression;
             }
+
             return IfInDirectRenderMode(
                 blockExpression,
                 SpecialVariables.Self.AddBlock(item.Name, blockExpression)
@@ -279,7 +288,7 @@ namespace Obsidian.CompiledAST
             if (_Environment.Evaluation.IsLiteralValue(item.Template.Expression))
             {
                 var resolved = _Environment.Evaluation.EvaluateAs<string>(item.Template.Expression);
-                template = Expression.Constant(_Environment.GetTemplate(resolved, new Dictionary<string, object?>()));
+                template = _Environment.GetTemplateExpression(resolved, new Dictionary<string, object?>(), out _);
             }
             else
             {
@@ -289,14 +298,12 @@ namespace Obsidian.CompiledAST
                     throw new NotImplementedException();
                 }
             }
-
-            var property = Expression.Property(template, nameof(Template.TemplateNode));
             if (forceRender)
             {
-                return SpecialVariables.Self.EnqueueIntoTemplateQueue(property);
+                return SpecialVariables.Self.EnqueueIntoTemplateQueue(Expression.Constant(template));
             }
             return Expression.Block(
-                SpecialVariables.Self.EnqueueIntoTemplateQueue(property),
+                SpecialVariables.Self.EnqueueIntoTemplateQueue(Expression.Constant(template)),
                 SpecialVariables.Self.SetRenderMode(RenderMode.ParentAtCompletion)
             );
         }
@@ -409,14 +416,15 @@ namespace Obsidian.CompiledAST
         {
             var children = TransformAll(item.Children, forceRender);
 
-            var loopBreak = Expression.Label("breakLabel");
-            var loopContents = Expression.Block(
-                Expression.IfThen(
-                    Expression.Equal(SpecialVariables.Self.HasQueuedTemplates(), Expression.Constant(false)),
-                    Expression.Break(loopBreak)
+            var loopBreak = Label("breakLabel");
+            var loopContents = Block(
+                IfThen(
+                    Equal(SpecialVariables.Self.HasQueuedTemplates(), Expression.Constant(false)),
+                    Break(loopBreak)
                 ),
                 SpecialVariables.Self.SetRenderMode(RenderMode.Direct),
-                Expression.Property(SpecialVariables.Self.DequeueTemplate(), nameof(ExpressionData.ExpressionTree))
+                SpecialVariables.StringBuilder.AppendLine(SpecialVariables.Self.DequeueTemplate())
+
             );
 
             return Expression.Block(children.Concat(Expression.Loop(loopContents, loopBreak)));

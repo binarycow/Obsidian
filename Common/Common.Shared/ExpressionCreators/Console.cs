@@ -89,9 +89,9 @@ namespace Common.ExpressionCreators
         {
             if (!(item is Expression expr))
             {
-                expr = Expression.Constant(item);
+                expr = ExpressionEx.ToString(Expression.Constant(item));
             }
-            return WriteLineExpression(expr);
+            return WriteLineExpression(ExpressionEx.ToString(expr));
         }
     }
 #endif

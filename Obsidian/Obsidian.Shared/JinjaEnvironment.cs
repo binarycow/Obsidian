@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using ExpressionParser;
 using Obsidian;
+using Obsidian.CompiledAST;
 using Obsidian.Exceptions;
 using Obsidian.ExpressionParserExt;
 
@@ -48,6 +50,17 @@ namespace Obsidian
             var templateInfo = Loader.GetSource(this, templateName);
             return GetTemplate(templateInfo.Source, variableTemplate, templateName, templateInfo.Filename);
         }
+        public Expression GetTemplateExpression(string templateName, IDictionary<string, object?> variableTemplate, out ASTCompiler compiler)
+        {
+            if (Loader == null)
+            {
+                throw new LoaderNotDefinedException();
+            }
+            var templateInfo = Loader.GetSource(this, templateName);
+            Settings.IsReadOnly = true;
+            return Template.ToExpression(this, templateInfo.Source, variableTemplate, out compiler);
+        }
+
         public Template FromString(string templateText, IDictionary<string, object?> variableTemplate)
         {
             return GetTemplate(templateText, variableTemplate, null, null);
