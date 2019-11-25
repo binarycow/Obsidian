@@ -258,10 +258,11 @@ namespace ExpressionParser.Lexing
                     {
                         continueLoop = false;
                         result = true;
-                        continue;
+                        break;
                     }
                 }
             }
+            if (firstToken != default) enumerator.MoveNext();
             if(enumerator.State != EnumeratorState.Complete)
             {
                 result = false;

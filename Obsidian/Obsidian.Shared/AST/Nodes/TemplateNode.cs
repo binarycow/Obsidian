@@ -18,5 +18,10 @@ namespace Obsidian.AST.Nodes
         {
             return visitor.Transform(this);
         }
+
+        public override TOutput Transform<TOutput>(IForceTransformVisitor<TOutput> visitor, bool force)
+        {
+            return visitor.Transform(this, force);
+        }
     }
 }

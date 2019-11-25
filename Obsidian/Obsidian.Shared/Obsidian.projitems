@@ -64,6 +64,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)TemplateInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TemporaryStuff\RuntimeScope.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\ExpressionTreeTransformVisitor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Transforming\IForceTransformable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Transforming\IForceTransformVisitor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\ITransformable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\ITransformVisitor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\ReflectionVisitor.cs" />

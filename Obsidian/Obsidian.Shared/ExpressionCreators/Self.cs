@@ -6,6 +6,7 @@ using System.Text;
 using Common;
 using Common.ExpressionCreators;
 using ExpressionParser;
+using Obsidian.AST.Nodes.Statements;
 
 namespace Obsidian.ExpressionCreators
 {
@@ -16,7 +17,7 @@ namespace Obsidian.ExpressionCreators
         private Lazy<MethodInfo> _DequeueTemplate = new Lazy<MethodInfo>(() =>
             MethodLookups.GetMethod(typeof(Obsidian.Self), nameof(Obsidian.Self.DequeueTemplate), Type.EmptyTypes));
         private Lazy<MethodInfo> _AddBlock = new Lazy<MethodInfo>(() =>
-            MethodLookups.GetMethod(typeof(Obsidian.Self), nameof(Obsidian.Self.AddBlock), new[] { typeof(string), typeof(Block) }));
+            MethodLookups.GetMethod(typeof(Obsidian.Self), nameof(Obsidian.Self.AddBlock), new[] { typeof(string), typeof(Expression) }));
 
         internal Expression SetRenderMode(ExpressionExtensionData<Obsidian.Self> self, RenderMode renderMode)
         {
@@ -39,19 +40,19 @@ namespace Obsidian.ExpressionCreators
             return Expression.Call(self.ParameterExpression, _DequeueTemplate.Value);
         }
 
-        internal Expression EnqueueIntoTemplateQueue(ExpressionExtensionData<Obsidian.Self> self, ExpressionData template)
+        internal Expression EnqueueIntoTemplateQueue(ExpressionExtensionData<Obsidian.Self> self, Expression template)
         {
             return Expression.Call(self.ParameterExpression, _EnqueueTemplate.Value, new[]
             {
-                Expression.Constant(template)
+                template
             });
         }
-        internal Expression AddBlock(ExpressionExtensionData<Obsidian.Self> self, string blockName, Block block)
+        internal Expression AddBlock(ExpressionExtensionData<Obsidian.Self> self, string blockName, Expression blockExpression)
         {
             return Expression.Call(self.ParameterExpression, _AddBlock.Value, new[]
             {
                 Expression.Constant(blockName),
-                Expression.Constant(block)
+                Expression.Constant(blockExpression)
             });
         }
     }

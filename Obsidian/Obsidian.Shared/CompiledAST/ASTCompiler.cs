@@ -17,7 +17,7 @@ using StringBuilder = System.Text.StringBuilder;
 
 namespace Obsidian.CompiledAST
 {
-    public class ASTCompiler : ITransformVisitor<Expression>
+    public class ASTCompiler : ITransformVisitor<Expression>, IForceTransformVisitor<Expression>
     {
         private class SpecialVariableInfo
         {
@@ -138,19 +138,29 @@ namespace Obsidian.CompiledAST
 
 
 
-        public Expression Transform(ContainerNode item)
+        public Expression Transform(ContainerNode item) => Transform(item, false);
+        public Expression Transform(ContainerNode item, bool forceRender)
         {
+            if (forceRender)
+            {
+                return Expression.Block(TransformAll(item.Children, forceRender));
+            }
             return IfInDirectRenderMode(
-                Expression.Block(TransformAll(item.Children)),
+                Expression.Block(TransformAll(item.Children, forceRender)),
                 Expression.Empty()
             );
         }
 
-        public Expression Transform(ExpressionNode item)
+        public Expression Transform(ExpressionNode item) => Transform(item, false);
+        public Expression Transform(ExpressionNode item, bool forceRender)
         {
             var expression = _Environment.Evaluation.ToExpression(item.Expression, CurrentScope);
             if (item.Output)
             {
+                if (forceRender)
+                {
+                    return SpecialVariables.StringBuilder.Append(item.ToString());
+                }
                 expression = IfInDirectRenderMode(
                     SpecialVariables.StringBuilder.Append(item.ToString()),
                     Expression.Empty()
@@ -159,95 +169,121 @@ namespace Obsidian.CompiledAST
             return expression;
         }
 
-        public Expression Transform(NewLineNode item)
+        public Expression Transform(NewLineNode item) => Transform(item, false);
+        public Expression Transform(NewLineNode item, bool forceRender)
         {
+            if (forceRender)
+            {
+                return SpecialVariables.StringBuilder.Append(item.ToString());
+            }
             return IfInDirectRenderMode(
                 SpecialVariables.StringBuilder.Append(item.ToString()),
                 Expression.Empty()
             );
         }
 
-        public Expression Transform(OutputNode item)
+        public Expression Transform(OutputNode item) => Transform(item, false);
+        public Expression Transform(OutputNode item, bool forceRender)
         {
+            if (forceRender)
+            {
+                return SpecialVariables.StringBuilder.Append(item.Value);
+            }
             return IfInDirectRenderMode(
                 SpecialVariables.StringBuilder.Append(item.Value),
                 Expression.Empty()
             );
         }
 
-        public Expression Transform(WhiteSpaceNode item)
+        public Expression Transform(WhiteSpaceNode item) => Transform(item, false);
+        public Expression Transform(WhiteSpaceNode item, bool forceRender)
         {
+            if (forceRender)
+            {
+                return SpecialVariables.StringBuilder.Append(item.ToString());
+            }
             return IfInDirectRenderMode(
                 SpecialVariables.StringBuilder.Append(item.ToString()),
                 Expression.Empty()
             );
         }
 
-        public Expression Transform(IfNode item)
+        public Expression Transform(IfNode item) => Transform(item, false);
+        public Expression Transform(IfNode item, bool forceRender)
         {
             if(item.Conditions.Length == 1)
             {
-                var onlyCondition = item.Conditions[0].Expression.Transform(this);
-                var body = Expression.Block(item.Conditions[0].Children.Select(child => child.Transform(this)));
+                var onlyCondition = item.Conditions[0].Expression.Transform(this, forceRender);
+                var body = Expression.Block(item.Conditions[0].Children.Select(child => child.Transform(this, forceRender)));
                 return Expression.IfThen(onlyCondition, body);
             }
             var conditions = item.Conditions;
 
 
-            var condition = conditions[conditions.Length - 1].Expression.Transform(this);
-            var block = Expression.Block(conditions[conditions.Length - 1].Children.Select(child => child.Transform(this)));
+            var condition = conditions[conditions.Length - 1].Expression.Transform(this, forceRender);
+            var block = Expression.Block(conditions[conditions.Length - 1].Children.Select(child => child.Transform(this, forceRender)));
 
             var ifBlock = Expression.IfThen(condition, block);
 
 
             for(int i = conditions.Length - 2; i >= 0; --i)
             {
-                condition = conditions[i].Expression.Transform(this);
-                block = Expression.Block(conditions[i].Children.Select(child => child.Transform(this)));
+                condition = conditions[i].Expression.Transform(this, forceRender);
+                block = Expression.Block(conditions[i].Children.Select(child => child.Transform(this, forceRender)));
                 ifBlock = Expression.IfThenElse(condition, block, ifBlock);
             }
 
 
+            if (forceRender)
+            {
+                return ifBlock;
+            }
             return IfInDirectRenderMode(
                 ifBlock,
                 Expression.Empty()
             );
         }
 
-        public Expression Transform(ConditionalNode item)
+        public Expression Transform(ConditionalNode item) => Transform(item, false);
+        public Expression Transform(ConditionalNode item, bool forceRender)
         {
             throw new NotImplementedException();
         }
 
-        public Expression Transform(CommentNode item)
+        public Expression Transform(CommentNode item) => Transform(item, false);
+        public Expression Transform(CommentNode item, bool forceRender)
         {
             throw new NotImplementedException();
         }
 
-        public Expression Transform(BlockNode item)
+        public Expression Transform(BlockNode item) => Transform(item, false);
+        public Expression Transform(BlockNode item, bool forceRender)
         {
-            var blockExpression = item.BlockContents.Transform(this);
+            var blockExpression = this.Transform(item.BlockContents, forceRender: true);
             // TODO: Actually process this...
+            if (forceRender)
+            {
+                return blockExpression;
+            }
             return IfInDirectRenderMode(
                 blockExpression,
-                SpecialVariables.Self.AddBlock(item.Name, new Block(item.Name, 0, blockExpression))
+                SpecialVariables.Self.AddBlock(item.Name, blockExpression)
             );
         }
 
-        public Expression Transform(ExtendsNode item)
+        public Expression Transform(ExtendsNode item) => Transform(item, false);
+        public Expression Transform(ExtendsNode item, bool forceRender)
         {
-
-
-            !!!!!!!!!!!!! TEST THIS !!!!!!!!!!!!!!
-
             Expression template;
+            ;
             if (_Environment.Evaluation.IsLiteralValue(item.Template.Expression))
             {
-                template = Expression.Constant(_Environment.GetTemplate(item.Template.Expression, new Dictionary<string, object?>()));
+                var resolved = _Environment.Evaluation.EvaluateAs<string>(item.Template.Expression);
+                template = Expression.Constant(_Environment.GetTemplate(resolved, new Dictionary<string, object?>()));
             }
             else
             {
-                template = item.Template.Transform(this);
+                template = item.Template.Transform(this, forceRender);
                 if (template.Type != typeof(Template))
                 {
                     throw new NotImplementedException();
@@ -255,7 +291,10 @@ namespace Obsidian.CompiledAST
             }
 
             var property = Expression.Property(template, nameof(Template.TemplateNode));
-
+            if (forceRender)
+            {
+                return SpecialVariables.Self.EnqueueIntoTemplateQueue(property);
+            }
             return Expression.Block(
                 SpecialVariables.Self.EnqueueIntoTemplateQueue(property),
                 SpecialVariables.Self.SetRenderMode(RenderMode.ParentAtCompletion)
@@ -272,14 +311,15 @@ namespace Obsidian.CompiledAST
             );
         }
 
-        private IEnumerable<Expression> TransformAll(IEnumerable<ASTNode> nodes)
+        private IEnumerable<Expression> TransformAll(IEnumerable<ASTNode> nodes, bool forceRender)
         {
-            return nodes.Select(node => node.Transform(this));
+            return nodes.Select(node => node.Transform(this, forceRender));
         }
 
-        public Expression Transform(ForNode item)
+        public Expression Transform(ForNode item) => Transform(item, false);
+        public Expression Transform(ForNode item, bool forceRender)
         {
-            if (ExpressionEx.ToArray(item.Expression.Transform(this), out var expression, out var elementType) == false ||
+            if (ExpressionEx.ToArray(item.Expression.Transform(this, forceRender), out var expression, out var elementType) == false ||
                 expression == null || elementType == null)
             {
                 throw new NotImplementedException();
@@ -319,7 +359,7 @@ namespace Obsidian.CompiledAST
                 setItem,
                 setLoopInfoVar,
                 //Expression.Break(breakLabel),
-                item.PrimaryBlock.Transform(this)
+                item.PrimaryBlock.Transform(this, forceRender)
             );
 
             var insideIf = Expression.Block(
@@ -348,32 +388,35 @@ namespace Obsidian.CompiledAST
             }
             else
             {
-                overall = Expression.IfThenElse(enumerateClause, whileLoop, item.ElseBlock.Transform(this));
+                overall = Expression.IfThenElse(enumerateClause, whileLoop, item.ElseBlock.Transform(this, forceRender));
             }
 
             var forLoop = PopScope("For Loop - Overall", arrayAssignment, overall);
 
 
+            if (forceRender)
+            {
+                return forLoop;
+            }
             return IfInDirectRenderMode(
                 forLoop,
                 Expression.Empty()
             );
         }
 
-
-        public Expression Transform(TemplateNode item)
+        public Expression Transform(TemplateNode item) => Transform(item, false);
+        public Expression Transform(TemplateNode item, bool forceRender)
         {
-            var children = TransformAll(item.Children);
+            var children = TransformAll(item.Children, forceRender);
 
             var loopBreak = Expression.Label("breakLabel");
-
             var loopContents = Expression.Block(
                 Expression.IfThen(
                     Expression.Equal(SpecialVariables.Self.HasQueuedTemplates(), Expression.Constant(false)),
                     Expression.Break(loopBreak)
                 ),
                 SpecialVariables.Self.SetRenderMode(RenderMode.Direct),
-                SpecialVariables.StringBuilder.Append(SpecialVariables.Self.DequeueTemplate())
+                Expression.Property(SpecialVariables.Self.DequeueTemplate(), nameof(ExpressionData.ExpressionTree))
             );
 
             return Expression.Block(children.Concat(Expression.Loop(loopContents, loopBreak)));

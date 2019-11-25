@@ -54,6 +54,8 @@ namespace Obsidian.Tests.Utilities
 
         public static string TestDataRoot => Path.Combine(AssemblyLocation, "..", "..", "..", "..", "TestData");
         public static string TestFileName => Path.Combine(TestDataRoot, "Tests.json");
+        public static string APIInfo_Expected => Path.Combine(TestDataRoot, "APIInfo_Expected.json");
+        public static string APIInfo_Actual => Path.Combine(TestDataRoot, "APIInfo_Actual.json");
         public static string AssemblyLocation => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty;
 
     }

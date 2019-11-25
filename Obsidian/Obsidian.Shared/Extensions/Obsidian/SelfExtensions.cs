@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using System.Text;
 using Common.ExpressionCreators;
 using ExpressionParser;
+using Obsidian.AST.Nodes.Statements;
 
 namespace Obsidian
 {
@@ -20,13 +21,13 @@ namespace Obsidian
         {
             return ObsidianExpressionEx.Self.RenderMode(self);
         }
-        public static Expression EnqueueIntoTemplateQueue(this ExpressionExtensionData<Self> self, ExpressionData template)
+        public static Expression EnqueueIntoTemplateQueue(this ExpressionExtensionData<Self> self, Expression template)
         {
             return ObsidianExpressionEx.Self.EnqueueIntoTemplateQueue(self, template);
         }
-        public static Expression AddBlock(this ExpressionExtensionData<Self> self, string blockName, Block block)
+        public static Expression AddBlock(this ExpressionExtensionData<Self> self, string blockName, Expression blockExpression)
         {
-            return ObsidianExpressionEx.Self.AddBlock(self, blockName, block);
+            return ObsidianExpressionEx.Self.AddBlock(self, blockName, blockExpression);
         }
         public static Expression HasQueuedTemplates(this ExpressionExtensionData<Self> self)
         {

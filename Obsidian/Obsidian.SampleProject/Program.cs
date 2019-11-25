@@ -60,6 +60,11 @@ namespace Obsidian.SampleProject
             // Test(true, false);
             // Test(false, true);
             // Test(true, true);
+
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("Done.");
+            Console.ForegroundColor = ConsoleColor.Gray;
             Console.ReadKey();
         }
 

@@ -29,6 +29,11 @@ namespace Obsidian.AST.Nodes.Statements
         {
             return visitor.Transform(this);
         }
+
+        public override TOutput Transform<TOutput>(IForceTransformVisitor<TOutput> visitor, bool force)
+        {
+            return visitor.Transform(this, force);
+        }
         public static bool TryParseIf(ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
         {
             WhiteSpaceControlMode previousConditionBlockEndWhiteSpace;

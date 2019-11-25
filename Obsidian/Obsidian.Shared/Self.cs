@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using ExpressionParser;
+using Obsidian.AST.Nodes.Statements;
 
 namespace Obsidian
 {
@@ -29,13 +31,14 @@ namespace Obsidian
             return TemplateQueue.Dequeue();
         }
         public bool HasQueuedTemplates => TemplateQueue.Count > 0;
-        public void AddBlock(string name, Block block)
+        public void AddBlock(string blockName, Expression blockExpression)
         {
-            if(Blocks.TryGetValue(name, out var blockList) == false)
+            if(Blocks.TryGetValue(blockName, out var blockList) == false)
             {
                 blockList = new List<Block>();
-                Blocks.Add(name, blockList);
+                Blocks.Add(blockName, blockList);
             }
+            var block = new Block(blockName, blockList.Count, blockExpression);
             blockList.Add(block);
         }
     }
