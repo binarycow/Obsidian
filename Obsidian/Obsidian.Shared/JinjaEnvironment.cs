@@ -69,7 +69,7 @@ namespace Obsidian
             return GetTemplate(templateInfo.Source, scope, templateName, templateInfo.Filename);
         }
 
-        public Expression GetTemplateExpression(string templateName, IDictionary<string, object?> variableTemplate)
+        public Expression GetTemplateExpression(string templateName, IScope scope)
         {
             if (Loader == null)
             {
@@ -77,8 +77,7 @@ namespace Obsidian
             }
             var templateInfo = Loader.GetSource(this, templateName);
             Settings.IsReadOnly = true;
-            var rootScope = Scope.CreateRootScope("GLOBALS", variableTemplate);
-            return Template.ToExpression(templateName, this, templateInfo.Source, rootScope);
+            return Template.ToExpression(templateName, this, templateInfo.Source, scope);
         }
         public Template FromString(string templateText, IDictionary<string, object?> variableTemplate)
         {

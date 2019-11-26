@@ -100,6 +100,7 @@ namespace Obsidian.Transforming
             var initialTemplate = TransformAll(item.Children).Concat(Expression.Constant(string.Empty));
 
             var breakLabel = Expression.Label("breakLoop");
+
             var loopBody = Expression.Block(
                 Expression.IfThen(
                     Expression.Equal(SelfEx.TemplateQueueCount(SelfVar), Expression.Constant(0)),
@@ -107,7 +108,9 @@ namespace Obsidian.Transforming
                 ),
                 ExpressionEx.Console.Write("Queue Count: "),
                 ExpressionEx.Console.WriteLine(SelfEx.TemplateQueueCount(SelfVar)),
-                ExpressionEx.Console.WriteLine(Expression.Call(SelfEx.DequeueTemplate(SelfVar), nameof(Template.Render), Type.EmptyTypes)),
+                //Expression.Constant(SelfEx.DequeueTemplate(SelfVar)),
+                //ExpressionEx.Console.WriteLine(Expression.Call(SelfEx.DequeueTemplate(SelfVar), nameof(Template.Render), Type.EmptyTypes)),
+                ExpressionEx.Console.WriteLine(SelfEx.DequeueTemplate(SelfVar)),
                 ExpressionEx.Console.Write("Queue Count: "),
                 ExpressionEx.Console.WriteLine(SelfEx.TemplateQueueCount(SelfVar))
             );
@@ -207,47 +210,54 @@ namespace Obsidian.Transforming
 
         public Expression Transform(BlockNode item)
         {
-            ExpressionData MakeCompiledNode()
-            {
-                var internalScope = CurrentScope.FindScope(SCOPE_NAME_INTERNAL);
-                var rootScope = CurrentScope.FindRootScope();
-                var scopeName = string.Format(CultureInfo.InvariantCulture, SCOPE_NAME_BLOCK, item.Name);
-                var blockScope = Scope.CreateDerivedRootScope(scopeName, internalScope, rootScope);
+            PushScope($"Block: {item.Name}");
+            var children = TransformAll(item.Children).ToArray();
+            var block = PopScope($"Block: {item.Name}", children);
 
-                _Scopes.Push(blockScope); // Do this manually, it's a special case.
-                var children = Expression.Block(TransformAll(item.Children));
-                _Scopes.Pop(); // Don't "Close out" the scope - just discard it.  We'll pass the scope and the expressions to ExpressionData.CreateCompiled - it'll handle parameters and stuff.
+            var addBlockToSelf = SelfEx.AddBlock(SelfVar, item.Name, block);
 
-                return ExpressionData.CreateCompiled(children, blockScope);
-            }
-
-
-
-            // Direct: Get the newest block from Self.  Print that.
-            var scopeDictionaryValues = CurrentScope.ToDictionary();
-            var direct = ExpressionEx.Console.WriteLine(
-                Expression.Call(
-                    SelfEx.GetBlock(SelfVar, item.Name),
-                    nameof(Block.Render),
-                    Type.EmptyTypes,
-                    scopeDictionaryValues
-                )
-            );
-
-            // Render at completion: Add the block to Self.
-            var addBlock = Expression.Block(
-                SelfEx.AddBlock(SelfVar, item.Name, MakeCompiledNode())
-            );
-
-
-            var ifRender = IfRenderMode(direct, Expression.Empty());
-
-            return Expression.Block(
-                addBlock,
-                ifRender
-            );
-
+            return Expression.Block(addBlockToSelf, IfRenderMode(block, Expression.Empty()));
+            
         }
+
+        //public Expression Transform(BlockNode item)
+        //{
+        //    ExpressionData MakeCompiledNode()
+        //    {
+        //        var internalScope = CurrentScope.FindScope(SCOPE_NAME_INTERNAL);
+        //        var rootScope = CurrentScope.FindRootScope();
+        //        var scopeName = string.Format(CultureInfo.InvariantCulture, SCOPE_NAME_BLOCK, item.Name);
+        //        var blockScope = Scope.CreateDerivedRootScope(scopeName, internalScope, rootScope);
+
+        //        _Scopes.Push(blockScope); // Do this manually, it's a special case.
+        //        var children = Expression.Block(TransformAll(item.Children));
+        //        _Scopes.Pop(); // Don't "Close out" the scope - just discard it.  We'll pass the scope and the expressions to ExpressionData.CreateCompiled - it'll handle parameters and stuff.
+
+        //        return ExpressionData.CreateCompiled(children, blockScope);
+        //    }
+
+        //Direct: Get the newest block from Self.Print that.
+        //    var scopeDictionaryValues = CurrentScope.ToDictionary();
+        //    var direct = ExpressionEx.Console.WriteLine(
+        //        Expression.Call(
+        //            SelfEx.GetBlock(SelfVar, item.Name),
+        //            nameof(Block.Render),
+        //            Type.EmptyTypes,
+        //            scopeDictionaryValues
+        //        )
+        //    );
+
+        //    Render at completion: Add the block to Self.
+        //   var addBlock = Expression.Block(
+        //       SelfEx.AddBlock(SelfVar, item.Name, MakeCompiledNode())
+        //   );
+
+        //    var ifRender = IfRenderMode(direct, Expression.Empty());
+        //    return Expression.Block(
+        //        addBlock,
+        //        ifRender
+        //    );
+        //}
 
         public Expression Transform(ExtendsNode item)
         {
@@ -260,12 +270,13 @@ namespace Obsidian.Transforming
 
                 // For *TEMPLATES*, we pass in stringBuilder and self as parameters, as well as any globals.
 
-                var internalScope = CurrentScope.FindScope(SCOPE_NAME_INTERNAL);
-                var rootScope = CurrentScope.FindRootScope();
-                var scopeName = string.Format(CultureInfo.InvariantCulture, SCOPE_NAME_TEMPLATE, parsedTemplateName);
-                var templateScope = Scope.CreateDerivedRootScope(scopeName, internalScope, rootScope);
+                //var internalScope = CurrentScope.FindScope(SCOPE_NAME_INTERNAL);
+                //var rootScope = CurrentScope.FindRootScope();
+                //var scopeName = string.Format(CultureInfo.InvariantCulture, SCOPE_NAME_TEMPLATE, parsedTemplateName);
+                //var templateScope = Scope.CreateDerivedRootScope(scopeName, internalScope, rootScope);
 
-                expr = Expression.Constant(Environment.GetTemplate(parsedTemplateName, templateScope));
+                //expr = Expression.Constant(Environment.GetTemplate(parsedTemplateName, templateScope));
+                expr = Environment.GetTemplateExpression(parsedTemplateName, CurrentScope);
             }
             else
             {
@@ -273,17 +284,20 @@ namespace Obsidian.Transforming
             }
 
 
-            return Expression.Block(
-                ExpressionEx.Console.Write("Template Queue:   "),
-                ExpressionEx.Console.WriteLine(SelfEx.TemplateQueueCount(SelfVar)),
-                ExpressionEx.Console.WriteLine("Adding to queue"),
-                SelfEx.EnqueueIntoTemplateQueue(SelfVar, expr),
-                ExpressionEx.Console.Write("Template Queue:   "),
-                ExpressionEx.Console.WriteLine(SelfEx.TemplateQueueCount(SelfVar)),
-                SelfEx.SetRenderMode(SelfVar, RenderMode.ParentAtCompletion),
-                ExpressionEx.Console.Write("Setting render mode...   "),
-                ExpressionEx.Console.WriteLine(SelfEx.RenderMode(SelfVar))
-            );
+
+            //var quoted = Expression.Quote(Expression.Lambda(expr));
+            //return Expression.Block(
+            //    ExpressionEx.Console.Write("Template Queue:   "),
+            //    ExpressionEx.Console.WriteLine(SelfEx.TemplateQueueCount(SelfVar)),
+            //    ExpressionEx.Console.WriteLine("Adding to queue"),
+            //    SelfEx.EnqueueIntoTemplateQueue(SelfVar, expr),
+            //    //SelfEx.EnqueueIntoTemplateQueue(SelfVar, quoted),
+            //    ExpressionEx.Console.Write("Template Queue:   "),
+            //    ExpressionEx.Console.WriteLine(SelfEx.TemplateQueueCount(SelfVar)),
+            //    SelfEx.SetRenderMode(SelfVar, RenderMode.ParentAtCompletion),
+            //    ExpressionEx.Console.Write("Setting render mode...   "),
+            //    ExpressionEx.Console.WriteLine(SelfEx.RenderMode(SelfVar))
+            //);
 
         }
         private Expression IfRenderMode(Expression direct, Expression parentAtCompletion)

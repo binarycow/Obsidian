@@ -13,11 +13,11 @@ namespace Obsidian.ExpressionCreators
     public static class SelfEx
     {
         private static Lazy<MethodInfo> _EnqueueTemplate = new Lazy<MethodInfo>(() =>
-            MethodLookups.GetMethod(typeof(Obsidian.Self), nameof(Obsidian.Self.EnqueueTemplate), new[] { typeof(Template) }));
+            MethodLookups.GetMethod(typeof(Obsidian.Self), nameof(Obsidian.Self.EnqueueTemplate), new[] { typeof(Expression) }));
         private static Lazy<MethodInfo> _DequeueTemplate = new Lazy<MethodInfo>(() =>
             MethodLookups.GetMethod(typeof(Obsidian.Self), nameof(Obsidian.Self.DequeueTemplate), Type.EmptyTypes));
         private static Lazy<MethodInfo> _AddBlock = new Lazy<MethodInfo>(() =>
-            MethodLookups.GetMethod(typeof(Obsidian.Self), nameof(Obsidian.Self.AddBlock), new[] { typeof(string), typeof(ExpressionData) }));
+            MethodLookups.GetMethod(typeof(Obsidian.Self), nameof(Obsidian.Self.AddBlock), new[] { typeof(string), typeof(Expression) }));
         private static Lazy<MethodInfo> _GetBlock = new Lazy<MethodInfo>(() =>
             MethodLookups.GetMethod(typeof(Obsidian.Self), nameof(Obsidian.Self.GetBlock), new[] { typeof(string) }));
 
@@ -54,7 +54,7 @@ namespace Obsidian.ExpressionCreators
                 template
             });
         }
-        internal static Expression AddBlock(Expression self, string blockName, ExpressionData blockExpression)
+        internal static Expression AddBlock(Expression self, string blockName, Expression blockExpression)
         {
             return Expression.Call(self, _AddBlock.Value, new[]
             {
