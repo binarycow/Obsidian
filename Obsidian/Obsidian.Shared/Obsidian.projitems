@@ -32,11 +32,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)EnvironmentSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\LoaderNotDefinedException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\TemplateNotFoundException.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ExpressionCreators\Self.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpressionCreators\SelfEx.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionParserExt\JinjaLexer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionParserExt\JinjaParser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\Obsidian.Lexing\TokenTypesExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Extensions\Obsidian\SelfExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)JinjaEnvironment.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)JinjaFunctions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)JinjaLanguageDefinition.cs" />
@@ -46,7 +45,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Loaders\BaseLoader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Loaders\FileSystemLoader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LoopInfo.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ObsidianExpressionEx.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)OutputCombiner\OutputCombineVisitor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Parsing\Parser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Parsing\ParsingNode.cs" />
@@ -73,6 +71,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\NewASTCompiler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\ReflectionVisitor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\TemplateContainerAssembler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)VariableSetterWalker.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\DisableStripBlocksVisitor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\EnvironmentTrimming.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\ManualTrimAfterVisitor.cs" />

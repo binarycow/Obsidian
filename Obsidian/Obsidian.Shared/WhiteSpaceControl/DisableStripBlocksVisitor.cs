@@ -29,6 +29,8 @@ namespace Obsidian.WhiteSpaceControl
             {
                 switch (child)
                 {
+                    case CommentNode _:
+                        break;
                     case NewLineNode _:
                         children.Enqueue(pendingWhiteSpace);
                         pendingWhiteSpace.Clear();

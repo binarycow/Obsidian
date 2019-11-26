@@ -54,8 +54,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)Parsing\UnaryASTNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Reflection\Array.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Resolver.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Scopes\RootScope.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Scopes\RootScope_.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Scopes\RootScope__.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Scopes\IScope.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Scopes\Scope.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Scopes\Scope_.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\Nodes\ExpressionTreeTransformer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\Nodes\INodeTransformVisitor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\Nodes\ITransformableNode.cs" />
@@ -64,5 +67,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\Operators\ITransformableOperator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)VariableManagement\TypeVariableManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)VariableManagement\VariableInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Void.cs" />
   </ItemGroup>
 </Project>

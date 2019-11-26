@@ -16,6 +16,7 @@ using Obsidian.Transforming;
 using Obsidian.WhiteSpaceControl;
 using Obsidian.AST.Nodes.Statements;
 using ExpressionParser.Scopes;
+using ExpressionToString;
 
 namespace Obsidian
 {
@@ -60,10 +61,29 @@ namespace Obsidian
         //    var expr = ToExpression(environment, templateText, variableTemplate, out var compiler);
         //    return new Template(environment, compiler.Compile(expr), templateName, templatePath);
         //}
+        internal static Template LoadTemplate(JinjaEnvironment environment, string templateText, IScope scope, string? templateName, string? templatePath)
+        {
+            var expr = ToExpression(templateName, environment, templateText, scope);
+
+            var debug = expr.ToString("C#");
+            var test = new VariableSetterWalker();
+            var x = test.Visit(expr);
+            ;
+
+            return new Template(environment, ExpressionData.CreateCompiled(expr, scope), templateName, templatePath);
+        }
+
         internal static Template LoadTemplate(JinjaEnvironment environment, string templateText, IDictionary<string, object?> variableTemplate, string? templateName, string? templatePath)
         {
-            var expr = ToExpression(environment, templateText, variableTemplate);
-            return new Template(environment, ExpressionData.CreateCompiled(expr, RootScope.CreateRootScope(variableTemplate)), templateName, templatePath);
+            var rootScope = Scope.CreateRootScope("GLOBALS", variableTemplate);
+            var expr = ToExpression(templateName, environment, templateText, rootScope);
+
+            var debug = expr.ToString("C#");
+            var test = new VariableSetterWalker();
+            var x = test.Visit(expr);
+            ;
+
+            return new Template(environment, ExpressionData.CreateCompiled(expr, rootScope), templateName, templatePath);
         }
 
         //internal static Expression ToExpression(JinjaEnvironment environment, string templateText, IDictionary<string, object?> variableTemplate, out ASTCompiler compiler)
@@ -80,7 +100,7 @@ namespace Obsidian
         //    var finished = NewASTCompiler.ToExpression(environment, containerAssembled, variableTemplate, out var newcompiler);
         //    throw new NotImplementedException();
         //}
-        internal static Expression ToExpression(JinjaEnvironment environment, string templateText, IDictionary<string, object?> variableTemplate)
+        internal static Expression ToExpression(string templateName, JinjaEnvironment environment, string templateText, IScope rootScope)
         {
             var lexer = new Lexer(environment);
             var tokens = lexer.Tokenize(templateText).ToArray();
@@ -91,10 +111,16 @@ namespace Obsidian
             var controlledWhiteSpace = WhiteSpaceController.ControlWhiteSpace(commentsRemoved);
             var containerAssembled = controlledWhiteSpace.Transform(TemplateContainerAssembler.Instance);
 
-            var finished = NewASTCompiler.ToExpression(environment, containerAssembled, variableTemplate, out var newcompiler);
+            var finished = NewASTCompiler.ToExpression(templateName, environment, containerAssembled, out var newcompiler, rootScope);
             return finished;
         }
 
+        internal static Template FromBlockNode(string templateName, JinjaEnvironment environment, BlockNode blockNode, IDictionary<string, object?> variableTemplate)
+        {
+            var rootScope = Scope.CreateRootScope("GLOBALS", variableTemplate);
+            var expr = NewASTCompiler.ToExpression(templateName, environment, blockNode, out var newcompiler, rootScope);
+            return new Template(environment, ExpressionData.CreateCompiled(expr, rootScope), blockNode.Name, null);
+        }
 
         public string Render(IDictionary<string, object?> variables)
         {

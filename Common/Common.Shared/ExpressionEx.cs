@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using Common.ExpressionCreators;
 using Console = Common.ExpressionCreators.Console;
 using Enumerable = Common.ExpressionCreators.Enumerable;
+using Object = Common.ExpressionCreators.Object;
 
 namespace Common
 {
@@ -17,6 +18,9 @@ namespace Common
         public static StringBuilder StringBuilder => _StringBuilder.Value;
         public static Lazy<Enumerable> _Enumerable = new Lazy<Enumerable>();
         public static Enumerable Enumerable => _Enumerable.Value;
+
+        public static Lazy<Object> _Object = new Lazy<Object>();
+        public static Object Object => _Object.Value;
 
         public static Expression New_Generic(Type openGenericType, Type[] typeArguments, params Expression[] constructorArguments)
         {
@@ -48,9 +52,14 @@ namespace Common
             throw new NotImplementedException();
         }
 
-        public static Expression ToString(Expression obj)
+
+
+        public static Expression CreateDictionary<TKey, TValue>(ParameterExpression[] items)
         {
-            return Expression.Call(obj, "ToString", Type.EmptyTypes);
+            var type = typeof(Dictionary<TKey, TValue>);
+            var addMethod = type.GetMethod(nameof(Dictionary<TKey, TValue>.Add));
+            var itemExpressions = items.Select(item => Expression.ElementInit(addMethod, Expression.Constant(item.Name), Expression.Convert(item, typeof(TValue)))).ToArray();
+            return Expression.ListInit(Expression.New(type), itemExpressions);
         }
     }
 }

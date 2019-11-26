@@ -19,7 +19,7 @@ namespace System.Text
         }
         public static Expression AppendLine(this ExpressionExtensionData<StringBuilder> stringBuilder, Expression expr)
         {
-            return ExpressionEx.StringBuilder.AppendLine(stringBuilder, ExpressionEx.ToString(expr));
+            return ExpressionEx.StringBuilder.AppendLine(stringBuilder, ExpressionEx.Object.ToStringEx(expr));
         }
         public static Expression AppendLine(this ExpressionExtensionData<StringBuilder> stringBuilder, object? expr)
         {

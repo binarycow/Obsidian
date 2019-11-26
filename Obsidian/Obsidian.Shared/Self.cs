@@ -31,15 +31,20 @@ namespace Obsidian
             return TemplateQueue.Dequeue();
         }
         public bool HasQueuedTemplates => TemplateQueue.Count > 0;
-        public void AddBlock(string blockName, Expression blockExpression)
+        public void AddBlock(string blockName, ExpressionData blockExpression)
         {
-            if(Blocks.TryGetValue(blockName, out var blockList) == false)
+            if (Blocks.TryGetValue(blockName, out var blockList) == false)
             {
                 blockList = new List<Block>();
                 Blocks.Add(blockName, blockList);
             }
             var block = new Block(blockName, blockList.Count, blockExpression);
             blockList.Add(block);
+        }
+        public Block? GetBlock(string blockName)
+        {
+            if (Blocks.TryGetValue(blockName, out var blockList) == false) return default;
+            return blockList.Last();
         }
 
         public int TemplateQueueCount => TemplateQueue.Count;

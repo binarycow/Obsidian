@@ -15,7 +15,7 @@ namespace ExpressionParser.Transforming.Nodes
 {
     public class ExpressionTreeTransformer : INodeTransformVisitor<Expression>
     {
-        public ExpressionTreeTransformer(ILanguageDefinition languageDefinition, Scope scope)
+        public ExpressionTreeTransformer(ILanguageDefinition languageDefinition, IScope scope)
         {
             LanguageDefinition = languageDefinition;
             OperatorTransformer = new ExpressionTreeOperatorTransformer(this, languageDefinition);
@@ -24,8 +24,8 @@ namespace ExpressionParser.Transforming.Nodes
         public IOperatorTransformVisitor<ASTNode, Expression> OperatorTransformer { get; }
         public ILanguageDefinition LanguageDefinition { get; }
 
-        private Stack<Scope> Scopes { get; } = new Stack<Scope>();
-        public Scope CurrentScope => Scopes.Peek();
+        private Stack<IScope> Scopes { get; } = new Stack<IScope>();
+        public IScope CurrentScope => Scopes.Peek();
 
         public Expression Transform(BinaryASTNode item)
         {

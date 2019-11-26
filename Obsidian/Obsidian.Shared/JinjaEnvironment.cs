@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using ExpressionParser;
+using ExpressionParser.Scopes;
 using Obsidian;
 using Obsidian.Exceptions;
 using Obsidian.ExpressionParserExt;
@@ -35,10 +36,19 @@ namespace Obsidian
         {
             return GetTemplate(templateInfo.Source, variableTemplate, templateName, templateInfo.Filename);
         }
+        internal Template GetTemplate(string templateName, TemplateInfo templateInfo, IScope scope)
+        {
+            return GetTemplate(templateInfo.Source, scope, templateName, templateInfo.Filename);
+        }
         internal Template GetTemplate(string templateText, IDictionary<string, object?> variableTemplate, string? templateName, string? templatePath)
         {
             Settings.IsReadOnly = true;
             return Template.LoadTemplate(this, templateText, variableTemplate, templateName, templatePath);
+        }
+        internal Template GetTemplate(string templateText, IScope scope, string? templateName, string? templatePath)
+        {
+            Settings.IsReadOnly = true;
+            return Template.LoadTemplate(this, templateText, scope, templateName, templatePath);
         }
         public Template GetTemplate(string templateName, IDictionary<string, object?> variableTemplate)
         {
@@ -49,16 +59,16 @@ namespace Obsidian
             var templateInfo = Loader.GetSource(this, templateName);
             return GetTemplate(templateInfo.Source, variableTemplate, templateName, templateInfo.Filename);
         }
-        //public Expression GetTemplateExpression(string templateName, IDictionary<string, object?> variableTemplate, out ASTCompiler compiler)
-        //{
-        //    if (Loader == null)
-        //    {
-        //        throw new LoaderNotDefinedException();
-        //    }
-        //    var templateInfo = Loader.GetSource(this, templateName);
-        //    Settings.IsReadOnly = true;
-        //    return Template.ToExpression(this, templateInfo.Source, variableTemplate, out compiler);
-        //}
+        public Template GetTemplate(string templateName, IScope scope)
+        {
+            if (Loader == null)
+            {
+                throw new LoaderNotDefinedException();
+            }
+            var templateInfo = Loader.GetSource(this, templateName);
+            return GetTemplate(templateInfo.Source, scope, templateName, templateInfo.Filename);
+        }
+
         public Expression GetTemplateExpression(string templateName, IDictionary<string, object?> variableTemplate)
         {
             if (Loader == null)
@@ -67,7 +77,8 @@ namespace Obsidian
             }
             var templateInfo = Loader.GetSource(this, templateName);
             Settings.IsReadOnly = true;
-            return Template.ToExpression(this, templateInfo.Source, variableTemplate);
+            var rootScope = Scope.CreateRootScope("GLOBALS", variableTemplate);
+            return Template.ToExpression(templateName, this, templateInfo.Source, rootScope);
         }
         public Template FromString(string templateText, IDictionary<string, object?> variableTemplate)
         {

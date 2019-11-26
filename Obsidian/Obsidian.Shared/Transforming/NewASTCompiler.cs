@@ -1,70 +1,74 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using Common;
 using Common.ExpressionCreators;
+using ExpressionParser;
 using ExpressionParser.Scopes;
 using ExpressionToString;
 using Obsidian.AST;
 using Obsidian.AST.Nodes;
 using Obsidian.AST.Nodes.MiscNodes;
 using Obsidian.AST.Nodes.Statements;
+using Obsidian.ExpressionCreators;
 using StringBuilder = System.Text.StringBuilder;
 
 namespace Obsidian.Transforming
 {
     public class NewASTCompiler : ITransformVisitor<Expression>
     {
-        internal static Expression ToExpression(JinjaEnvironment environment, ASTNode node, IDictionary<string, object?> variableTemplate,
-            out NewASTCompiler compiler)
+        private static string SCOPE_NAME_INTERNAL = "Internal";
+        private static string VARNAME_STRING_BUILDER = "stringBuilder";
+        private static string VARNAME_STRING_SELF = "self";
+        private static string SCOPE_NAME_TEMPLATE = "TEMPLATE: {0}";
+        private static string SCOPE_NAME_BLOCK = "BLOCK: {0}";
+
+        public Expression SelfVar => CurrentScope[VARNAME_STRING_SELF];
+        public Expression StringBuilderVar => CurrentScope[VARNAME_STRING_BUILDER];
+
+        internal static Expression ToExpression(string templateName, JinjaEnvironment environment, ASTNode node, out NewASTCompiler compiler, IScope rootScope)
         {
-            var specialVariables = SetupVariables();
-            compiler = new NewASTCompiler(specialVariables, environment, variableTemplate);
-            var compiledNodes = node.Transform(compiler);
-            var toString = Expression.Call(specialVariables.StringBuilder.ParameterExpression,
-                typeof(StringBuilder).GetMethod("ToString", Type.EmptyTypes)
-            );
-            var allContent = specialVariables.AllAssignments.Concat(compiledNodes).Concat(toString);
-            var finalBlock = Expression.Block(specialVariables.AllVariables.Concat(compiler._RootScope.RootParameterExpression), allContent);
-            return finalBlock;
-        }
-
-
-        private static SpecialVariableInfo SetupVariables()
-        {
-            return new SpecialVariableInfo(
-                CreateParameterless<StringBuilder>("stringBuilder"),
-                CreateParameterless<Self>("self")
-            );
-
-            SpecialVariableInfo.AssignInfo<T> CreateParameterless<T>(string name)
+            compiler = new NewASTCompiler(environment, rootScope);
+            compiler.PushScope(SCOPE_NAME_INTERNAL);
+            var internalVariableAssignments = new Expression[]
             {
-                var variable = Expression.Variable(typeof(T), name);
-                if (ExpressionExtensionData.TryCreate<T>(variable, out var extensionData,
-                    out var newExpression) == false || extensionData == null)
-                {
-                    throw new NotImplementedException(); // Couldn't create variable
-                }
-                var assign = Expression.Assign(variable, newExpression);
-                return new SpecialVariableInfo.AssignInfo<T>(extensionData, assign);
+                CreateVariable(compiler, VARNAME_STRING_BUILDER, Expression.New(typeof(StringBuilder))),
+                CreateVariable(compiler, VARNAME_STRING_SELF, Expression.New(typeof(Self)))
+            };
+            compiler.PushScope(string.Format(CultureInfo.InvariantCulture, SCOPE_NAME_TEMPLATE, templateName));
+            var compiledNodes = node.Transform(compiler);
+            var contentBlock = compiler.PopScope(string.Format(CultureInfo.InvariantCulture, SCOPE_NAME_TEMPLATE, templateName), compiledNodes);
+
+            var toString = ExpressionEx.Object.ToStringEx(compiler.StringBuilderVar);
+            var internalContent = internalVariableAssignments
+                .Concat(contentBlock)
+                .Concat(toString);
+
+
+            var internalBlock = compiler.PopScope(SCOPE_NAME_INTERNAL, internalContent);
+
+            return internalBlock;
+
+            BinaryExpression CreateVariable(NewASTCompiler localCompiler, string name, Expression createExpression)
+            {
+                localCompiler.CurrentScope.DefineAndSetVariable(name, createExpression, out var assignExpression);
+                return assignExpression;
             }
         }
 
-        private NewASTCompiler(SpecialVariableInfo specialVariables, JinjaEnvironment environment, IDictionary<string, object?> variableTemplate)
+
+        private NewASTCompiler(JinjaEnvironment environment, IScope scope)
         {
             Environment = environment;
-            _RootScope = RootScope.CreateRootScope(variableTemplate);
-            _Scopes.Push(_RootScope);
-            SpecialVariables = specialVariables;
+            _Scopes.Push(scope);
         }
 
         public JinjaEnvironment Environment { get; }
-        private RootScope _RootScope;
-        private Stack<Scope> _Scopes = new Stack<Scope>();
-        public Scope CurrentScope => _Scopes.Peek();
-        private SpecialVariableInfo SpecialVariables { get; }
+        private Stack<IScope> _Scopes = new Stack<IScope>();
+        public IScope CurrentScope => _Scopes.Peek();
 
         public void PushScope(string name)
         {
@@ -77,16 +81,12 @@ namespace Obsidian.Transforming
         public BlockExpression PopScope(string name, IEnumerable<Expression> children)
         {
             var scope = _Scopes.Pop();
-            var block = scope.CloseScope(children);
+            var block = scope.CloseScope(children.ToArray());
             if (scope.Name != name)
             {
                 throw new NotImplementedException();
             }
             return block;
-        }
-        public BlockExpression PopScope(string name, Expression child)
-        {
-            return PopScope(name, child.YieldOne());
         }
 
         protected virtual IEnumerable<Expression> TransformAll(IEnumerable<ASTNode> nodes)
@@ -102,14 +102,14 @@ namespace Obsidian.Transforming
             var breakLabel = Expression.Label("breakLoop");
             var loopBody = Expression.Block(
                 Expression.IfThen(
-                    Expression.Equal(SpecialVariables.Self.TemplateQueueCount(), Expression.Constant(0)),
+                    Expression.Equal(SelfEx.TemplateQueueCount(SelfVar), Expression.Constant(0)),
                     Expression.Break(breakLabel)
                 ),
                 ExpressionEx.Console.Write("Queue Count: "),
-                ExpressionEx.Console.WriteLine(SpecialVariables.Self.TemplateQueueCount()),
-                ExpressionEx.Console.WriteLine(Expression.Call(SpecialVariables.Self.DequeueTemplate(), nameof(Template.Render), Type.EmptyTypes)),
+                ExpressionEx.Console.WriteLine(SelfEx.TemplateQueueCount(SelfVar)),
+                ExpressionEx.Console.WriteLine(Expression.Call(SelfEx.DequeueTemplate(SelfVar), nameof(Template.Render), Type.EmptyTypes)),
                 ExpressionEx.Console.Write("Queue Count: "),
-                ExpressionEx.Console.WriteLine(SpecialVariables.Self.TemplateQueueCount())
+                ExpressionEx.Console.WriteLine(SelfEx.TemplateQueueCount(SelfVar))
             );
 
             var loop = Expression.Loop(loopBody, breakLabel);
@@ -207,21 +207,46 @@ namespace Obsidian.Transforming
 
         public Expression Transform(BlockNode item)
         {
-            var transformed = Expression.Block(TransformAll(item.Children));
+            ExpressionData MakeCompiledNode()
+            {
+                var internalScope = CurrentScope.FindScope(SCOPE_NAME_INTERNAL);
+                var rootScope = CurrentScope.FindRootScope();
+                var scopeName = string.Format(CultureInfo.InvariantCulture, SCOPE_NAME_BLOCK, item.Name);
+                var blockScope = Scope.CreateDerivedRootScope(scopeName, internalScope, rootScope);
+
+                _Scopes.Push(blockScope); // Do this manually, it's a special case.
+                var children = Expression.Block(TransformAll(item.Children));
+                _Scopes.Pop(); // Don't "Close out" the scope - just discard it.  We'll pass the scope and the expressions to ExpressionData.CreateCompiled - it'll handle parameters and stuff.
+
+                return ExpressionData.CreateCompiled(children, blockScope);
+            }
+
+
+
             // Direct: Get the newest block from Self.  Print that.
-
-
-
-
-            // Render at completion: Add the block to Self.
-
-            var renderAtCompletion = Expression.Block(
-
+            var scopeDictionaryValues = CurrentScope.ToDictionary();
+            var direct = ExpressionEx.Console.WriteLine(
+                Expression.Call(
+                    SelfEx.GetBlock(SelfVar, item.Name),
+                    nameof(Block.Render),
+                    Type.EmptyTypes,
+                    scopeDictionaryValues
+                )
             );
 
-            var direct = Expression.Block(TransformAll(item.Children));
+            // Render at completion: Add the block to Self.
+            var addBlock = Expression.Block(
+                SelfEx.AddBlock(SelfVar, item.Name, MakeCompiledNode())
+            );
 
-            return IfRenderMode(direct, renderAtCompletion);
+
+            var ifRender = IfRenderMode(direct, Expression.Empty());
+
+            return Expression.Block(
+                addBlock,
+                ifRender
+            );
+
         }
 
         public Expression Transform(ExtendsNode item)
@@ -229,8 +254,18 @@ namespace Obsidian.Transforming
             Expression expr;
             if(Environment.Evaluation.IsLiteralValue(item.TemplateName))
             {
+                // Since we're only evaluating this to get the name of the template, we don't need to pass in a scope to Evaluation.
                 var parsedTemplateName = Environment.Evaluation.Evaluate(item.TemplateName)?.ToString() ?? string.Empty;
-                expr = Expression.Constant(Environment.GetTemplate(parsedTemplateName, new Dictionary<string, object?>()));
+
+
+                // For *TEMPLATES*, we pass in stringBuilder and self as parameters, as well as any globals.
+
+                var internalScope = CurrentScope.FindScope(SCOPE_NAME_INTERNAL);
+                var rootScope = CurrentScope.FindRootScope();
+                var scopeName = string.Format(CultureInfo.InvariantCulture, SCOPE_NAME_TEMPLATE, parsedTemplateName);
+                var templateScope = Scope.CreateDerivedRootScope(scopeName, internalScope, rootScope);
+
+                expr = Expression.Constant(Environment.GetTemplate(parsedTemplateName, templateScope));
             }
             else
             {
@@ -240,14 +275,14 @@ namespace Obsidian.Transforming
 
             return Expression.Block(
                 ExpressionEx.Console.Write("Template Queue:   "),
-                ExpressionEx.Console.WriteLine(SpecialVariables.Self.TemplateQueueCount()),
+                ExpressionEx.Console.WriteLine(SelfEx.TemplateQueueCount(SelfVar)),
                 ExpressionEx.Console.WriteLine("Adding to queue"),
-                SpecialVariables.Self.EnqueueIntoTemplateQueue(expr),
+                SelfEx.EnqueueIntoTemplateQueue(SelfVar, expr),
                 ExpressionEx.Console.Write("Template Queue:   "),
-                ExpressionEx.Console.WriteLine(SpecialVariables.Self.TemplateQueueCount()),
-                SpecialVariables.Self.SetRenderMode(RenderMode.ParentAtCompletion),
+                ExpressionEx.Console.WriteLine(SelfEx.TemplateQueueCount(SelfVar)),
+                SelfEx.SetRenderMode(SelfVar, RenderMode.ParentAtCompletion),
                 ExpressionEx.Console.Write("Setting render mode...   "),
-                ExpressionEx.Console.WriteLine(SpecialVariables.Self.GetRenderMode())
+                ExpressionEx.Console.WriteLine(SelfEx.RenderMode(SelfVar))
             );
 
         }
@@ -255,7 +290,7 @@ namespace Obsidian.Transforming
         {
             return Expression.IfThenElse(
                 Expression.Equal(
-                    SpecialVariables.Self.GetRenderMode(),
+                    SelfEx.RenderMode(SelfVar),
                     Expression.Constant(RenderMode.Direct)
                 ),
                 direct,
