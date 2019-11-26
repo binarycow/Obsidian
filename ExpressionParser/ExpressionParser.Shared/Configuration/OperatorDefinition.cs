@@ -38,6 +38,10 @@ namespace ExpressionParser.Configuration
             return new StandardOperatorDefinition(text, precedence, operatorType, OperandCount.Binary);
         }
 
+        internal static OperatorDefinition CreateUnary(string text, int precedence, OperatorType operatorType)
+        {
+            return new StandardOperatorDefinition(text, precedence, operatorType, OperandCount.Unary);
+        }
 
     }
 }

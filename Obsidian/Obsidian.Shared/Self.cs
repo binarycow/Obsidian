@@ -12,7 +12,7 @@ namespace Obsidian
     {
         public RenderMode RenderMode { get; set; } = RenderMode.Direct;
         private Dictionary<string, List<Block>> Blocks { get; } = new Dictionary<string, List<Block>>();
-        public Queue<Expression> TemplateQueue { get; } = new Queue<Expression>();
+        public Queue<Template> TemplateQueue { get; } = new Queue<Template>();
 
         public Block this[string name]
         {
@@ -22,11 +22,11 @@ namespace Obsidian
             }
         }
 
-        public void EnqueueTemplate(Expression template)
+        public void EnqueueTemplate(Template template)
         {
             TemplateQueue.Enqueue(template);
         }
-        public Expression DequeueTemplate()
+        public Template DequeueTemplate()
         {
             return TemplateQueue.Dequeue();
         }
@@ -41,5 +41,7 @@ namespace Obsidian
             var block = new Block(blockName, blockList.Count, blockExpression);
             blockList.Add(block);
         }
+
+        public int TemplateQueueCount => TemplateQueue.Count;
     }
 }

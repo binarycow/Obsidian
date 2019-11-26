@@ -25,11 +25,25 @@ namespace ExpressionParser.Transforming.Operators
 
         public Expression Transform(StandardOperator item, ASTNode[] args)
         {
-            return item.OperatorType switch
+            var left = args[0].Transform(NodeTransformVisitor);
+            switch (item.OperatorType)
             {
-                OperatorType.Add => Expression.Add(args[0].Transform(NodeTransformVisitor), args[1].Transform(NodeTransformVisitor)),
-                _ => throw new NotImplementedException(),
-            };
+                case OperatorType.Add:
+                    return Expression.Add(left, args[1].Transform(NodeTransformVisitor));
+                case OperatorType.LogicalNot:
+                    return Expression.Block(
+                        ExpressionEx.Console.Write("NOT : LEFT : "),
+                        ExpressionEx.Console.WriteLine(left),
+                        Expression.IfThenElse(
+                            Expression.Call(typeof(object), nameof(object.Equals), Type.EmptyTypes, Expression.Convert(left, typeof(object)), Expression.Constant(null)),
+                            Expression.Constant("NULL!"),
+                            Expression.Not(left)
+                        )
+                    );
+                default:
+                    throw new NotImplementedException();
+            }
+
         }
 
         public Expression Transform(SpecialOperator item, ASTNode[] args)

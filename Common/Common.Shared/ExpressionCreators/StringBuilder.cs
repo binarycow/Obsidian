@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
+using ExpressionToString;
 
 namespace Common.ExpressionCreators
 {
@@ -70,6 +71,7 @@ namespace Common.ExpressionCreators
 
         public Expression Append(Expression stringBuilder, Expression item)
         {
+            var debug = item.ToString("C#");
             return Expression.Call(stringBuilder, GetAppendMethod(item.Type), new[] { item });
         }
         public Expression AppendLine(Expression stringBuilder, Expression item)

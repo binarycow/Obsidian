@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using ExpressionParser.Scopes;
 using ExpressionParser.VariableManagement;
+using ExpressionToString;
 
 namespace ExpressionParser
 {
@@ -78,6 +79,7 @@ namespace ExpressionParser
 
         private static ExpressionData CreateCompiledRoot(Expression expression, RootScope scope)
         {
+            var debug = expression.ToString("C#");
             var variableInfo = scope.GetVariableInfo();
             var castedExpression = Expression.Convert(expression, typeof(object));
             var lambda = Expression.Lambda<Func<object?[], object?>>(castedExpression, scope.RootParameterExpression);

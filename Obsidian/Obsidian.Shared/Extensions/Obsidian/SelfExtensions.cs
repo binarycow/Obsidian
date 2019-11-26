@@ -37,5 +37,9 @@ namespace Obsidian
         {
             return ObsidianExpressionEx.Self.DequeueTemplate(self);
         }
+        public static Expression TemplateQueueCount(this ExpressionExtensionData<Self> self)
+        {
+            return ObsidianExpressionEx.Self.TemplateQueueCount(self);
+        }
     }
 }

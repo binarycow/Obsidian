@@ -16,5 +16,10 @@ namespace Obsidian
         public Expression Expression { get; }
         public string Name { get; }
         public int Index { get; }
+
+        public string Render()
+        {
+
+        }
     }
 }

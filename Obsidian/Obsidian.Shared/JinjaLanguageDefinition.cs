@@ -22,7 +22,37 @@ namespace Obsidian
             OperatorDefinition.CreateMemberAccess(".", 160),
             OperatorDefinition.CreateMethod("(", TokenType.Comma, TokenType.Paren_Close, 160),
             OperatorDefinition.CreateIndex("[", TokenType.Comma, TokenType.SquareBrace_Close, 160),
-            OperatorDefinition.CreateBinary("+", 10, OperatorType.Add),
+
+            OperatorDefinition.CreateUnary("**", 80, OperatorType.Power),
+
+            OperatorDefinition.CreateUnary("+", 70, OperatorType.UnaryPlus),
+            OperatorDefinition.CreateUnary("-", 70, OperatorType.Negate),
+
+            OperatorDefinition.CreateBinary("*", 60, OperatorType.Multiply),
+            OperatorDefinition.CreateBinary("/", 60, OperatorType.DivideFloat),
+            OperatorDefinition.CreateBinary("//", 60, OperatorType.DivideInteger),
+            OperatorDefinition.CreateBinary("*", 60, OperatorType.Modulo),
+
+            OperatorDefinition.CreateBinary("+", 50, OperatorType.Add),
+            OperatorDefinition.CreateBinary("-", 50, OperatorType.Subtract),
+
+            OperatorDefinition.CreateBinary("in", 40, OperatorType.In),
+            //OperatorDefinition.CreateBinary("not in", 40, OperatorType.NotIn),
+            OperatorDefinition.CreateBinary("is", 40, OperatorType.Is),
+            //OperatorDefinition.CreateBinary("is not", 40, OperatorType.IsNot),
+            OperatorDefinition.CreateBinary("<", 40, OperatorType.LessThan),
+            OperatorDefinition.CreateBinary(">", 40, OperatorType.GreaterThan),
+            OperatorDefinition.CreateBinary("<=", 40, OperatorType.LessThanOrEqual),
+            OperatorDefinition.CreateBinary(">=", 40, OperatorType.GreaterThanOrEqual),
+            OperatorDefinition.CreateBinary("!=", 40, OperatorType.Equal),
+            OperatorDefinition.CreateBinary("==", 40, OperatorType.NotEqual),
+
+
+            OperatorDefinition.CreateUnary("not", 30, OperatorType.LogicalNot),
+            OperatorDefinition.CreateBinary("and", 20, OperatorType.LogicalAnd),
+            OperatorDefinition.CreateBinary("or", 10, OperatorType.LogicalOr),
+
+
         };
 
         public IDictionary<char, TokenType> SingleCharTokens => LanguageDefinition.StandardSingleCharacterTokens;

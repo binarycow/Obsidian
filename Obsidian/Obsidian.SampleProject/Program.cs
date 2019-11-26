@@ -60,20 +60,20 @@ namespace Obsidian.SampleProject
             var environment = new JinjaEnvironment(loader: loader);
             environment.Settings.LStripBlocks = lstripBlocks;
             environment.Settings.TrimBlocks = trimBlocks;
-            var template = environment.GetTemplate("NullMasterChild.html", _Variables);
+            var template = environment.GetTemplate("Child.html", _Variables);
 
-            Console.WriteLine("========================== Standalone: False ==========================");
+            //Console.WriteLine("========================== Standalone: False ==========================");
             Console.WriteLine();
             var result = template.Render(_Variables);
             Console.WriteLine($"{result}");
-            Console.WriteLine();
-            Console.WriteLine("========================== Standalone: True ===========================");
-            Console.WriteLine();
-            _Variables["standalone"] = false;
-            result = template.Render(_Variables);
-            Console.WriteLine($"{result}");
-            Console.WriteLine();
-            Console.WriteLine("=======================================================================");
+            //Console.WriteLine();
+            //Console.WriteLine("========================== Standalone: True ===========================");
+            //Console.WriteLine();
+            //_Variables["standalone"] = false;
+            //result = template.Render(_Variables);
+            //Console.WriteLine($"{result}");
+            //Console.WriteLine();
+            //Console.WriteLine("=======================================================================");
         }
     }
 }

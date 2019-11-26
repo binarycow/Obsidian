@@ -13,7 +13,7 @@ namespace Obsidian.ExpressionCreators
     public class Self
     {
         private Lazy<MethodInfo> _EnqueueTemplate = new Lazy<MethodInfo>(() =>
-            MethodLookups.GetMethod(typeof(Obsidian.Self), nameof(Obsidian.Self.EnqueueTemplate), new[] { typeof(Expression) }));
+            MethodLookups.GetMethod(typeof(Obsidian.Self), nameof(Obsidian.Self.EnqueueTemplate), new[] { typeof(Template) }));
         private Lazy<MethodInfo> _DequeueTemplate = new Lazy<MethodInfo>(() =>
             MethodLookups.GetMethod(typeof(Obsidian.Self), nameof(Obsidian.Self.DequeueTemplate), Type.EmptyTypes));
         private Lazy<MethodInfo> _AddBlock = new Lazy<MethodInfo>(() =>
@@ -33,6 +33,11 @@ namespace Obsidian.ExpressionCreators
         internal Expression HasQueuedTemplates(ExpressionExtensionData<Obsidian.Self> self)
         {
             return Expression.Property(self.ParameterExpression, nameof(Obsidian.Self.HasQueuedTemplates));
+        }
+
+        internal Expression TemplateQueueCount(ExpressionExtensionData<Obsidian.Self> self)
+        {
+            return Expression.Property(self.ParameterExpression, nameof(Obsidian.Self.TemplateQueueCount));
         }
 
         internal Expression DequeueTemplate(ExpressionExtensionData<Obsidian.Self> self)
