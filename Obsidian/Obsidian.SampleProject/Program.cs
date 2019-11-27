@@ -23,14 +23,14 @@ namespace Obsidian.SampleProject
             //AutomaticTest(TestRunner.TestItems["Basic Tests"]["Inheritance"]);
             //AutomaticTest(TestRunner.TestItems["Feature Tests"]["Null Master Fallback"]["Standalone"]);
             //AutomaticTest(TestRunner.TestItems["Feature Tests"]["Null Master Fallback"]["Master"]);
-            AutomaticTest(TestRunner.TestItems["Feature Tests"]["For Loop Variables"]);
+            //AutomaticTest(TestRunner.TestItems["Feature Tests"]["For Loop Variables"]);
             //AutomaticTest(TestRunner.TestItems["Other Tests"]["Test1"]);
             //AutomaticTest(TestRunner.TestItems["Other Tests"]["Test2"]);
             //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["Defaults"]);
             //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["TrimBlocks"]);
             //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["LStrip"]);
             //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["LStrip And Trim"]);
-            //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["Manual Strip"]);
+            AutomaticTest(TestRunner.TestItems["WhiteSpace"]["Manual Strip"]);
 
 
             Console.ForegroundColor = ConsoleColor.Yellow;

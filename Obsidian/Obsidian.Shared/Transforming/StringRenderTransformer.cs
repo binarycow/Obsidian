@@ -26,6 +26,7 @@ namespace Obsidian.Transforming
         private ScopeStack<DynamicContext, DynamicRootContext> Scopes { get; }
 
         private ExpressionNode? _NextTemplate = null;
+        private bool _EncounteredOutputStyleBlock { get; set; }
         public bool ShouldRender => _NextTemplate == null;
         private DynamicSelf _Self = new DynamicSelf();
 
@@ -59,6 +60,8 @@ namespace Obsidian.Transforming
 
         public string Transform(ForNode item)
         {
+            _EncounteredOutputStyleBlock = true;
+            if (!(ShouldRender && _EncounteredOutputStyleBlock)) return string.Empty;
             if (item.VariableNames.Length != 1) throw new NotImplementedException();
             var evalObj = Environment.Evaluation.EvaluateDynamic(item.Expression.Expression, Scopes);
             var arr = CollectionEx.ToArray(evalObj);
@@ -72,8 +75,11 @@ namespace Obsidian.Transforming
             for(var index = 0; index < arr.Length; ++index)
             {
                 var arrItem = arr[index];
+                var loopInfo = new LoopInfoClass<object>(arr, index);
                 Scopes.Push($"ForNode: {item.Expression} Item: {arrItem}");
                 Scopes.Current.DefineAndSetVariable(item.VariableNames[0], arrItem);
+                Scopes.Current.DefineAndSetVariable("loop", loopInfo);
+
                 item.PrimaryBlock.Transform(this);
                 Scopes.Pop($"ForNode: {item.Expression} Item: {arrItem}");
             }
@@ -82,36 +88,49 @@ namespace Obsidian.Transforming
 
         public string Transform(ContainerNode item)
         {
+            _EncounteredOutputStyleBlock = true;
+            if (!(ShouldRender && _EncounteredOutputStyleBlock)) return string.Empty;
             return TransformAll(item.Children);
         }
 
         public string Transform(ExpressionNode item)
         {
+            _EncounteredOutputStyleBlock = true;
+            if (!(ShouldRender && _EncounteredOutputStyleBlock)) return string.Empty;
             _StringBuilder.Append(Environment.Evaluation.EvaluateDynamic(item.Expression, Scopes));
             return string.Empty;
         }
 
         public string Transform(NewLineNode item)
         {
+            //if (item.ControlMode == WhiteSpaceControl.WhiteSpaceControlMode.Trim) return string.Empty;
+            if (!(ShouldRender && _EncounteredOutputStyleBlock)) return string.Empty;
+            _EncounteredOutputStyleBlock = true;
             _StringBuilder.Append(item.ToString());
             return string.Empty;
         }
 
         public string Transform(OutputNode item)
         {
+            _EncounteredOutputStyleBlock = true;
+            if (!(ShouldRender && _EncounteredOutputStyleBlock)) return string.Empty;
             _StringBuilder.Append(item.Value);
             return string.Empty;
         }
 
         public string Transform(WhiteSpaceNode item)
         {
+            //if (item.WhiteSpaceControlMode == WhiteSpaceControl.WhiteSpaceControlMode.Trim) return string.Empty;
+            _EncounteredOutputStyleBlock = true;
+            if (!(ShouldRender && _EncounteredOutputStyleBlock)) return string.Empty;
             _StringBuilder.Append(item.ToString());
             return string.Empty;
         }
 
         public string Transform(IfNode item)
         {
-            foreach(var condition in item.Conditions)
+            if (ShouldRender == false) return string.Empty;
+            foreach (var condition in item.Conditions)
             {
                 var result = Environment.Evaluation.EvaluateDynamic(condition.Expression.Expression, Scopes);
                 if (result == null) throw new NotImplementedException();
@@ -120,6 +139,7 @@ namespace Obsidian.Transforming
 
                 if(boolResult)
                 {
+                    _EncounteredOutputStyleBlock = true;
                     condition.Transform(this);
                     return string.Empty;
                 }
@@ -129,6 +149,8 @@ namespace Obsidian.Transforming
 
         public string Transform(ConditionalNode item)
         {
+            _EncounteredOutputStyleBlock = true;
+            if (ShouldRender == false) return string.Empty;
             return TransformAll(item.Children);
         }
 
@@ -153,6 +175,7 @@ namespace Obsidian.Transforming
 
         public string Transform(ExtendsNode item)
         {
+            if (ShouldRender == false) throw new NotImplementedException();
             _NextTemplate = item.Template;
             return string.Empty;
         }

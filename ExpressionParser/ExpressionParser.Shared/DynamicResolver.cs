@@ -63,6 +63,25 @@ namespace ExpressionParser
             }
         }
 
+        public static bool TryIndex(object? @object, object?[] args, out object? result)
+        {
+            result = default;
+            if (@object == null) throw new NotImplementedException();
+            var types = args.Select(arg => arg?.GetType() ?? typeof(object)).ToArray();
+            var objType = @object.GetType();
+
+            if(objType.IsArray)
+            {
+                throw new NotImplementedException();
+            }
+
+            var indexer = objType.GetProperty("Item", types);
+            if (indexer == null) return false;
+
+            result = indexer.GetValue(@object, args);
+            return true;
+        }
+
         internal static bool TryGetMember(object? @object, string memberName, MemberTypes allowedTypes, out object? result)
         {
             result = default;

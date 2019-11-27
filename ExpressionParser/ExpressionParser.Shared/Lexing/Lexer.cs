@@ -109,17 +109,42 @@ namespace ExpressionParser.Lexing
         public virtual bool TryReadOperator(ILookaroundEnumerator<char> enumerator, [NotNullWhen(true)]out Token? token)
         {
             token = default;
-            var possibleOperator = _Operators.Keys.Where(operatorArr => operatorArr[0] == enumerator.Current).ToArray();
-            if (possibleOperator.Length == 0)
+            var initialPossibleOperators = _Operators.Keys.Where(operatorArr => operatorArr[0] == enumerator.Current).ToArray();
+            if (initialPossibleOperators.Length == 0)
             {
                 return false;
             }
 
-            var longestItem = possibleOperator.Select(x => x.Length).OrderByDescending(x => x).First();
-            ;
+            List<char[]> possibleOperators = new List<char[]>();
+            foreach(var op in initialPossibleOperators.OrderByDescending(x => x.Length))
+            {
+                if(op[op.Length - 1].IsLetter())
+                {
+                    // If the operator ends in a letter (like "is") - then the *NEXT* char after it should _NOT_ be a letter.
+                    if(enumerator.TryGetNext(out var nextChar, op.Length) && nextChar.IsLetter())
+                    {
+                        continue; // Skip this operator - the next character is a letter, and can't properly terminate the operator
+                    }
+                }
 
-
-            throw new NotImplementedException();
+                var valid = true;
+                for (var index = op.Length - 1; index > 0; --index)
+                {
+                    if ((enumerator.TryGetNext(out var nextChar, index) == false) || nextChar != op[index])
+                    {
+                        valid = false;
+                        break;
+                    }
+                }
+                if (valid == false) continue;
+                if (enumerator.Current != op[0]) continue;
+                possibleOperators.Add(op);
+            }
+            if (possibleOperators.Count == 0) return false;
+            if (possibleOperators.Count >= 2) throw new NotImplementedException();
+            token = new Token(TokenType.Operator, _Operators[possibleOperators[0]].Text);
+            enumerator.MoveNext(possibleOperators[0].Length - 1);
+            return true;
         }
         public virtual bool TryReadIdentifier(ILookaroundEnumerator<char> enumerator, [NotNullWhen(true)]out Token? token)
         {

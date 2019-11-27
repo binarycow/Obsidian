@@ -43,8 +43,10 @@ namespace ExpressionParser.Transforming.Nodes
 
         public object? Transform(IdentifierNode item)
         {
-            if (ScopeStack.Current.TryGetVariable(item.TextValue, out var value)) return value;
+            var valueKeyword = LanguageDefinition.Keywords.OfType<ValueKeywordDefinition>().FirstOrDefault(x => x.Text == item.TextValue);
+            if (valueKeyword != default) return valueKeyword.Value;
 
+            if (ScopeStack.Current.TryGetVariable(item.TextValue, out var value)) return value;
             var function = LanguageDefinition.Functions.FirstOrDefault(func => func.Name == item.TextValue);
             if (function != null) return MethodGroup.Create(function);
             throw new NotImplementedException();

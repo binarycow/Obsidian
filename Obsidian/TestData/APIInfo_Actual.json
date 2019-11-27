@@ -2014,7 +2014,7 @@
             "Parameters": [
               {
                 "Name": "item",
-                "Type": "Obsidian.AST.Nodes.ExpressionNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+                "Type": "Obsidian.AST.Nodes.TemplateNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
               }
             ]
           },
@@ -2023,7 +2023,7 @@
             "Parameters": [
               {
                 "Name": "item",
-                "Type": "Obsidian.AST.Nodes.TemplateNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+                "Type": "Obsidian.AST.Nodes.Statements.ForNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
               }
             ]
           },
@@ -2041,16 +2041,7 @@
             "Parameters": [
               {
                 "Name": "item",
-                "Type": "Obsidian.AST.Nodes.Statements.BlockNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.Statements.ForNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+                "Type": "Obsidian.AST.Nodes.ExpressionNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
               }
             ]
           },
@@ -2105,6 +2096,15 @@
               {
                 "Name": "item",
                 "Type": "Obsidian.AST.Nodes.MiscNodes.CommentNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "item",
+                "Type": "Obsidian.AST.Nodes.Statements.BlockNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
               }
             ]
           },
@@ -3944,7 +3944,30 @@
   },
   {
     "FullName": "ExpressionParser.DynamicResolver",
-    "Methods": [],
+    "Methods": [
+      {
+        "Name": "TryIndex",
+        "Overloads": [
+          {
+            "ReturnType": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "object",
+                "Type": "System.Object, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              },
+              {
+                "Name": "args",
+                "Type": "System.Object[], System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              },
+              {
+                "Name": "result",
+                "Type": "System.Object&, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          }
+        ]
+      }
+    ],
     "Properties": [],
     "Fields": null
   },
@@ -4394,7 +4417,7 @@
             "Parameters": [
               {
                 "Name": "item",
-                "Type": "ExpressionParser.Operators.SpecialOperator, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+                "Type": "ExpressionParser.Operators.StandardOperator, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
               },
               {
                 "Name": "args",
@@ -4407,7 +4430,7 @@
             "Parameters": [
               {
                 "Name": "item",
-                "Type": "ExpressionParser.Operators.StandardOperator, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+                "Type": "ExpressionParser.Operators.SpecialOperator, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
               },
               {
                 "Name": "args",

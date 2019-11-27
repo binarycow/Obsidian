@@ -67,6 +67,8 @@ namespace ExpressionParser.Transforming.Operators
                     return Method(left, args[1]);
                 case SpecialOperatorType.PropertyAccess:
                     return Property(left, args[1]);
+                case SpecialOperatorType.Index:
+                    return Index(left, args[1]);
                 default:
                     throw new NotImplementedException();
             }
@@ -78,6 +80,19 @@ namespace ExpressionParser.Transforming.Operators
                     case ArgumentSetNode argSet:
                         var args = argSet.Arguments.Select(arg => arg.Transform(NodeTransformer)).ToArray();
                         return DynamicResolver.CallMethod(ScopeStack, left, args);
+                    default:
+                        throw new NotImplementedException();
+                }
+            }
+
+            object? Index(object? left, ASTNode rightNode)
+            {
+                switch(rightNode)
+                {
+                    case ArgumentSetNode argSet:
+                        var args = argSet.Arguments.Select(arg => arg.Transform(NodeTransformer)).ToArray();
+                        if (DynamicResolver.TryIndex(left, args, out var result)) return result;
+                        throw new NotImplementedException();
                     default:
                         throw new NotImplementedException();
                 }
