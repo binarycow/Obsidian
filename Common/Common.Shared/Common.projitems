@@ -15,6 +15,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionCreators\Console.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionCreators\Enumerable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionCreators\ExpressionExtensionData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpressionCreators\Object.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionCreators\StringBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionEx.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\System.Collections.Generic\DictionaryExtensions.cs" />
@@ -36,5 +37,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Reflection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StringBuilderPool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TEMP.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TypeCoercion.cs" />
   </ItemGroup>
 </Project>

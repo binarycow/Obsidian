@@ -24,6 +24,27 @@ namespace Obsidian.WhiteSpaceControl
             return new ForNode(primaryBlock, elseBlock, item.VariableNames, item.Expression, item.StartWhiteSpace, item.EndWhiteSpace);
         }
 
+        public ASTNode Transform(TemplateNode item)
+        {
+            var children = new Queue<ASTNode>();
+            var pending = new Queue<ASTNode>();
+            foreach (var child in item.Children)
+            {
+                switch (child)
+                {
+                    case NewLineNode _:
+                    case WhiteSpaceNode _:
+                        pending.Enqueue(child);
+                        break;
+                    default:
+                        children.Enqueue(pending);
+                        children.Enqueue(child.Transform(this));
+                        break;
+                }
+            }
+            return new TemplateNode(children);
+        }
+
         public ASTNode Transform(ContainerNode item)
         {
             if(item.EndWhiteSpace != WhiteSpaceControlMode.Trim)
@@ -74,6 +95,10 @@ namespace Obsidian.WhiteSpaceControl
         {
             return item;
         }
+        public ASTNode Transform(BlockNode item)
+        {
+            return item;
+        }
 
         public ASTNode Transform(ConditionalNode item)
         {
@@ -84,5 +109,11 @@ namespace Obsidian.WhiteSpaceControl
         {
             return item;
         }
+
+        public ASTNode Transform(ExtendsNode item)
+        {
+            return item;
+        }
+
     }
 }

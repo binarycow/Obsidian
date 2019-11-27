@@ -29,6 +29,11 @@ namespace Obsidian.AST.Nodes.Statements
         {
             return visitor.Transform(this);
         }
+
+        public override TOutput Transform<TOutput>(IForceTransformVisitor<TOutput> visitor, bool force)
+        {
+            return visitor.Transform(this, force);
+        }
         public static bool TryParseIf(ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
         {
             WhiteSpaceControlMode previousConditionBlockEndWhiteSpace;
@@ -127,10 +132,12 @@ namespace Obsidian.AST.Nodes.Statements
                                     startWhiteSpace = token.TokenType == TokenTypes.Minus ? WhiteSpaceControlMode.Trim : WhiteSpaceControlMode.Keep;
                                     state = States.Keyword;
                                     continue;
-                                case TokenTypes.Keyword_If:
-                                    state = States.Expression;
-                                    continue;
                                 default:
+                                    if (token.TokenType == keywordType)
+                                    {
+                                        state = States.Expression;
+                                        continue;
+                                    }
                                     return false;
                             }
                         case States.Keyword:

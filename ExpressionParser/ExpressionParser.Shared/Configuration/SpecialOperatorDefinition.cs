@@ -1,16 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using ExpressionParser.Lexing;
 
 namespace ExpressionParser.Configuration
 {
     public class SpecialOperatorDefinition : OperatorDefinition
     {
-        public SpecialOperatorDefinition(string text, int precedence, SpecialOperatorType operatorType) : base(text, precedence, OperandCount.Binary)
+        private SpecialOperatorDefinition(string text, int precedence, SpecialOperatorType operatorType, TokenType? argumentSeperator = null, TokenType? endingText = null, int minArguments = 0, int maxArguments = 0) : base(text, precedence, OperandCount.Binary)
         {
             OperatorType = operatorType;
+            EndingToken = endingText;
+            MinimumArguments = minArguments;
+            MaximumArguments = maxArguments;
+            ArgumentSeperator = argumentSeperator;
         }
 
+        public TokenType? ArgumentSeperator { get; }
+        public TokenType? EndingToken { get; }
+        public int MinimumArguments { get; }
+        public int MaximumArguments { get; }
+
         public SpecialOperatorType OperatorType { get; }
+
+        public static SpecialOperatorDefinition Create(string text, int precedence, SpecialOperatorType operatorType, TokenType argumentSeperator,
+            TokenType endingText, int minArguments, int maxArguments = int.MaxValue)
+        {
+            if (minArguments < 0) throw new ArgumentOutOfRangeException(nameof(minArguments), minArguments,
+                $"{nameof(minArguments)} must be greater than or equal to zero.");
+            if (maxArguments < minArguments) throw new ArgumentOutOfRangeException(nameof(maxArguments), maxArguments,
+                $"{nameof(maxArguments)} must be greater than or equal to {nameof(minArguments)}.");
+            return new SpecialOperatorDefinition(text, precedence, operatorType, argumentSeperator, endingText, minArguments, maxArguments);
+        }
+
+        public static SpecialOperatorDefinition Create(string text, int precedence, SpecialOperatorType operatorType)
+        {
+            return new SpecialOperatorDefinition(text, precedence, operatorType);
+        }
     }
 }

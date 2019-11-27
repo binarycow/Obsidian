@@ -13,16 +13,9 @@ namespace Obsidian.CommentRemover
     public class CommentRemoverTransformer : ITransformVisitor<ASTNode>
     {
 
-        private IEnumerable<ASTNode> TransformExceptComment(IEnumerable<ASTNode> items)
+        private IEnumerable<ASTNode> TransformAll(IEnumerable<ASTNode> items)
         {
-            foreach(var item in items)
-            {
-                if(item is CommentNode _)
-                {
-                    continue;
-                }
-                yield return item.Transform(this);
-            }
+            return items.Select(child => child.Transform(this));
         }
         private CommentRemoverTransformer()
         {
@@ -35,15 +28,15 @@ namespace Obsidian.CommentRemover
             ContainerNode? elseBlock = null;
             if(item.ElseBlock != null)
             {
-                elseBlock = new ContainerNode(TransformExceptComment(item.ElseBlock.Children), item.ElseBlock.StartWhiteSpace, item.ElseBlock.EndWhiteSpace);
+                elseBlock = new ContainerNode(TransformAll(item.ElseBlock.Children), item.ElseBlock.StartWhiteSpace, item.ElseBlock.EndWhiteSpace);
             }
-            var primaryBlock = new ContainerNode(TransformExceptComment(item.PrimaryBlock.Children), item.PrimaryBlock.StartWhiteSpace, item.PrimaryBlock.EndWhiteSpace);
+            var primaryBlock = new ContainerNode(TransformAll(item.PrimaryBlock.Children), item.PrimaryBlock.StartWhiteSpace, item.PrimaryBlock.EndWhiteSpace);
             return new ForNode(primaryBlock, elseBlock, item.VariableNames, item.Expression, item.StartWhiteSpace, item.EndWhiteSpace);
         }
 
         public ASTNode Transform(ContainerNode item)
         {
-            return new ContainerNode(TransformExceptComment(item.Children), item.StartWhiteSpace, item.EndWhiteSpace);
+            return new ContainerNode(TransformAll(item.Children), item.StartWhiteSpace, item.EndWhiteSpace);
         }
 
         public ASTNode Transform(ExpressionNode item)
@@ -73,12 +66,27 @@ namespace Obsidian.CommentRemover
 
         public ASTNode Transform(ConditionalNode item)
         {
-            return new ConditionalNode(item.Expression, TransformExceptComment(item.Children), item.StartWhiteSpace, item.EndWhiteSpace);
+            return new ConditionalNode(item.Expression, TransformAll(item.Children), item.StartWhiteSpace, item.EndWhiteSpace);
         }
 
         public ASTNode Transform(CommentNode item)
         {
             throw new NotImplementedException();
+        }
+
+        public ASTNode Transform(BlockNode item)
+        {
+            var contents = new ContainerNode(TransformAll(item.BlockContents.Children), item.BlockContents.StartWhiteSpace, item.BlockContents.EndWhiteSpace);
+            return new BlockNode(item.Name, contents, item.StartWhiteSpace, item.EndWhiteSpace);
+        }
+        public ASTNode Transform(ExtendsNode item)
+        {
+            return item;
+        }
+
+        public ASTNode Transform(TemplateNode item)
+        {
+            return item;
         }
     }
 }

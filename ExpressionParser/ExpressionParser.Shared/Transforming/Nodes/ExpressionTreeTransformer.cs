@@ -6,6 +6,7 @@ using System.Text;
 using ExpressionParser.Configuration;
 using ExpressionParser.Operators;
 using ExpressionParser.Parsing;
+using ExpressionParser.References;
 using ExpressionParser.Scopes;
 using ExpressionParser.Transforming.Operators;
 using ExpressionParser.VariableManagement;
@@ -14,7 +15,7 @@ namespace ExpressionParser.Transforming.Nodes
 {
     public class ExpressionTreeTransformer : INodeTransformVisitor<Expression>
     {
-        public ExpressionTreeTransformer(ILanguageDefinition languageDefinition, Scope scope)
+        public ExpressionTreeTransformer(ILanguageDefinition languageDefinition, IScope scope)
         {
             LanguageDefinition = languageDefinition;
             OperatorTransformer = new ExpressionTreeOperatorTransformer(this, languageDefinition);
@@ -23,8 +24,8 @@ namespace ExpressionParser.Transforming.Nodes
         public IOperatorTransformVisitor<ASTNode, Expression> OperatorTransformer { get; }
         public ILanguageDefinition LanguageDefinition { get; }
 
-        private Stack<Scope> Scopes { get; } = new Stack<Scope>();
-        public Scope CurrentScope => Scopes.Peek();
+        private Stack<IScope> Scopes { get; } = new Stack<IScope>();
+        public IScope CurrentScope => Scopes.Peek();
 
         public Expression Transform(BinaryASTNode item)
         {
@@ -47,6 +48,11 @@ namespace ExpressionParser.Transforming.Nodes
             if(valueKeyword != null)
             {
                 return Expression.Constant(valueKeyword.Value);
+            }
+            var functionDefinition = LanguageDefinition.Functions.Where(func => func.Name == item.TextValue).FirstOrDefault();
+            if(functionDefinition != null)
+            {
+                return Expression.Constant(MethodGroup.Create(functionDefinition));
             }
             if (CurrentScope.TryGetVariable(item.TextValue, out var expression))
             {

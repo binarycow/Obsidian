@@ -7,6 +7,8 @@ namespace ExpressionParser.Configuration
     public enum SpecialOperatorType
     {
         Unknown = 0,
-        MemberAccess,
+        PropertyAccess,
+        MethodCall,
+        Index,
     }
 }

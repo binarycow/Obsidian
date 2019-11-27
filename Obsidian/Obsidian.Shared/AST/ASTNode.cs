@@ -7,7 +7,7 @@ using Obsidian.Transforming;
 
 namespace Obsidian.AST
 {
-    public abstract class ASTNode : ITransformable
+    public abstract class ASTNode : ITransformable, IForceTransformable
     {
         public ASTNode(IEnumerable<ParsingNode> parsingNodes)
         {
@@ -19,7 +19,6 @@ namespace Obsidian.AST
 
         public ParsingNode[] ParsingNodes { get; }
 
-        public abstract TOutput Transform<TOutput>(ITransformVisitor<TOutput> visitor);
 
         public override string ToString()
         {
@@ -31,5 +30,7 @@ namespace Obsidian.AST
             return debug ? ToString().WhiteSpaceEscape() : ToString();
         }
 
+        public abstract TOutput Transform<TOutput>(ITransformVisitor<TOutput> visitor);
+        public abstract TOutput Transform<TOutput>(IForceTransformVisitor<TOutput> visitor, bool force);
     }
 }

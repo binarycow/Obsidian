@@ -9,14 +9,12 @@ namespace ExpressionParser.Operators
 {
     public class SpecialOperator : Operator
     {
-        public SpecialOperator(Token token, SpecialOperatorType operatorType, SpecialOperatorSubType subType) : base(token)
+        public SpecialOperator(Token token, SpecialOperatorType operatorType) : base(token)
         {
             OperatorType = operatorType;
-            SubType = subType;
         }
 
         public SpecialOperatorType OperatorType { get; }
-        public SpecialOperatorSubType SubType { get; }
 
         public override TOutput Transform<TInput, TOutput>(IOperatorTransformVisitor<TInput, TOutput> visitor, TInput[] arguments)
         {

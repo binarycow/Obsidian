@@ -33,25 +33,7 @@ namespace Obsidian.SampleProject
 //}
         static Dictionary<string, object> _Variables = new Dictionary<string, object>
         {
-            { "a_variable", "Hello, World!" },
-            { "navigation", new[]
-            {
-                new
-                {
-                    href = "www.google.com",
-                    caption = "Google"
-                },
-                new
-                {
-                    href = "www.yahoo.com",
-                    caption = "Yahoo"
-                },
-                new
-                {
-                    href = "www.bing.com",
-                    caption = "Bing"
-                },
-            } }
+            { "standalone", true },
         };
 
         static void Main(string[] args)
@@ -60,6 +42,11 @@ namespace Obsidian.SampleProject
             // Test(true, false);
             // Test(false, true);
             // Test(true, true);
+
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("Done.");
+            Console.ForegroundColor = ConsoleColor.Gray;
             Console.ReadKey();
         }
 
@@ -73,14 +60,20 @@ namespace Obsidian.SampleProject
             var environment = new JinjaEnvironment(loader: loader);
             environment.Settings.LStripBlocks = lstripBlocks;
             environment.Settings.TrimBlocks = trimBlocks;
-            var template = environment.GetTemplate("Template.html", _Variables);
-            //template.Compile();
+            var template = environment.GetTemplate("child.html", _Variables);
 
+            //Console.WriteLine("========================== Standalone: False ==========================");
+            Console.WriteLine();
             var result = template.Render(_Variables);
             Console.WriteLine($"{result}");
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine();
+            //Console.WriteLine();
+            //Console.WriteLine("========================== Standalone: True ===========================");
+            //Console.WriteLine();
+            //_Variables["standalone"] = false;
+            //result = template.Render(_Variables);
+            //Console.WriteLine($"{result}");
+            //Console.WriteLine();
+            //Console.WriteLine("=======================================================================");
         }
     }
 }

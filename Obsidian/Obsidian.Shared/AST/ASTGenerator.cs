@@ -12,7 +12,7 @@ namespace Obsidian.AST
 {
     public class ASTGenerator
     {
-        public static ContainerNode ParseTemplate(IEnumerable<ParsingNode> source)
+        public static TemplateNode ParseTemplate(IEnumerable<ParsingNode> source)
         {
             var enumerator = LookaroundEnumeratorFactory.CreateLookaroundEnumerator(source, 10);
 
@@ -23,7 +23,7 @@ namespace Obsidian.AST
                 {
                     throw new NotImplementedException();
                 }
-                return new ContainerNode(nodes, WhiteSpaceControlMode.Default, WhiteSpaceControlMode.Default);
+                return new TemplateNode(nodes);
             }
 
             throw new NotImplementedException();

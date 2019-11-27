@@ -35,5 +35,8 @@ namespace Obsidian.Lexing
         Paren_Close,
         CurlyBrace_Open,
         CurlyBrace_Close,
+        Keyword_Block,
+        Keyword_EndBlock,
+        Keyword_Extends,
     }
 }

@@ -62,24 +62,23 @@ namespace Common.ExpressionCreators
 
     public class ExpressionExtensionData
     {
-        public ExpressionExtensionData(Expression expression, Type type)
+        public ExpressionExtensionData(ParameterExpression expression, Type type)
         {
             ParameterExpression = expression;
             Type = type;
         }
-        public Expression ParameterExpression { get; set; }
+        public ParameterExpression ParameterExpression { get; set; }
         public Type Type { get; set; }
 
 
-        public static implicit operator ExpressionExtensionData(Expression expr)
+        public static implicit operator ExpressionExtensionData(ParameterExpression expr)
         {
             return new ExpressionExtensionData(expr, expr.Type);
         }
-        public static implicit operator Expression(ExpressionExtensionData expr)
+        public static implicit operator ParameterExpression(ExpressionExtensionData expr)
         {
             return expr.ParameterExpression;
         }
-
 
         public static bool TryCreate<TData>(ParameterExpression expression, [NotNullWhen(true)]out ExpressionExtensionData<TData>? expressionData)
         {

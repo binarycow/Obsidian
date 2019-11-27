@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using Common.Collections;
+using Obsidian.AST.Nodes.MiscNodes;
 using Obsidian.AST.Nodes.Statements;
 using Obsidian.Parsing;
 using Obsidian.WhiteSpaceControl;
@@ -30,6 +31,14 @@ namespace Obsidian.AST.Nodes
                 return true;
             }
             if (IfNode.TryParseIf(enumerator, out parsedNode))
+            {
+                return true;
+            }
+            if (BlockNode.TryParseBlock(enumerator, out parsedNode))
+            {
+                return true;
+            }
+            if (ExtendsNode.TryParseExtends(enumerator, out parsedNode))
             {
                 return true;
             }

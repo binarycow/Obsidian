@@ -17,46 +17,59 @@ namespace Obsidian.Parsing
         }
         private static IEnumerable<ParsingNode> Parse(ILookaroundEnumerator<Token> enumerator)
         {
+            var pendingOutput = new Queue<Token>();
             var canBeLineStatement = true; // Line statements must have only whitespace prior to it.
             while (enumerator.MoveNext())
             {
+                ParsingNode pendingNode;
                 switch (enumerator.Current.TokenType)
                 {
                     case TokenTypes.LineStatement:
-                        yield return LineStatementOrUnknown(canBeLineStatement, enumerator);
+                        pendingNode = LineStatementOrUnknown(canBeLineStatement, enumerator);
                         canBeLineStatement = false;
-                        continue;
+                        break;
                     case TokenTypes.LineComment:
-                        yield return new ParsingNode(ParsingNodeType.Comment, ReadWhile(enumerator, tokenType => tokenType != TokenTypes.NewLine));
-                        continue;
+                        pendingNode = new ParsingNode(ParsingNodeType.Comment, ReadWhile(enumerator, tokenType => tokenType != TokenTypes.NewLine));
+                        break;
                     case TokenTypes.StatementStart:
                         canBeLineStatement = false;
-                        yield return new ParsingNode(ParsingNodeType.Statement, ReadUntil(enumerator, TokenTypes.StatementEnd));
-                        continue;
+                        pendingNode = new ParsingNode(ParsingNodeType.Statement, ReadUntil(enumerator, TokenTypes.StatementEnd));
+                        break;
                     case TokenTypes.CommentStart:
                         canBeLineStatement = false;
-                        yield return new ParsingNode(ParsingNodeType.Comment, ReadUntil(enumerator, TokenTypes.CommentEnd));
-                        continue;
+                        pendingNode = new ParsingNode(ParsingNodeType.Comment, ReadUntil(enumerator, TokenTypes.CommentEnd));
+                        break;
                     case TokenTypes.ExpressionStart:
                         canBeLineStatement = false;
-                        yield return new ParsingNode(ParsingNodeType.Expression, ReadUntil(enumerator, TokenTypes.ExpressionEnd));
-                        continue;
+                        pendingNode = new ParsingNode(ParsingNodeType.Expression, ReadUntil(enumerator, TokenTypes.ExpressionEnd));
+                        break;
                     case TokenTypes.NewLine:
-                        yield return new ParsingNode(ParsingNodeType.NewLine, ReadOne(enumerator));
+                        pendingNode = new ParsingNode(ParsingNodeType.NewLine, ReadOne(enumerator));
                         canBeLineStatement = true;
-                        continue;
+                        break;
                     case TokenTypes.WhiteSpace:
                         var whiteSpaceNode = new ParsingNode(ParsingNodeType.WhiteSpace, ReadWhile(enumerator, tokenType => tokenType == TokenTypes.WhiteSpace));
                         if (!(canBeLineStatement && enumerator.TryGetNext(out var nextToken) && (nextToken.TokenType == TokenTypes.LineStatement || nextToken.TokenType == TokenTypes.LineComment)))
                         {
-                            yield return whiteSpaceNode;
+                            pendingNode = whiteSpaceNode;
+                            break;
                         }
                         continue;
                     default:
                         canBeLineStatement = false;
-                        yield return new ParsingNode(ParsingNodeType.Output, ReadOne(enumerator));
+                        pendingOutput.Enqueue(enumerator.Current);
                         continue;
                 }
+                if(pendingOutput.Count > 0)
+                {
+                    yield return new ParsingNode(ParsingNodeType.Output, pendingOutput);
+                    pendingOutput.Clear();
+                }
+                yield return pendingNode;
+            }
+            if (pendingOutput.Count > 0)
+            {
+                yield return new ParsingNode(ParsingNodeType.Output, pendingOutput);
             }
         }
         private static ParsingNode LineStatementOrUnknown(bool canBeLineStatement, ILookaroundEnumerator<Token> enumerator)

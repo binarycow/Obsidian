@@ -45,7 +45,7 @@ namespace Obsidian
                 {
                     if(item is FileInfo fileInfo)
                     {
-                        if(fileInfo.Name == filename)
+                        if(fileInfo.Name.ToLowerInvariant() == filename.ToLowerInvariant())
                         {
                             return fileInfo;
                         }
