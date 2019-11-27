@@ -52,11 +52,11 @@ namespace ExpressionParser.Transforming.Operators
             switch (item.OperatorType)
             {
                 case SpecialOperatorType.PropertyAccess:
-                    if (Resolver.TryGetPropertyOrFieldInfo(left, args[1].TextValue, out var memberInfo))
+                    if (ExpressionResolver.TryGetPropertyOrFieldInfo(left, args[1].TextValue, out var memberInfo))
                     {
                         return Expression.MakeMemberAccess(left, memberInfo);
                     }
-                    if (LanguageDefinition.AllowStringIndexersAsProperties && Resolver.TryGetIndexer(left, out var propertyInfo, typeof(string)))
+                    if (LanguageDefinition.AllowStringIndexersAsProperties && ExpressionResolver.TryGetIndexer(left, out var propertyInfo, typeof(string)))
                     {
                         return Expression.MakeIndex(left, propertyInfo, Expression.Constant(args[1].TextValue).YieldOne());
                     }

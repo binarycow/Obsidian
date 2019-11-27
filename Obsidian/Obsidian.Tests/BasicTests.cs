@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Obsidian.Tests.Utilities;
+using Obsidian.TestCore;
 using NUnit.Framework;
 using System.IO;
 using System.Reflection;
@@ -13,12 +13,12 @@ namespace Obsidian.Tests
         [Test]
         public void BasicTemplate()
         {
-            TestRunner.TestTemplate(TestRunner.TestItems["Basic Tests"]["Basic Template"]);
+            AssertWrapper.TestTemplate(TestRunner.TestItems["Basic Tests"]["Basic Template"]);
         }
         [Test]
         public void Inheritance()
         {
-            TestRunner.TestTemplate(TestRunner.TestItems["Basic Tests"]["Inheritance"]);
+            AssertWrapper.TestTemplate(TestRunner.TestItems["Basic Tests"]["Inheritance"]);
         }
     }
 }

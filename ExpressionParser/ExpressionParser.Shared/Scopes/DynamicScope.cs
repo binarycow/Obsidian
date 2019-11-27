@@ -6,15 +6,26 @@ using System.Text;
 
 namespace ExpressionParser.Scopes
 {
-    public class DynamicScope : IDynamicScope
+    public class DynamicScope : IScope
     {
-        public DynamicScope(string name, IDynamicScope parent)
+        public DynamicScope(string name, DynamicScope parent)
         {
             Name = name;
             ParentScope = parent;
         }
 
-        public IDynamicScope? ParentScope { get; }
+        protected DynamicScope(DynamicScope parent)
+        {
+            Name = null;
+            ParentScope = parent;
+        }
+        protected DynamicScope(string? name)
+        {
+            Name = name;
+            ParentScope = null;
+        }
+
+        public IScope? ParentScope { get; }
 
         public string? Name { get; }
 
@@ -35,22 +46,22 @@ namespace ExpressionParser.Scopes
             return scope;
         }
 
-        public IDynamicScope? FindScope(string name)
+        public IScope? FindScope(string name)
         {
             throw new NotImplementedException();
         }
 
-        public IDynamicScope FindRootScope()
+        public IScope FindRootScope()
         {
             throw new NotImplementedException();
         }
 
-        public IDynamicScope CreateChild(string name)
+        public virtual IScope CreateChild(string name)
         {
             throw new NotImplementedException();
         }
 
-        public IDynamicScope CreateChild()
+        public virtual IScope CreateChild()
         {
             throw new NotImplementedException();
         }
@@ -63,6 +74,15 @@ namespace ExpressionParser.Scopes
         public bool TryGetVariable(string name, out object? value)
         {
             return _Variables.TryGetValue(name, out value);
+        }
+        public bool TryGetVariable<T>(string name, out T? value) where T : class
+        {
+            value = default;
+            if(TryGetVariable(name, out var objVariableValue))
+            {
+                value = objVariableValue as T;
+            }
+            return value != default;
         }
     }
 }

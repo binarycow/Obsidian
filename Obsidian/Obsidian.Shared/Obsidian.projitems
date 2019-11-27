@@ -27,9 +27,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\TemplateNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Block.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CommentRemover\CommentRemoverTransformer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicRootContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ITemplate.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DynamicSelf.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SpecialVariableInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Templates\CompiledTemplate.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Templates\DynamicTemplate.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Test.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\ASTCompiler.cs" />
@@ -64,7 +67,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)RenderMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CompiledSelf.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\WhiteSpaceCounterVisitor.cs" />
-    <Compile Include="..\Obsidian.Shared\Templates\CompiledTemplate.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TemplateInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TemporaryStuff\RuntimeScope.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\BaseASTTransformer.cs" />

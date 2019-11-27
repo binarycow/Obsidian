@@ -29,7 +29,7 @@ namespace Obsidian.Transforming
         public Expression SelfVar => CurrentScope[VARNAME_STRING_SELF];
         public Expression StringBuilderVar => CurrentScope[VARNAME_STRING_BUILDER];
 
-        internal static Expression ToExpression(string templateName, JinjaEnvironment environment, ASTNode node, out NewASTCompiler compiler, ICompiledScope rootScope)
+        internal static Expression ToExpression(string templateName, JinjaEnvironment environment, ASTNode node, out NewASTCompiler compiler, CompiledScope rootScope)
         {
             compiler = new NewASTCompiler(environment, rootScope);
             compiler.PushScope(SCOPE_NAME_INTERNAL);
@@ -60,19 +60,19 @@ namespace Obsidian.Transforming
         }
 
 
-        private NewASTCompiler(JinjaEnvironment environment, ICompiledScope scope)
+        private NewASTCompiler(JinjaEnvironment environment, CompiledScope scope)
         {
             Environment = environment;
             _Scopes.Push(scope);
         }
 
         public JinjaEnvironment Environment { get; }
-        private Stack<ICompiledScope> _Scopes = new Stack<ICompiledScope>();
-        public ICompiledScope CurrentScope => _Scopes.Peek();
+        private Stack<CompiledScope> _Scopes = new Stack<CompiledScope>();
+        public CompiledScope CurrentScope => _Scopes.Peek();
 
         public void PushScope(string name)
         {
-            _Scopes.Push(CurrentScope.CreateChild(name));
+            _Scopes.Push(CurrentScope.CreateCompiledChild(name));
         }
         public BlockExpression PopScope(string name, Expression childOne, params Expression[] children)
         {

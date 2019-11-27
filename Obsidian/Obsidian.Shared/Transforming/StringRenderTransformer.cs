@@ -7,6 +7,8 @@ using Obsidian.AST.Nodes.MiscNodes;
 using Obsidian.AST.Nodes.Statements;
 using Obsidian.AST;
 using Obsidian.Templates;
+using ExpressionParser;
+using Common;
 
 namespace Obsidian.Transforming
 {
@@ -14,15 +16,14 @@ namespace Obsidian.Transforming
     {
         public StringRenderTransformer(JinjaEnvironment environment, IDictionary<string, object?> variables)
         {
-            _Scopes.Push(DynamicScope.CreateRootScope("root", variables));
+            Scopes = new ScopeStack<DynamicContext, DynamicRootContext>(DynamicRootContext.CreateNew("root", this, variables));
             Environment = environment;
         }
 
         public JinjaEnvironment Environment { get; }
         private readonly StringBuilder _StringBuilder = new StringBuilder();
 
-        private readonly Stack<IDynamicScope> _Scopes = new Stack<IDynamicScope>();
-        public IDynamicScope CurrentScope => _Scopes.Peek();
+        private ScopeStack<DynamicContext, DynamicRootContext> Scopes { get; }
 
         private ExpressionNode? _NextTemplate = null;
         public bool ShouldRender => _NextTemplate == null;
@@ -37,7 +38,7 @@ namespace Obsidian.Transforming
                 TransformAll(toRender.Children);
                 if (_NextTemplate == null) break;
 
-                var nextTemplateObj = Environment.Evaluation.EvaluateDynamic(_NextTemplate.Expression, CurrentScope);
+                var nextTemplateObj = Environment.Evaluation.EvaluateDynamic(_NextTemplate.Expression, Scopes);
                 _NextTemplate = null;
                 switch(nextTemplateObj)
                 {
@@ -45,7 +46,7 @@ namespace Obsidian.Transforming
                         toRender = d.TemplateNode;
                         break;
                     case string templateName:
-                        var temp = Environment.GetTemplate(templateName, CurrentScope);
+                        var temp = Environment.GetTemplate(templateName, Scopes.Current);
                         if (!(temp is DynamicTemplate dt)) throw new NotImplementedException();
                         toRender = dt.TemplateNode;
                         break;
@@ -58,7 +59,25 @@ namespace Obsidian.Transforming
 
         public string Transform(ForNode item)
         {
-            throw new NotImplementedException();
+            if (item.VariableNames.Length != 1) throw new NotImplementedException();
+            var evalObj = Environment.Evaluation.EvaluateDynamic(item.Expression.Expression, Scopes);
+            var arr = CollectionEx.ToArray(evalObj);
+            if (arr == null) throw new NotImplementedException();
+
+            if(arr.Length == 0 && item.ElseBlock != null)
+            {
+                return item.ElseBlock.Transform(this);
+            }
+
+            for(var index = 0; index < arr.Length; ++index)
+            {
+                var arrItem = arr[index];
+                Scopes.Push($"ForNode: {item.Expression} Item: {arrItem}");
+                Scopes.Current.DefineAndSetVariable(item.VariableNames[0], arrItem);
+                item.PrimaryBlock.Transform(this);
+                Scopes.Pop($"ForNode: {item.Expression} Item: {arrItem}");
+            }
+            return string.Empty;
         }
 
         public string Transform(ContainerNode item)
@@ -68,13 +87,13 @@ namespace Obsidian.Transforming
 
         public string Transform(ExpressionNode item)
         {
-            _StringBuilder.Append(Environment.Evaluation.EvaluateDynamic(item.Expression, CurrentScope));
+            _StringBuilder.Append(Environment.Evaluation.EvaluateDynamic(item.Expression, Scopes));
             return string.Empty;
         }
 
         public string Transform(NewLineNode item)
         {
-            //_StringBuilder.Append(item.ToString());
+            _StringBuilder.Append(item.ToString());
             return string.Empty;
         }
 
@@ -92,26 +111,42 @@ namespace Obsidian.Transforming
 
         public string Transform(IfNode item)
         {
-            throw new NotImplementedException();
+            foreach(var condition in item.Conditions)
+            {
+                var result = Environment.Evaluation.EvaluateDynamic(condition.Expression.Expression, Scopes);
+                if (result == null) throw new NotImplementedException();
+                if (TypeCoercion.CanCast(result.GetType(), typeof(bool)) == false) throw new NotImplementedException();
+                var boolResult = (bool)result;
+
+                if(boolResult)
+                {
+                    condition.Transform(this);
+                    return string.Empty;
+                }
+            }
+            return string.Empty;
         }
 
         public string Transform(ConditionalNode item)
         {
-            throw new NotImplementedException();
+            return TransformAll(item.Children);
         }
 
         public string Transform(CommentNode item)
         {
-            throw new NotImplementedException();
+            return string.Empty;
         }
 
         public string Transform(BlockNode item)
         {
-            _Self.AddBlock(item);
+            Scopes.Root.AddBlock(item.Name, item.BlockContents);
             if (ShouldRender)
             {
-                var blockNode = _Self.GetBlock(item.Name) ?? item;
-                TransformAll(blockNode.Children);
+                Scopes.Root.CurrentBlockName = item.Name;
+                Scopes.Root.CurrentBlockIndex = 0;
+                var containerNode = Scopes.Root.GetBlock(item.Name) ?? item.BlockContents;
+                containerNode.Transform(this);
+                Scopes.Root.CurrentBlockName = null;
             }
             return string.Empty;
         }

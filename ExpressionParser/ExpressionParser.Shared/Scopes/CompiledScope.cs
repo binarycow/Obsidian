@@ -8,14 +8,15 @@ using System.Text;
 
 namespace ExpressionParser.Scopes
 {
-    public class Scope : ICompiledScope
+    public class CompiledScope : IScope
     {
-        private Scope(string? name, ICompiledScope? parentScope)
+        private CompiledScope(string? name, CompiledScope? parentScope)
         {
             Name = name;
-            ParentScope = parentScope;
+            ParentScopeCompiled = parentScope;
         }
-        public ICompiledScope? ParentScope { get; }
+        public IScope? ParentScope => ParentScopeCompiled;
+        public CompiledScope? ParentScopeCompiled { get; }
         public string? Name { get; }
 
         private readonly Dictionary<string, ParameterExpression> _Variables = new Dictionary<string, ParameterExpression>();
@@ -24,7 +25,7 @@ namespace ExpressionParser.Scopes
 
         public IEnumerable<ParameterExpression> VariableWalk()
         {
-            return Variables.Concat(ParentScope?.VariableWalk() ?? Enumerable.Empty<ParameterExpression>());
+            return Variables.Concat(ParentScopeCompiled?.VariableWalk() ?? Enumerable.Empty<ParameterExpression>());
         }
 
         public bool IsRootScope => ParentScope == default;
@@ -75,7 +76,7 @@ namespace ExpressionParser.Scopes
         public bool TryGetVariable(string name, [NotNullWhen(true)] out ParameterExpression? variable)
         {
             if (_Variables.TryGetValue(name, out variable)) return true;
-            if (ParentScope?.TryGetVariable(name, out variable) == true) return true;
+            if (ParentScopeCompiled?.TryGetVariable(name, out variable) == true) return true;
             return false;
         }
 
@@ -89,23 +90,24 @@ namespace ExpressionParser.Scopes
             return Expression.Block(Variables, bodyArray);
         }
 
-        public ICompiledScope CreateChild(string name)
+        public IScope CreateChild(string name) => CreateCompiledChild(name);
+        public CompiledScope CreateCompiledChild(string name)
         {
-            return new Scope(name, this);
+            return new CompiledScope(name, this);
         }
 
-        public ICompiledScope CreateChild()
+        public IScope CreateChild()
         {
-            return new Scope(null, this);
+            return new CompiledScope(null, this);
         }
 
-        public ICompiledScope? FindScope(string name)
+        public IScope? FindScope(string name)
         {
             if (Name == name) return this;
             return ParentScope?.FindScope(name);
         }
 
-        public ICompiledScope FindRootScope()
+        public IScope FindRootScope()
         {
             return ParentScope == null ? this : ParentScope.FindRootScope();
         }
@@ -118,9 +120,9 @@ namespace ExpressionParser.Scopes
 
 
 
-        public static ICompiledScope CreateRootScope(string name, IDictionary<string, object?> parameters)
+        public static CompiledScope CreateRootScope(string name, IDictionary<string, object?> parameters)
         {
-            var scope = new Scope(name, null);
+            var scope = new CompiledScope(name, null);
             foreach (var key in parameters.Keys)
             {
                 scope.DefineVariable(key, parameters[key]?.GetType() ?? typeof(object));
@@ -128,9 +130,9 @@ namespace ExpressionParser.Scopes
             return scope;
         }
 
-        internal static ICompiledScope CreateDerivedRootScope(string name, params ICompiledScope?[] scopes)
+        internal static CompiledScope CreateDerivedRootScope(string name, params CompiledScope?[] scopes)
         {
-            var newScope = new Scope(name, null);
+            var newScope = new CompiledScope(name, null);
             foreach(var scope in scopes)
             {
                 if (scope == null) continue;

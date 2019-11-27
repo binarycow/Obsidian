@@ -44,19 +44,23 @@ namespace Obsidian
                 (ITemplate)DynamicTemplate.LoadTemplate(this, templateText, variableTemplate, templateName, templatePath) :
                 CompiledTemplate.LoadTemplate(this, templateText, variableTemplate, templateName, templatePath);
         }
-        internal ITemplate GetTemplate<T>(string templateText, IScope<T> scope, string? templateName, string? templatePath) 
-            where T : class, IScope<T>
+        internal DynamicTemplate GetTemplate(string templateText, DynamicContext scope, string? templateName, string? templatePath)
         {
             Settings.IsReadOnly = true;
-
+            if (Settings.DynamicTemplates == false)
+            {
+                throw new NotImplementedException();
+            }
+            return DynamicTemplate.LoadTemplate(this, templateText, scope, templateName, templatePath);
+        }
+        internal CompiledTemplate GetTemplate<T>(string templateText, CompiledScope scope, string? templateName, string? templatePath)
+        {
+            Settings.IsReadOnly = true;
             if (Settings.DynamicTemplates)
             {
-                if (!(scope is IDynamicScope dynamicScope)) throw new NotImplementedException();
-                return DynamicTemplate.LoadTemplate(this, templateText, dynamicScope, templateName, templatePath);
+                throw new NotImplementedException();
             }
-
-            if (!(scope is ICompiledScope compiledScope)) throw new NotImplementedException();
-            return CompiledTemplate.LoadTemplate(this, templateText, compiledScope, templateName, templatePath);
+            return CompiledTemplate.LoadTemplate(this, templateText, scope, templateName, templatePath);
         }
         public ITemplate GetTemplate(string templateName, IDictionary<string, object?> variableTemplate)
         {
@@ -68,7 +72,7 @@ namespace Obsidian
             return GetTemplate(templateInfo.Source, variableTemplate, templateName, templateInfo.Filename);
         }
 
-        public Expression GetTemplateExpression(string templateName, ICompiledScope scope)
+        public Expression GetTemplateExpression(string templateName, CompiledScope scope)
         {
             if (Loader == null)
             {
@@ -78,7 +82,7 @@ namespace Obsidian
             Settings.IsReadOnly = true;
             return CompiledTemplate.ToExpression(templateName, this, templateInfo.Source, scope);
         }
-        public ITemplate GetTemplate(string templateName, IDynamicScope scope)
+        public DynamicTemplate GetTemplate(string templateName, DynamicContext scope)
         {
             if (Loader == null)
             {
@@ -86,7 +90,7 @@ namespace Obsidian
             }
             var templateInfo = Loader.GetSource(this, templateName);
             Settings.IsReadOnly = true;
-            return GetTemplate(templateInfo.Source, scope, templateName, templateInfo.Filename);
+            return GetTemplate(templateInfo.Source, scope, templateName, null);
         }
 
     }

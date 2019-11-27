@@ -10,19 +10,22 @@ using ExpressionParser.References;
 
 namespace ExpressionParser.Transforming.Nodes
 {
-    public class DynamicTransformer : INodeTransformVisitor<object?>
+    public class DynamicTransformer<TScope, TRootScope> : INodeTransformVisitor<object?>
+        where TScope : DynamicScope
+        where TRootScope : TScope
     {
-        public DynamicTransformer(ILanguageDefinition languageDefinition, IDynamicScope scope)
+        public DynamicTransformer(ScopeStack<TScope, TRootScope> scopeStack, ILanguageDefinition languageDefinition)
         {
             LanguageDefinition = languageDefinition;
-            Scope = scope;
-            OperatorTransformer = new DynamicOperatorTransformer(languageDefinition, scope, this);
+            ScopeStack = scopeStack;
+            OperatorTransformer = new DynamicOperatorTransformer<TScope, TRootScope>(scopeStack, languageDefinition, this);
         }
 
-        public DynamicOperatorTransformer OperatorTransformer { get; }
+        public ScopeStack<TScope, TRootScope> ScopeStack { get; }
+
+        public DynamicOperatorTransformer<TScope, TRootScope> OperatorTransformer { get; }
 
         public ILanguageDefinition LanguageDefinition { get; }
-        public IDynamicScope Scope { get; }
         public object? Transform(BinaryASTNode item)
         {
             return item.Operator.Transform(OperatorTransformer, new[] { item.Left, item.Right });
@@ -30,7 +33,7 @@ namespace ExpressionParser.Transforming.Nodes
 
         public object? Transform(UnaryASTNode item)
         {
-            throw new NotImplementedException();
+            return item.Operator.Transform(OperatorTransformer, new[] { item.Right });
         }
 
         public object? Transform(LiteralNode item)
@@ -40,7 +43,7 @@ namespace ExpressionParser.Transforming.Nodes
 
         public object? Transform(IdentifierNode item)
         {
-            if (Scope.TryGetVariable(item.TextValue, out var value)) return value;
+            if (ScopeStack.Current.TryGetVariable(item.TextValue, out var value)) return value;
 
             var function = LanguageDefinition.Functions.FirstOrDefault(func => func.Name == item.TextValue);
             if (function != null) return MethodGroup.Create(function);

@@ -40,22 +40,21 @@ namespace Obsidian.AST
 
         public static ASTNode GetTemplateNode(JinjaEnvironment environment, string templateText)
         {
-            var whiteSpaceCounter = new WhiteSpaceCounterVisitor();
 
-            !!!!!!!!!
+            var whiteSpaceCounter = new WhiteSpaceCounterVisitor();
             var lexer = new Lexer(environment);
             var tokens = lexer.Tokenize(templateText).ToArray();
             var parsed = Parser.Parse(tokens).ToArray();
             var environmentTrimmed = EnvironmentTrimming.EnvironmentTrim(parsed, environment.Settings).ToArray();
             var templateNode = ASTGenerator.ParseTemplate(environmentTrimmed);
-            var a = whiteSpaceCounter.Test(templateNode);
             var commentsRemoved = templateNode.Transform(CommentRemoverTransformer.Instance);
-            var b = whiteSpaceCounter.Test(commentsRemoved);
             var controlledWhiteSpace = WhiteSpaceController.ControlWhiteSpace(commentsRemoved);
-            var c = whiteSpaceCounter.Test(controlledWhiteSpace);
             var containerAssembled = controlledWhiteSpace.Transform(TemplateContainerAssembler.Instance);
-            var d = whiteSpaceCounter.Test(containerAssembled);
-            return containerAssembled;
+
+            return templateNode;
+
+
+            //return containerAssembled;
         }
     }
 }

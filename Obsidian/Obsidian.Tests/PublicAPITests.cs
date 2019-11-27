@@ -7,7 +7,7 @@ using System.Text;
 using Newtonsoft.Json;
 using NUnit.Framework;
 using Obsidian.Templates;
-using Obsidian.Tests.Utilities;
+using Obsidian.TestCore;
 
 namespace Obsidian.Tests
 {

@@ -3,55 +3,98 @@ using System.Collections.Generic;
 using System.IO;
 using ExpressionParser;
 using Obsidian.ExpressionParserExt;
+using Obsidian.TestCore;
 
 namespace Obsidian.SampleProject
 {
-    public class Item
-    {
-        public int[] Sequence { get; set; } = new[] { 1, 2, 3, 4, 5 };
-    }
-
     class Program
     {
-
-//        {
-//  "a_variable": "Hello, World!",
-//  "navigation": [
-//    {
-//      "href": "www.google.com",
-//      "caption": "Google"
-//    },
-//    {
-//      "href": "www.yahoo.com",
-//      "caption": "Yahoo"
-//    },
-//    {
-//      "href": "www.bing.com",
-//      "caption": "Bing"
-//    }
-//  ]
-//}
         static Dictionary<string, object> _Variables = new Dictionary<string, object>
         {
-            { "standalone", true },
+            { "standalone", false },
         };
 
         static void Main(string[] args)
         {
-            Test(true, true);
-            // Test(true, false);
-            // Test(false, true);
-            // Test(true, true);
+            //ManualTest(false, false);
+
+            TestRunner.Init(TestRunner.TestFileName);
+            //AutomaticTest(TestRunner.TestItems["Basic Tests"]["Basic Template"]);
+            //AutomaticTest(TestRunner.TestItems["Basic Tests"]["Inheritance"]);
+            //AutomaticTest(TestRunner.TestItems["Feature Tests"]["Null Master Fallback"]["Standalone"]);
+            //AutomaticTest(TestRunner.TestItems["Feature Tests"]["Null Master Fallback"]["Master"]);
+            AutomaticTest(TestRunner.TestItems["Feature Tests"]["For Loop Variables"]);
+            //AutomaticTest(TestRunner.TestItems["Other Tests"]["Test1"]);
+            //AutomaticTest(TestRunner.TestItems["Other Tests"]["Test2"]);
+            //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["Defaults"]);
+            //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["TrimBlocks"]);
+            //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["LStrip"]);
+            //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["LStrip And Trim"]);
+            //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["Manual Strip"]);
 
 
-            Console.ForegroundColor = ConsoleColor.Green;
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("Done.");
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.ReadKey();
         }
 
 
-        static void Test(bool lstripBlocks, bool trimBlocks)
+        static void AutomaticTest(Item test)
+        {
+            TestRunner.TestTemplate(test, out var actualOutput, out var expectedOutput);
+
+            Console.WriteLine("==================================== ACTUAL =====================================");
+            Console.WriteLine(actualOutput);
+            Console.WriteLine("=================================== EXPECTED ====================================");
+            Console.WriteLine(expectedOutput);
+            Console.WriteLine("=================================================================================");
+            Console.WriteLine();
+            WriteMatchResultInteger("Character Count", actualOutput.Length, expectedOutput.Length);
+            WriteMatchResultInteger("     Line Count", LineCount(actualOutput), LineCount(expectedOutput));
+            Console.WriteLine();
+            WriteMatchResultOverall(actualOutput, expectedOutput);
+            Console.WriteLine();
+            Console.WriteLine("=================================================================================");
+
+
+            int LineCount(string str)
+            {
+                return str.Split('\n', StringSplitOptions.None).Length;
+            }
+
+            void WriteMatchResultOverall(string actual, string expected)
+            {
+                if(actual == expected)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("MATCH!");
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("NOT A MATCH!");
+                }
+                Console.ForegroundColor = ConsoleColor.Gray;
+            }
+            void WriteMatchResultInteger(string description, int actual, int expected)
+            {
+                if(actual == expected)
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine($"{description} | MATCH | {actual}");
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"{description} | NOT A MATCH | Actual: {actual} | Expected: {expected}");
+                }
+                Console.ForegroundColor = ConsoleColor.Gray;
+            }
+        }
+
+
+        static void ManualTest(bool lstripBlocks, bool trimBlocks)
         {
             Console.WriteLine($"LStripBlocks : {lstripBlocks}");
             Console.WriteLine($"TrimBlocks : {trimBlocks}");
@@ -61,20 +104,20 @@ namespace Obsidian.SampleProject
             environment.Settings.LStripBlocks = lstripBlocks;
             environment.Settings.TrimBlocks = trimBlocks;
             environment.Settings.DynamicTemplates = true;
-            var template = environment.GetTemplate("child.html", _Variables);
+            var template = environment.GetTemplate("NullMasterChild.html", _Variables);
 
-            //Console.WriteLine("========================== Standalone: False ==========================");
+            Console.WriteLine("========================== Standalone: False ==========================");
             Console.WriteLine();
             var result = template.Render(_Variables);
             Console.WriteLine($"{result}");
-            //Console.WriteLine();
-            //Console.WriteLine("========================== Standalone: True ===========================");
-            //Console.WriteLine();
-            //_Variables["standalone"] = false;
-            //result = template.Render(_Variables);
-            //Console.WriteLine($"{result}");
-            //Console.WriteLine();
-            //Console.WriteLine("=======================================================================");
+            Console.WriteLine();
+            Console.WriteLine("========================== Standalone: True ===========================");
+            Console.WriteLine();
+            _Variables["standalone"] = true;
+            result = template.Render(_Variables);
+            Console.WriteLine($"{result}");
+            Console.WriteLine();
+            Console.WriteLine("=======================================================================");
         }
     }
 }

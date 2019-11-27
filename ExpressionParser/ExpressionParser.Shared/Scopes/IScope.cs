@@ -6,17 +6,17 @@ using System.Text;
 
 namespace ExpressionParser.Scopes
 {
-    public interface IScope<T> where T : class, IScope<T>
+    public interface IScope
     {
-        public T? ParentScope { get; }
+        public IScope? ParentScope { get; }
         public string? Name { get; }
         public bool IsRootScope { get; }
 
-        public T? FindScope(string name);
-        public T FindRootScope();
+        public IScope? FindScope(string name);
+        public IScope FindRootScope();
 
-        public T CreateChild(string name);
-        public T CreateChild();
+        public IScope CreateChild(string name);
+        public IScope CreateChild();
 
 
     }

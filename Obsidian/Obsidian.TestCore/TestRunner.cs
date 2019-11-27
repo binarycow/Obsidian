@@ -6,9 +6,8 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using Newtonsoft.Json;
-using NUnit.Framework;
 
-namespace Obsidian.Tests.Utilities
+namespace Obsidian.TestCore
 {
     public static class TestRunner
     {
@@ -27,12 +26,12 @@ namespace Obsidian.Tests.Utilities
 
         public static Dictionary<string, Item> TestItems = new Dictionary<string, Item>();
 
-        public static void TestTemplate(Item test)
+        public static void TestTemplate(Item test, out string actualOutput, out string expectedOutput)
         {
             var testInfo = test as Test;
             var inputFile = Path.Combine(TestDataRoot, testInfo.RootPath, testInfo.InputFile);
             var actualFile = Path.Combine(TestDataRoot, testInfo.RootPath, testInfo.ActualFile);
-            var expectedOutput = File.ReadAllText(Path.Combine(TestDataRoot, testInfo.RootPath, testInfo.ExpectedFile));
+            expectedOutput = File.ReadAllText(Path.Combine(TestDataRoot, testInfo.RootPath, testInfo.ExpectedFile));
             var variables = new Dictionary<string, object?>();
             if(testInfo.VariablesFile != null)
             {
@@ -44,11 +43,11 @@ namespace Obsidian.Tests.Utilities
             };
             environment.Settings.TrimBlocks = testInfo.trim_blocks;
             environment.Settings.LStripBlocks = testInfo.lstrip_blocks;
+            environment.Settings.DynamicTemplates = true;
             var template = environment.GetTemplate(Path.GetFileName(inputFile), variables);
-            var actualOutput = template.Render(variables);
+            actualOutput = template.Render(variables);
             expectedOutput = expectedOutput.Replace("\r\n", "\n");
             File.WriteAllText(actualFile, actualOutput);
-            Assert.AreEqual(expectedOutput, actualOutput);
         }
 
 

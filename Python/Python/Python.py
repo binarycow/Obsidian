@@ -25,8 +25,9 @@ def ProcessTest(rootPath, testCase, parentCategories=[]):
     category = "/".join(parentCategories)
 
     envArgs = { }
-    if 'trim_blocks' in testCase:
-        envArgs['trim_blocks'] = testCase['trim_blocks']
+    for attr in ['lstrip_blocks', 'trim_blocks']:
+        if attr in testCase:
+            envArgs[attr] = testCase[attr]
 
     print(f"Rendering Template: {category}/{testCase['testName']} with {len(variables.keys())} variables")
     env = Environment(

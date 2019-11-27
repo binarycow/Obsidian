@@ -7,27 +7,55 @@ using ExpressionParser.Parsing;
 using ExpressionParser.Scopes;
 using ExpressionParser.Transforming.Nodes;
 using System.Linq;
+using Common;
 
 namespace ExpressionParser.Transforming.Operators
 {
-    public class DynamicOperatorTransformer : IOperatorTransformVisitor<ASTNode, object?>
+    public class DynamicOperatorTransformer<TScope, TRootScope> : IOperatorTransformVisitor<ASTNode, object?>
+        where TScope : DynamicScope
+        where TRootScope : TScope
     {
-        public DynamicOperatorTransformer(ILanguageDefinition languageDefinition, IDynamicScope scope, DynamicTransformer nodeTransformer)
+        public DynamicOperatorTransformer(ScopeStack<TScope, TRootScope> scopeStack, ILanguageDefinition languageDefinition, DynamicTransformer<TScope, TRootScope> nodeTransformer)
         {
             LanguageDefinition = languageDefinition;
-            Scope = scope;
             NodeTransformer = nodeTransformer;
+            ScopeStack = scopeStack;
         }
 
-        public DynamicTransformer NodeTransformer { get; }
+        public ScopeStack<TScope, TRootScope> ScopeStack { get; }
+
+
+        public DynamicTransformer<TScope, TRootScope> NodeTransformer { get; }
 
         public ILanguageDefinition LanguageDefinition { get; }
-        public IDynamicScope Scope { get; }
 
 
         public object? Transform(StandardOperator item, ASTNode[] args)
         {
-            throw new NotImplementedException();
+            switch(item.OperatorType)
+            {
+                case OperatorType.LogicalNot:
+                    return TransformUnary(item, args[0]);
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
+        private object? TransformUnary(StandardOperator item, ASTNode rightNode)
+        {
+            var right = rightNode.Transform(NodeTransformer);
+            switch (item.OperatorType)
+            {
+                case OperatorType.LogicalNot:
+                    if (right == null) throw new NotImplementedException();
+                    if(TypeCoercion.CanCast(right.GetType(), typeof(bool)))
+                    {
+                        return !((bool)right);
+                    }
+                    throw new NotImplementedException();
+                default:
+                    throw new NotImplementedException();
+            }
         }
 
         public object? Transform(SpecialOperator item, ASTNode[] args)
@@ -37,6 +65,8 @@ namespace ExpressionParser.Transforming.Operators
             {
                 case SpecialOperatorType.MethodCall:
                     return Method(left, args[1]);
+                case SpecialOperatorType.PropertyAccess:
+                    return Property(left, args[1]);
                 default:
                     throw new NotImplementedException();
             }
@@ -47,7 +77,21 @@ namespace ExpressionParser.Transforming.Operators
                 {
                     case ArgumentSetNode argSet:
                         var args = argSet.Arguments.Select(arg => arg.Transform(NodeTransformer)).ToArray();
-                        return Resolver.CallMethod(left, args);
+                        return DynamicResolver.CallMethod(ScopeStack, left, args);
+                    default:
+                        throw new NotImplementedException();
+                }
+            }
+
+            object? Property(object? left, ASTNode rightNode)
+            {
+                switch(rightNode)
+                {
+                    case IdentifierNode ident:
+                        var allowedTypes = DynamicResolver.MemberTypes.Field | DynamicResolver.MemberTypes.Property;
+                        if (LanguageDefinition.AllowStringIndexersAsProperties) allowedTypes |= DynamicResolver.MemberTypes.StringIndexer;
+                        if (DynamicResolver.TryGetMember(left, ident.TextValue, allowedTypes, out var result)) return result;
+                        throw new NotImplementedException();
                     default:
                         throw new NotImplementedException();
                 }

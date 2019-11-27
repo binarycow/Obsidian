@@ -41,7 +41,7 @@ namespace Obsidian.Templates
             throw new NotImplementedException();
         }
 
-        internal static DynamicTemplate LoadTemplate(JinjaEnvironment environment, string templateText, IDynamicScope scope, string? templateName, string? templatePath)
+        internal static DynamicTemplate LoadTemplate(JinjaEnvironment environment, string templateText, DynamicContext scope, string? templateName, string? templatePath)
         {
             var node = ASTNode.GetTemplateNode(environment, templateText);
             if (node is TemplateNode templateNode)

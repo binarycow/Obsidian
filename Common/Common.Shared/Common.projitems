@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)CheckoutObject.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CollectionEx.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Collections\EnumeratorFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Collections\LookaroundEnumeratorFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionCreators\Console.cs" />

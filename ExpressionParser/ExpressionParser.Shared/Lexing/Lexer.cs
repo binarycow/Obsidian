@@ -114,31 +114,12 @@ namespace ExpressionParser.Lexing
             {
                 return false;
             }
-            var skipCount = 1;
-            var currentLength = 1;
-            for (; skipCount < _LookaheadCount; ++skipCount)
-            {
-                if (enumerator.TryGetNext(out var nextChar, skipCount) == false)
-                {
-                    break;
-                }
-                var newPossibleOperators = possibleOperator.Where(operatorArr => skipCount < operatorArr.Length && operatorArr[skipCount] == nextChar).ToArray();
-                if (newPossibleOperators.Length == 0)
-                {
-                    //--skipCount;
-                    break;
-                }
-                possibleOperator = newPossibleOperators;
-                ++currentLength;
-            }
-            possibleOperator = possibleOperator.Where(operatorArr => operatorArr.Length == currentLength).ToArray();
 
-            if (possibleOperator.Length == 1)
-            {
-                token = new Token(TokenType.Operator, enumerator.Read(currentLength));
-                return true;
-            }
-            return false;
+            var longestItem = possibleOperator.Select(x => x.Length).OrderByDescending(x => x).First();
+            ;
+
+
+            throw new NotImplementedException();
         }
         public virtual bool TryReadIdentifier(ILookaroundEnumerator<char> enumerator, [NotNullWhen(true)]out Token? token)
         {

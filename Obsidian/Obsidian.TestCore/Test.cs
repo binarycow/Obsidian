@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Obsidian.Tests
+namespace Obsidian.TestCore
 {
     public class Test : Item
     {
