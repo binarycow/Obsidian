@@ -8,14 +8,14 @@ using System.Text;
 
 namespace ExpressionParser.Scopes
 {
-    public class Scope : IScope
+    public class Scope : ICompiledScope
     {
-        private Scope(string? name, IScope? parentScope)
+        private Scope(string? name, ICompiledScope? parentScope)
         {
             Name = name;
             ParentScope = parentScope;
         }
-        public IScope? ParentScope { get; }
+        public ICompiledScope? ParentScope { get; }
         public string? Name { get; }
 
         private readonly Dictionary<string, ParameterExpression> _Variables = new Dictionary<string, ParameterExpression>();
@@ -89,23 +89,23 @@ namespace ExpressionParser.Scopes
             return Expression.Block(Variables, bodyArray);
         }
 
-        public IScope CreateChild(string name)
+        public ICompiledScope CreateChild(string name)
         {
             return new Scope(name, this);
         }
 
-        public IScope CreateChild()
+        public ICompiledScope CreateChild()
         {
             return new Scope(null, this);
         }
 
-        public IScope? FindScope(string name)
+        public ICompiledScope? FindScope(string name)
         {
             if (Name == name) return this;
             return ParentScope?.FindScope(name);
         }
 
-        public IScope FindRootScope()
+        public ICompiledScope FindRootScope()
         {
             return ParentScope == null ? this : ParentScope.FindRootScope();
         }
@@ -118,7 +118,7 @@ namespace ExpressionParser.Scopes
 
 
 
-        public static IScope CreateRootScope(string name, IDictionary<string, object?> parameters)
+        public static ICompiledScope CreateRootScope(string name, IDictionary<string, object?> parameters)
         {
             var scope = new Scope(name, null);
             foreach (var key in parameters.Keys)
@@ -128,7 +128,7 @@ namespace ExpressionParser.Scopes
             return scope;
         }
 
-        internal static IScope CreateDerivedRootScope(string name, params IScope?[] scopes)
+        internal static ICompiledScope CreateDerivedRootScope(string name, params ICompiledScope?[] scopes)
         {
             var newScope = new Scope(name, null);
             foreach(var scope in scopes)

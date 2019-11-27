@@ -80,6 +80,12 @@ namespace Obsidian
             get { return _TreatNullCollectionsAsEmpty; }
             set { TrySetValue(ref _TreatNullCollectionsAsEmpty, value); }
         }
+        private bool _DynamicTemplates = true;
+        public bool DynamicTemplates
+        {
+            get { return _DynamicTemplates; }
+            set { TrySetValue(ref _DynamicTemplates, value); }
+        }
 
 
         private bool _ReadOnly;

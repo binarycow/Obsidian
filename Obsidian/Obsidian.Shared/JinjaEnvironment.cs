@@ -8,6 +8,7 @@ using ExpressionParser.Scopes;
 using Obsidian;
 using Obsidian.Exceptions;
 using Obsidian.ExpressionParserExt;
+using Obsidian.Templates;
 
 namespace Obsidian
 {
@@ -32,25 +33,32 @@ namespace Obsidian
         internal ExpressionEval Evaluation => _Evaluation.Value;
         private readonly Lazy<ExpressionEval> _Evaluation;
 
-        internal Template GetTemplate(string templateName, TemplateInfo templateInfo, IDictionary<string, object?> variableTemplate)
+        internal ITemplate GetTemplate(string templateName, TemplateInfo templateInfo, IDictionary<string, object?> variableTemplate)
         {
             return GetTemplate(templateInfo.Source, variableTemplate, templateName, templateInfo.Filename);
         }
-        internal Template GetTemplate(string templateName, TemplateInfo templateInfo, IScope scope)
-        {
-            return GetTemplate(templateInfo.Source, scope, templateName, templateInfo.Filename);
-        }
-        internal Template GetTemplate(string templateText, IDictionary<string, object?> variableTemplate, string? templateName, string? templatePath)
+        internal ITemplate GetTemplate(string templateText, IDictionary<string, object?> variableTemplate, string? templateName, string? templatePath)
         {
             Settings.IsReadOnly = true;
-            return Template.LoadTemplate(this, templateText, variableTemplate, templateName, templatePath);
+            return Settings.DynamicTemplates ?
+                (ITemplate)DynamicTemplate.LoadTemplate(this, templateText, variableTemplate, templateName, templatePath) :
+                CompiledTemplate.LoadTemplate(this, templateText, variableTemplate, templateName, templatePath);
         }
-        internal Template GetTemplate(string templateText, IScope scope, string? templateName, string? templatePath)
+        internal ITemplate GetTemplate<T>(string templateText, IScope<T> scope, string? templateName, string? templatePath) 
+            where T : class, IScope<T>
         {
             Settings.IsReadOnly = true;
-            return Template.LoadTemplate(this, templateText, scope, templateName, templatePath);
+
+            if (Settings.DynamicTemplates)
+            {
+                if (!(scope is IDynamicScope dynamicScope)) throw new NotImplementedException();
+                return DynamicTemplate.LoadTemplate(this, templateText, dynamicScope, templateName, templatePath);
+            }
+
+            if (!(scope is ICompiledScope compiledScope)) throw new NotImplementedException();
+            return CompiledTemplate.LoadTemplate(this, templateText, compiledScope, templateName, templatePath);
         }
-        public Template GetTemplate(string templateName, IDictionary<string, object?> variableTemplate)
+        public ITemplate GetTemplate(string templateName, IDictionary<string, object?> variableTemplate)
         {
             if (Loader == null)
             {
@@ -58,18 +66,9 @@ namespace Obsidian
             }
             var templateInfo = Loader.GetSource(this, templateName);
             return GetTemplate(templateInfo.Source, variableTemplate, templateName, templateInfo.Filename);
-        }
-        public Template GetTemplate(string templateName, IScope scope)
-        {
-            if (Loader == null)
-            {
-                throw new LoaderNotDefinedException();
-            }
-            var templateInfo = Loader.GetSource(this, templateName);
-            return GetTemplate(templateInfo.Source, scope, templateName, templateInfo.Filename);
         }
 
-        public Expression GetTemplateExpression(string templateName, IScope scope)
+        public Expression GetTemplateExpression(string templateName, ICompiledScope scope)
         {
             if (Loader == null)
             {
@@ -77,11 +76,17 @@ namespace Obsidian
             }
             var templateInfo = Loader.GetSource(this, templateName);
             Settings.IsReadOnly = true;
-            return Template.ToExpression(templateName, this, templateInfo.Source, scope);
+            return CompiledTemplate.ToExpression(templateName, this, templateInfo.Source, scope);
         }
-        public Template FromString(string templateText, IDictionary<string, object?> variableTemplate)
+        public ITemplate GetTemplate(string templateName, IDynamicScope scope)
         {
-            return GetTemplate(templateText, variableTemplate, null, null);
+            if (Loader == null)
+            {
+                throw new LoaderNotDefinedException();
+            }
+            var templateInfo = Loader.GetSource(this, templateName);
+            Settings.IsReadOnly = true;
+            return GetTemplate(templateInfo.Source, scope, templateName, templateInfo.Filename);
         }
 
     }

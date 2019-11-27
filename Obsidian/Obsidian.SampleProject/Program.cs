@@ -38,7 +38,7 @@ namespace Obsidian.SampleProject
 
         static void Main(string[] args)
         {
-            Test(false, false);
+            Test(true, true);
             // Test(true, false);
             // Test(false, true);
             // Test(true, true);
@@ -60,6 +60,7 @@ namespace Obsidian.SampleProject
             var environment = new JinjaEnvironment(loader: loader);
             environment.Settings.LStripBlocks = lstripBlocks;
             environment.Settings.TrimBlocks = trimBlocks;
+            environment.Settings.DynamicTemplates = true;
             var template = environment.GetTemplate("child.html", _Variables);
 
             //Console.WriteLine("========================== Standalone: False ==========================");

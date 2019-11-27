@@ -18,12 +18,12 @@ using Obsidian.AST.Nodes.Statements;
 using ExpressionParser.Scopes;
 using ExpressionToString;
 
-namespace Obsidian
+namespace Obsidian.Templates
 {
-    public class Template
+    public class CompiledTemplate : ITemplate
     {
 
-        private Template(JinjaEnvironment environment, ExpressionData templateNode, string? templateName, string? templatePath)
+        private CompiledTemplate(JinjaEnvironment environment, ExpressionData templateNode, string? templateName, string? templatePath)
         {
             TemplateNode = templateNode;
             Environment = environment;
@@ -61,7 +61,7 @@ namespace Obsidian
         //    var expr = ToExpression(environment, templateText, variableTemplate, out var compiler);
         //    return new Template(environment, compiler.Compile(expr), templateName, templatePath);
         //}
-        internal static Template LoadTemplate(JinjaEnvironment environment, string templateText, IScope scope, string? templateName, string? templatePath)
+        internal static CompiledTemplate LoadTemplate(JinjaEnvironment environment, string templateText, ICompiledScope scope, string? templateName, string? templatePath)
         {
             var expr = ToExpression(templateName, environment, templateText, scope);
 
@@ -70,10 +70,10 @@ namespace Obsidian
             var x = test.Visit(expr);
             ;
 
-            return new Template(environment, ExpressionData.CreateCompiled(expr, scope), templateName, templatePath);
+            return new CompiledTemplate(environment, ExpressionData.CreateCompiled(expr, scope), templateName, templatePath);
         }
 
-        internal static Template LoadTemplate(JinjaEnvironment environment, string templateText, IDictionary<string, object?> variableTemplate, string? templateName, string? templatePath)
+        internal static CompiledTemplate LoadTemplate(JinjaEnvironment environment, string templateText, IDictionary<string, object?> variableTemplate, string? templateName, string? templatePath)
         {
             var rootScope = Scope.CreateRootScope("GLOBALS", variableTemplate);
             var expr = ToExpression(templateName, environment, templateText, rootScope);
@@ -83,7 +83,7 @@ namespace Obsidian
             var x = test.Visit(expr);
             ;
 
-            return new Template(environment, ExpressionData.CreateCompiled(expr, rootScope), templateName, templatePath);
+            return new CompiledTemplate(environment, ExpressionData.CreateCompiled(expr, rootScope), templateName, templatePath);
         }
 
         //internal static Expression ToExpression(JinjaEnvironment environment, string templateText, IDictionary<string, object?> variableTemplate, out ASTCompiler compiler)
@@ -100,26 +100,18 @@ namespace Obsidian
         //    var finished = NewASTCompiler.ToExpression(environment, containerAssembled, variableTemplate, out var newcompiler);
         //    throw new NotImplementedException();
         //}
-        internal static Expression ToExpression(string templateName, JinjaEnvironment environment, string templateText, IScope rootScope)
+        internal static Expression ToExpression(string templateName, JinjaEnvironment environment, string templateText, ICompiledScope rootScope)
         {
-            var lexer = new Lexer(environment);
-            var tokens = lexer.Tokenize(templateText).ToArray();
-            var parsed = Parser.Parse(tokens).ToArray();
-            var environmentTrimmed = EnvironmentTrimming.EnvironmentTrim(parsed, environment.Settings).ToArray();
-            var templateNode = ASTGenerator.ParseTemplate(environmentTrimmed);
-            var commentsRemoved = templateNode.Transform(CommentRemoverTransformer.Instance);
-            var controlledWhiteSpace = WhiteSpaceController.ControlWhiteSpace(commentsRemoved);
-            var containerAssembled = controlledWhiteSpace.Transform(TemplateContainerAssembler.Instance);
-
+            var containerAssembled = ASTNode.GetTemplateNode(environment, templateText);
             var finished = NewASTCompiler.ToExpression(templateName, environment, containerAssembled, out var newcompiler, rootScope);
             return finished;
         }
 
-        internal static Template FromBlockNode(string templateName, JinjaEnvironment environment, BlockNode blockNode, IDictionary<string, object?> variableTemplate)
+        internal static CompiledTemplate FromBlockNode(string templateName, JinjaEnvironment environment, BlockNode blockNode, IDictionary<string, object?> variableTemplate)
         {
             var rootScope = Scope.CreateRootScope("GLOBALS", variableTemplate);
             var expr = NewASTCompiler.ToExpression(templateName, environment, blockNode, out var newcompiler, rootScope);
-            return new Template(environment, ExpressionData.CreateCompiled(expr, rootScope), blockNode.Name, null);
+            return new CompiledTemplate(environment, ExpressionData.CreateCompiled(expr, rootScope), blockNode.Name, null);
         }
 
         public string Render(IDictionary<string, object?> variables)

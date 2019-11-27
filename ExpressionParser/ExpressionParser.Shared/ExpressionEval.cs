@@ -27,8 +27,16 @@ namespace ExpressionParser
         public Lexer Lexer { get; }
         public Parser Parser { get; }
 
+        public object? EvaluateDynamic(string expressionText, IDynamicScope scope)
+        {
+            var tokens = Lexer.Tokenize(expressionText).ToArray();
+            var astNode = Parser.Parse(tokens);
+            var transformer = new DynamicTransformer(LanguageDefinition, scope);
+            return astNode.Transform(transformer);
+        }
 
-        public Expression ToExpression(string expressionText, IScope scope)
+
+        public Expression ToExpression(string expressionText, ICompiledScope scope)
         {
             var tokens = Lexer.Tokenize(expressionText).ToArray();
             var astNode = Parser.Parse(tokens);
@@ -49,18 +57,16 @@ namespace ExpressionParser
             }
         }
 
-        public ExpressionData Compile(string expressionText, IScope scope)
+        public ExpressionData Compile(string expressionText, ICompiledScope scope)
         {
             var expression = ToExpression(expressionText, scope);
             return ExpressionData.CreateCompiled(expression, scope);
         }
-        public ExpressionData Dynamic(string expressionText, IScope scope)
+        public ExpressionData Dynamic(string expressionText, ICompiledScope scope)
         {
             var expression = ToExpression(expressionText, scope);
             return ExpressionData.CreateDynamic(expression, scope);
         }
-
-
 
         public T EvaluateAs<T>(string expressionText, IDictionary<string, object?> variables)
         {
