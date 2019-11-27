@@ -28,6 +28,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Block.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CommentRemover\CommentRemoverTransformer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SpecialVariableInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Test.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\ASTCompiler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EnvironmentSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\LoaderNotDefinedException.cs" />
