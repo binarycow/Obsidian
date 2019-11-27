@@ -95,32 +95,6 @@ namespace Obsidian.Transforming
         }
 
 
-        public Expression Transform(TemplateNode item)
-        {
-            var initialTemplate = TransformAll(item.Children).Concat(Expression.Constant(string.Empty));
-
-            var breakLabel = Expression.Label("breakLoop");
-
-            var loopBody = Expression.Block(
-                Expression.IfThen(
-                    Expression.Equal(SelfEx.TemplateQueueCount(SelfVar), Expression.Constant(0)),
-                    Expression.Break(breakLabel)
-                ),
-                ExpressionEx.Console.Write("Queue Count: "),
-                ExpressionEx.Console.WriteLine(SelfEx.TemplateQueueCount(SelfVar)),
-                //Expression.Constant(SelfEx.DequeueTemplate(SelfVar)),
-                //ExpressionEx.Console.WriteLine(Expression.Call(SelfEx.DequeueTemplate(SelfVar), nameof(Template.Render), Type.EmptyTypes)),
-                ExpressionEx.Console.WriteLine(SelfEx.DequeueTemplate(SelfVar)),
-                ExpressionEx.Console.Write("Queue Count: "),
-                ExpressionEx.Console.WriteLine(SelfEx.TemplateQueueCount(SelfVar))
-            );
-
-            var loop = Expression.Loop(loopBody, breakLabel);
-
-            return Expression.Block(
-                initialTemplate.Concat(loop).Concat(Expression.Constant(""))
-            );
-        }
 
         public Expression Transform(ForNode item)
         {
@@ -208,18 +182,6 @@ namespace Obsidian.Transforming
             return ExpressionEx.Console.WriteLine($"ITEM: {item.GetType().Name} : {item}");
         }
 
-        public Expression Transform(BlockNode item)
-        {
-            PushScope($"Block: {item.Name}");
-            var children = TransformAll(item.Children).ToArray();
-            var block = PopScope($"Block: {item.Name}", children);
-
-            var addBlockToSelf = SelfEx.AddBlock(SelfVar, item.Name, block);
-
-            return Expression.Block(addBlockToSelf, IfRenderMode(block, Expression.Empty()));
-            
-        }
-
         //public Expression Transform(BlockNode item)
         //{
         //    ExpressionData MakeCompiledNode()
@@ -259,45 +221,84 @@ namespace Obsidian.Transforming
         //    );
         //}
 
+
+        public Expression Transform(TemplateNode item)
+        {
+            var initialTemplate = TransformAll(item.Children).Concat(Expression.Constant(string.Empty));
+
+            var breakLabel = Expression.Label("breakLoop");
+
+            var loopBody = Expression.Block(
+                Expression.IfThen(
+                    Expression.Equal(SelfEx.TemplateQueueCount(SelfVar), Expression.Constant(0)),
+                    Expression.Break(breakLabel)
+                ),
+                ExpressionEx.Console.Write("Queue Count: "),
+                ExpressionEx.Console.WriteLine(SelfEx.TemplateQueueCount(SelfVar)),
+                //Expression.Constant(SelfEx.DequeueTemplate(SelfVar)),
+                ExpressionEx.Console.WriteLine(
+                    Expression.Call(typeof(Test).GetMethod(nameof(Test.Something)), SelfEx.DequeueTemplate(SelfVar))
+                ),
+                //ExpressionEx.Console.WriteLine(SelfEx.DequeueTemplate(SelfVar)),
+                ExpressionEx.Console.Write("Queue Count: "),
+                ExpressionEx.Console.WriteLine(SelfEx.TemplateQueueCount(SelfVar))
+            );
+
+            var loop = Expression.Loop(loopBody, breakLabel);
+
+            return Expression.Block(
+                initialTemplate.Concat(loop).Concat(Expression.Constant(""))
+            );
+        }
+
+
+        public Expression Transform(BlockNode item)
+        {
+            PushScope($"Block: {item.Name}");
+            var children = TransformAll(item.Children).ToArray();
+            var block = PopScope($"Block: {item.Name}", children);
+
+            var addBlockToSelf = SelfEx.AddBlock(SelfVar, item.Name, block);
+
+            return Expression.Block(addBlockToSelf, IfRenderMode(block, Expression.Empty()));
+
+        }
+
         public Expression Transform(ExtendsNode item)
         {
             Expression expr;
-            if(Environment.Evaluation.IsLiteralValue(item.TemplateName))
-            {
-                // Since we're only evaluating this to get the name of the template, we don't need to pass in a scope to Evaluation.
-                var parsedTemplateName = Environment.Evaluation.Evaluate(item.TemplateName)?.ToString() ?? string.Empty;
+            if (Environment.Evaluation.IsLiteralValue(item.TemplateName) == false) throw new NotImplementedException();
+            // Since we're only evaluating this to get the name of the template, we don't need to pass in a scope to Evaluation.
+            var parsedTemplateName = Environment.Evaluation.Evaluate(item.TemplateName)?.ToString() ?? string.Empty;
 
 
-                // For *TEMPLATES*, we pass in stringBuilder and self as parameters, as well as any globals.
+            // For *TEMPLATES*, we pass in stringBuilder and self as parameters, as well as any globals.
 
-                //var internalScope = CurrentScope.FindScope(SCOPE_NAME_INTERNAL);
-                //var rootScope = CurrentScope.FindRootScope();
-                //var scopeName = string.Format(CultureInfo.InvariantCulture, SCOPE_NAME_TEMPLATE, parsedTemplateName);
-                //var templateScope = Scope.CreateDerivedRootScope(scopeName, internalScope, rootScope);
+            //var internalScope = CurrentScope.FindScope(SCOPE_NAME_INTERNAL);
+            //var rootScope = CurrentScope.FindRootScope();
+            //var scopeName = string.Format(CultureInfo.InvariantCulture, SCOPE_NAME_TEMPLATE, parsedTemplateName);
+            //var templateScope = Scope.CreateDerivedRootScope(scopeName, internalScope, rootScope);
 
-                //expr = Expression.Constant(Environment.GetTemplate(parsedTemplateName, templateScope));
-                expr = Environment.GetTemplateExpression(parsedTemplateName, CurrentScope);
-            }
-            else
-            {
-                expr = item.Template.Transform(this);
-            }
+            //expr = Expression.Constant(Environment.GetTemplate(parsedTemplateName, templateScope));
+            expr = Environment.GetTemplateExpression(parsedTemplateName, CurrentScope);
 
 
 
-            //var quoted = Expression.Quote(Expression.Lambda(expr));
-            //return Expression.Block(
-            //    ExpressionEx.Console.Write("Template Queue:   "),
-            //    ExpressionEx.Console.WriteLine(SelfEx.TemplateQueueCount(SelfVar)),
-            //    ExpressionEx.Console.WriteLine("Adding to queue"),
-            //    SelfEx.EnqueueIntoTemplateQueue(SelfVar, expr),
-            //    //SelfEx.EnqueueIntoTemplateQueue(SelfVar, quoted),
-            //    ExpressionEx.Console.Write("Template Queue:   "),
-            //    ExpressionEx.Console.WriteLine(SelfEx.TemplateQueueCount(SelfVar)),
-            //    SelfEx.SetRenderMode(SelfVar, RenderMode.ParentAtCompletion),
-            //    ExpressionEx.Console.Write("Setting render mode...   "),
-            //    ExpressionEx.Console.WriteLine(SelfEx.RenderMode(SelfVar))
-            //);
+
+
+            var quoted = Expression.Quote(Expression.Lambda(expr));
+            return Expression.Block(
+                ExpressionEx.Console.Write("Template Queue:   "),
+                ExpressionEx.Console.WriteLine(SelfEx.TemplateQueueCount(SelfVar)),
+                ExpressionEx.Console.WriteLine("Adding to queue"),
+                //SelfEx.EnqueueIntoTemplateQueue(SelfVar, expr),
+                SelfEx.EnqueueIntoTemplateQueue(SelfVar, quoted),
+                ExpressionEx.Console.Write("Template Queue:   "),
+                ExpressionEx.Console.WriteLine(SelfEx.TemplateQueueCount(SelfVar)),
+                SelfEx.SetRenderMode(SelfVar, RenderMode.ParentAtCompletion),
+                ExpressionEx.Console.Write("Setting render mode...   "),
+                ExpressionEx.Console.WriteLine(SelfEx.RenderMode(SelfVar))
+            );
 
         }
         private Expression IfRenderMode(Expression direct, Expression parentAtCompletion)
