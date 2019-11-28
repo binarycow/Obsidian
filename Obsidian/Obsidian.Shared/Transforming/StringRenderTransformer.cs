@@ -103,7 +103,7 @@ namespace Obsidian.Transforming
 
         public string Transform(NewLineNode item)
         {
-            //if (item.ControlMode == WhiteSpaceControl.WhiteSpaceControlMode.Trim) return string.Empty;
+            if (item.ControlMode == WhiteSpaceControl.WhiteSpaceControlMode.Trim) return string.Empty;
             if (!(ShouldRender && _EncounteredOutputStyleBlock)) return string.Empty;
             _EncounteredOutputStyleBlock = true;
             _StringBuilder.Append(item.ToString());
@@ -120,7 +120,7 @@ namespace Obsidian.Transforming
 
         public string Transform(WhiteSpaceNode item)
         {
-            //if (item.WhiteSpaceControlMode == WhiteSpaceControl.WhiteSpaceControlMode.Trim) return string.Empty;
+            if (item.WhiteSpaceControlMode == WhiteSpaceControl.WhiteSpaceControlMode.Trim) return string.Empty;
             _EncounteredOutputStyleBlock = true;
             if (!(ShouldRender && _EncounteredOutputStyleBlock)) return string.Empty;
             _StringBuilder.Append(item.ToString());
@@ -184,6 +184,11 @@ namespace Obsidian.Transforming
         {
             foreach (var item in items)
                 item.Transform(this);
+            return string.Empty;
+        }
+
+        public string Transform(EmptyNode emptyNode)
+        {
             return string.Empty;
         }
     }

@@ -10,119 +10,96 @@ using Obsidian.Transforming;
 
 namespace Obsidian.WhiteSpaceControl
 {
-    public class ManualTrimBeforeVisitor : ITransformVisitor<ASTNode>
+    public class ManualTrimBeforeVisitor : ITransformVisitor<IEnumerable<ASTNode>>
     {
         public static Lazy<ManualTrimBeforeVisitor> _Instance = new Lazy<ManualTrimBeforeVisitor>();
         public static ManualTrimBeforeVisitor Instance => _Instance.Value;
-        public ASTNode Transform(ForNode item)
+
+        private Queue<ASTNode> _PendingWhiteSpace = new Queue<ASTNode>();
+
+        public IEnumerable<ASTNode> Transform(TemplateNode item)
         {
-            if (item.PrimaryBlock.Transform(this).TryConvert<ContainerNode>(out var primaryBlock) == false)
-            {
-                throw new NotImplementedException();
-            }
-            var elseBlock = item.ElseBlock?.Transform(this) as ContainerNode;
-            return new ForNode(primaryBlock, elseBlock, item.VariableNames, item.Expression, item.StartWhiteSpace, item.EndWhiteSpace);
+            yield return new TemplateNode(TransformAll(item.Children));
         }
 
-
-        public ASTNode Transform(TemplateNode item)
+        public IEnumerable<ASTNode> Transform(EmptyNode emptyNode)
         {
-            var children = new Queue<ASTNode>();
-            var trim = true;
-            foreach (var child in item.Children)
-            {
-                switch (child)
-                {
-                    case WhiteSpaceNode whiteSpaceNode:
-                    case NewLineNode newLineNode:
-                        if (trim == false)
-                        {
-                            children.Enqueue(child.Transform(this));
-                        }
-                        break;
-                    default:
-                        trim = false;
-                        children.Enqueue(child.Transform(this));
-                        break;
-                }
-            }
-            return new TemplateNode(children);
+            throw new NotImplementedException();
         }
-        public ASTNode Transform(ContainerNode item)
+
+        public IEnumerable<ASTNode> Transform(ForNode item)
         {
-            var children = new Queue<ASTNode>();
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<ASTNode> Transform(ContainerNode item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<ASTNode> Transform(ExpressionNode item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<ASTNode> Transform(NewLineNode item)
+        {
+            _PendingWhiteSpace.Enqueue(item);
+            yield break;
+        }
+
+        public IEnumerable<ASTNode> Transform(OutputNode item)
+        {
+            yield return item;
+        }
+
+        public IEnumerable<ASTNode> Transform(WhiteSpaceNode item)
+        {
+            _PendingWhiteSpace.Enqueue(item);
+            yield break;
+        }
+
+        public IEnumerable<ASTNode> Transform(IfNode item)
+        {
             if (item.StartWhiteSpace != WhiteSpaceControlMode.Trim)
             {
-                foreach (var child in item.Children)
-                {
-                    children.Enqueue(child.Transform(this));
-                }
+                foreach (var ws in _PendingWhiteSpace) yield return ws;
             }
-            else
+            _PendingWhiteSpace.Clear();
+
+            yield return new IfNode(item.Conditions.Select(child => child.Transform(this).First() as ConditionalNode), item.StartWhiteSpace, item.EndWhiteSpace);
+        }
+
+        public IEnumerable<ASTNode> Transform(ConditionalNode item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<ASTNode> Transform(CommentNode item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<ASTNode> Transform(BlockNode item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<ASTNode> Transform(ExtendsNode item)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        private IEnumerable<ASTNode> TransformAll(IEnumerable<ASTNode> items)
+        {
+            foreach(var item in items)
             {
-                var trim = true;
-                foreach (var child in item.Children)
+                foreach(var child in item.Transform(this))
                 {
-                    switch (child)
-                    {
-                        case WhiteSpaceNode whiteSpaceNode:
-                        case NewLineNode newLineNode:
-                            if(trim == false)
-                            {
-                                children.Enqueue(child.Transform(this));
-                            }
-                            break;
-                        default:
-                            trim = false;
-                            children.Enqueue(child.Transform(this));
-                            break;
-                    }
+                    yield return child;
                 }
             }
-            return new ContainerNode(children, item.StartWhiteSpace, item.EndWhiteSpace);
-        }
-
-        public ASTNode Transform(ExpressionNode item)
-        {
-            return item;
-        }
-
-        public ASTNode Transform(NewLineNode item)
-        {
-            return item;
-        }
-
-        public ASTNode Transform(OutputNode item)
-        {
-            return item;
-        }
-
-        public ASTNode Transform(WhiteSpaceNode item)
-        {
-            return item;
-        }
-
-        public ASTNode Transform(IfNode item)
-        {
-            return item;
-        }
-        public ASTNode Transform(BlockNode item)
-        {
-            return item;
-        }
-
-        public ASTNode Transform(ConditionalNode item)
-        {
-            return item;
-        }
-
-        public ASTNode Transform(CommentNode item)
-        {
-            return item;
-        }
-        public ASTNode Transform(ExtendsNode item)
-        {
-            return item;
         }
     }
 }

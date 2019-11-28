@@ -14,6 +14,7 @@ namespace Obsidian.Transforming
         TOutput Transform(ForNode item, bool force);
         TOutput Transform(ContainerNode item, bool force);
         TOutput Transform(ExpressionNode item, bool force);
+        TOutput Transform(EmptyNode emptyNode, bool force);
         TOutput Transform(NewLineNode item, bool force);
         TOutput Transform(OutputNode item, bool force);
         TOutput Transform(WhiteSpaceNode item, bool force);

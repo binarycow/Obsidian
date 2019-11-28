@@ -13,6 +13,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)AST\ASTNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\AbstractContainerNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\ContainerNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\EmptyNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\ExpressionNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\MiscNodes\CommentNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\MiscNodes\ConditionalNode.cs" />

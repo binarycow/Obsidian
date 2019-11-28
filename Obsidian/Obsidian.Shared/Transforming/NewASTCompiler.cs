@@ -312,5 +312,10 @@ namespace Obsidian.Transforming
                 parentAtCompletion
             );
         }
+
+        public Expression Transform(EmptyNode emptyNode)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

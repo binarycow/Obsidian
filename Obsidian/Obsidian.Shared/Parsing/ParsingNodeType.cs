@@ -13,5 +13,6 @@ namespace Obsidian.Parsing
         Expression,
         Output,
         Comment,
+        Empty,
     }
 }

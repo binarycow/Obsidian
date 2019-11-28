@@ -161,6 +161,11 @@ namespace Obsidian.Transforming
         {
             throw new NotImplementedException();
         }
+
+        public IEnumerable<RenderObj> Transform(EmptyNode emptyNode)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }

@@ -24,11 +24,13 @@ namespace Obsidian.Transforming
 
         public virtual ASTNode Transform(ForNode item)
         {
-            var primaryBlock = new ContainerNode(TransformAll(item.PrimaryBlock.Children), item.PrimaryBlock.StartWhiteSpace, item.PrimaryBlock.EndWhiteSpace);
+            var primaryBlock = item.PrimaryBlock.Transform(this) as ContainerNode;
+            if (primaryBlock == default) throw new NotImplementedException();
             ContainerNode? elseBlock = null;
             if(item.ElseBlock != null)
             {
-                elseBlock = new ContainerNode(TransformAll(item.ElseBlock.Children), item.ElseBlock.StartWhiteSpace, item.ElseBlock.EndWhiteSpace);
+                elseBlock = item.ElseBlock.Transform(this) as ContainerNode;
+                if (elseBlock == default) throw new NotImplementedException();
             }
             return new ForNode(primaryBlock, elseBlock, item.VariableNames, item.Expression, item.StartWhiteSpace, item.EndWhiteSpace);
         }
@@ -81,6 +83,11 @@ namespace Obsidian.Transforming
         }
 
         public virtual ASTNode Transform(ExtendsNode item)
+        {
+            return item;
+        }
+
+        public ASTNode Transform(EmptyNode item)
         {
             return item;
         }

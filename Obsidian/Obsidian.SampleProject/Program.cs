@@ -26,7 +26,7 @@ namespace Obsidian.SampleProject
             //AutomaticTest(TestRunner.TestItems["Feature Tests"]["For Loop Variables"]);
             //AutomaticTest(TestRunner.TestItems["Other Tests"]["Test1"]);
             //AutomaticTest(TestRunner.TestItems["Other Tests"]["Test2"]);
-            //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["Defaults"]);
+            AutomaticTest(TestRunner.TestItems["WhiteSpace"]["Defaults"]);
             //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["TrimBlocks"]);
             //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["LStrip"]);
             //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["LStrip And Trim"]);
@@ -45,9 +45,9 @@ namespace Obsidian.SampleProject
             TestRunner.TestTemplate(test, out var actualOutput, out var expectedOutput);
 
             Console.WriteLine("==================================== ACTUAL =====================================");
-            Console.WriteLine(actualOutput);
+            WriteLines(actualOutput);
             Console.WriteLine("=================================== EXPECTED ====================================");
-            Console.WriteLine(expectedOutput);
+            WriteLines(expectedOutput);
             Console.WriteLine("=================================================================================");
             Console.WriteLine();
             WriteMatchResultInteger("Character Count", actualOutput.Length, expectedOutput.Length);
@@ -58,9 +58,17 @@ namespace Obsidian.SampleProject
             Console.WriteLine("=================================================================================");
 
 
+            void WriteLines(string text)
+            {
+                foreach(var line in text.Split('\n'))
+                {
+                    Console.WriteLine($"|{line}|");
+                }
+            }
+
             int LineCount(string str)
             {
-                return str.Split('\n', StringSplitOptions.None).Length;
+                return str.Split('\n').Length;
             }
 
             void WriteMatchResultOverall(string actual, string expected)

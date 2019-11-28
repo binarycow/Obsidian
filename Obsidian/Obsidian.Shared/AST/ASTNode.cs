@@ -46,15 +46,12 @@ namespace Obsidian.AST
             var tokens = lexer.Tokenize(templateText).ToArray();
             var parsed = Parser.Parse(tokens).ToArray();
             var environmentTrimmed = EnvironmentTrimming.EnvironmentTrim(parsed, environment.Settings).ToArray();
-            var templateNode = ASTGenerator.ParseTemplate(environmentTrimmed);
-            var commentsRemoved = templateNode.Transform(CommentRemoverTransformer.Instance);
-            var controlledWhiteSpace = WhiteSpaceController.ControlWhiteSpace(commentsRemoved);
-            var containerAssembled = controlledWhiteSpace.Transform(TemplateContainerAssembler.Instance);
+            ASTNode templateNode = ASTGenerator.ParseTemplate(environmentTrimmed);
+            templateNode = templateNode.Transform(CommentRemoverTransformer.Instance);
+            templateNode = WhiteSpaceController.ControlWhiteSpace(templateNode);
+            //templateNode = templateNode.Transform(TemplateContainerAssembler.Instance);
 
             return templateNode;
-
-
-            //return containerAssembled;
         }
     }
 }

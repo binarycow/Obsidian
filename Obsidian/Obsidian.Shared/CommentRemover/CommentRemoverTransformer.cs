@@ -88,5 +88,10 @@ namespace Obsidian.CommentRemover
         {
             return item;
         }
+
+        public ASTNode Transform(EmptyNode emptyNode)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
