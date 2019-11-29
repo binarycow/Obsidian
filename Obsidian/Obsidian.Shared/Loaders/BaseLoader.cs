@@ -6,9 +6,9 @@ namespace Obsidian
     {
         public abstract TemplateInfo GetSource(JinjaEnvironment environment, string templateName);
 
-        private Dictionary<string, Template> _TemplateCache = new Dictionary<string, Template>();
+        private Dictionary<string, ITemplate> _TemplateCache = new Dictionary<string, ITemplate>();
 
-        public Template Load(JinjaEnvironment environment, string name, IDictionary<string, object?> variableTemplate)
+        public ITemplate Load(JinjaEnvironment environment, string name, IDictionary<string, object?> variableTemplate)
         {
             var templateInfo = GetSource(environment, name);
             if(_TemplateCache.ContainsKey(name) == false || templateInfo.UpToDate == false)

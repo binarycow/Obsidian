@@ -27,8 +27,17 @@ namespace ExpressionParser
         public Lexer Lexer { get; }
         public Parser Parser { get; }
 
+        public object? EvaluateDynamic<TScope, TRootScope>(string expressionText, ScopeStack<TScope, TRootScope> scopeStack) 
+            where TScope : DynamicScope
+            where TRootScope : TScope
+        {
+            var tokens = Lexer.Tokenize(expressionText).ToArray();
+            var astNode = Parser.Parse(tokens);
+            var transformer = new DynamicTransformer<TScope, TRootScope>(scopeStack, LanguageDefinition);
+            return astNode.Transform(transformer);
+        }
 
-        public Expression ToExpression(string expressionText, IScope scope)
+        public Expression ToExpression(string expressionText, CompiledScope scope)
         {
             var tokens = Lexer.Tokenize(expressionText).ToArray();
             var astNode = Parser.Parse(tokens);
@@ -49,28 +58,26 @@ namespace ExpressionParser
             }
         }
 
-        public ExpressionData Compile(string expressionText, IScope scope)
+        public ExpressionData Compile(string expressionText, CompiledScope scope)
         {
             var expression = ToExpression(expressionText, scope);
             return ExpressionData.CreateCompiled(expression, scope);
         }
-        public ExpressionData Dynamic(string expressionText, IScope scope)
+        public ExpressionData Dynamic(string expressionText, CompiledScope scope)
         {
             var expression = ToExpression(expressionText, scope);
             return ExpressionData.CreateDynamic(expression, scope);
         }
 
-
-
         public T EvaluateAs<T>(string expressionText, IDictionary<string, object?> variables)
         {
-            var rootScope = Scope.CreateRootScope("root", variables);
+            var rootScope = CompiledScope.CreateRootScope("root", variables);
             var data = Dynamic(expressionText, rootScope);
             return data.EvaluateAs<T>(variables);
         }
         public object? Evaluate(string expressionText, IDictionary<string, object?> variables)
         {
-            var rootScope = Scope.CreateRootScope("root", variables);
+            var rootScope = CompiledScope.CreateRootScope("root", variables);
             var data = Dynamic(expressionText, rootScope);
             return data.Evaluate(variables);
         }

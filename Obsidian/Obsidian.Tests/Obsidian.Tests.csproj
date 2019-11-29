@@ -16,7 +16,7 @@
 
   <ItemGroup>
     <PackageReference Include="ExpressionTreeToString" Version="1.5.65" />
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.7">
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -30,6 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Obsidian.TestCore\Obsidian.TestCore.csproj" />
     <ProjectReference Include="..\Obsidian\Obsidian.csproj" />
   </ItemGroup>
 

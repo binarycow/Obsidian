@@ -8,7 +8,7 @@ using Obsidian.AST.Nodes.Statements;
 
 namespace Obsidian
 {
-    public class Self
+    public class CompiledSelf
     {
         public RenderMode RenderMode { get; set; } = RenderMode.Direct;
         private Dictionary<string, List<Block>> Blocks { get; } = new Dictionary<string, List<Block>>();

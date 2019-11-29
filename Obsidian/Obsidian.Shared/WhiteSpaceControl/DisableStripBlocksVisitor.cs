@@ -207,5 +207,10 @@ namespace Obsidian.WhiteSpaceControl
         {
             throw new NotImplementedException();
         }
+
+        public ASTNode Transform(EmptyNode emptyNode)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

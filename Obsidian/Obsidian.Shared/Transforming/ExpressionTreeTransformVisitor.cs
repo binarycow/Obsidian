@@ -80,5 +80,10 @@ namespace Obsidian.Transforming
         {
             throw new NotImplementedException();
         }
+
+        public Expression Transform(EmptyNode emptyNode)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

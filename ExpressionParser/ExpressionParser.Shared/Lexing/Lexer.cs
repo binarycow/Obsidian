@@ -109,36 +109,42 @@ namespace ExpressionParser.Lexing
         public virtual bool TryReadOperator(ILookaroundEnumerator<char> enumerator, [NotNullWhen(true)]out Token? token)
         {
             token = default;
-            var possibleOperator = _Operators.Keys.Where(operatorArr => operatorArr[0] == enumerator.Current).ToArray();
-            if (possibleOperator.Length == 0)
+            var initialPossibleOperators = _Operators.Keys.Where(operatorArr => operatorArr[0] == enumerator.Current).ToArray();
+            if (initialPossibleOperators.Length == 0)
             {
                 return false;
             }
-            var skipCount = 1;
-            var currentLength = 1;
-            for (; skipCount < _LookaheadCount; ++skipCount)
-            {
-                if (enumerator.TryGetNext(out var nextChar, skipCount) == false)
-                {
-                    break;
-                }
-                var newPossibleOperators = possibleOperator.Where(operatorArr => skipCount < operatorArr.Length && operatorArr[skipCount] == nextChar).ToArray();
-                if (newPossibleOperators.Length == 0)
-                {
-                    //--skipCount;
-                    break;
-                }
-                possibleOperator = newPossibleOperators;
-                ++currentLength;
-            }
-            possibleOperator = possibleOperator.Where(operatorArr => operatorArr.Length == currentLength).ToArray();
 
-            if (possibleOperator.Length == 1)
+            List<char[]> possibleOperators = new List<char[]>();
+            foreach(var op in initialPossibleOperators.OrderByDescending(x => x.Length))
             {
-                token = new Token(TokenType.Operator, enumerator.Read(currentLength));
-                return true;
+                if(op[op.Length - 1].IsLetter())
+                {
+                    // If the operator ends in a letter (like "is") - then the *NEXT* char after it should _NOT_ be a letter.
+                    if(enumerator.TryGetNext(out var nextChar, op.Length) && nextChar.IsLetter())
+                    {
+                        continue; // Skip this operator - the next character is a letter, and can't properly terminate the operator
+                    }
+                }
+
+                var valid = true;
+                for (var index = op.Length - 1; index > 0; --index)
+                {
+                    if ((enumerator.TryGetNext(out var nextChar, index) == false) || nextChar != op[index])
+                    {
+                        valid = false;
+                        break;
+                    }
+                }
+                if (valid == false) continue;
+                if (enumerator.Current != op[0]) continue;
+                possibleOperators.Add(op);
             }
-            return false;
+            if (possibleOperators.Count == 0) return false;
+            if (possibleOperators.Count >= 2) throw new NotImplementedException();
+            token = new Token(TokenType.Operator, _Operators[possibleOperators[0]].Text);
+            enumerator.MoveNext(possibleOperators[0].Length - 1);
+            return true;
         }
         public virtual bool TryReadIdentifier(ILookaroundEnumerator<char> enumerator, [NotNullWhen(true)]out Token? token)
         {

@@ -62,12 +62,12 @@ namespace ExpressionParser
             throw new NotImplementedException();
         }
 
-        public static ExpressionData CreateCompiled(Expression expression, IScope scope)
+        public static ExpressionData CreateCompiled(Expression expression, CompiledScope scope)
         {
             return CreateDynamic(expression, scope);
         }
 
-        public static ExpressionData CreateDynamic(Expression expression, IScope scope)
+        public static ExpressionData CreateDynamic(Expression expression, CompiledScope scope)
         {
             var debug = expression.ToString("C#");
             var parameterExpressions = scope.Variables.ToArray();

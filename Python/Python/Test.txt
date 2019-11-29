@@ -1,0 +1,1 @@
+<!DOCTYPE html><htmllang="en"><head><linkrel="stylesheet"href="style.css"/><title>-MyWebpage</title></head><body><divid="content"></div><divid="footer">&copy;Copyright2008by<ahref="http://domain.invalid/">you</a>.</div></body></html>

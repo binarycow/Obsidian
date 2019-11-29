@@ -16,7 +16,7 @@ namespace Obsidian.AST.Nodes.MiscNodes
         {
             ControlMode = controlMode;
         }
-        public WhiteSpaceControlMode ControlMode { get; }
+        public WhiteSpaceControlMode ControlMode { get; set; }
 
         private string DebuggerDisplay => $"{nameof(NewLineNode)} : \"{ToString(debug: true)}\" Control: {ControlMode}";
         public override TOutput Transform<TOutput>(ITransformVisitor<TOutput> visitor)

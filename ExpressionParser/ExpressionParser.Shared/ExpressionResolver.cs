@@ -4,10 +4,15 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
+using ExpressionParser.Configuration;
+using ExpressionParser.References;
+using System.Linq;
+using Common;
+using ExpressionParser.Scopes;
 
 namespace ExpressionParser
 {
-    public static class Resolver
+    public static class ExpressionResolver
     {
 
 
@@ -49,5 +54,6 @@ namespace ExpressionParser
             propertyInfo = type.GetProperty("Item", indexArguments);
             return propertyInfo != null;
         }
+
     }
 }

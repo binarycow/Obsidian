@@ -13,33 +13,33 @@ namespace Obsidian.ExpressionCreators
     public static class SelfEx
     {
         private static Lazy<MethodInfo> _EnqueueTemplate = new Lazy<MethodInfo>(() =>
-            MethodLookups.GetMethod(typeof(Obsidian.Self), nameof(Obsidian.Self.EnqueueTemplate), new[] { typeof(Expression) }));
+            MethodLookups.GetMethod(typeof(Obsidian.CompiledSelf), nameof(Obsidian.CompiledSelf.EnqueueTemplate), new[] { typeof(Expression) }));
         private static Lazy<MethodInfo> _DequeueTemplate = new Lazy<MethodInfo>(() =>
-            MethodLookups.GetMethod(typeof(Obsidian.Self), nameof(Obsidian.Self.DequeueTemplate), Type.EmptyTypes));
+            MethodLookups.GetMethod(typeof(Obsidian.CompiledSelf), nameof(Obsidian.CompiledSelf.DequeueTemplate), Type.EmptyTypes));
         private static Lazy<MethodInfo> _AddBlock = new Lazy<MethodInfo>(() =>
-            MethodLookups.GetMethod(typeof(Obsidian.Self), nameof(Obsidian.Self.AddBlock), new[] { typeof(string), typeof(Expression) }));
+            MethodLookups.GetMethod(typeof(Obsidian.CompiledSelf), nameof(Obsidian.CompiledSelf.AddBlock), new[] { typeof(string), typeof(Expression) }));
         private static Lazy<MethodInfo> _GetBlock = new Lazy<MethodInfo>(() =>
-            MethodLookups.GetMethod(typeof(Obsidian.Self), nameof(Obsidian.Self.GetBlock), new[] { typeof(string) }));
+            MethodLookups.GetMethod(typeof(Obsidian.CompiledSelf), nameof(Obsidian.CompiledSelf.GetBlock), new[] { typeof(string) }));
 
         internal static Expression SetRenderMode(Expression self, RenderMode renderMode)
         {
             return Expression.Assign(
-                Expression.Property(self, nameof(Obsidian.Self.RenderMode)),
+                Expression.Property(self, nameof(Obsidian.CompiledSelf.RenderMode)),
                 Expression.Constant(renderMode)
             );
         }
         internal static Expression RenderMode(Expression self)
         {
-            return Expression.Property(self, nameof(Obsidian.Self.RenderMode));
+            return Expression.Property(self, nameof(Obsidian.CompiledSelf.RenderMode));
         }
         internal static Expression HasQueuedTemplates(Expression self)
         {
-            return Expression.Property(self, nameof(Obsidian.Self.HasQueuedTemplates));
+            return Expression.Property(self, nameof(Obsidian.CompiledSelf.HasQueuedTemplates));
         }
 
         internal static Expression TemplateQueueCount(Expression self)
         {
-            return Expression.Property(self, nameof(Obsidian.Self.TemplateQueueCount));
+            return Expression.Property(self, nameof(Obsidian.CompiledSelf.TemplateQueueCount));
         }
 
         internal static Expression DequeueTemplate(Expression self)

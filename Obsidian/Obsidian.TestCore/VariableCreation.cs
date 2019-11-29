@@ -4,13 +4,12 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.IO;
-using NUnit.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Common;
 using System.Collections;
 
-namespace Obsidian.Tests
+namespace Obsidian.TestCore
 {
     public static class VariableCreation
     {
@@ -120,8 +119,9 @@ namespace Obsidian.Tests
             return retVal;
         }
 
-        public static object ToObject(JValue value)
+        public static object? ToObject(JValue value)
         {
+            if (value == null) return null;
             return value.Type switch
             {
                 JTokenType.String => value.ToObject<string>(),

@@ -29,14 +29,14 @@ namespace Obsidian.Transforming
         public Expression SelfVar => CurrentScope[VARNAME_STRING_SELF];
         public Expression StringBuilderVar => CurrentScope[VARNAME_STRING_BUILDER];
 
-        internal static Expression ToExpression(string templateName, JinjaEnvironment environment, ASTNode node, out NewASTCompiler compiler, IScope rootScope)
+        internal static Expression ToExpression(string templateName, JinjaEnvironment environment, ASTNode node, out NewASTCompiler compiler, CompiledScope rootScope)
         {
             compiler = new NewASTCompiler(environment, rootScope);
             compiler.PushScope(SCOPE_NAME_INTERNAL);
             var internalVariableAssignments = new Expression[]
             {
                 CreateVariable(compiler, VARNAME_STRING_BUILDER, Expression.New(typeof(StringBuilder))),
-                CreateVariable(compiler, VARNAME_STRING_SELF, Expression.New(typeof(Self)))
+                CreateVariable(compiler, VARNAME_STRING_SELF, Expression.New(typeof(CompiledSelf)))
             };
             compiler.PushScope(string.Format(CultureInfo.InvariantCulture, SCOPE_NAME_TEMPLATE, templateName));
             var compiledNodes = node.Transform(compiler);
@@ -60,19 +60,19 @@ namespace Obsidian.Transforming
         }
 
 
-        private NewASTCompiler(JinjaEnvironment environment, IScope scope)
+        private NewASTCompiler(JinjaEnvironment environment, CompiledScope scope)
         {
             Environment = environment;
             _Scopes.Push(scope);
         }
 
         public JinjaEnvironment Environment { get; }
-        private Stack<IScope> _Scopes = new Stack<IScope>();
-        public IScope CurrentScope => _Scopes.Peek();
+        private Stack<CompiledScope> _Scopes = new Stack<CompiledScope>();
+        public CompiledScope CurrentScope => _Scopes.Peek();
 
         public void PushScope(string name)
         {
-            _Scopes.Push(CurrentScope.CreateChild(name));
+            _Scopes.Push(CurrentScope.CreateCompiledChild(name));
         }
         public BlockExpression PopScope(string name, Expression childOne, params Expression[] children)
         {
@@ -311,6 +311,11 @@ namespace Obsidian.Transforming
                 direct,
                 parentAtCompletion
             );
+        }
+
+        public Expression Transform(EmptyNode emptyNode)
+        {
+            throw new NotImplementedException();
         }
     }
 }

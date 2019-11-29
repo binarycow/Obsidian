@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Obsidian.Tests.Utilities;
+using Obsidian.TestCore;
 using NUnit.Framework;
 
 namespace Obsidian.Tests
@@ -13,12 +13,12 @@ namespace Obsidian.Tests
         [Test]
         public void Test1()
         {
-            TestRunner.TestTemplate(TestRunner.TestItems["Other Tests"]["Test1"]);
+            AssertWrapper.TestTemplate(TestRunner.TestItems["Other Tests"]["Test1"]);
         }
         [Test]
         public void Test2()
         {
-            TestRunner.TestTemplate(TestRunner.TestItems["Other Tests"]["Test2"]);
+            AssertWrapper.TestTemplate(TestRunner.TestItems["Other Tests"]["Test2"]);
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Obsidian.Tests
+namespace Obsidian.TestCore
 {
     public abstract class Item : INotifyPropertyChanged
     {

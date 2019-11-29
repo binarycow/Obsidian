@@ -13,7 +13,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)AST\ASTNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\AbstractContainerNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\ContainerNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\EmptyNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\ExpressionNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\IWhiteSpaceControlled.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\IWhiteSpaceControlling.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\IWithChildren.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\MiscNodes\CommentNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\MiscNodes\ConditionalNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\Statements\ExtendsNode.cs" />
@@ -27,7 +31,13 @@
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\TemplateNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Block.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CommentRemover\CommentRemoverTransformer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicRootContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ITemplate.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSelf.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SpecialVariableInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Templates\CompiledTemplate.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Templates\DynamicTemplate.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Test.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\ASTCompiler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EnvironmentSettings.cs" />
@@ -59,8 +69,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Rendering\Visitors\IRenderVisitor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Rendering\Visitors\StringRenderVisitor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RenderMode.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Self.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Template.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CompiledSelf.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Transforming\WhiteSpaceCounterVisitor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TemplateInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TemporaryStuff\RuntimeScope.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\BaseASTTransformer.cs" />
@@ -71,6 +81,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\ITransformVisitor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\NewASTCompiler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\ReflectionVisitor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Transforming\StringRenderTransformer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\TemplateContainerAssembler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)VariableSetterWalker.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\DisableStripBlocksVisitor.cs" />

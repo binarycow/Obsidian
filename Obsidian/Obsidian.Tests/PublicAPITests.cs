@@ -6,7 +6,8 @@ using System.Reflection;
 using System.Text;
 using Newtonsoft.Json;
 using NUnit.Framework;
-using Obsidian.Tests.Utilities;
+using Obsidian.Templates;
+using Obsidian.TestCore;
 
 namespace Obsidian.Tests
 {
@@ -126,7 +127,7 @@ namespace Obsidian.Tests
         public void TestAPI()
         {
             var actualPath = TestRunner.APIInfo_Actual;
-            var results = typeof(Template).Assembly.GetTypes().Where(type => type.IsPublic || type.IsNestedPublic).Select(GetTypeInfo).ToArray();
+            var results = typeof(CompiledTemplate).Assembly.GetTypes().Where(type => type.IsPublic || type.IsNestedPublic).Select(GetTypeInfo).ToArray();
             File.WriteAllText(actualPath, JsonConvert.SerializeObject(results, Formatting.Indented));
             Assert.Fail();
         }
