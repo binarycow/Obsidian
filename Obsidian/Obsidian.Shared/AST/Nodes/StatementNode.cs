@@ -11,7 +11,7 @@ using Obsidian.WhiteSpaceControl;
 
 namespace Obsidian.AST.Nodes
 {
-    public abstract class StatementNode : ASTNode
+    public abstract class StatementNode : ASTNode, IWhiteSpaceControlling, IWithChildren
     {
         public StatementNode(IEnumerable<ASTNode> children, WhiteSpaceControlMode startWhiteSpace, WhiteSpaceControlMode endWhiteSpace) : base(children.SelectMany(child => child.ParsingNodes))
         {

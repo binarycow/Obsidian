@@ -29,17 +29,23 @@ namespace Obsidian.WhiteSpaceControl
 
         public IEnumerable<ASTNode> Transform(ForNode item)
         {
-            throw new NotImplementedException();
+            var whiteSpace = WhiteSpaceIfNotTrimmed(item).ToArray();
+            var primaryBlock = item.PrimaryBlock.Transform(this).OfType<ContainerNode>().First();
+            var elseBlock = item.ElseBlock?.Transform(this).OfType<ContainerNode>().First();
+            var forNode = new ForNode(primaryBlock, elseBlock, item.VariableNames, item.Expression, item.StartWhiteSpace, item.EndWhiteSpace);
+            return whiteSpace.Concat(forNode);
         }
 
         public IEnumerable<ASTNode> Transform(ContainerNode item)
         {
-            throw new NotImplementedException();
+            var whiteSpace = WhiteSpaceIfNotTrimmed(item).ToArray();
+            var newNode = new ContainerNode(TransformAll(item.Children), item.StartWhiteSpace, item.EndWhiteSpace);
+            return whiteSpace.Concat(newNode);
         }
 
         public IEnumerable<ASTNode> Transform(ExpressionNode item)
         {
-            throw new NotImplementedException();
+            yield return item;
         }
 
         public IEnumerable<ASTNode> Transform(NewLineNode item)
@@ -61,18 +67,20 @@ namespace Obsidian.WhiteSpaceControl
 
         public IEnumerable<ASTNode> Transform(IfNode item)
         {
-            if (item.StartWhiteSpace != WhiteSpaceControlMode.Trim)
-            {
-                foreach (var ws in _PendingWhiteSpace) yield return ws;
-            }
-            _PendingWhiteSpace.Clear();
+            var whiteSpace = WhiteSpaceIfNotTrimmed(item).ToArray();
 
-            yield return new IfNode(item.Conditions.Select(child => child.Transform(this).First() as ConditionalNode), item.StartWhiteSpace, item.EndWhiteSpace);
+            var newNode = new IfNode(
+                item.Conditions.Select(child => child.Transform(this).OfType<ConditionalNode>().First()),
+                    item.StartWhiteSpace, item.EndWhiteSpace);
+            return whiteSpace.Concat(newNode).ToArray();
         }
 
         public IEnumerable<ASTNode> Transform(ConditionalNode item)
         {
-            throw new NotImplementedException();
+            var whiteSpace = WhiteSpaceIfNotTrimmed(item).ToArray();
+            var newNode = new ConditionalNode(item.Expression, TransformAll(item.Children),
+                    item.StartWhiteSpace, item.EndWhiteSpace);
+            return whiteSpace.Concat(newNode).ToArray();
         }
 
         public IEnumerable<ASTNode> Transform(CommentNode item)
@@ -88,6 +96,16 @@ namespace Obsidian.WhiteSpaceControl
         public IEnumerable<ASTNode> Transform(ExtendsNode item)
         {
             throw new NotImplementedException();
+        }
+
+
+        private IEnumerable<ASTNode> WhiteSpaceIfNotTrimmed<T>(T item) where T : IWhiteSpaceControlling
+        {
+            if (item.StartWhiteSpace != WhiteSpaceControlMode.Trim)
+            {
+                foreach (var ws in _PendingWhiteSpace) yield return ws;
+            }
+            _PendingWhiteSpace.Clear();
         }
 
 

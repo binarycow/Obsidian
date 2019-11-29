@@ -6,7 +6,7 @@ using Obsidian.WhiteSpaceControl;
 
 namespace Obsidian.AST.Nodes
 {
-    public abstract class AbstractContainerNode : ASTNode
+    public abstract class AbstractContainerNode : ASTNode, IWhiteSpaceControlling, IWithChildren
     {
         public AbstractContainerNode(IEnumerable<ASTNode> children, WhiteSpaceControlMode startWhiteSpace, WhiteSpaceControlMode endWhiteSpace)
             : base(children.SelectMany(child => child.ParsingNodes))
