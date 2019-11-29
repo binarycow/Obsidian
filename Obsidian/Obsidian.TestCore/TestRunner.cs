@@ -33,7 +33,7 @@ namespace Obsidian.TestCore
             var actualFile = Path.Combine(TestDataRoot, testInfo.RootPath, testInfo.ActualFile);
             expectedOutput = File.ReadAllText(Path.Combine(TestDataRoot, testInfo.RootPath, testInfo.ExpectedFile));
             var variables = new Dictionary<string, object?>();
-            if(testInfo.VariablesFile != null)
+            if (testInfo.VariablesFile != null)
             {
                 variables = VariableCreation.GetVariables(Path.Combine(TestDataRoot, testInfo.RootPath, testInfo.VariablesFile));
             }
@@ -48,6 +48,19 @@ namespace Obsidian.TestCore
             actualOutput = template.Render(variables);
             expectedOutput = expectedOutput.Replace("\r\n", "\n");
             File.WriteAllText(actualFile, actualOutput);
+        }
+
+        public static void CheckOriginalText(Item test, out string actualOutput, out string expectedOutput)
+        {
+            var testInfo = test as Test;
+            var inputFile = Path.Combine(TestDataRoot, testInfo.RootPath, testInfo.InputFile);
+            var actualFile = Path.Combine(TestDataRoot, testInfo.RootPath, testInfo.ActualFile);
+            expectedOutput = File.ReadAllText(inputFile);
+            var environment = new JinjaEnvironment
+            {
+                Loader = new FileSystemLoader(searchPath: Path.GetDirectoryName(inputFile)!)
+            };
+            actualOutput = environment.CheckOriginalText(Path.GetFileName(inputFile));
         }
 
 

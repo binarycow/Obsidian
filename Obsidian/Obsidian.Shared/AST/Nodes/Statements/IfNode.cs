@@ -9,15 +9,14 @@ using Obsidian.AST.Nodes.MiscNodes;
 using Obsidian.Lexing;
 using Obsidian.Parsing;
 using Obsidian.Transforming;
-using Obsidian.WhiteSpaceControl;
 
 namespace Obsidian.AST.Nodes.Statements
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public class IfNode : StatementNode
     {
-        public IfNode(IEnumerable<ConditionalNode> conditions, WhiteSpaceControlMode startWhiteSpace, WhiteSpaceControlMode endWhiteSpace)
-            : base(conditions, startWhiteSpace, endWhiteSpace)
+        public IfNode(ParsingNode? startParsingNode, IEnumerable<ConditionalNode> conditions, ParsingNode? endParsingNode)
+            : base(startParsingNode, conditions, endParsingNode)
         {
             Conditions = conditions.ToArrayWithoutInstantiation();
         }
@@ -30,51 +29,50 @@ namespace Obsidian.AST.Nodes.Statements
             return visitor.Transform(this);
         }
 
+        public override void Transform(ITransformVisitor visitor)
+        {
+            visitor.Transform(this);
+        }
         public override TOutput Transform<TOutput>(IForceTransformVisitor<TOutput> visitor, bool force)
         {
             return visitor.Transform(this, force);
         }
         public static bool TryParseIf(ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
         {
-            WhiteSpaceControlMode previousConditionBlockEndWhiteSpace;
-            WhiteSpaceControlMode currentConditionBlockStartWhiteSpace;
-
             var conditions = new Queue<ConditionalNode>();
             parsedNode = default;
-            if (IfNodeParser.TryParseConditionBlock(enumerator.Current, TokenTypes.Keyword_If, out var outerBlockStartWhiteSpace,
-                out var previousConditionBlockStartWhiteSpace, out var previousBlockExpression) == false)
+            if (IfNodeParser.TryParseConditionBlock(enumerator.Current, TokenTypes.Keyword_If, out var previousBlockExpression) == false)
             {
                 return false;
             }
+            var startParsingNode = enumerator.Current;
             enumerator.MoveNext();
             var blockChildren = ASTGenerator.ParseUntilFailure(enumerator).ToArray();
 
-            while (IfNodeParser.TryParseConditionBlock(enumerator.Current, TokenTypes.Keyword_Elif, out previousConditionBlockEndWhiteSpace,
-                out currentConditionBlockStartWhiteSpace, out var currentBlockExpression))
+            while (IfNodeParser.TryParseConditionBlock(enumerator.Current, TokenTypes.Keyword_Elif, out var currentBlockExpression))
             {
-                conditions.Enqueue(new ConditionalNode(ExpressionNode.FromString(previousBlockExpression), blockChildren, previousConditionBlockStartWhiteSpace, previousConditionBlockEndWhiteSpace));
-                previousConditionBlockStartWhiteSpace = currentConditionBlockStartWhiteSpace;
+                conditions.Enqueue(new ConditionalNode(startParsingNode, ExpressionNode.FromString(previousBlockExpression), blockChildren, null));
                 previousBlockExpression = currentBlockExpression;
                 enumerator.MoveNext();
                 blockChildren = ASTGenerator.ParseUntilFailure(enumerator).ToArray();
             }
 
-            if (IfNodeParser.TryParseElseOrEndBlock(enumerator.Current, TokenTypes.Keyword_Else, out previousConditionBlockEndWhiteSpace, out currentConditionBlockStartWhiteSpace))
+            if (IfNodeParser.TryParseElseOrEndBlock(enumerator.Current, TokenTypes.Keyword_Else))
             {
-                conditions.Enqueue(new ConditionalNode(ExpressionNode.FromString(previousBlockExpression), blockChildren, previousConditionBlockStartWhiteSpace, previousConditionBlockEndWhiteSpace));
-                previousConditionBlockStartWhiteSpace = currentConditionBlockStartWhiteSpace;
+                startParsingNode = enumerator.Current;
+                conditions.Enqueue(new ConditionalNode(startParsingNode, ExpressionNode.FromString(previousBlockExpression), blockChildren, null));
                 previousBlockExpression = JinjaEnvironment.TRUE;
                 enumerator.MoveNext();
                 blockChildren = ASTGenerator.ParseUntilFailure(enumerator).ToArray();
             }
 
-            if (IfNodeParser.TryParseElseOrEndBlock(enumerator.Current, TokenTypes.Keyword_Endif, out previousConditionBlockEndWhiteSpace, out var outerBlockEndWhiteSpace) == false)
+            if (IfNodeParser.TryParseElseOrEndBlock(enumerator.Current, TokenTypes.Keyword_Endif) == false)
             {
                 throw new NotImplementedException();
             }
-            conditions.Enqueue(new ConditionalNode(ExpressionNode.FromString(previousBlockExpression), blockChildren, previousConditionBlockStartWhiteSpace, previousConditionBlockEndWhiteSpace));
+            conditions.Enqueue(new ConditionalNode(startParsingNode, ExpressionNode.FromString(previousBlockExpression), blockChildren, null));
 
-            parsedNode = new IfNode(conditions, outerBlockStartWhiteSpace, outerBlockEndWhiteSpace);
+            parsedNode = new IfNode(null, conditions, enumerator.Current);
             return true;
         }
 
@@ -91,21 +89,15 @@ namespace Obsidian.AST.Nodes.Statements
                 Done,
                 WhiteSpaceOrEndJinja,
             }
-            public static bool TryParseConditionBlock(ParsingNode startingBlock, TokenTypes keywordType,
-                out WhiteSpaceControlMode startWhiteSpace, out WhiteSpaceControlMode endWhiteSpace,
-                out string expression)
+            public static bool TryParseConditionBlock(ParsingNode startingBlock, TokenTypes keywordType, out string expression)
             {
                 var enumerator = LookaroundEnumeratorFactory.CreateLookaroundEnumerator(startingBlock.Tokens, 1);
-                return TryParseConditionBlock(enumerator, keywordType, out startWhiteSpace, out endWhiteSpace, out expression);
+                return TryParseConditionBlock(enumerator, keywordType, out expression);
             }
-            public static bool TryParseConditionBlock(ILookaroundEnumerator<Token> enumerator, TokenTypes keywordType,
-                out WhiteSpaceControlMode startWhiteSpace, out WhiteSpaceControlMode endWhiteSpace,
-                out string expression)
+            public static bool TryParseConditionBlock(ILookaroundEnumerator<Token> enumerator, TokenTypes keywordType, out string expression)
             {
                 expression = string.Empty;
                 var expressionQueue = new Queue<Token>();
-                startWhiteSpace = WhiteSpaceControlMode.Default;
-                endWhiteSpace = WhiteSpaceControlMode.Default;
                 var state = States.StartJinja;
                 while (enumerator.MoveNext())
                 {
@@ -129,7 +121,7 @@ namespace Obsidian.AST.Nodes.Statements
                                     continue;
                                 case TokenTypes.Minus:
                                 case TokenTypes.Plus:
-                                    startWhiteSpace = token.TokenType == TokenTypes.Minus ? WhiteSpaceControlMode.Trim : WhiteSpaceControlMode.Keep;
+                                    throw new NotImplementedException();
                                     state = States.Keyword;
                                     continue;
                                 default:
@@ -157,7 +149,7 @@ namespace Obsidian.AST.Nodes.Statements
                                 case TokenTypes.Minus:
                                     if (enumerator.TryGetNext(out var nextItem) && nextItem.TokenType == TokenTypes.StatementEnd)
                                     {
-                                        endWhiteSpace = WhiteSpaceControlMode.Trim;
+                                        throw new NotImplementedException();
                                         state = States.EndJinja;
                                         continue;
                                     }
@@ -193,15 +185,13 @@ namespace Obsidian.AST.Nodes.Statements
                 return true;
             }
 
-            public static bool TryParseElseOrEndBlock(ParsingNode startingBlock, TokenTypes keywordType, out WhiteSpaceControlMode startWhiteSpace, out WhiteSpaceControlMode endWhiteSpace)
+            public static bool TryParseElseOrEndBlock(ParsingNode startingBlock, TokenTypes keywordType)
             {
                 var enumerator = LookaroundEnumeratorFactory.CreateLookaroundEnumerator(startingBlock.Tokens, 1);
-                return TryParseElseOrEndBlock(enumerator, keywordType, out startWhiteSpace, out endWhiteSpace);
+                return TryParseElseOrEndBlock(enumerator, keywordType);
             }
-            public static bool TryParseElseOrEndBlock(ILookaroundEnumerator<Token> enumerator, TokenTypes keywordType, out WhiteSpaceControlMode startWhiteSpace, out WhiteSpaceControlMode endWhiteSpace)
+            public static bool TryParseElseOrEndBlock(ILookaroundEnumerator<Token> enumerator, TokenTypes keywordType)
             {
-                startWhiteSpace = WhiteSpaceControlMode.Default;
-                endWhiteSpace = WhiteSpaceControlMode.Default;
                 var state = States.StartJinja;
                 while (enumerator.MoveNext())
                 {
@@ -225,7 +215,7 @@ namespace Obsidian.AST.Nodes.Statements
                                     continue;
                                 case TokenTypes.Minus:
                                 case TokenTypes.Plus:
-                                    startWhiteSpace = token.TokenType == TokenTypes.Minus ? WhiteSpaceControlMode.Trim : WhiteSpaceControlMode.Keep;
+                                    throw new NotImplementedException();
                                     state = States.Keyword;
                                     continue;
                                 case TokenTypes.Keyword_Else:
@@ -253,7 +243,7 @@ namespace Obsidian.AST.Nodes.Statements
                                 case TokenTypes.Minus:
                                     if (enumerator.TryGetNext(out var nextItem) && nextItem.TokenType == TokenTypes.StatementEnd)
                                     {
-                                        endWhiteSpace = WhiteSpaceControlMode.Trim;
+                                        throw new NotImplementedException();
                                         state = States.EndJinja;
                                         continue;
                                     }

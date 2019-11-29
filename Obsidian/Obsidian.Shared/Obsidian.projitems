@@ -11,12 +11,13 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)AST\ASTGenerator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\ASTNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\ForParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\State.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\StateAction.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\AbstractContainerNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\ContainerNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\EmptyNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\ExpressionNode.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\IWhiteSpaceControlled.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\IWhiteSpaceControlling.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\IWithChildren.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\MiscNodes\CommentNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\MiscNodes\ConditionalNode.cs" />
@@ -29,6 +30,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\Statements\ForNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\Statements\IfNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\TemplateNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\StateMachine.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Block.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CommentRemover\CommentRemoverTransformer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DynamicContext.cs" />
@@ -60,19 +62,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Parsing\Parser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Parsing\ParsingNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Parsing\ParsingNodeType.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Rendering\RenderObjects\LiteralRenderObj.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Rendering\RenderObjects\NewLineRenderObj.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Rendering\RenderObjects\RenderObj.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Rendering\RenderObjects\WhiteSpaceControlRenderObj.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Rendering\RenderObjects\WhiteSpaceRenderObj.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Rendering\Visitors\IRenderable.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Rendering\Visitors\IRenderVisitor.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Rendering\Visitors\StringRenderVisitor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RenderMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CompiledSelf.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\WhiteSpaceCounterVisitor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TemplateInfo.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)TemporaryStuff\RuntimeScope.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\BaseASTTransformer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\ExpressionTreeTransformVisitor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\IForceTransformable.cs" />
@@ -80,16 +73,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\ITransformable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\ITransformVisitor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\NewASTCompiler.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Transforming\ReflectionVisitor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\StringRenderTransformer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\TemplateContainerAssembler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)VariableSetterWalker.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\DisableStripBlocksVisitor.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\EnvironmentTrimming.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\ManualTrimAfterVisitor.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\ManualTrimBeforeVisitor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\IWhiteSpace.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\TrimBlocksVisitor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\WhiteSpaceController.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\WhiteSpaceControlMode.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\WhiteSpaceControlPosition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\WhiteSpaceMode.cs" />
   </ItemGroup>
 </Project>

@@ -19,10 +19,6 @@ namespace Obsidian.Transforming
 
         public override ASTNode Transform(WhiteSpaceNode item)
         {
-            if(item.WhiteSpaceControlMode != WhiteSpaceControl.WhiteSpaceControlMode.Trim)
-            {
-                _Tally += item.ToString().Length;
-            }
             return base.Transform(item);
         }
     }

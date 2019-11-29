@@ -23,4 +23,21 @@ namespace Obsidian.Transforming
         TOutput Transform(BlockNode item);
         TOutput Transform(ExtendsNode item);
     }
+
+    public interface ITransformVisitor
+    {
+        void Transform(TemplateNode item);
+        void Transform(EmptyNode emptyNode);
+        void Transform(ForNode item);
+        void Transform(ContainerNode item);
+        void Transform(ExpressionNode item);
+        void Transform(NewLineNode item);
+        void Transform(OutputNode item);
+        void Transform(WhiteSpaceNode item);
+        void Transform(IfNode item);
+        void Transform(ConditionalNode item);
+        void Transform(CommentNode item);
+        void Transform(BlockNode item);
+        void Transform(ExtendsNode item);
+    }
 }

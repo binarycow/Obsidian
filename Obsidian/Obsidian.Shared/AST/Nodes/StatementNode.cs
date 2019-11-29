@@ -7,22 +7,18 @@ using Common.Collections;
 using Obsidian.AST.Nodes.MiscNodes;
 using Obsidian.AST.Nodes.Statements;
 using Obsidian.Parsing;
-using Obsidian.WhiteSpaceControl;
 
 namespace Obsidian.AST.Nodes
 {
-    public abstract class StatementNode : ASTNode, IWhiteSpaceControlling, IWithChildren
+    public abstract class StatementNode : ASTNode, IWithChildren
     {
-        public StatementNode(IEnumerable<ASTNode> children, WhiteSpaceControlMode startWhiteSpace, WhiteSpaceControlMode endWhiteSpace) : base(children.SelectMany(child => child.ParsingNodes))
+        public StatementNode(ParsingNode? startParsingNode, IEnumerable<ASTNode> children, ParsingNode? endParsingNode) 
+            : base(startParsingNode, children.SelectMany(x => x.ParsingNodes), endParsingNode)
         {
             Children = children.ToArrayWithoutInstantiation();
-            StartWhiteSpace = startWhiteSpace;
-            EndWhiteSpace = endWhiteSpace;
         }
 
         public ASTNode[] Children { get; }
-        public WhiteSpaceControlMode StartWhiteSpace { get; }
-        public WhiteSpaceControlMode EndWhiteSpace { get; }
 
         public static bool TryParse(ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
         {

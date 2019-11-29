@@ -1,20 +1,19 @@
-using System;
-using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using Obsidian.AST;
-using Obsidian.AST.Nodes;
-using Obsidian.AST.Nodes.Statements;
 
 namespace Obsidian.WhiteSpaceControl
 {
     public static class WhiteSpaceController
     {
-        internal static ASTNode ControlWhiteSpace(ASTNode templateNode)
+        public static ASTNode ControlWhiteSpace(JinjaEnvironment environment, ASTNode templateNode)
         {
-            var intermediateNode = templateNode.Transform(DisableStripBlocksVisitor.Instance);
-            intermediateNode = intermediateNode.Transform(ManualTrimBeforeVisitor.Instance).First();
-            intermediateNode = intermediateNode.Transform(ManualTrimAfterVisitor.Instance);
-            return intermediateNode;
+            var trimVisitor = new TrimBlocksVisitor(environment);
+
+            var trimmed = templateNode.Transform(trimVisitor);
+
+            return trimmed;
         }
     }
-
 }

@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Obsidian.Lexing;
-using Obsidian.WhiteSpaceControl;
 
 namespace Obsidian.Parsing
 {
@@ -19,12 +18,20 @@ namespace Obsidian.Parsing
 
         public ParsingNodeType NodeType { get; }
         public IEnumerable<Token> Tokens { get; }
-        public WhiteSpaceControlMode WhiteSpaceControlMode { get; set; }
 
-        private string DebuggerDisplay => $"\"{this.ToString().Replace("\n", "\\n")}\" - Control: {WhiteSpaceControlMode}";
+        private string DebuggerDisplay => $"\"{this.ToString().Replace("\n", "\\n")}\"";
         public override string ToString()
         {
             return string.Join(string.Empty, Tokens.SelectMany(x => x.Value));
+        }
+
+
+        public virtual void ToOriginalText(StringBuilder stringBuilder)
+        {
+            foreach (var token in Tokens)
+            {
+                token.ToOriginalText(stringBuilder);
+            }
         }
     }
 }
