@@ -51,7 +51,7 @@ namespace Obsidian.AST.Nodes.Statements
             {
                 throw new NotImplementedException();
             }
-            if (accumulations.TryGetValue(ForParser.ForState.VariableNames, out var exprArray) == false || exprArray.Length == 0)
+            if (accumulations.TryGetValue(ForParser.ForState.Expression, out var exprArray) == false || exprArray.Length == 0)
             {
                 throw new NotImplementedException();
             }

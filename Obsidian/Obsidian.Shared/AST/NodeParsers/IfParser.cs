@@ -2,35 +2,36 @@
 using System.Collections.Generic;
 using System.Text;
 using Obsidian.Lexing;
-using static Obsidian.AST.NodeParsers.ForParser.ForState;
+using static Obsidian.AST.NodeParsers.IfParser.IfState;
 using static Obsidian.Lexing.TokenTypes;
 
 namespace Obsidian.AST.NodeParsers
 {
-    internal static class ForParser
+    internal static class IfParser
     {
-        public enum ForState
+        public enum IfState
         {
             StartJinja,
             WhiteSpaceOrKeyword,
             Keyword,
-            VariableNames,
             Expression,
             WhiteSpaceOrEndJinja,
             EndJinja,
             Done,
         }
 
-        public static readonly Lazy<StateMachine<ForState>> _StartBlockParser = new Lazy<StateMachine<ForState>>(() => CreateStartParser());
-        public static StateMachine<ForState> StartBlock => _StartBlockParser.Value;
-        public static readonly Lazy<StateMachine<ForState>> _ElseBlockParser = new Lazy<StateMachine<ForState>>(() => CreateElseEndForParser(TokenTypes.Keyword_Else));
-        public static StateMachine<ForState> ElseBlock => _ElseBlockParser.Value;
-        public static readonly Lazy<StateMachine<ForState>> _EndBlockParser = new Lazy<StateMachine<ForState>>(() => CreateElseEndForParser(TokenTypes.Keyword_EndFor));
-        public static StateMachine<ForState> EndBlock => _EndBlockParser.Value;
+        public static readonly Lazy<StateMachine<IfState>> _StartBlockParser = new Lazy<StateMachine<IfState>>(() => CreateStartElseIfParser(Keyword_If));
+        public static StateMachine<IfState> StartBlock => _StartBlockParser.Value;
+        public static readonly Lazy<StateMachine<IfState>> _ElseIfBlockParser = new Lazy<StateMachine<IfState>>(() => CreateStartElseIfParser(Keyword_Elif));
+        public static StateMachine<IfState> ElseIfBlock => _ElseIfBlockParser.Value;
+        public static readonly Lazy<StateMachine<IfState>> _ElseBlockParser = new Lazy<StateMachine<IfState>>(() => CreateElseEndForParser(Keyword_Else));
+        public static StateMachine<IfState> ElseBlock => _ElseBlockParser.Value;
+        public static readonly Lazy<StateMachine<IfState>> _EndBlockParser = new Lazy<StateMachine<IfState>>(() => CreateElseEndForParser(Keyword_Endif));
+        public static StateMachine<IfState> EndBlock => _EndBlockParser.Value;
 
-        private static StateMachine<ForState> CreateStartParser()
+        private static StateMachine<IfState> CreateStartElseIfParser(TokenTypes keyword)
         {
-            var parser = new StateMachine<ForState>(StartJinja, Done);
+            var parser = new StateMachine<IfState>(StartJinja, Done);
             parser.State(StartJinja)
                 .Expect(StatementStart)
                     .MoveTo(WhiteSpaceOrKeyword)
@@ -47,15 +48,10 @@ namespace Obsidian.AST.NodeParsers
                     .Return(false);
             parser.State(Keyword)
                 .Ignore(WhiteSpace)
-                .Expect(Keyword_For)
-                    .MoveTo(VariableNames)
-                .Else()
-                    .Return(false);
-            parser.State(VariableNames)
-                .Expect(Keyword_In)
+                .Expect(keyword)
                     .MoveTo(Expression)
                 .Else()
-                    .Accumulate(seperator: Comma);
+                    .Return(false);
             parser.State(Expression)
                 .Expect(Minus).AndNext(StatementEnd)
                     .MoveTo(EndJinja)
@@ -67,14 +63,15 @@ namespace Obsidian.AST.NodeParsers
                 .Expect(StatementEnd)
                     .MoveTo(Done)
                 .Else()
-                    .Accumulate();
+                    .Throw();
             parser.Else()
                 .Throw();
             return parser;
         }
-        private static StateMachine<ForState> CreateElseEndForParser(TokenTypes keyword)
+
+        private static StateMachine<IfState> CreateElseEndForParser(TokenTypes keyword)
         {
-            var parser = new StateMachine<ForState>(StartJinja, Done);
+            var parser = new StateMachine<IfState>(StartJinja, Done);
             parser.State(StartJinja)
                 .Expect(StatementStart)
                     .MoveTo(WhiteSpaceOrKeyword)
@@ -105,14 +102,10 @@ namespace Obsidian.AST.NodeParsers
                 .Expect(StatementEnd)
                     .MoveTo(Done)
                 .Else()
-                    .Accumulate();
+                    .Throw();
             parser.Else()
                 .Throw();
             return parser;
         }
-
-
-
-
     }
 }
