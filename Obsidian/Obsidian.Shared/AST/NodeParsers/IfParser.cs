@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Obsidian.Lexing;
+using Obsidian.WhiteSpaceControl;
 using static Obsidian.AST.NodeParsers.IfParser.IfState;
 using static Obsidian.Lexing.TokenTypes;
 
@@ -39,9 +40,11 @@ namespace Obsidian.AST.NodeParsers
                     .Return(false);
             parser.State(WhiteSpaceOrKeyword)
                 .Expect(Minus)
-                    .Throw()
+                    .SetWhiteSpaceMode(WhiteSpacePosition.Start, WhiteSpaceMode.Trim)
+                    .MoveTo(Keyword)
                 .Expect(Plus)
-                    .Throw()
+                    .SetWhiteSpaceMode(WhiteSpacePosition.Start, WhiteSpaceMode.Keep)
+                    .MoveTo(Keyword)
                 .Expect(WhiteSpace)
                     .MoveTo(Keyword)
                 .Else()
@@ -54,6 +57,7 @@ namespace Obsidian.AST.NodeParsers
                     .Return(false);
             parser.State(Expression)
                 .Expect(Minus).AndNext(StatementEnd)
+                    .SetWhiteSpaceMode(WhiteSpacePosition.End, WhiteSpaceMode.Trim)
                     .MoveTo(EndJinja)
                 .Expect(StatementEnd)
                     .MoveTo(Done)
@@ -65,7 +69,7 @@ namespace Obsidian.AST.NodeParsers
                 .Else()
                     .Throw();
             parser.Else()
-                .Throw();
+                .Throw(new Exception("Unhandled State?"));
             return parser;
         }
 
@@ -104,7 +108,7 @@ namespace Obsidian.AST.NodeParsers
                 .Else()
                     .Throw();
             parser.Else()
-                .Throw();
+                .Throw(new Exception("Unhandled State?"));
             return parser;
         }
     }

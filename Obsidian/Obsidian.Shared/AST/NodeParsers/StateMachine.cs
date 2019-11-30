@@ -6,6 +6,7 @@ using System.Text;
 using Common.Collections;
 using Obsidian.Lexing;
 using Obsidian.Parsing;
+using Obsidian.WhiteSpaceControl;
 
 namespace Obsidian.AST.NodeParsers
 {
@@ -27,6 +28,8 @@ namespace Obsidian.AST.NodeParsers
 
         private Lazy<Dictionary<State<TState>, Queue<Queue<Token>>>> _Accumulations = new Lazy<Dictionary<State<TState>, Queue<Queue<Token>>>>();
         private Dictionary<State<TState>, Queue<Queue<Token>>> Accumulations => _Accumulations.Value;
+
+        public Queue<(WhiteSpacePosition position, WhiteSpaceMode mode)> WhiteSpace { get; } = new Queue<(WhiteSpacePosition position, WhiteSpaceMode mode)>();
 
 
 
@@ -56,6 +59,7 @@ namespace Obsidian.AST.NodeParsers
         }
         public bool TryParse(ILookaroundEnumerator<Token> enumerator, out Dictionary<TState?, string[]> accumulations)
         {
+            if (_Accumulations.IsValueCreated) _Accumulations.Value.Clear();
             accumulations = new Dictionary<TState?, string[]>();
             CurrentState = InitialState;
             if(enumerator.MoveNext() == false)
@@ -74,7 +78,8 @@ namespace Obsidian.AST.NodeParsers
                 }
                 foreach (var action in stateAction.Actions)
                 {
-                    PerformAction(state, action, enumerator.Current);
+                    PerformAction(state, action, enumerator.Current, out var returnResult);
+                    if (returnResult.HasValue) return returnResult.Value;
                 }
             } while (enumerator.MoveNext());
             if(CurrentState.Equals(DoneState) == false)
@@ -109,8 +114,9 @@ namespace Obsidian.AST.NodeParsers
             return action != default;
         }
 
-        private bool PerformAction(State<TState> currentState, AbstractAction<TState> action, Token currentToken)
+        private bool PerformAction(State<TState> currentState, AbstractAction<TState> action, Token currentToken, out bool? returnResult)
         {
+            returnResult = null;
             switch (action)
             {
                 case MoveToStateAction<TState> moveTo:
@@ -122,9 +128,20 @@ namespace Obsidian.AST.NodeParsers
                     return PerformAction(currentState, accumulateAction, currentToken);
                 case IgnoreAction<TState> _:
                     return true;
+                case SetWhiteSpaceAction<TState> whiteSpaceAction:
+                    return PerformAction(whiteSpaceAction);
+                case ReturnStateAction<TState> returnAction:
+                    returnResult = returnAction.Result;
+                    return true;
                 default:
                     throw new NotImplementedException();
             }
+        }
+
+        private bool PerformAction(SetWhiteSpaceAction<TState> action)
+        {
+            WhiteSpace.Enqueue((position: action.Position, mode: action.Mode));
+            return true;
         }
 
         private bool PerformAction(State<TState> currentState, AccumulateAction<TState> action, Token currentToken)

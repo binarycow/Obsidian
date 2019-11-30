@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Obsidian.Lexing;
+using Obsidian.WhiteSpaceControl;
 
 namespace Obsidian.AST.NodeParsers
 {
@@ -21,6 +22,11 @@ namespace Obsidian.AST.NodeParsers
         public StateAction<TState> MoveTo(TState nextState)
         {
             _Actions.Add(new MoveToStateAction<TState>(this, nextState));
+            return this;
+        }
+        public StateAction<TState> SetWhiteSpaceMode(WhiteSpacePosition position, WhiteSpaceMode mode)
+        {
+            _Actions.Add(new SetWhiteSpaceAction<TState>(this, position, mode));
             return this;
         }
         public StateAction<TState> AndNext(TokenTypes tokenType)
@@ -101,7 +107,7 @@ namespace Obsidian.AST.NodeParsers
         public IgnoreAction(StateAction<TState> parent) : base(parent)
         {
         }
-    } 
+    }
     internal class AccumulateAction<TState> : AbstractAction<TState> where TState : struct, Enum
     {
         public AccumulateAction(StateAction<TState> parent, TokenTypes? seperator = default) : base(parent)
@@ -109,7 +115,18 @@ namespace Obsidian.AST.NodeParsers
             Seperator = seperator;
         }
 
-        public TokenTypes? Seperator { get; set; }
+        public TokenTypes? Seperator { get; }
+    }
+    internal class SetWhiteSpaceAction<TState> : AbstractAction<TState> where TState : struct, Enum
+    {
+        public SetWhiteSpaceAction(StateAction<TState> parent, WhiteSpacePosition position, WhiteSpaceMode mode) : base(parent)
+        {
+            Position = position;
+            Mode = mode;
+        }
+
+        public WhiteSpacePosition Position { get;  }
+        public WhiteSpaceMode Mode { get; }
     }
 
 }
