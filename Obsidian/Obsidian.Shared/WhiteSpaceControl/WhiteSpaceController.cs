@@ -5,15 +5,14 @@ using Obsidian.AST;
 
 namespace Obsidian.WhiteSpaceControl
 {
-    public static class WhiteSpaceController
+    internal static class WhiteSpaceController
     {
         public static ASTNode ControlWhiteSpace(JinjaEnvironment environment, ASTNode templateNode)
         {
-            var trimVisitor = new TrimBlocksVisitor(environment);
+            if (environment.Settings.TrimBlocks) templateNode.Transform(TrimBlocksVisitor.Instance);
+            if (environment.Settings.LStripBlocks) templateNode.Transform(LStripBlocksVisitor.Instance);
 
-            var trimmed = templateNode.Transform(trimVisitor);
-
-            return trimmed;
+            return templateNode;
         }
     }
 }

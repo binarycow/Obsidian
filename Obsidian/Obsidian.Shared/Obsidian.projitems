@@ -77,6 +77,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\TemplateContainerAssembler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)VariableSetterWalker.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\IWhiteSpace.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\LStripBlocksVisitor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\TrimBlocksVisitor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\WhiteSpaceController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\WhiteSpaceMode.cs" />

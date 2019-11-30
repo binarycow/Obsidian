@@ -45,9 +45,18 @@ namespace Obsidian.AST
 
         public virtual void ToOriginalText(StringBuilder stringBuilder)
         {
-            foreach(var node in ParsingNodes)
+            foreach (var node in ParsingNodes)
             {
                 node.ToOriginalText(stringBuilder);
+            }
+        }
+        public string OriginalText
+        {
+            get
+            {
+                var sb = new StringBuilder();
+                ToOriginalText(sb);
+                return sb.ToString();
             }
         }
 

@@ -20,7 +20,7 @@ namespace Obsidian.AST.Nodes.MiscNodes
         {
         }
 
-        public WhiteSpaceMode WhiteSpaceMode { get; }
+        public WhiteSpaceMode WhiteSpaceMode { get; internal set; }
 
         private string DebuggerDisplay => $"{nameof(WhiteSpaceNode)} : \"{ToString(debug: true)}\"";
         public static WhiteSpaceNode Parse(ILookaroundEnumerator<ParsingNode> enumerator)

@@ -249,6 +249,20 @@
     "FullName": "Obsidian.JinjaEnvironment",
     "Methods": [
       {
+        "Name": "CheckOriginalText",
+        "Overloads": [
+          {
+            "ReturnType": "System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "templateName",
+                "Type": "System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          }
+        ]
+      },
+      {
         "Name": "GetTemplate",
         "Overloads": [
           {
@@ -601,337 +615,20 @@
     "Fields": null
   },
   {
-    "FullName": "Obsidian.WhiteSpaceControl.DisableStripBlocksVisitor",
-    "Methods": [
-      {
-        "Name": "Transform",
-        "Overloads": [
-          {
-            "ReturnType": "Obsidian.AST.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.Statements.ForNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "Obsidian.AST.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.TemplateNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "Obsidian.AST.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.ContainerNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "Obsidian.AST.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.Statements.BlockNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "Obsidian.AST.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.ExpressionNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "Obsidian.AST.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.MiscNodes.NewLineNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "Obsidian.AST.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.OutputNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "Obsidian.AST.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.MiscNodes.WhiteSpaceNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "Obsidian.AST.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.Statements.IfNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "Obsidian.AST.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.MiscNodes.ConditionalNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "Obsidian.AST.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.MiscNodes.CommentNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "Obsidian.AST.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.MiscNodes.ExtendsNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          }
-        ]
-      }
-    ],
-    "Properties": [
-      {
-        "Name": "Instance",
-        "Type": "Obsidian.WhiteSpaceControl.DisableStripBlocksVisitor, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-      }
-    ],
-    "Fields": null
-  },
-  {
-    "FullName": "Obsidian.WhiteSpaceControl.EnvironmentTrimming",
-    "Methods": [
-      {
-        "Name": "EnvironmentTrim",
-        "Overloads": [
-          {
-            "ReturnType": "System.Collections.Generic.IEnumerable`1[[Obsidian.Parsing.ParsingNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-            "Parameters": [
-              {
-                "Name": "source",
-                "Type": "System.Collections.Generic.IEnumerable`1[[Obsidian.Parsing.ParsingNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
-              },
-              {
-                "Name": "settings",
-                "Type": "Obsidian.EnvironmentSettings, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          }
-        ]
-      }
-    ],
-    "Properties": [],
-    "Fields": null
-  },
-  {
-    "FullName": "Obsidian.WhiteSpaceControl.ManualTrimAfterVisitor",
+    "FullName": "Obsidian.WhiteSpaceControl.IWhiteSpace",
     "Methods": [],
     "Properties": [
       {
-        "Name": "Instance",
-        "Type": "Obsidian.WhiteSpaceControl.ManualTrimAfterVisitor, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+        "Name": "WhiteSpaceMode",
+        "Type": "Obsidian.WhiteSpaceControl.WhiteSpaceMode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
       }
     ],
     "Fields": null
   },
   {
-    "FullName": "Obsidian.WhiteSpaceControl.ManualTrimBeforeVisitor",
-    "Methods": [
-      {
-        "Name": "Transform",
-        "Overloads": [
-          {
-            "ReturnType": "Obsidian.AST.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.Statements.ForNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "Obsidian.AST.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.TemplateNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "Obsidian.AST.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.ContainerNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "Obsidian.AST.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.ExpressionNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "Obsidian.AST.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.MiscNodes.NewLineNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "Obsidian.AST.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.OutputNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "Obsidian.AST.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.MiscNodes.WhiteSpaceNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "Obsidian.AST.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.Statements.IfNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "Obsidian.AST.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.Statements.BlockNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "Obsidian.AST.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.MiscNodes.ConditionalNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "Obsidian.AST.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.MiscNodes.CommentNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "Obsidian.AST.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.MiscNodes.ExtendsNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          }
-        ]
-      }
-    ],
-    "Properties": [
-      {
-        "Name": "Instance",
-        "Type": "Obsidian.WhiteSpaceControl.ManualTrimBeforeVisitor, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-      }
-    ],
-    "Fields": null
-  },
-  {
-    "FullName": "Obsidian.WhiteSpaceControl.WhiteSpaceController",
+    "FullName": "Obsidian.WhiteSpaceControl.WhiteSpaceMode",
     "Methods": [],
     "Properties": [],
-    "Fields": null
-  },
-  {
-    "FullName": "Obsidian.WhiteSpaceControl.WhiteSpaceControlMode",
-    "Methods": [],
-    "Properties": [],
-    "Fields": null
-  },
-  {
-    "FullName": "Obsidian.WhiteSpaceControl.WhiteSpaceControlPosition",
-    "Methods": [],
-    "Properties": [],
-    "Fields": null
-  },
-  {
-    "FullName": "Obsidian.TemporaryStuff.RuntimeScope",
-    "Methods": [
-      {
-        "Name": "CreateRoot",
-        "Overloads": [
-          {
-            "ReturnType": "Obsidian.TemporaryStuff.RuntimeScope, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Parameters": [
-              {
-                "Name": "variables",
-                "Type": "System.Collections.Generic.IDictionary`2[[System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Object, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
-              }
-            ]
-          }
-        ]
-      }
-    ],
-    "Properties": [
-      {
-        "Name": "Variables",
-        "Type": "System.Collections.Generic.IDictionary`2[[System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Object, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
-      },
-      {
-        "Name": "ParentScope",
-        "Type": "Obsidian.TemporaryStuff.RuntimeScope, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-      }
-    ],
     "Fields": null
   },
   {
@@ -1082,6 +779,15 @@
                 "Type": "Obsidian.AST.Nodes.MiscNodes.ExtendsNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
               }
             ]
+          },
+          {
+            "ReturnType": "Obsidian.AST.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Parameters": [
+              {
+                "Name": "item",
+                "Type": "Obsidian.AST.Nodes.EmptyNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              }
+            ]
           }
         ]
       }
@@ -1202,6 +908,15 @@
                 "Type": "Obsidian.AST.Nodes.TemplateNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
               }
             ]
+          },
+          {
+            "ReturnType": "System.Linq.Expressions.Expression, System.Linq.Expressions, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a",
+            "Parameters": [
+              {
+                "Name": "emptyNode",
+                "Type": "Obsidian.AST.Nodes.EmptyNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              }
+            ]
           }
         ]
       }
@@ -1294,6 +1009,19 @@
               {
                 "Name": "item",
                 "Type": "Obsidian.AST.Nodes.ExpressionNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              },
+              {
+                "Name": "force",
+                "Type": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          },
+          {
+            "ReturnType": null,
+            "Parameters": [
+              {
+                "Name": "emptyNode",
+                "Type": "Obsidian.AST.Nodes.EmptyNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
               },
               {
                 "Name": "force",
@@ -1425,6 +1153,15 @@
                 "Type": null
               }
             ]
+          },
+          {
+            "ReturnType": "System.Void, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "visitor",
+                "Type": "Obsidian.Transforming.ITransformVisitor, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              }
+            ]
           }
         ]
       }
@@ -1444,6 +1181,15 @@
               {
                 "Name": "item",
                 "Type": "Obsidian.AST.Nodes.TemplateNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              }
+            ]
+          },
+          {
+            "ReturnType": null,
+            "Parameters": [
+              {
+                "Name": "emptyNode",
+                "Type": "Obsidian.AST.Nodes.EmptyNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
               }
             ]
           },
@@ -1539,6 +1285,135 @@
           },
           {
             "ReturnType": null,
+            "Parameters": [
+              {
+                "Name": "item",
+                "Type": "Obsidian.AST.Nodes.MiscNodes.ExtendsNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "Properties": [],
+    "Fields": null
+  },
+  {
+    "FullName": "Obsidian.Transforming.ITransformVisitor",
+    "Methods": [
+      {
+        "Name": "Transform",
+        "Overloads": [
+          {
+            "ReturnType": "System.Void, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "item",
+                "Type": "Obsidian.AST.Nodes.TemplateNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.Void, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "emptyNode",
+                "Type": "Obsidian.AST.Nodes.EmptyNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.Void, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "item",
+                "Type": "Obsidian.AST.Nodes.Statements.ForNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.Void, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "item",
+                "Type": "Obsidian.AST.Nodes.ContainerNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.Void, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "item",
+                "Type": "Obsidian.AST.Nodes.ExpressionNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.Void, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "item",
+                "Type": "Obsidian.AST.Nodes.MiscNodes.NewLineNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.Void, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "item",
+                "Type": "Obsidian.AST.Nodes.OutputNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.Void, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "item",
+                "Type": "Obsidian.AST.Nodes.MiscNodes.WhiteSpaceNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.Void, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "item",
+                "Type": "Obsidian.AST.Nodes.Statements.IfNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.Void, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "item",
+                "Type": "Obsidian.AST.Nodes.MiscNodes.ConditionalNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.Void, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "item",
+                "Type": "Obsidian.AST.Nodes.MiscNodes.CommentNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.Void, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "item",
+                "Type": "Obsidian.AST.Nodes.Statements.BlockNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.Void, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
             "Parameters": [
               {
                 "Name": "item",
@@ -1714,6 +1589,15 @@
                 "Type": "Obsidian.AST.Nodes.MiscNodes.ExtendsNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
               }
             ]
+          },
+          {
+            "ReturnType": "System.Linq.Expressions.Expression, System.Linq.Expressions, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a",
+            "Parameters": [
+              {
+                "Name": "emptyNode",
+                "Type": "Obsidian.AST.Nodes.EmptyNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              }
+            ]
           }
         ]
       }
@@ -1739,157 +1623,6 @@
     "Fields": null
   },
   {
-    "FullName": "Obsidian.Transforming.ReflectionVisitor",
-    "Methods": [
-      {
-        "Name": "PushScope",
-        "Overloads": [
-          {
-            "ReturnType": "System.Void, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-            "Parameters": []
-          }
-        ]
-      },
-      {
-        "Name": "PopScope",
-        "Overloads": [
-          {
-            "ReturnType": "System.Void, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-            "Parameters": []
-          }
-        ]
-      },
-      {
-        "Name": "Transform",
-        "Overloads": [
-          {
-            "ReturnType": "System.Collections.Generic.IEnumerable`1[[Obsidian.Rendering.RenderObjects.RenderObj, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.ContainerNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "System.Collections.Generic.IEnumerable`1[[Obsidian.Rendering.RenderObjects.RenderObj, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.ExpressionNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "System.Collections.Generic.IEnumerable`1[[Obsidian.Rendering.RenderObjects.RenderObj, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.MiscNodes.NewLineNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "System.Collections.Generic.IEnumerable`1[[Obsidian.Rendering.RenderObjects.RenderObj, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.OutputNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "System.Collections.Generic.IEnumerable`1[[Obsidian.Rendering.RenderObjects.RenderObj, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.MiscNodes.WhiteSpaceNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "System.Collections.Generic.IEnumerable`1[[Obsidian.Rendering.RenderObjects.RenderObj, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.Statements.ForNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "System.Collections.Generic.IEnumerable`1[[Obsidian.Rendering.RenderObjects.RenderObj, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.Statements.IfNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "System.Collections.Generic.IEnumerable`1[[Obsidian.Rendering.RenderObjects.RenderObj, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.MiscNodes.ConditionalNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "System.Collections.Generic.IEnumerable`1[[Obsidian.Rendering.RenderObjects.RenderObj, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.MiscNodes.CommentNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "System.Collections.Generic.IEnumerable`1[[Obsidian.Rendering.RenderObjects.RenderObj, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.Statements.BlockNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "System.Collections.Generic.IEnumerable`1[[Obsidian.Rendering.RenderObjects.RenderObj, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.MiscNodes.ExtendsNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "System.Collections.Generic.IEnumerable`1[[Obsidian.Rendering.RenderObjects.RenderObj, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.TemplateNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          }
-        ]
-      }
-    ],
-    "Properties": [
-      {
-        "Name": "Evaluation",
-        "Type": "ExpressionParser.ExpressionEval, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-      },
-      {
-        "Name": "Environment",
-        "Type": "Obsidian.JinjaEnvironment, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-      },
-      {
-        "Name": "CurrentScope",
-        "Type": "Obsidian.TemporaryStuff.RuntimeScope, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-      }
-    ],
-    "Fields": null
-  },
-  {
     "FullName": "Obsidian.Transforming.StringRenderTransformer",
     "Methods": [
       {
@@ -1900,15 +1633,6 @@
             "Parameters": [
               {
                 "Name": "item",
-                "Type": "Obsidian.AST.Nodes.TemplateNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-            "Parameters": [
-              {
-                "Name": "item",
                 "Type": "Obsidian.AST.Nodes.Statements.ForNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
               }
             ]
@@ -1919,6 +1643,24 @@
               {
                 "Name": "item",
                 "Type": "Obsidian.AST.Nodes.ContainerNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "item",
+                "Type": "Obsidian.AST.Nodes.Statements.BlockNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "item",
+                "Type": "Obsidian.AST.Nodes.TemplateNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
               }
             ]
           },
@@ -1990,7 +1732,7 @@
             "Parameters": [
               {
                 "Name": "item",
-                "Type": "Obsidian.AST.Nodes.Statements.BlockNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+                "Type": "Obsidian.AST.Nodes.MiscNodes.ExtendsNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
               }
             ]
           },
@@ -1998,8 +1740,8 @@
             "ReturnType": "System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
             "Parameters": [
               {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.MiscNodes.ExtendsNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+                "Name": "emptyNode",
+                "Type": "Obsidian.AST.Nodes.EmptyNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
               }
             ]
           }
@@ -2068,274 +1810,6 @@
     "Fields": null
   },
   {
-    "FullName": "Obsidian.Rendering.Visitors.IRenderable",
-    "Methods": [
-      {
-        "Name": "Render",
-        "Overloads": [
-          {
-            "ReturnType": null,
-            "Parameters": [
-              {
-                "Name": "visitor",
-                "Type": null
-              }
-            ]
-          }
-        ]
-      }
-    ],
-    "Properties": [],
-    "Fields": null
-  },
-  {
-    "FullName": "Obsidian.Rendering.Visitors.IRenderVisitor`1",
-    "Methods": [
-      {
-        "Name": "Render",
-        "Overloads": [
-          {
-            "ReturnType": null,
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.Rendering.RenderObjects.LiteralRenderObj, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": null,
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.Rendering.RenderObjects.WhiteSpaceControlRenderObj, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": null,
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.Rendering.RenderObjects.WhiteSpaceRenderObj, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": null,
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.Rendering.RenderObjects.NewLineRenderObj, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          }
-        ]
-      }
-    ],
-    "Properties": [],
-    "Fields": null
-  },
-  {
-    "FullName": "Obsidian.Rendering.Visitors.StringRenderVisitor",
-    "Methods": [
-      {
-        "Name": "Render",
-        "Overloads": [
-          {
-            "ReturnType": "System.Collections.Generic.IEnumerable`1[[System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.Rendering.RenderObjects.LiteralRenderObj, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "System.Collections.Generic.IEnumerable`1[[System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.Rendering.RenderObjects.WhiteSpaceRenderObj, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "System.Collections.Generic.IEnumerable`1[[System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.Rendering.RenderObjects.WhiteSpaceControlRenderObj, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "System.Collections.Generic.IEnumerable`1[[System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.Rendering.RenderObjects.NewLineRenderObj, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          }
-        ]
-      }
-    ],
-    "Properties": [],
-    "Fields": null
-  },
-  {
-    "FullName": "Obsidian.Rendering.RenderObjects.LiteralRenderObj",
-    "Methods": [
-      {
-        "Name": "Render",
-        "Overloads": [
-          {
-            "ReturnType": null,
-            "Parameters": [
-              {
-                "Name": "visitor",
-                "Type": null
-              }
-            ]
-          }
-        ]
-      }
-    ],
-    "Properties": [],
-    "Fields": null
-  },
-  {
-    "FullName": "Obsidian.Rendering.RenderObjects.NewLineRenderObj",
-    "Methods": [
-      {
-        "Name": "Render",
-        "Overloads": [
-          {
-            "ReturnType": null,
-            "Parameters": [
-              {
-                "Name": "visitor",
-                "Type": null
-              }
-            ]
-          }
-        ]
-      }
-    ],
-    "Properties": [
-      {
-        "Name": "ControlMode",
-        "Type": "Obsidian.WhiteSpaceControl.WhiteSpaceControlMode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-      }
-    ],
-    "Fields": null
-  },
-  {
-    "FullName": "Obsidian.Rendering.RenderObjects.RenderObj",
-    "Methods": [
-      {
-        "Name": "Render",
-        "Overloads": [
-          {
-            "ReturnType": null,
-            "Parameters": [
-              {
-                "Name": "visitor",
-                "Type": null
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "Name": "ToString",
-        "Overloads": [
-          {
-            "ReturnType": "System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-            "Parameters": []
-          },
-          {
-            "ReturnType": "System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-            "Parameters": [
-              {
-                "Name": "debug",
-                "Type": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
-              }
-            ]
-          }
-        ]
-      }
-    ],
-    "Properties": [
-      {
-        "Name": "Value",
-        "Type": "System.Object, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
-      }
-    ],
-    "Fields": null
-  },
-  {
-    "FullName": "Obsidian.Rendering.RenderObjects.WhiteSpaceControlRenderObj",
-    "Methods": [
-      {
-        "Name": "Render",
-        "Overloads": [
-          {
-            "ReturnType": null,
-            "Parameters": [
-              {
-                "Name": "visitor",
-                "Type": null
-              }
-            ]
-          }
-        ]
-      }
-    ],
-    "Properties": [
-      {
-        "Name": "DebugValue",
-        "Type": "System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
-      },
-      {
-        "Name": "Position",
-        "Type": "Obsidian.WhiteSpaceControl.WhiteSpaceControlPosition, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-      },
-      {
-        "Name": "WhiteSpaceControlMode",
-        "Type": "Obsidian.WhiteSpaceControl.WhiteSpaceControlMode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-      }
-    ],
-    "Fields": null
-  },
-  {
-    "FullName": "Obsidian.Rendering.RenderObjects.WhiteSpaceRenderObj",
-    "Methods": [
-      {
-        "Name": "Render",
-        "Overloads": [
-          {
-            "ReturnType": null,
-            "Parameters": [
-              {
-                "Name": "visitor",
-                "Type": null
-              }
-            ]
-          }
-        ]
-      }
-    ],
-    "Properties": [
-      {
-        "Name": "ControlMode",
-        "Type": "Obsidian.WhiteSpaceControl.WhiteSpaceControlMode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-      }
-    ],
-    "Fields": null
-  },
-  {
     "FullName": "Obsidian.Parsing.Parser",
     "Methods": [
       {
@@ -2385,6 +1859,20 @@
             "Parameters": []
           }
         ]
+      },
+      {
+        "Name": "ToOriginalText",
+        "Overloads": [
+          {
+            "ReturnType": "System.Void, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "stringBuilder",
+                "Type": "System.Text.StringBuilder, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          }
+        ]
       }
     ],
     "Properties": [
@@ -2395,10 +1883,6 @@
       {
         "Name": "Tokens",
         "Type": "System.Collections.Generic.IEnumerable`1[[Obsidian.Lexing.Token, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
-      },
-      {
-        "Name": "WhiteSpaceControlMode",
-        "Type": "Obsidian.WhiteSpaceControl.WhiteSpaceControlMode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
       }
     ],
     "Fields": null
@@ -2407,131 +1891,6 @@
     "FullName": "Obsidian.Parsing.ParsingNodeType",
     "Methods": [],
     "Properties": [],
-    "Fields": null
-  },
-  {
-    "FullName": "Obsidian.OutputCombiner.OutputCombineVisitor",
-    "Methods": [
-      {
-        "Name": "Transform",
-        "Overloads": [
-          {
-            "ReturnType": "Obsidian.AST.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.Statements.ForNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "Obsidian.AST.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.ContainerNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "Obsidian.AST.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.ExpressionNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "Obsidian.AST.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.MiscNodes.NewLineNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "Obsidian.AST.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.OutputNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "Obsidian.AST.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.MiscNodes.WhiteSpaceNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "Obsidian.AST.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.Statements.IfNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "Obsidian.AST.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.MiscNodes.ConditionalNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "Obsidian.AST.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.MiscNodes.CommentNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "Obsidian.AST.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.Statements.BlockNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "Obsidian.AST.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.MiscNodes.ExtendsNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "Obsidian.AST.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.TemplateNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          }
-        ]
-      }
-    ],
-    "Properties": [
-      {
-        "Name": "Instance",
-        "Type": "Obsidian.OutputCombiner.OutputCombineVisitor, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-      }
-    ],
     "Fields": null
   },
   {
@@ -2624,7 +1983,22 @@
   },
   {
     "FullName": "Obsidian.Lexing.Token",
-    "Methods": [],
+    "Methods": [
+      {
+        "Name": "ToOriginalText",
+        "Overloads": [
+          {
+            "ReturnType": "System.Void, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "stringBuilder",
+                "Type": "System.Text.StringBuilder, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          }
+        ]
+      }
+    ],
     "Properties": [
       {
         "Name": "TokenType",
@@ -2929,131 +2303,6 @@
     "Fields": null
   },
   {
-    "FullName": "Obsidian.CommentRemover.CommentRemoverTransformer",
-    "Methods": [
-      {
-        "Name": "Transform",
-        "Overloads": [
-          {
-            "ReturnType": "Obsidian.AST.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.Statements.ForNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "Obsidian.AST.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.ContainerNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "Obsidian.AST.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.ExpressionNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "Obsidian.AST.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.MiscNodes.NewLineNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "Obsidian.AST.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.OutputNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "Obsidian.AST.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.MiscNodes.WhiteSpaceNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "Obsidian.AST.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.Statements.IfNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "Obsidian.AST.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.MiscNodes.ConditionalNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "Obsidian.AST.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.MiscNodes.CommentNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "Obsidian.AST.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.Statements.BlockNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "Obsidian.AST.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.MiscNodes.ExtendsNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "Obsidian.AST.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.TemplateNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          }
-        ]
-      }
-    ],
-    "Properties": [
-      {
-        "Name": "Instance",
-        "Type": "Obsidian.CommentRemover.CommentRemoverTransformer, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-      }
-    ],
-    "Fields": null
-  },
-  {
     "FullName": "Obsidian.AST.ASTGenerator",
     "Methods": [
       {
@@ -3110,6 +2359,20 @@
         ]
       },
       {
+        "Name": "ToOriginalText",
+        "Overloads": [
+          {
+            "ReturnType": "System.Void, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "stringBuilder",
+                "Type": "System.Text.StringBuilder, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          }
+        ]
+      },
+      {
         "Name": "Transform",
         "Overloads": [
           {
@@ -3133,6 +2396,15 @@
                 "Type": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
               }
             ]
+          },
+          {
+            "ReturnType": "System.Void, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "visitor",
+                "Type": "Obsidian.Transforming.ITransformVisitor, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              }
+            ]
           }
         ]
       },
@@ -3153,12 +2425,42 @@
             ]
           }
         ]
+      },
+      {
+        "Name": "CheckOriginalText",
+        "Overloads": [
+          {
+            "ReturnType": "System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "environment",
+                "Type": "Obsidian.JinjaEnvironment, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              },
+              {
+                "Name": "templateText",
+                "Type": "System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          }
+        ]
       }
     ],
     "Properties": [
       {
         "Name": "ParsingNodes",
         "Type": "Obsidian.Parsing.ParsingNode[], Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+      },
+      {
+        "Name": "StartParsingNode",
+        "Type": "Obsidian.Parsing.ParsingNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+      },
+      {
+        "Name": "EndParsingNode",
+        "Type": "Obsidian.Parsing.ParsingNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+      },
+      {
+        "Name": "OriginalText",
+        "Type": "System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
       }
     ],
     "Fields": null
@@ -3170,14 +2472,6 @@
       {
         "Name": "Children",
         "Type": "Obsidian.AST.ASTNode[], Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-      },
-      {
-        "Name": "StartWhiteSpace",
-        "Type": "Obsidian.WhiteSpaceControl.WhiteSpaceControlMode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-      },
-      {
-        "Name": "EndWhiteSpace",
-        "Type": "Obsidian.WhiteSpaceControl.WhiteSpaceControlMode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
       }
     ],
     "Fields": null
@@ -3209,11 +2503,68 @@
                 "Type": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
               }
             ]
+          },
+          {
+            "ReturnType": "System.Void, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "visitor",
+                "Type": "Obsidian.Transforming.ITransformVisitor, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              }
+            ]
           }
         ]
       }
     ],
     "Properties": [],
+    "Fields": null
+  },
+  {
+    "FullName": "Obsidian.AST.Nodes.EmptyNode",
+    "Methods": [
+      {
+        "Name": "Transform",
+        "Overloads": [
+          {
+            "ReturnType": null,
+            "Parameters": [
+              {
+                "Name": "visitor",
+                "Type": null
+              }
+            ]
+          },
+          {
+            "ReturnType": null,
+            "Parameters": [
+              {
+                "Name": "visitor",
+                "Type": null
+              },
+              {
+                "Name": "force",
+                "Type": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.Void, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "visitor",
+                "Type": "Obsidian.Transforming.ITransformVisitor, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "Properties": [
+      {
+        "Name": "Instance",
+        "Type": "Obsidian.AST.Nodes.EmptyNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+      }
+    ],
     "Fields": null
   },
   {
@@ -3241,6 +2592,15 @@
               {
                 "Name": "force",
                 "Type": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.Void, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "visitor",
+                "Type": "Obsidian.Transforming.ITransformVisitor, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
               }
             ]
           }
@@ -3285,16 +2645,19 @@
         "Type": "System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
       },
       {
-        "Name": "StartWhiteSpace",
-        "Type": "Obsidian.WhiteSpaceControl.WhiteSpaceControlMode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-      },
-      {
-        "Name": "EndWhiteSpace",
-        "Type": "Obsidian.WhiteSpaceControl.WhiteSpaceControlMode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-      },
-      {
         "Name": "Output",
         "Type": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+      }
+    ],
+    "Fields": null
+  },
+  {
+    "FullName": "Obsidian.AST.Nodes.IWithChildren",
+    "Methods": [],
+    "Properties": [
+      {
+        "Name": "Children",
+        "Type": "Obsidian.AST.ASTNode[], Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
       }
     ],
     "Fields": null
@@ -3324,6 +2687,15 @@
               {
                 "Name": "force",
                 "Type": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.Void, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "visitor",
+                "Type": "Obsidian.Transforming.ITransformVisitor, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
               }
             ]
           }
@@ -3364,14 +2736,6 @@
       {
         "Name": "Children",
         "Type": "Obsidian.AST.ASTNode[], Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-      },
-      {
-        "Name": "StartWhiteSpace",
-        "Type": "Obsidian.WhiteSpaceControl.WhiteSpaceControlMode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-      },
-      {
-        "Name": "EndWhiteSpace",
-        "Type": "Obsidian.WhiteSpaceControl.WhiteSpaceControlMode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
       }
     ],
     "Fields": null
@@ -3388,6 +2752,15 @@
               {
                 "Name": "visitor",
                 "Type": null
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.Void, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "visitor",
+                "Type": "Obsidian.Transforming.ITransformVisitor, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
               }
             ]
           },
@@ -3427,6 +2800,15 @@
               {
                 "Name": "visitor",
                 "Type": null
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.Void, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "visitor",
+                "Type": "Obsidian.Transforming.ITransformVisitor, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
               }
             ]
           },
@@ -3480,24 +2862,6 @@
     "FullName": "Obsidian.AST.Nodes.Statements.ForNode",
     "Methods": [
       {
-        "Name": "TryParseFor",
-        "Overloads": [
-          {
-            "ReturnType": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-            "Parameters": [
-              {
-                "Name": "enumerator",
-                "Type": "Common.Collections.ILookaroundEnumerator`1[[Obsidian.Parsing.ParsingNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              },
-              {
-                "Name": "parsedNode",
-                "Type": "Obsidian.AST.ASTNode&, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          }
-        ]
-      },
-      {
         "Name": "Transform",
         "Overloads": [
           {
@@ -3519,6 +2883,15 @@
               {
                 "Name": "force",
                 "Type": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.Void, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "visitor",
+                "Type": "Obsidian.Transforming.ITransformVisitor, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
               }
             ]
           }
@@ -3557,6 +2930,15 @@
               {
                 "Name": "visitor",
                 "Type": null
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.Void, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "visitor",
+                "Type": "Obsidian.Transforming.ITransformVisitor, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
               }
             ]
           },
@@ -3629,6 +3011,15 @@
                 "Type": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
               }
             ]
+          },
+          {
+            "ReturnType": "System.Void, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "visitor",
+                "Type": "Obsidian.Transforming.ITransformVisitor, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              }
+            ]
           }
         ]
       }
@@ -3661,6 +3052,15 @@
               {
                 "Name": "force",
                 "Type": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.Void, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "visitor",
+                "Type": "Obsidian.Transforming.ITransformVisitor, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
               }
             ]
           }
@@ -3700,6 +3100,15 @@
               {
                 "Name": "force",
                 "Type": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.Void, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "visitor",
+                "Type": "Obsidian.Transforming.ITransformVisitor, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
               }
             ]
           }
@@ -3763,14 +3172,23 @@
                 "Type": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
               }
             ]
+          },
+          {
+            "ReturnType": "System.Void, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "visitor",
+                "Type": "Obsidian.Transforming.ITransformVisitor, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              }
+            ]
           }
         ]
       }
     ],
     "Properties": [
       {
-        "Name": "ControlMode",
-        "Type": "Obsidian.WhiteSpaceControl.WhiteSpaceControlMode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+        "Name": "WhiteSpaceMode",
+        "Type": "Obsidian.WhiteSpaceControl.WhiteSpaceMode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
       }
     ],
     "Fields": null
@@ -3805,6 +3223,15 @@
             ]
           },
           {
+            "ReturnType": "System.Void, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "visitor",
+                "Type": "Obsidian.Transforming.ITransformVisitor, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              }
+            ]
+          },
+          {
             "ReturnType": null,
             "Parameters": [
               {
@@ -3822,8 +3249,8 @@
     ],
     "Properties": [
       {
-        "Name": "WhiteSpaceControlMode",
-        "Type": "Obsidian.WhiteSpaceControl.WhiteSpaceControlMode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+        "Name": "WhiteSpaceMode",
+        "Type": "Obsidian.WhiteSpaceControl.WhiteSpaceMode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
       }
     ],
     "Fields": null
@@ -8497,6 +7924,12 @@
   },
   {
     "FullName": "Common.Collections.EnumeratorState",
+    "Methods": [],
+    "Properties": [],
+    "Fields": null
+  },
+  {
+    "FullName": "Obsidian.AST.NodeParsers.ForParser+ForState",
     "Methods": [],
     "Properties": [],
     "Fields": null

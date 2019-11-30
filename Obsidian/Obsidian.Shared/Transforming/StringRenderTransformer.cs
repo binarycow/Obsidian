@@ -105,7 +105,12 @@ namespace Obsidian.Transforming
         {
             if (!(ShouldRender && _EncounteredOutputStyleBlock)) return string.Empty;
             _EncounteredOutputStyleBlock = true;
-            _StringBuilder.Append(item.ToString());
+
+            if(item.WhiteSpaceMode != WhiteSpaceControl.WhiteSpaceMode.Trim)
+            {
+                _StringBuilder.Append(item.ToString());
+            }
+
             return string.Empty;
         }
 
@@ -121,7 +126,11 @@ namespace Obsidian.Transforming
         {
             _EncounteredOutputStyleBlock = true;
             if (!(ShouldRender && _EncounteredOutputStyleBlock)) return string.Empty;
-            _StringBuilder.Append(item.ToString());
+
+            if (item.WhiteSpaceMode != WhiteSpaceControl.WhiteSpaceMode.Trim)
+            {
+                _StringBuilder.Append(item.ToString());
+            }
             return string.Empty;
         }
 

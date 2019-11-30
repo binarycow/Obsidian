@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Obsidian.AST;
 using Obsidian.AST.Nodes;
 using Obsidian.AST.Nodes.MiscNodes;
 using Obsidian.AST.Nodes.Statements;
@@ -9,17 +8,18 @@ using Obsidian.Transforming;
 
 namespace Obsidian.WhiteSpaceControl
 {
-    internal class TrimBlocksVisitor : ITransformVisitor
+    internal class LStripBlocksVisitor : ITransformVisitor
     {
-        private static Lazy<TrimBlocksVisitor> _Instance = new Lazy<TrimBlocksVisitor>();
-        public static TrimBlocksVisitor Instance => _Instance.Value;
+        private static Lazy<LStripBlocksVisitor> _Instance = new Lazy<LStripBlocksVisitor>();
+        public static LStripBlocksVisitor Instance => _Instance.Value;
 
+        public bool Strip { get; private set; }
 
-        public bool TrimNewLine { get; private set; } = false;
+        private Queue<WhiteSpaceNode> pendingWhiteSpace = new Queue<WhiteSpaceNode>();
 
         public void Transform(TemplateNode item)
         {
-            foreach(var child in item.Children)
+            foreach (var child in item.Children)
             {
                 child.Transform(this);
             }
@@ -47,36 +47,35 @@ namespace Obsidian.WhiteSpaceControl
 
         public void Transform(NewLineNode item)
         {
-            if(TrimNewLine)
-            {
-                item.WhiteSpaceMode = WhiteSpaceMode.Trim;
-            }
-            TrimNewLine = false;
+            Strip = true;
         }
 
         public void Transform(OutputNode item)
         {
-            return;
+            pendingWhiteSpace.Clear();
         }
 
         public void Transform(WhiteSpaceNode item)
         {
-            return;
+            if(Strip)
+            {
+                pendingWhiteSpace.Enqueue(item);
+            }
         }
 
         public void Transform(IfNode item)
         {
             foreach (var condition in item.Conditions)
             {
-                TrimNewLine = true;
+                StripWhiteSpace();
                 condition.Transform(this);
             }
-            TrimNewLine = true;
+            StripWhiteSpace();
         }
 
         public void Transform(ConditionalNode item)
         {
-            TrimNewLine = true;
+            StripWhiteSpace();
             foreach (var child in item.Children)
             {
                 child.Transform(this);
@@ -96,6 +95,15 @@ namespace Obsidian.WhiteSpaceControl
         public void Transform(ExtendsNode item)
         {
             throw new NotImplementedException();
+        }
+
+        private void StripWhiteSpace()
+        {
+            while(pendingWhiteSpace.Count > 0)
+            {
+                var ws = pendingWhiteSpace.Dequeue();
+                ws.WhiteSpaceMode = WhiteSpaceMode.Trim;
+            }
         }
     }
 }
