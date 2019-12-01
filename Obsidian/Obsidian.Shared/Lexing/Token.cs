@@ -17,6 +17,12 @@ namespace Obsidian.Lexing
         public Token(TokenTypes tokenType, IEnumerable<char> value) : this(tokenType, new string(value.ToArray())) { }
 
 
+
+        public virtual void ToOriginalText(StringBuilder stringBuilder)
+        {
+            stringBuilder.Append(Value);
+        }
+
         private string DebuggerDisplay => $"{nameof(Token)} {TokenType} : \"{Value.WhiteSpaceEscape()}\"";
 
         public TokenTypes TokenType { get; }

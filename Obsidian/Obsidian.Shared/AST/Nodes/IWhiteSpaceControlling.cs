@@ -7,7 +7,6 @@ namespace Obsidian.AST.Nodes
 {
     public interface IWhiteSpaceControlling
     {
-        public WhiteSpaceControlMode StartWhiteSpace { get; }
-        public WhiteSpaceControlMode EndWhiteSpace { get; }
+        public WhiteSpaceControlSet WhiteSpaceControl { get; }
     }
 }

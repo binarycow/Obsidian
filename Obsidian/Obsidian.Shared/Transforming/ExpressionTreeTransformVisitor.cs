@@ -6,8 +6,6 @@ using System.Text;
 using Obsidian.AST.Nodes;
 using Obsidian.AST.Nodes.MiscNodes;
 using Obsidian.AST.Nodes.Statements;
-using Obsidian.Rendering.RenderObjects;
-using Obsidian.WhiteSpaceControl;
 
 namespace Obsidian.Transforming
 {

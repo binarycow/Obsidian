@@ -34,6 +34,10 @@ namespace Obsidian.AST.Nodes.MiscNodes
         {
             return visitor.Transform(this, force);
         }
+        public override void Transform(ITransformVisitor visitor)
+        {
+            visitor.Transform(this);
+        }
 
         public static bool TryParseExtends(ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
         {

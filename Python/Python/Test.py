@@ -3,22 +3,20 @@ from pathlib import Path
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 
-envArgs = { }
-variables = { 'standalone': False }
+envArgs = { 
+    'trim_blocks': True
+}
+variables = {
+    'seq': [ 1, 2, 3 ]
+}
 
 env = Environment(
-    loader=FileSystemLoader("C:\Source\Obsidian\Obsidian\Obsidian.SampleProject"), **envArgs #,
+    loader=FileSystemLoader("C:\Source\Obsidian\Python\Python"), **envArgs #,
     #autoescape=select_autoescape(['html', 'xml'])
 )
-template = env.get_template("NullMasterChild.html")
+template = env.get_template("Test.txt")
+output = template.render(**variables)
+lines = output.splitlines()
 
-print("========================== Standalone: False ==========================")
-print()
-print(template.render(**variables))
-print()
-print("========================== Standalone: True ===========================")
-print()
-variables['standalone'] = True
-print(template.render(**variables))
-print()
-print("=======================================================================")
+for line in lines:
+    print("|" + line + "|")

@@ -32,12 +32,12 @@ namespace Obsidian.Transforming
                 elseBlock = item.ElseBlock.Transform(this) as ContainerNode;
                 if (elseBlock == default) throw new NotImplementedException();
             }
-            return new ForNode(primaryBlock, elseBlock, item.VariableNames, item.Expression, item.StartWhiteSpace, item.EndWhiteSpace);
+            return new ForNode(primaryBlock, elseBlock, item.VariableNames, item.Expression, item.EndParsingNode);
         }
 
         public virtual ASTNode Transform(ContainerNode item)
         {
-            return new ContainerNode(TransformAll(item.Children), item.StartWhiteSpace, item.EndWhiteSpace);
+            return new ContainerNode(item.StartParsingNode, TransformAll(item.Children), item.EndParsingNode);
         }
 
         public virtual ASTNode Transform(ExpressionNode item)
@@ -62,13 +62,15 @@ namespace Obsidian.Transforming
 
         public virtual ASTNode Transform(IfNode item)
         {
-            var x = item.Conditions.Select(cond => new ConditionalNode(cond.Expression, TransformAll(cond.Children), cond.StartWhiteSpace, cond.EndWhiteSpace));
-            return new IfNode(x, item.StartWhiteSpace, item.EndWhiteSpace);
+            var x = item.Conditions.Select(
+                cond => new ConditionalNode(cond.StartParsingNode, cond.Expression, TransformAll(cond.Children), cond.EndParsingNode)
+            );
+            return new IfNode(item.StartParsingNode, x, item.EndParsingNode);
         }
 
         public virtual ASTNode Transform(ConditionalNode item)
         {
-            return new ConditionalNode(item.Expression, TransformAll(item.Children), item.StartWhiteSpace, item.EndWhiteSpace);
+            return new ConditionalNode(item.StartParsingNode, item.Expression, TransformAll(item.Children), item.EndParsingNode);
         }
 
         public virtual ASTNode Transform(CommentNode item)
@@ -78,8 +80,8 @@ namespace Obsidian.Transforming
 
         public virtual ASTNode Transform(BlockNode item)
         {
-            var container = new ContainerNode(TransformAll(item.BlockContents.Children), item.StartWhiteSpace, item.EndWhiteSpace);
-            return new BlockNode(item.Name, container, item.StartWhiteSpace, item.EndWhiteSpace);
+            var container = new ContainerNode(item.BlockContents.StartParsingNode, TransformAll(item.BlockContents.Children), item.BlockContents.EndParsingNode);
+            return new BlockNode(item.StartParsingNode, item.Name, container, item.EndParsingNode);
         }
 
         public virtual ASTNode Transform(ExtendsNode item)

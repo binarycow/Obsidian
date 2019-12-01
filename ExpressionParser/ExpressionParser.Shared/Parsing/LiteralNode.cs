@@ -20,7 +20,6 @@ namespace ExpressionParser.Parsing
             return visitor.Transform(this);
         }
 
-
         public static LiteralNode CreateIntegerLiteral(Token token)
         {
             if (int.TryParse(token.TextValue, out var intValue))

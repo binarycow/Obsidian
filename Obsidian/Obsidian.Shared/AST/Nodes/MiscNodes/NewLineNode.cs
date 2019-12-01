@@ -10,15 +10,14 @@ using Obsidian.WhiteSpaceControl;
 namespace Obsidian.AST.Nodes.MiscNodes
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public class NewLineNode : ASTNode
+    public class NewLineNode : ASTNode, IWhiteSpace
     {
-        public NewLineNode(ParsingNode parsingNode, WhiteSpaceControlMode controlMode) : base(parsingNode)
+        public NewLineNode(ParsingNode parsingNode) : base(parsingNode)
         {
-            ControlMode = controlMode;
         }
-        public WhiteSpaceControlMode ControlMode { get; set; }
+        public WhiteSpaceMode WhiteSpaceMode { get; set; }
 
-        private string DebuggerDisplay => $"{nameof(NewLineNode)} : \"{ToString(debug: true)}\" Control: {ControlMode}";
+        private string DebuggerDisplay => $"{nameof(NewLineNode)} : \"{ToString(debug: true)}\"";
         public override TOutput Transform<TOutput>(ITransformVisitor<TOutput> visitor)
         {
             return visitor.Transform(this);
@@ -27,6 +26,10 @@ namespace Obsidian.AST.Nodes.MiscNodes
         public override TOutput Transform<TOutput>(IForceTransformVisitor<TOutput> visitor, bool force)
         {
             return visitor.Transform(this, force);
+        }
+        public override void Transform(ITransformVisitor visitor)
+        {
+            visitor.Transform(this);
         }
     }
 }

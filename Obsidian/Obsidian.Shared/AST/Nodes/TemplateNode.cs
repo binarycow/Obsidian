@@ -2,17 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Obsidian.CommentRemover;
 using Obsidian.Lexing;
 using Obsidian.Parsing;
 using Obsidian.Transforming;
-using Obsidian.WhiteSpaceControl;
 
 namespace Obsidian.AST.Nodes
 {
     public class TemplateNode : ASTNode
     {
-        public TemplateNode(IEnumerable<ASTNode> children) : base(children.SelectMany(child => child.ParsingNodes))
+        public TemplateNode(IEnumerable<ASTNode> children) : base(null, children.SelectMany(child => child.ParsingNodes), null)
         {
             Children = children.ToArrayWithoutInstantiation();
         }
@@ -23,10 +21,13 @@ namespace Obsidian.AST.Nodes
             return visitor.Transform(this);
         }
 
+        public override void Transform(ITransformVisitor visitor)
+        {
+            visitor.Transform(this);
+        }
         public override TOutput Transform<TOutput>(IForceTransformVisitor<TOutput> visitor, bool force)
         {
             return visitor.Transform(this, force);
         }
-
     }
 }

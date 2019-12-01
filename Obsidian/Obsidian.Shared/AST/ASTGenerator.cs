@@ -6,7 +6,6 @@ using Common.Collections;
 using Obsidian.AST.Nodes;
 using Obsidian.AST.Nodes.MiscNodes;
 using Obsidian.Parsing;
-using Obsidian.WhiteSpaceControl;
 
 namespace Obsidian.AST
 {
@@ -39,7 +38,7 @@ namespace Obsidian.AST
                         StatementNode.TryParse(enumerator, out astNode);
                         break;
                     case ParsingNodeType.NewLine:
-                        astNode = new NewLineNode(enumerator.Current, enumerator.Current.WhiteSpaceControlMode);
+                        astNode = new NewLineNode(enumerator.Current);
                         break;
                     case ParsingNodeType.Comment:
                         astNode = new CommentNode(enumerator.Current);

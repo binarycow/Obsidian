@@ -65,7 +65,7 @@ namespace Obsidian.Transforming
             if (item.VariableNames.Length != 1) throw new NotImplementedException();
             var evalObj = Environment.Evaluation.EvaluateDynamic(item.Expression.Expression, Scopes);
             var arr = CollectionEx.ToArray(evalObj);
-            if (arr == null) throw new NotImplementedException();
+            arr = arr ?? Array.Empty<object>();
 
             if(arr.Length == 0 && item.ElseBlock != null)
             {
@@ -103,10 +103,14 @@ namespace Obsidian.Transforming
 
         public string Transform(NewLineNode item)
         {
-            if (item.ControlMode == WhiteSpaceControl.WhiteSpaceControlMode.Trim) return string.Empty;
             if (!(ShouldRender && _EncounteredOutputStyleBlock)) return string.Empty;
             _EncounteredOutputStyleBlock = true;
-            _StringBuilder.Append(item.ToString());
+
+            if(item.WhiteSpaceMode != WhiteSpaceControl.WhiteSpaceMode.Trim)
+            {
+                _StringBuilder.Append(item.ToString());
+            }
+
             return string.Empty;
         }
 
@@ -120,10 +124,13 @@ namespace Obsidian.Transforming
 
         public string Transform(WhiteSpaceNode item)
         {
-            if (item.WhiteSpaceControlMode == WhiteSpaceControl.WhiteSpaceControlMode.Trim) return string.Empty;
             _EncounteredOutputStyleBlock = true;
             if (!(ShouldRender && _EncounteredOutputStyleBlock)) return string.Empty;
-            _StringBuilder.Append(item.ToString());
+
+            if (item.WhiteSpaceMode != WhiteSpaceControl.WhiteSpaceMode.Trim)
+            {
+                _StringBuilder.Append(item.ToString());
+            }
             return string.Empty;
         }
 

@@ -6,6 +6,7 @@ using System.Text;
 using ExpressionParser;
 using ExpressionParser.Scopes;
 using Obsidian;
+using Obsidian.AST;
 using Obsidian.Exceptions;
 using Obsidian.ExpressionParserExt;
 using Obsidian.Templates;
@@ -32,6 +33,14 @@ namespace Obsidian
         public JinjaLanguageDefinition LanguageDefinition => _LanguageDefinition.Value;
         internal ExpressionEval Evaluation => _Evaluation.Value;
         private readonly Lazy<ExpressionEval> _Evaluation;
+
+#if DEBUG
+        public string CheckOriginalText(string templateName)
+        {
+            var templateInfo = GetTemplateInfo(templateName);
+            return ASTNode.CheckOriginalText(this, templateInfo.Source);
+        }
+#endif
 
         internal ITemplate GetTemplate(string templateName, TemplateInfo templateInfo, IDictionary<string, object?> variableTemplate)
         {
@@ -64,32 +73,28 @@ namespace Obsidian
         }
         public ITemplate GetTemplate(string templateName, IDictionary<string, object?> variableTemplate)
         {
+            var templateInfo = GetTemplateInfo(templateName);
+            return GetTemplate(templateInfo.Source, variableTemplate, templateName, templateInfo.Filename);
+        }
+
+        private TemplateInfo GetTemplateInfo(string templateName)
+        {
             if (Loader == null)
             {
                 throw new LoaderNotDefinedException();
             }
-            var templateInfo = Loader.GetSource(this, templateName);
-            return GetTemplate(templateInfo.Source, variableTemplate, templateName, templateInfo.Filename);
+            Settings.IsReadOnly = true;
+            return Loader.GetSource(this, templateName);
         }
 
         public Expression GetTemplateExpression(string templateName, CompiledScope scope)
         {
-            if (Loader == null)
-            {
-                throw new LoaderNotDefinedException();
-            }
-            var templateInfo = Loader.GetSource(this, templateName);
-            Settings.IsReadOnly = true;
+            var templateInfo = GetTemplateInfo(templateName);
             return CompiledTemplate.ToExpression(templateName, this, templateInfo.Source, scope);
         }
         public DynamicTemplate GetTemplate(string templateName, DynamicContext scope)
         {
-            if (Loader == null)
-            {
-                throw new LoaderNotDefinedException();
-            }
-            var templateInfo = Loader.GetSource(this, templateName);
-            Settings.IsReadOnly = true;
+            var templateInfo = GetTemplateInfo(templateName);
             return GetTemplate(templateInfo.Source, scope, templateName, null);
         }
 

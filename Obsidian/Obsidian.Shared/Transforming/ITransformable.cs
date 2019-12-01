@@ -7,5 +7,6 @@ namespace Obsidian.Transforming
     public interface ITransformable
     {
         TOutput Transform<TOutput>(ITransformVisitor<TOutput> visitor);
+        void Transform(ITransformVisitor visitor);
     }
 }

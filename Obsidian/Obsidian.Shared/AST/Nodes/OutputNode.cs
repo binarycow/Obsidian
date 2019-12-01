@@ -28,6 +28,10 @@ namespace Obsidian.AST.Nodes
         {
             return visitor.Transform(this, force);
         }
+        public override void Transform(ITransformVisitor visitor)
+        {
+            visitor.Transform(this);
+        }
 
         internal static OutputNode FromString(string @string)
         {
