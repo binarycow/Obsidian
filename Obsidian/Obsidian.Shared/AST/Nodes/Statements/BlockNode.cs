@@ -45,30 +45,26 @@ namespace Obsidian.AST.Nodes.Statements
         public static bool TryParseBlock(ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
         {
             parsedNode = default;
-            if(BlockParser.StartBlock.TryParse(enumerator.Current, out var accumulations) == false)
+            if(BlockParser.StartBlock.TryParse(enumerator.Current) == false)
             {
                 return false;
             }
             var startParsingNode = enumerator.Current;
-            if (accumulations.TryGetValue(BlockParser.BlockState.BlockName, out var blockNameArray) == false || blockNameArray.Length == 0)
+            if(BlockParser.StartBlock.TryGetAccumulation(BlockParser.BlockState.BlockName, 0, out var startingBlockName) == false)
             {
                 throw new NotImplementedException();
             }
-            var startingBlockName = blockNameArray[0];
             if (string.IsNullOrEmpty(startingBlockName)) throw new NotImplementedException();
             enumerator.MoveNext();
 
             var contents = ASTGenerator.ParseUntilFailure(enumerator).ToArray();
 
 
-            if (BlockParser.EndBlock.TryParse(enumerator.Current, out accumulations) == false)
+            if (BlockParser.EndBlock.TryParse(enumerator.Current) == false)
             {
                 return false;
             }
-            if (accumulations.TryGetValue(BlockParser.BlockState.BlockName, out blockNameArray) &&
-                blockNameArray.Length > 0 &&
-                string.IsNullOrEmpty(blockNameArray[0]) == false &&
-                blockNameArray[0] != startingBlockName)
+            if (BlockParser.EndBlock.TryGetAccumulation(BlockParser.BlockState.BlockName, 0, out var endBlockName) && endBlockName != startingBlockName)
             {
                 throw new NotImplementedException();
             }

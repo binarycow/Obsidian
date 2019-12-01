@@ -11,7 +11,7 @@ namespace Obsidian.WhiteSpaceControl
         {
             if (environment.Settings.TrimBlocks) templateNode.Transform(TrimBlocksVisitor.Instance);
             if (environment.Settings.LStripBlocks) templateNode.Transform(LStripBlocksVisitor.Instance);
-
+            templateNode.Transform(ManualWhiteSpaceVisitor.Instance);
             return templateNode;
         }
     }

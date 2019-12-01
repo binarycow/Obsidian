@@ -15,5 +15,20 @@ namespace System.Collections.Generic
         {
             return source.Concat(Enumerable.Repeat(item, 1));
         }
+
+        public static T? FirstOrDefaultValueType<T>(this IEnumerable<T> source, Func<T, bool> predicate)
+            where T : struct
+        {
+            source = source ?? throw new ArgumentNullException(nameof(source));
+            predicate = predicate ?? throw new ArgumentNullException(nameof(predicate));
+            foreach (var item in source)
+            {
+                if(predicate(item))
+                {
+                    return item;
+                }
+            }
+            return null;
+        }
     }
 }

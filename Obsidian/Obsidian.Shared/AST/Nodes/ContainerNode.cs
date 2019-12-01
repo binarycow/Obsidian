@@ -5,16 +5,20 @@ using System.Linq;
 using System.Text;
 using Obsidian.Parsing;
 using Obsidian.Transforming;
+using Obsidian.WhiteSpaceControl;
 
 namespace Obsidian.AST.Nodes
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public class ContainerNode : AbstractContainerNode
+    public class ContainerNode : AbstractContainerNode, IWhiteSpaceControlling
     {
-        public ContainerNode(ParsingNode? startParsingNode, IEnumerable<ASTNode> children, ParsingNode? endParsingNode)
+        public ContainerNode(ParsingNode? startParsingNode, IEnumerable<ASTNode> children, ParsingNode? endParsingNode, WhiteSpaceControlSet? whiteSpace = null)
             : base(startParsingNode, children, endParsingNode)
         {
+            WhiteSpaceControl = whiteSpace ?? new WhiteSpaceControlSet();
         }
+
+        public WhiteSpaceControlSet WhiteSpaceControl { get; }
 
         private string DebuggerDisplay => $"{nameof(ContainerNode)}";
 

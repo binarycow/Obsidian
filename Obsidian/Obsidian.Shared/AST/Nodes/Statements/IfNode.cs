@@ -44,30 +44,25 @@ namespace Obsidian.AST.Nodes.Statements
             parsedNode = default;
 
 
-            if(IfParser.StartBlock.TryParse(enumerator.Current, out var accumulations) == false)
+            if(IfParser.StartBlock.TryParse(enumerator.Current) == false)
             {
                 return false;
             }
             var startParsingNode = enumerator.Current;
-            if (accumulations.TryGetValue(IfParser.IfState.Expression, out var exprArray) == false || exprArray.Length == 0)
+            if(IfParser.StartBlock.TryGetAccumulation(IfParser.IfState.Expression, 0, out var previousBlockExpression) == false)
             {
                 throw new NotImplementedException();
             }
-            var previousBlockExpression = exprArray[0];
-
-
-
             enumerator.MoveNext();
             var blockChildren = ASTGenerator.ParseUntilFailure(enumerator).ToArray();
 
-            while(IfParser.ElseIfBlock.TryParse(enumerator.Current, out accumulations))
+            while(IfParser.ElseIfBlock.TryParse(enumerator.Current))
             {
                 conditions.Enqueue(new ConditionalNode(startParsingNode, ExpressionNode.FromString(previousBlockExpression), blockChildren, null));
-                if (accumulations.TryGetValue(IfParser.IfState.Expression, out exprArray) == false || exprArray.Length == 0)
+                if (IfParser.ElseIfBlock.TryGetAccumulation(IfParser.IfState.Expression, 0, out previousBlockExpression) == false)
                 {
                     throw new NotImplementedException();
                 }
-                previousBlockExpression = exprArray[0];
                 enumerator.MoveNext();
                 blockChildren = ASTGenerator.ParseUntilFailure(enumerator).ToArray();
             }

@@ -21,6 +21,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\EmptyNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\ExpressionNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\ITrimmable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\IWhiteSpaceControlling.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\IWithChildren.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\MiscNodes\CommentNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\MiscNodes\ConditionalNode.cs" />
@@ -81,8 +82,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)VariableSetterWalker.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\IWhiteSpace.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\LStripBlocksVisitor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\ManualWhiteSpaceVisitor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\TrimBlocksVisitor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\WhiteSpaceController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\WhiteSpaceControlSet.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\WhiteSpaceMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\WhiteSpacePosition.cs" />
   </ItemGroup>

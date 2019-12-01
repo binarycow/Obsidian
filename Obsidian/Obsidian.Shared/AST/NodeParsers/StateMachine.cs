@@ -31,7 +31,28 @@ namespace Obsidian.AST.NodeParsers
 
         public Queue<(WhiteSpacePosition position, WhiteSpaceMode mode)> WhiteSpace { get; } = new Queue<(WhiteSpacePosition position, WhiteSpaceMode mode)>();
 
-
+        public bool TryGetAccumulation(TState? state, int index, out string accumulation)
+        {
+            accumulation = string.Empty;
+            if (TryGetAccumulations(state, out var allAccumulations) == false) return false;
+            if (index >= allAccumulations.Length) return false;
+            accumulation = allAccumulations[index];
+            return true;
+        }
+        public bool TryGetAccumulations(TState? state, out string[] accumulations)
+        {
+            accumulations = Array.Empty<string>();
+            foreach (var stateKey in Accumulations.Keys)
+            {
+                if (stateKey.StateEnum.Equals(state) == false)
+                {
+                    continue;
+                }
+                accumulations = Accumulations[stateKey].Select(queue => string.Join(string.Empty, queue.Select(tok => tok.Value)).Trim()).ToArray();
+                return true;
+            }
+            return false;
+        }
 
         public State<TState> State(TState currentState)
         {
@@ -46,21 +67,21 @@ namespace Obsidian.AST.NodeParsers
             return _ElseState;
         }
 
-
-
         public bool TryParse(ParsingNode node)
         {
-            return TryParse(node, out _);
+            return TryParse(node, out _, out _);
         }
-        public bool TryParse(ParsingNode node, out Dictionary<TState?, string[]> accumulations)
+
+        public bool TryParse(ParsingNode node, out WhiteSpaceMode startingWhiteSpace, out WhiteSpaceMode endingWhiteSpace)
         {
             using var enumerator = LookaroundEnumeratorFactory.CreateLookaroundEnumerator(node.Tokens);
-            return TryParse(enumerator, out accumulations);
+            return TryParse(enumerator, out startingWhiteSpace, out endingWhiteSpace);
         }
-        public bool TryParse(ILookaroundEnumerator<Token> enumerator, out Dictionary<TState?, string[]> accumulations)
+        public bool TryParse(ILookaroundEnumerator<Token> enumerator, out WhiteSpaceMode startingWhiteSpace, out WhiteSpaceMode endingWhiteSpace)
         {
+            startingWhiteSpace = WhiteSpaceMode.Default;
+            endingWhiteSpace = WhiteSpaceMode.Default;
             if (_Accumulations.IsValueCreated) _Accumulations.Value.Clear();
-            accumulations = new Dictionary<TState?, string[]>();
             CurrentState = InitialState;
             if(enumerator.MoveNext() == false)
             {
@@ -86,11 +107,8 @@ namespace Obsidian.AST.NodeParsers
             {
                 throw new NotImplementedException();
             }
-
-            foreach(var key in Accumulations.Keys)
-            {
-                accumulations.Add(key.StateEnum, Accumulations[key].Select(queue => string.Join(string.Empty, queue.Select(token => token.Value))).ToArray());
-            }
+            startingWhiteSpace = WhiteSpace.FirstOrDefaultValueType(ws => ws.position == WhiteSpacePosition.Start)?.mode ?? WhiteSpaceMode.Default;
+            endingWhiteSpace = WhiteSpace.FirstOrDefaultValueType(ws => ws.position == WhiteSpacePosition.End)?.mode ?? WhiteSpaceMode.Default;
             return true;
         }
 

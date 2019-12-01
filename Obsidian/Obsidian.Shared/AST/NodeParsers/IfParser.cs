@@ -83,9 +83,11 @@ namespace Obsidian.AST.NodeParsers
                     .Return(false);
             parser.State(WhiteSpaceOrKeyword)
                 .Expect(Minus)
-                    .Throw()
+                    .SetWhiteSpaceMode(WhiteSpacePosition.Start, WhiteSpaceMode.Trim)
+                    .MoveTo(Keyword)
                 .Expect(Plus)
-                    .Throw()
+                    .SetWhiteSpaceMode(WhiteSpacePosition.Start, WhiteSpaceMode.Keep)
+                    .MoveTo(Keyword)
                 .Expect(WhiteSpace)
                     .MoveTo(Keyword)
                 .Else()
@@ -99,6 +101,7 @@ namespace Obsidian.AST.NodeParsers
             parser.State(WhiteSpaceOrEndJinja)
                 .Ignore(WhiteSpace)
                 .Expect(Minus).AndNext(StatementEnd)
+                    .SetWhiteSpaceMode(WhiteSpacePosition.End, WhiteSpaceMode.Trim)
                     .MoveTo(EndJinja)
                 .Expect(StatementEnd)
                     .MoveTo(Done);
