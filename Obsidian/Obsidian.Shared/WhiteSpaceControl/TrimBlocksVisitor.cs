@@ -97,5 +97,14 @@ namespace Obsidian.WhiteSpaceControl
         {
             throw new NotImplementedException();
         }
+
+        public void Transform(RawNode item)
+        {
+            throw new NotImplementedException();
+        }
+        public void Transform(MacroNode item)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

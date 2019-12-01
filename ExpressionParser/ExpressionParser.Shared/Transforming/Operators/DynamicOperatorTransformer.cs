@@ -69,17 +69,27 @@ namespace ExpressionParser.Transforming.Operators
                     return Property(left, args[1]);
                 case SpecialOperatorType.Index:
                     return Index(left, args[1]);
+                case SpecialOperatorType.Pipeline:
+                    return Pipeline(left, args[1]);
                 default:
                     throw new NotImplementedException();
             }
 
             object? Method(object? left, ASTNode right)
             {
-                switch(right)
+                switch (right)
                 {
                     case ArgumentSetNode argSet:
                         var args = argSet.Arguments.Select(arg => arg.Transform(NodeTransformer)).ToArray();
                         return DynamicResolver.CallMethod(ScopeStack, left, args);
+                    default:
+                        throw new NotImplementedException();
+                }
+            }
+            object? Pipeline(object? left, ASTNode right)
+            {
+                switch (right)
+                {
                     default:
                         throw new NotImplementedException();
                 }

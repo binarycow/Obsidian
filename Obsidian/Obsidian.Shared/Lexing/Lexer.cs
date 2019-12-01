@@ -65,6 +65,10 @@ namespace Obsidian.Lexing
             { "block".ToCharArray(), TokenTypes.Keyword_Block },
             { "endblock".ToCharArray(), TokenTypes.Keyword_EndBlock },
             { "extends".ToCharArray(), TokenTypes.Keyword_Extends },
+            { "raw".ToCharArray(), TokenTypes.Keyword_Raw },
+            { "endraw".ToCharArray(), TokenTypes.Keyword_EndRaw },
+            { "macro".ToCharArray(), TokenTypes.Keyword_Macro },
+            { "endmacro".ToCharArray(), TokenTypes.Keyword_EndMacro },
         };
         private bool TryKeyword(ILookaroundEnumerator<char> enumerator, out Token? token)
         {

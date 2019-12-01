@@ -93,5 +93,15 @@ namespace Obsidian.Transforming
         {
             return item;
         }
+
+        public ASTNode Transform(RawNode item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ASTNode Transform(MacroNode item)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -48,7 +48,10 @@ namespace Obsidian.AST.NodeParsers
                 {
                     continue;
                 }
-                accumulations = Accumulations[stateKey].Select(queue => string.Join(string.Empty, queue.Select(tok => tok.Value)).Trim()).ToArray();
+                accumulations = Accumulations[stateKey]
+                    .Select(queue => string.Join(string.Empty, queue.Select(tok => tok.Value)).Trim())
+                    .Where(str => !string.IsNullOrEmpty(str))
+                    .ToArray();
                 return true;
             }
             return false;

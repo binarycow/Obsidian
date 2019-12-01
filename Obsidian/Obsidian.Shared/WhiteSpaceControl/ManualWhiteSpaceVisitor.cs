@@ -111,5 +111,16 @@ namespace Obsidian.WhiteSpaceControl
         {
             return;
         }
+
+        public void Transform(RawNode item)
+        {
+            return;
+        }
+        public void Transform(MacroNode item)
+        {
+            SetTrim(item.WhiteSpaceControl.Start);
+            item.Contents.Transform(this);
+            SetTrim(item.WhiteSpaceControl.End);
+        }
     }
 }

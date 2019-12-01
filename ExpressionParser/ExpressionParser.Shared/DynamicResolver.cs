@@ -35,13 +35,15 @@ namespace ExpressionParser
             {
                 case FunctionMethodGroup methodGroup:
                     return FuncMethodGroup(scopeStack, methodGroup, args);
+                case UserDefinedFunction userDefinedFunction:
+                    return userDefinedFunction.Invoke(scopeStack, userDefinedFunction, args);
                 default:
                     throw new NotImplementedException();
             }
 
-            object? FuncMethodGroup<TScope, TRootScope>(ScopeStack<TScope, TRootScope> scopeStack, FunctionMethodGroup left, object?[] args)
-                where TScope : class, IScope
-                where TRootScope : class, TScope
+
+
+            object? FuncMethodGroup(ScopeStack<TScope, TRootScope> scopeStack, FunctionMethodGroup left, object?[] args)
             {
                 if (left.FunctionDefinition.OverloadDefinitions.Length != 1) throw new NotImplementedException();
                 var overload = left.FunctionDefinition.OverloadDefinitions[0];

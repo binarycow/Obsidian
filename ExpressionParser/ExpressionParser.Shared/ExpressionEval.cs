@@ -10,6 +10,7 @@ using ExpressionParser.Transforming;
 using ExpressionParser.Transforming.Nodes;
 using ExpressionParser.VariableManagement;
 using ExpressionParser.Scopes;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ExpressionParser
 {
@@ -90,6 +91,13 @@ namespace ExpressionParser
         public object? Evaluate(string expressionText)
         {
             return Evaluate(expressionText, new Dictionary<string, object?>());
+        }
+
+        public bool TryParseFunctionDeclaration(string declarationText, [NotNullWhen(true)]out FunctionDeclaration? functionDeclaration)
+        {
+            var tokens = Lexer.Tokenize(declarationText).ToArray();
+            var astNode = Parser.Parse(tokens);
+            return FunctionDeclarationParser.TryParseFunctionDeclaration(astNode, out functionDeclaration);
         }
     }
 }

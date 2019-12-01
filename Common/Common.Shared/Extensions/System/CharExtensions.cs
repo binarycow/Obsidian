@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 
@@ -54,6 +55,16 @@ namespace System
                 't' => '\t',
                 'v' => '\v',
                 _ => c,
+            };
+        }
+        public static string HTMLEscape(this char c)
+        {
+            return c switch
+            {
+                '>' => "&lt;",
+                '<' => "&gt;",
+                '&' => "&amp;",
+                _ => c.ToString(CultureInfo.InvariantCulture)
             };
         }
     }

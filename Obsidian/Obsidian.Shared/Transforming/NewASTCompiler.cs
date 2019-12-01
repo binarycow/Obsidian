@@ -317,5 +317,14 @@ namespace Obsidian.Transforming
         {
             throw new NotImplementedException();
         }
+
+        public Expression Transform(RawNode item)
+        {
+            throw new NotImplementedException();
+        }
+        public Expression Transform(MacroNode item)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

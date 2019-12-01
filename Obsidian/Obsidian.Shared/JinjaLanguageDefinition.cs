@@ -20,6 +20,7 @@ namespace Obsidian
         public OperatorDefinition[] Operators => new OperatorDefinition[]
         {
             OperatorDefinition.CreateMemberAccess(".", 160),
+            OperatorDefinition.CreatePipeline("|", 160),
             OperatorDefinition.CreateMethod("(", TokenType.Comma, TokenType.Paren_Close, 160),
             OperatorDefinition.CreateIndex("[", TokenType.Comma, TokenType.SquareBrace_Close, 160),
 
@@ -37,9 +38,9 @@ namespace Obsidian
             OperatorDefinition.CreateBinary("-", 50, OperatorType.Subtract),
 
             OperatorDefinition.CreateBinary("in", 40, OperatorType.In),
-            //OperatorDefinition.CreateBinary("not in", 40, OperatorType.NotIn),
+            OperatorDefinition.CreateBinary("not in", 40, OperatorType.NotIn),
             OperatorDefinition.CreateBinary("is", 40, OperatorType.Is),
-            //OperatorDefinition.CreateBinary("is not", 40, OperatorType.IsNot),
+            OperatorDefinition.CreateBinary("is not", 40, OperatorType.IsNot),
             OperatorDefinition.CreateBinary("<", 40, OperatorType.LessThan),
             OperatorDefinition.CreateBinary(">", 40, OperatorType.GreaterThan),
             OperatorDefinition.CreateBinary("<=", 40, OperatorType.LessThanOrEqual),
@@ -52,6 +53,8 @@ namespace Obsidian
             OperatorDefinition.CreateBinary("and", 20, OperatorType.LogicalAnd),
             OperatorDefinition.CreateBinary("or", 10, OperatorType.LogicalOr),
 
+            OperatorDefinition.CreateBinary("=", 0, OperatorType.Assign),
+
 
         };
 
@@ -63,6 +66,9 @@ namespace Obsidian
         {
             FunctionDefinition.Create("super",
                 OverloadDefinition.CreateEmpty(JinjaFunctions.Super, typeof(string))
+            ),
+            FunctionDefinition.Create("e",
+                OverloadDefinition.CreateSingleType(JinjaFunctions.Escape, typeof(string), 1, 1, typeof(object))
             )
         };
     }

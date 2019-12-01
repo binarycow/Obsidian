@@ -1,0 +1,4 @@
+
+
+<p><input type="text" name="username" value="" size="20"></p>
+<p><input type="password" name="password" value="" size="20"></p>

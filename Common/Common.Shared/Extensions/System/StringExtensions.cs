@@ -33,5 +33,10 @@ namespace System
             }
             return sb.ToString();
         }
+
+        public static string HTMLEscape(this string str)
+        {
+            return string.Join(string.Empty, str.ToCharArray().Select(CharExtensions.HTMLEscape));
+        }
     }
 }

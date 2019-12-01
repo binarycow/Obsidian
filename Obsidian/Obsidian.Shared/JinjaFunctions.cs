@@ -35,5 +35,10 @@ namespace Obsidian
 
             }
         }
+        public static object? Escape(object?[] args)
+        {
+            if (args.Length != 1) throw new NotImplementedException();
+            return args[0]?.ToString()?.HTMLEscape() ?? string.Empty;
+        }
     }
 }

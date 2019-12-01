@@ -38,6 +38,14 @@ namespace Obsidian.AST.Nodes
             {
                 return true;
             }
+            if (RawNode.TryParseRaw(enumerator, out parsedNode))
+            {
+                return true;
+            }
+            if (MacroNode.TryParseMacro(enumerator, out parsedNode))
+            {
+                return true;
+            }
             return false;
         }
 

@@ -20,5 +20,10 @@ namespace Obsidian.Tests
         {
             AssertWrapper.TestTemplate(TestRunner.TestItems["Basic Tests"]["Inheritance"]);
         }
+        [Test]
+        public void Raw()
+        {
+            AssertWrapper.TestTemplate(TestRunner.TestItems["Basic Tests"]["Raw"]);
+        }
     }
 }

@@ -23,6 +23,11 @@ namespace ExpressionParser.Configuration
             return SpecialOperatorDefinition.Create(text, precedence, SpecialOperatorType.PropertyAccess);
         }
 
+        internal static OperatorDefinition CreatePipeline(string text, int precedence)
+        {
+            return SpecialOperatorDefinition.Create(text, precedence, SpecialOperatorType.Pipeline);
+        }
+
         internal static OperatorDefinition CreateMethod(string startText, TokenType argSeperator, TokenType endText, int precedence)
         {
             return SpecialOperatorDefinition.Create(startText, precedence, SpecialOperatorType.MethodCall, argSeperator, endText, 0, int.MaxValue);

@@ -1,6 +1,15 @@
+{% macro input(name, value='', type='text', size=20) -%}
+    <input type="{{ type }}" name="{{ name }}" value="{{
+        value|e }}" size="{{ size }}">
+	name: {{ input.name }}
+	varargs: {{ input.varargs }}
+	kwargs: {{ input.kwargs }}
+	arguments: {{ input.arguments }}
+	defaults: {{ input.defaults }}
+	catch_kwargs: {{ input.catch_kwargs }}
+	catch_varargs: {{ input.catch_varargs }}
+	caller: {{ input.caller }}
+{%- endmacro %}
 
-	Pre
-{% for item in seq %}
-	{{- item -}}
-{% endfor %}
-	Post
+<p>{{ input('username') }}</p>
+<p>{{ input('password', type='password') }}</p>

@@ -9,6 +9,7 @@
     <Import_RootNamespace>ExpressionParser</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)ArgumentDeclaration.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\FunctionDefinition.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\MethodOperatorDefinition.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\MultiTypeOverloadDefinition.cs" />
@@ -31,6 +32,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionEval.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ExpressionParser.Configuration\ILanguageDefinitionExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ExpressionParser.Lexing\TokenTypeExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FunctionDeclaration.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FunctionDeclarationParser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LanguageDefinition.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Lexing\Lexer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Lexing\Token.cs" />
@@ -70,6 +73,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\Operators\ExpressionTreeOperatorTransformer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\Operators\IOperatorTransformVisitor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\Operators\ITransformableOperator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UserDefinedArgumentData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UserDefinedFunction.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)VariableManagement\TypeVariableManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)VariableManagement\VariableInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Void.cs" />
