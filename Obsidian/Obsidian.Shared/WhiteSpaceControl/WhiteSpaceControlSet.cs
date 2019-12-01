@@ -6,17 +6,12 @@ namespace Obsidian.WhiteSpaceControl
 {
     public class WhiteSpaceControlSet
     {
-        public WhiteSpaceControlSet(WhiteSpaceMode? outsideStart = null, WhiteSpaceMode? outsideEnd = null, 
-            WhiteSpaceMode? insideStart = null, WhiteSpaceMode? insideEnd = null)
+        public WhiteSpaceControlSet(WhiteSpaceMode? start = null, WhiteSpaceMode? end = null)
         {
-            OutsideStart = outsideStart ?? WhiteSpaceMode.Default;
-            OutsideEnd = outsideEnd ?? WhiteSpaceMode.Default;
-            InsideStart = insideStart ?? WhiteSpaceMode.Default;
-            InsideEnd = insideEnd ?? WhiteSpaceMode.Default;
+            Start = start ?? WhiteSpaceMode.Default;
+            End = end ?? WhiteSpaceMode.Default;
         }
-        public WhiteSpaceMode OutsideStart { get; }
-        public WhiteSpaceMode OutsideEnd { get; }
-        public WhiteSpaceMode InsideStart { get; }
-        public WhiteSpaceMode InsideEnd { get; }
+        public WhiteSpaceMode Start { get; }
+        public WhiteSpaceMode End { get; }
     }
 }

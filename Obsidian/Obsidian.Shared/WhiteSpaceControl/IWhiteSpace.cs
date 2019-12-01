@@ -6,6 +6,6 @@ namespace Obsidian.WhiteSpaceControl
 {
     public interface IWhiteSpace
     {
-        public WhiteSpaceMode WhiteSpaceMode { get; }
+        public WhiteSpaceMode WhiteSpaceMode { get; set;  }
     }
 }

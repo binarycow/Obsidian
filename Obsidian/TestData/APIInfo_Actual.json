@@ -626,7 +626,28 @@
     "Fields": null
   },
   {
+    "FullName": "Obsidian.WhiteSpaceControl.WhiteSpaceControlSet",
+    "Methods": [],
+    "Properties": [
+      {
+        "Name": "Start",
+        "Type": "Obsidian.WhiteSpaceControl.WhiteSpaceMode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+      },
+      {
+        "Name": "End",
+        "Type": "Obsidian.WhiteSpaceControl.WhiteSpaceMode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+      }
+    ],
+    "Fields": null
+  },
+  {
     "FullName": "Obsidian.WhiteSpaceControl.WhiteSpaceMode",
+    "Methods": [],
+    "Properties": [],
+    "Fields": null
+  },
+  {
+    "FullName": "Obsidian.WhiteSpaceControl.WhiteSpacePosition",
     "Methods": [],
     "Properties": [],
     "Fields": null
@@ -1633,6 +1654,15 @@
             "Parameters": [
               {
                 "Name": "item",
+                "Type": "Obsidian.AST.Nodes.TemplateNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "item",
                 "Type": "Obsidian.AST.Nodes.Statements.ForNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
               }
             ]
@@ -1643,24 +1673,6 @@
               {
                 "Name": "item",
                 "Type": "Obsidian.AST.Nodes.ContainerNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.Statements.BlockNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-              }
-            ]
-          },
-          {
-            "ReturnType": "System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
-            "Parameters": [
-              {
-                "Name": "item",
-                "Type": "Obsidian.AST.Nodes.TemplateNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
               }
             ]
           },
@@ -1724,6 +1736,15 @@
               {
                 "Name": "item",
                 "Type": "Obsidian.AST.Nodes.MiscNodes.CommentNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "item",
+                "Type": "Obsidian.AST.Nodes.Statements.BlockNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
               }
             ]
           },
@@ -2516,7 +2537,12 @@
         ]
       }
     ],
-    "Properties": [],
+    "Properties": [
+      {
+        "Name": "WhiteSpaceControl",
+        "Type": "Obsidian.WhiteSpaceControl.WhiteSpaceControlSet, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+      }
+    ],
     "Fields": null
   },
   {
@@ -2647,6 +2673,17 @@
       {
         "Name": "Output",
         "Type": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+      }
+    ],
+    "Fields": null
+  },
+  {
+    "FullName": "Obsidian.AST.Nodes.IWhiteSpaceControlling",
+    "Methods": [],
+    "Properties": [
+      {
+        "Name": "WhiteSpaceControl",
+        "Type": "Obsidian.WhiteSpaceControl.WhiteSpaceControlSet, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
       }
     ],
     "Fields": null
@@ -2914,6 +2951,10 @@
       {
         "Name": "Expression",
         "Type": "Obsidian.AST.Nodes.ExpressionNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+      },
+      {
+        "Name": "WhiteSpaceControl",
+        "Type": "Obsidian.WhiteSpaceControl.WhiteSpaceControlSet, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
       }
     ],
     "Fields": null
@@ -2980,6 +3021,10 @@
       {
         "Name": "Conditions",
         "Type": "Obsidian.AST.Nodes.MiscNodes.ConditionalNode[], Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+      },
+      {
+        "Name": "WhiteSpaceControl",
+        "Type": "Obsidian.WhiteSpaceControl.WhiteSpaceControlSet, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
       }
     ],
     "Fields": null
@@ -3071,6 +3116,10 @@
       {
         "Name": "Expression",
         "Type": "Obsidian.AST.Nodes.ExpressionNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+      },
+      {
+        "Name": "WhiteSpaceControl",
+        "Type": "Obsidian.WhiteSpaceControl.WhiteSpaceControlSet, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
       }
     ],
     "Fields": null
@@ -6912,6 +6961,24 @@
             ]
           }
         ]
+      },
+      {
+        "Name": "FirstOrDefaultValueType",
+        "Overloads": [
+          {
+            "ReturnType": null,
+            "Parameters": [
+              {
+                "Name": "source",
+                "Type": null
+              },
+              {
+                "Name": "predicate",
+                "Type": null
+              }
+            ]
+          }
+        ]
       }
     ],
     "Properties": [],
@@ -7929,7 +7996,19 @@
     "Fields": null
   },
   {
+    "FullName": "Obsidian.AST.NodeParsers.BlockParser+BlockState",
+    "Methods": [],
+    "Properties": [],
+    "Fields": null
+  },
+  {
     "FullName": "Obsidian.AST.NodeParsers.ForParser+ForState",
+    "Methods": [],
+    "Properties": [],
+    "Fields": null
+  },
+  {
+    "FullName": "Obsidian.AST.NodeParsers.IfParser+IfState",
     "Methods": [],
     "Properties": [],
     "Fields": null
@@ -8095,12 +8174,6 @@
   },
   {
     "FullName": "Common.TEMP+T",
-    "Methods": [],
-    "Properties": [],
-    "Fields": null
-  },
-  {
-    "FullName": "Obsidian.AST.Nodes.Statements.BlockNode+BlockNodeParser+States",
     "Methods": [],
     "Properties": [],
     "Fields": null

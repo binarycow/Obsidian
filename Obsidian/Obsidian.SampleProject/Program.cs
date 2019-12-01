@@ -27,10 +27,10 @@ namespace Obsidian.SampleProject
             //AutomaticTest(TestRunner.TestItems["Other Tests"]["Test1"]);
             //AutomaticTest(TestRunner.TestItems["Other Tests"]["Test2"]);
             //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["Defaults"]);
-            //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["TrimBlocks"]);
+            AutomaticTest(TestRunner.TestItems["WhiteSpace"]["TrimBlocks"]);
             //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["LStrip"]);
             //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["LStrip And Trim"]);
-            AutomaticTest(TestRunner.TestItems["WhiteSpace"]["Manual Strip"]);
+            //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["Manual Strip"]);
 
 
             Console.ForegroundColor = ConsoleColor.Yellow;

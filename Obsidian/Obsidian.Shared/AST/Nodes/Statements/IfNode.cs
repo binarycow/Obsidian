@@ -10,20 +10,24 @@ using Obsidian.AST.Nodes.MiscNodes;
 using Obsidian.Lexing;
 using Obsidian.Parsing;
 using Obsidian.Transforming;
+using Obsidian.WhiteSpaceControl;
 
 namespace Obsidian.AST.Nodes.Statements
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public class IfNode : StatementNode
+    public class IfNode : StatementNode, IWhiteSpaceControlling
     {
-        public IfNode(ParsingNode? startParsingNode, IEnumerable<ConditionalNode> conditions, ParsingNode? endParsingNode)
+        public IfNode(ParsingNode? startParsingNode, IEnumerable<ConditionalNode> conditions, ParsingNode? endParsingNode, WhiteSpaceControlSet? whiteSpace = null)
             : base(startParsingNode, conditions, endParsingNode)
         {
             Conditions = conditions.ToArrayWithoutInstantiation();
+            WhiteSpaceControl = whiteSpace ?? new WhiteSpaceControlSet();
         }
 
         public ConditionalNode[] Conditions { get; }
         private string DebuggerDisplay => $"{nameof(IfNode)}";
+
+        public WhiteSpaceControlSet WhiteSpaceControl { get; }
 
         public override TOutput Transform<TOutput>(ITransformVisitor<TOutput> visitor)
         {
@@ -40,11 +44,13 @@ namespace Obsidian.AST.Nodes.Statements
         }
         public static bool TryParseIf(ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
         {
+            WhiteSpaceMode thisConditionEnd = WhiteSpaceMode.Default;
+            WhiteSpaceMode nextConditionStart = WhiteSpaceMode.Default;
             var conditions = new Queue<ConditionalNode>();
             parsedNode = default;
 
 
-            if(IfParser.StartBlock.TryParse(enumerator.Current) == false)
+            if(IfParser.StartBlock.TryParse(enumerator.Current, out var outsideStart, out var thisConditionStart) == false)
             {
                 return false;
             }
@@ -56,33 +62,44 @@ namespace Obsidian.AST.Nodes.Statements
             enumerator.MoveNext();
             var blockChildren = ASTGenerator.ParseUntilFailure(enumerator).ToArray();
 
-            while(IfParser.ElseIfBlock.TryParse(enumerator.Current))
+
+            while(IfParser.ElseIfBlock.TryParse(enumerator.Current, out thisConditionEnd, out nextConditionStart))
             {
-                conditions.Enqueue(new ConditionalNode(startParsingNode, ExpressionNode.FromString(previousBlockExpression), blockChildren, null));
+                conditions.Enqueue(new ConditionalNode(startParsingNode, ExpressionNode.FromString(previousBlockExpression), blockChildren, null,
+                    new WhiteSpaceControlSet(thisConditionStart, thisConditionEnd)
+                ));
                 if (IfParser.ElseIfBlock.TryGetAccumulation(IfParser.IfState.Expression, 0, out previousBlockExpression) == false)
                 {
                     throw new NotImplementedException();
                 }
                 enumerator.MoveNext();
                 blockChildren = ASTGenerator.ParseUntilFailure(enumerator).ToArray();
+                thisConditionStart = nextConditionStart;
             }
 
-            if(IfParser.ElseBlock.TryParse(enumerator.Current))
+            if(IfParser.ElseBlock.TryParse(enumerator.Current, out thisConditionEnd, out nextConditionStart))
             {
                 startParsingNode = enumerator.Current;
-                conditions.Enqueue(new ConditionalNode(startParsingNode, ExpressionNode.FromString(previousBlockExpression), blockChildren, null));
+                conditions.Enqueue(new ConditionalNode(startParsingNode, ExpressionNode.FromString(previousBlockExpression), blockChildren, null,
+                    new WhiteSpaceControlSet(thisConditionStart, thisConditionEnd)
+                ));
                 previousBlockExpression = JinjaEnvironment.TRUE;
                 enumerator.MoveNext();
                 blockChildren = ASTGenerator.ParseUntilFailure(enumerator).ToArray();
+                thisConditionStart = nextConditionStart;
             }
 
-            if(IfParser.EndBlock.TryParse(enumerator.Current) == false)
+            if(IfParser.EndBlock.TryParse(enumerator.Current, out thisConditionEnd, out var outsideEnd) == false)
             {
                 throw new NotImplementedException();
             }
-            conditions.Enqueue(new ConditionalNode(startParsingNode, ExpressionNode.FromString(previousBlockExpression), blockChildren, null));
+            conditions.Enqueue(new ConditionalNode(startParsingNode, ExpressionNode.FromString(previousBlockExpression), blockChildren, null,
+                new WhiteSpaceControlSet(thisConditionStart, thisConditionEnd)
+            ));
 
-            parsedNode = new IfNode(null, conditions, enumerator.Current);
+            parsedNode = new IfNode(null, conditions, enumerator.Current,
+                new WhiteSpaceControlSet(outsideStart, outsideEnd)
+            );
             return true;
         }
     }

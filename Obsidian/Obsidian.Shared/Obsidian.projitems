@@ -20,7 +20,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\ContainerNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\EmptyNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\ExpressionNode.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\ITrimmable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\IWhiteSpaceControlling.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\IWithChildren.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\MiscNodes\CommentNode.cs" />

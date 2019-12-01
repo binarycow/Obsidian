@@ -5,21 +5,25 @@ using System.Linq;
 using System.Text;
 using Obsidian.Parsing;
 using Obsidian.Transforming;
+using Obsidian.WhiteSpaceControl;
 
 namespace Obsidian.AST.Nodes.MiscNodes
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public class ConditionalNode : AbstractContainerNode
+    public class ConditionalNode : AbstractContainerNode, IWhiteSpaceControlling
     {
-        public ConditionalNode(ParsingNode? startParsingNode, ExpressionNode expression, IEnumerable<ASTNode> children, ParsingNode? endParsingNode) :
+        public ConditionalNode(ParsingNode? startParsingNode, ExpressionNode expression, IEnumerable<ASTNode> children, ParsingNode? endParsingNode, WhiteSpaceControlSet? whiteSpace = null) :
             base(startParsingNode, children, endParsingNode)
         {
             Expression = expression;
+            WhiteSpaceControl = whiteSpace ?? new WhiteSpaceControlSet();
         }
 
         private string DebuggerDisplay => $"{nameof(ConditionalNode)} ({Expression})";
 
         public ExpressionNode Expression { get; }
+
+        public WhiteSpaceControlSet WhiteSpaceControl { get; }
 
         public override TOutput Transform<TOutput>(ITransformVisitor<TOutput> visitor)
         {

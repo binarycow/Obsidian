@@ -65,7 +65,7 @@ namespace Obsidian.Transforming
             if (item.VariableNames.Length != 1) throw new NotImplementedException();
             var evalObj = Environment.Evaluation.EvaluateDynamic(item.Expression.Expression, Scopes);
             var arr = CollectionEx.ToArray(evalObj);
-            if (arr == null) throw new NotImplementedException();
+            arr = arr ?? Array.Empty<object>();
 
             if(arr.Length == 0 && item.ElseBlock != null)
             {

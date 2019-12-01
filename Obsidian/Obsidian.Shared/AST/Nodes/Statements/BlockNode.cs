@@ -64,7 +64,7 @@ namespace Obsidian.AST.Nodes.Statements
             {
                 return false;
             }
-            if (BlockParser.EndBlock.TryGetAccumulation(BlockParser.BlockState.BlockName, 0, out var endBlockName) && endBlockName != startingBlockName)
+            if (BlockParser.EndBlock.TryGetAccumulation(BlockParser.BlockState.BlockName, 0, out var endBlockName) && !string.IsNullOrEmpty(endBlockName) && endBlockName != startingBlockName)
             {
                 throw new NotImplementedException();
             }

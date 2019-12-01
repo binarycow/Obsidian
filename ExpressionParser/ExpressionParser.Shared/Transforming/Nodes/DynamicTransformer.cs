@@ -49,7 +49,7 @@ namespace ExpressionParser.Transforming.Nodes
             if (ScopeStack.Current.TryGetVariable(item.TextValue, out var value)) return value;
             var function = LanguageDefinition.Functions.FirstOrDefault(func => func.Name == item.TextValue);
             if (function != null) return MethodGroup.Create(function);
-            throw new NotImplementedException();
+            return null;
         }
 
         public object? Transform(DictionaryItemNode item)

@@ -14,10 +14,10 @@ using Obsidian.WhiteSpaceControl;
 namespace Obsidian.AST.Nodes.Statements
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public class ForNode : StatementNode
+    public class ForNode : StatementNode, IWhiteSpaceControlling
     {
         public ForNode(ContainerNode primaryBlock, ContainerNode? elseBlock,
-            string[] variableNames, ExpressionNode expression, ParsingNode endParsingNode)
+            string[] variableNames, ExpressionNode expression, ParsingNode endParsingNode, WhiteSpaceControlSet? whiteSpace = null)
             : base(
                   startParsingNode: null,
                   children: primaryBlock.YieldOne().Concat(elseBlock?.YieldOne() ?? Enumerable.Empty<ContainerNode>()),
@@ -28,12 +28,15 @@ namespace Obsidian.AST.Nodes.Statements
             ElseBlock = elseBlock;
             VariableNames = variableNames;
             Expression = expression;
+            WhiteSpaceControl = whiteSpace ?? new WhiteSpaceControlSet();
         }
 
         public ContainerNode PrimaryBlock { get; }
         public ContainerNode? ElseBlock { get; }
         public string[] VariableNames { get; }
         public ExpressionNode Expression { get; }
+
+        public WhiteSpaceControlSet WhiteSpaceControl { get; }
 
         private string DebuggerDisplay => $"{nameof(ForNode)} : Variables: \"{string.Join(", ", VariableNames)}\" Expression: \"{Expression}\"";
 
@@ -42,7 +45,7 @@ namespace Obsidian.AST.Nodes.Statements
             ContainerNode? elseBlock = null;
             parsedNode = default;
 
-            if (ForParser.StartBlock.TryParse(enumerator.Current, out var outsideStartWhiteSpace, out var primaryBlockInsideStartWhiteSpace) == false)
+            if (ForParser.StartBlock.TryParse(enumerator.Current, out var outsideStart, out var primaryInsideStart) == false)
             {
                 return false;
             }
@@ -60,33 +63,35 @@ namespace Obsidian.AST.Nodes.Statements
 
             ContainerNode primaryBlock;
 
-            if(ForParser.ElseBlock.TryParse(enumerator.Current, out var primaryBlockInsideEndWhiteSpace, out var elseBlockInsideStartWhiteSpace))
+            if(ForParser.ElseBlock.TryParse(enumerator.Current, out var primaryInsideEnd, out var elseInsideStart))
             {
                 var elseStartParsingNode = enumerator.Current;
                 enumerator.MoveNext();
                 var elseBlockChildren = ASTGenerator.ParseUntilFailure(enumerator).ToArray();
-                if (ForParser.EndBlock.TryParse(enumerator.Current, out var elseBlockInsideEndWhiteSpace, out var outsideEndWhiteSpace) == false)
+                if (ForParser.EndBlock.TryParse(enumerator.Current, out var elseInsideEnd, out var outsideEnd) == false)
                 {
                     throw new NotImplementedException();
                 }
 
 
                 primaryBlock = new ContainerNode(primaryStartParsingNode, primaryBlockChildren, null, 
-                    new WhiteSpaceControlSet(outsideStartWhiteSpace, outsideEndWhiteSpace, primaryBlockInsideStartWhiteSpace, primaryBlockInsideEndWhiteSpace));
+                    new WhiteSpaceControlSet(primaryInsideStart, primaryInsideEnd));
                 elseBlock = new ContainerNode(elseStartParsingNode, elseBlockChildren, null,
-                    new WhiteSpaceControlSet(outsideStartWhiteSpace, outsideEndWhiteSpace, elseBlockInsideStartWhiteSpace, elseBlockInsideEndWhiteSpace));
-                parsedNode = new ForNode(primaryBlock, elseBlock, variableNames, ExpressionNode.FromString(expression), enumerator.Current);
+                    new WhiteSpaceControlSet(elseInsideStart, elseInsideEnd));
+                parsedNode = new ForNode(primaryBlock, elseBlock, variableNames, ExpressionNode.FromString(expression), enumerator.Current,
+                    new WhiteSpaceControlSet(outsideStart, outsideEnd));
                 return true;
             }
             else
             {
-                if (ForParser.EndBlock.TryParse(enumerator.Current, out primaryBlockInsideEndWhiteSpace, out var outsideEndWhiteSpace) == false)
+                if (ForParser.EndBlock.TryParse(enumerator.Current, out primaryInsideEnd, out var outsideEnd) == false)
                 {
                     throw new NotImplementedException();
                 }
                 primaryBlock = new ContainerNode(primaryStartParsingNode, primaryBlockChildren, null,
-                    new WhiteSpaceControlSet(outsideStartWhiteSpace, outsideEndWhiteSpace, primaryBlockInsideStartWhiteSpace, primaryBlockInsideEndWhiteSpace));
-                parsedNode = new ForNode(primaryBlock, elseBlock, variableNames, ExpressionNode.FromString(expression), enumerator.Current);
+                    new WhiteSpaceControlSet(primaryInsideStart, primaryInsideEnd));
+                parsedNode = new ForNode(primaryBlock, elseBlock, variableNames, ExpressionNode.FromString(expression), enumerator.Current,
+                    new WhiteSpaceControlSet(outsideStart, outsideEnd));
                 return true;
             }
         }
