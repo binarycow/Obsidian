@@ -16,18 +16,20 @@ namespace Obsidian.SampleProject
 
         static void Main(string[] args)
         {
-            //ManualTest(false, false);
-
             TestRunner.Init(TestRunner.TestFileName);
             //AutomaticTest(TestRunner.TestItems["Basic Tests"]["Basic Template"]);
+            //AutomaticTest(TestRunner.TestItems["Basic Tests"]["Raw"]);
             //AutomaticTest(TestRunner.TestItems["Basic Tests"]["Inheritance"]);
+            AutomaticTest(TestRunner.TestItems["Macros"]["Basic Macro"]);
+            AutomaticTest(TestRunner.TestItems["Macros"]["Call Macro"]);
+            AutomaticTest(TestRunner.TestItems["Macros"]["Call Macro With Params"]);
             //AutomaticTest(TestRunner.TestItems["Feature Tests"]["Null Master Fallback"]["Standalone"]);
             //AutomaticTest(TestRunner.TestItems["Feature Tests"]["Null Master Fallback"]["Master"]);
             //AutomaticTest(TestRunner.TestItems["Feature Tests"]["For Loop Variables"]);
             //AutomaticTest(TestRunner.TestItems["Other Tests"]["Test1"]);
             //AutomaticTest(TestRunner.TestItems["Other Tests"]["Test2"]);
             //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["Defaults"]);
-            AutomaticTest(TestRunner.TestItems["WhiteSpace"]["TrimBlocks"]);
+            //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["TrimBlocks"]);
             //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["LStrip"]);
             //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["LStrip And Trim"]);
             //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["Manual Strip"]);

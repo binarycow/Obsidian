@@ -10,5 +10,6 @@ namespace ExpressionParser.Configuration
         PropertyAccess,
         MethodCall,
         Index,
+        Pipeline,
     }
 }

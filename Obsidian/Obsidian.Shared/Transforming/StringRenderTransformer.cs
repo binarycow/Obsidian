@@ -12,7 +12,7 @@ using Common;
 
 namespace Obsidian.Transforming
 {
-    public class StringRenderTransformer : ITransformVisitor<string>
+    public class StringRenderTransformer : ITransformVisitor
     {
         public StringRenderTransformer(JinjaEnvironment environment, IDictionary<string, object?> variables)
         {
@@ -21,7 +21,7 @@ namespace Obsidian.Transforming
         }
 
         public JinjaEnvironment Environment { get; }
-        private readonly StringBuilder _StringBuilder = new StringBuilder();
+        public StringBuilder StringBuilder { get; } = new StringBuilder();
 
         private ScopeStack<DynamicContext, DynamicRootContext> Scopes { get; }
 
@@ -31,17 +31,17 @@ namespace Obsidian.Transforming
         private DynamicSelf _Self = new DynamicSelf();
 
 
-        public string Transform(TemplateNode item)
+        public void Transform(TemplateNode item)
         {
             var toRender = item;
-            while(true)
+            while (true)
             {
                 TransformAll(toRender.Children);
                 if (_NextTemplate == null) break;
 
                 var nextTemplateObj = Environment.Evaluation.EvaluateDynamic(_NextTemplate.Expression, Scopes);
                 _NextTemplate = null;
-                switch(nextTemplateObj)
+                switch (nextTemplateObj)
                 {
                     case DynamicTemplate d:
                         toRender = d.TemplateNode;
@@ -55,24 +55,24 @@ namespace Obsidian.Transforming
                         throw new NotImplementedException();
                 }
             }
-            return _StringBuilder.ToString();
         }
 
-        public string Transform(ForNode item)
+        public void Transform(ForNode item)
         {
             _EncounteredOutputStyleBlock = true;
-            if (!(ShouldRender && _EncounteredOutputStyleBlock)) return string.Empty;
+            if (!(ShouldRender && _EncounteredOutputStyleBlock)) return;
             if (item.VariableNames.Length != 1) throw new NotImplementedException();
             var evalObj = Environment.Evaluation.EvaluateDynamic(item.Expression.Expression, Scopes);
             var arr = CollectionEx.ToArray(evalObj);
             arr = arr ?? Array.Empty<object>();
 
-            if(arr.Length == 0 && item.ElseBlock != null)
+            if (arr.Length == 0 && item.ElseBlock != null)
             {
-                return item.ElseBlock.Transform(this);
+                item.ElseBlock.Transform(this);
+                return;
             }
 
-            for(var index = 0; index < arr.Length; ++index)
+            for (var index = 0; index < arr.Length; ++index)
             {
                 var arrItem = arr[index];
                 var loopInfo = new LoopInfoClass<object>(arr, index);
@@ -83,60 +83,99 @@ namespace Obsidian.Transforming
                 item.PrimaryBlock.Transform(this);
                 Scopes.Pop($"ForNode: {item.Expression} Item: {arrItem}");
             }
-            return string.Empty;
         }
 
-        public string Transform(ContainerNode item)
+        public void Transform(ContainerNode item)
         {
             _EncounteredOutputStyleBlock = true;
-            if (!(ShouldRender && _EncounteredOutputStyleBlock)) return string.Empty;
-            return TransformAll(item.Children);
+            if (!(ShouldRender && _EncounteredOutputStyleBlock)) return;
+            TransformAll(item.Children);
         }
 
-        public string Transform(ExpressionNode item)
+        public void Transform(RawNode item)
         {
             _EncounteredOutputStyleBlock = true;
-            if (!(ShouldRender && _EncounteredOutputStyleBlock)) return string.Empty;
-            _StringBuilder.Append(Environment.Evaluation.EvaluateDynamic(item.Expression, Scopes));
-            return string.Empty;
-        }
-
-        public string Transform(NewLineNode item)
-        {
-            if (!(ShouldRender && _EncounteredOutputStyleBlock)) return string.Empty;
-            _EncounteredOutputStyleBlock = true;
-
-            if(item.WhiteSpaceMode != WhiteSpaceControl.WhiteSpaceMode.Trim)
+            if (!(ShouldRender && _EncounteredOutputStyleBlock)) return;
+            foreach (var node in item.Children)
             {
-                _StringBuilder.Append(item.ToString());
+                StringBuilder.AppendCustom(node.ToString());
+            }
+        }
+        public void Transform(MacroNode item)
+        {
+            _EncounteredOutputStyleBlock = true;
+            if (!(ShouldRender && _EncounteredOutputStyleBlock)) return;
+            if (Environment.Evaluation.TryParseFunctionDeclaration(item.MacroText, out var functionDeclaration) == false || functionDeclaration == null)
+            {
+                throw new NotImplementedException();
             }
 
-            return string.Empty;
-        }
+            Func<UserDefinedArgumentData, object?> func = arguments =>
+            {
+                Scopes.Push($"Macro: {functionDeclaration.Name}");
+                foreach (var arg in arguments.AllArguments)
+                {
+                    Scopes.Current.DefineAndSetVariable(arg.Name, arg.Value);
+                }
+                Scopes.Current.DefineAndSetVariable("varargs", Array.Empty<string>());
+                Scopes.Current.DefineAndSetVariable("kwargs", new Dictionary<string, object?>());
+                item.Contents.Transform(this);
 
-        public string Transform(OutputNode item)
+
+
+                Scopes.Pop($"Macro: {functionDeclaration.Name}");
+                return ExpressionParser.Void.Instance;
+            };
+            Scopes.Current.DefineAndSetVariable(functionDeclaration.Name, new JinjaUserDefinedFunction(functionDeclaration, func));
+        }
+        public void Transform(ExpressionNode item)
         {
             _EncounteredOutputStyleBlock = true;
-            if (!(ShouldRender && _EncounteredOutputStyleBlock)) return string.Empty;
-            _StringBuilder.Append(item.Value);
-            return string.Empty;
+            if (!(ShouldRender && _EncounteredOutputStyleBlock)) return;
+
+            var result = Environment.Evaluation.EvaluateDynamic(item.Expression, Scopes);
+            if (result is ExpressionParser.Void) return;
+
+            StringBuilder.AppendCustom(result);
+            return;
         }
 
-        public string Transform(WhiteSpaceNode item)
+        public void Transform(NewLineNode item)
         {
+            if (!(ShouldRender && _EncounteredOutputStyleBlock)) return;
             _EncounteredOutputStyleBlock = true;
-            if (!(ShouldRender && _EncounteredOutputStyleBlock)) return string.Empty;
 
             if (item.WhiteSpaceMode != WhiteSpaceControl.WhiteSpaceMode.Trim)
             {
-                _StringBuilder.Append(item.ToString());
+                StringBuilder.AppendCustom(item.ToString());
             }
-            return string.Empty;
+
+            return;
         }
 
-        public string Transform(IfNode item)
+        public void Transform(OutputNode item)
         {
-            if (ShouldRender == false) return string.Empty;
+            _EncounteredOutputStyleBlock = true;
+            if (!(ShouldRender && _EncounteredOutputStyleBlock)) return;
+            StringBuilder.AppendCustom(item.Value);
+            return;
+        }
+
+        public void Transform(WhiteSpaceNode item)
+        {
+            _EncounteredOutputStyleBlock = true;
+            if (!(ShouldRender && _EncounteredOutputStyleBlock)) return;
+
+            if (item.WhiteSpaceMode != WhiteSpaceControl.WhiteSpaceMode.Trim)
+            {
+                StringBuilder.AppendCustom(item.ToString());
+            }
+            return;
+        }
+
+        public void Transform(IfNode item)
+        {
+            if (ShouldRender == false) return;
             foreach (var condition in item.Conditions)
             {
                 var result = Environment.Evaluation.EvaluateDynamic(condition.Expression.Expression, Scopes);
@@ -144,29 +183,28 @@ namespace Obsidian.Transforming
                 if (TypeCoercion.CanCast(result.GetType(), typeof(bool)) == false) throw new NotImplementedException();
                 var boolResult = (bool)result;
 
-                if(boolResult)
+                if (boolResult)
                 {
                     _EncounteredOutputStyleBlock = true;
                     condition.Transform(this);
-                    return string.Empty;
+                    return;
                 }
             }
-            return string.Empty;
         }
 
-        public string Transform(ConditionalNode item)
+        public void Transform(ConditionalNode item)
         {
             _EncounteredOutputStyleBlock = true;
-            if (ShouldRender == false) return string.Empty;
-            return TransformAll(item.Children);
+            if (ShouldRender == false) return;
+            TransformAll(item.Children);
         }
 
-        public string Transform(CommentNode item)
+        public void Transform(CommentNode item)
         {
-            return string.Empty;
+            return;
         }
 
-        public string Transform(BlockNode item)
+        public void Transform(BlockNode item)
         {
             Scopes.Root.AddBlock(item.Name, item.BlockContents);
             if (ShouldRender)
@@ -177,26 +215,24 @@ namespace Obsidian.Transforming
                 containerNode.Transform(this);
                 Scopes.Root.CurrentBlockName = null;
             }
-            return string.Empty;
         }
 
-        public string Transform(ExtendsNode item)
+        public void Transform(ExtendsNode item)
         {
             if (ShouldRender == false) throw new NotImplementedException();
             _NextTemplate = item.Template;
-            return string.Empty;
         }
 
-        public string TransformAll(IEnumerable<ASTNode> items)
+        public void TransformAll(IEnumerable<ASTNode> items)
         {
             foreach (var item in items)
                 item.Transform(this);
-            return string.Empty;
         }
 
-        public string Transform(EmptyNode emptyNode)
+        public void Transform(EmptyNode emptyNode)
         {
-            return string.Empty;
+            return;
         }
+
     }
 }

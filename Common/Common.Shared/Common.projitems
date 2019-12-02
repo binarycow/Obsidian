@@ -13,6 +13,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)CollectionEx.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Collections\EnumeratorFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Collections\LookaroundEnumeratorFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CustomToStringProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionCreators\Console.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionCreators\Enumerable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionCreators\ExpressionExtensionData.cs" />

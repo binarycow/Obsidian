@@ -23,5 +23,7 @@ namespace Obsidian.Transforming
         TOutput Transform(CommentNode item, bool force);
         TOutput Transform(BlockNode item, bool force);
         TOutput Transform(ExtendsNode item, bool force);
+        TOutput Transform(RawNode item, bool force);
+        TOutput Transform(MacroNode item, bool force);
     }
 }

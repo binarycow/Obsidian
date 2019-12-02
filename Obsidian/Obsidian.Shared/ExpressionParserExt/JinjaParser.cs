@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using Common.Collections;
+using ExpressionParser;
 using ExpressionParser.Configuration;
 using ExpressionParser.Exceptions;
 using ExpressionParser.Lexing;
@@ -25,7 +26,7 @@ namespace Obsidian.ExpressionParserExt
             TryParseDictionary,
         };
 
-        private bool TryParseCommaSeperatedSet(ILookaroundEnumerator<Token> enumerator, TokenType startTokenType, [NotNullWhen(true)]out IEnumerable<ASTNode>? parsedNodes, int minimumItems)
+        private bool TryParseCommaSeperatedSet(ILookaroundEnumerator<Token> enumerator, TokenType startTokenType, [NotNullWhen(true)]out IEnumerable<ASTNode>? parsedNodes, int minimumItems, AssignmentOperatorBehavior assignmentOperatorBehavior)
         {
             parsedNodes = default;
             if (enumerator.Current.TokenType != startTokenType)
@@ -41,7 +42,7 @@ namespace Obsidian.ExpressionParserExt
             }
             enumerator.MoveNext();
             var queue = new Queue<ASTNode>();
-            while (TryParse(enumerator, out var listItem))
+            while (TryParse(enumerator, out var listItem, assignmentOperatorBehavior))
             {
                 queue.Enqueue(listItem);
                 if (enumerator.Current.TokenType != TokenType.Comma)
@@ -67,9 +68,9 @@ namespace Obsidian.ExpressionParserExt
         }
 
 
-        public bool TryParseList(ILookaroundEnumerator<Token> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
+        public bool TryParseList(ILookaroundEnumerator<Token> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode, AssignmentOperatorBehavior assignmentOperatorBehavior)
         {
-            if(TryParseCommaSeperatedSet(enumerator, TokenType.SquareBrace_Open, out var parsedListItems, minimumItems: 1))
+            if(TryParseCommaSeperatedSet(enumerator, TokenType.SquareBrace_Open, out var parsedListItems, minimumItems: 1, assignmentOperatorBehavior))
             {
                 parsedNode = new ListNode(parsedListItems);
                 return true;
@@ -80,9 +81,9 @@ namespace Obsidian.ExpressionParserExt
 
 
 
-        public bool TryParseTuple(ILookaroundEnumerator<Token> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
+        public bool TryParseTuple(ILookaroundEnumerator<Token> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode, AssignmentOperatorBehavior assignmentOperatorBehavior)
         {
-            if (TryParseCommaSeperatedSet(enumerator, TokenType.Paren_Open, out var parsedListItems, minimumItems: 2))
+            if (TryParseCommaSeperatedSet(enumerator, TokenType.Paren_Open, out var parsedListItems, minimumItems: 2, assignmentOperatorBehavior))
             {
                 parsedNode = new TupleNode(parsedListItems);
                 return true;
@@ -93,7 +94,7 @@ namespace Obsidian.ExpressionParserExt
 
 
 
-        public bool TryParseDictionary(ILookaroundEnumerator<Token> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
+        public bool TryParseDictionary(ILookaroundEnumerator<Token> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode, AssignmentOperatorBehavior assignmentOperatorBehavior)
         {
             parsedNode = default;
             if (enumerator.Current.TokenType != TokenType.CurlyBrace_Open)
@@ -103,7 +104,7 @@ namespace Obsidian.ExpressionParserExt
 
             var dictionaryItems = new Queue<DictionaryItemNode>();
 
-            while(enumerator.MoveNext() && TryParseDictionaryItem(enumerator, out var dictionaryItem))
+            while(enumerator.MoveNext() && TryParseDictionaryItem(enumerator, out var dictionaryItem, assignmentOperatorBehavior))
             {
                 dictionaryItems.Enqueue(dictionaryItem);
                 if (enumerator.MoveNext() == false) throw new NotImplementedException();
@@ -121,17 +122,17 @@ namespace Obsidian.ExpressionParserExt
             return true;
         }
 
-        private bool TryParseDictionaryItem(ILookaroundEnumerator<Token> enumerator, [NotNullWhen(true)]out DictionaryItemNode? dictionaryItem)
+        private bool TryParseDictionaryItem(ILookaroundEnumerator<Token> enumerator, [NotNullWhen(true)]out DictionaryItemNode? dictionaryItem, AssignmentOperatorBehavior assignmentOperatorBehavior)
         {
             dictionaryItem = default;
-            if(TryParse(enumerator, out var key) == false || key == default)
+            if(TryParse(enumerator, out var key, assignmentOperatorBehavior) == false || key == default)
             {
                 return false;
             }
             if (enumerator.MoveNext() == false) throw new NotImplementedException();
             if (enumerator.Current.TokenType != TokenType.Colon) throw new NotImplementedException();
             if (enumerator.MoveNext() == false) throw new NotImplementedException();
-            if (TryParse(enumerator, out var value) == false || value == default) throw new NotImplementedException();
+            if (TryParse(enumerator, out var value, assignmentOperatorBehavior) == false || value == default) throw new NotImplementedException();
             dictionaryItem = new DictionaryItemNode(key, value);
             return true;
         }

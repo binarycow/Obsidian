@@ -105,5 +105,14 @@ namespace Obsidian.WhiteSpaceControl
                 ws.WhiteSpaceMode = WhiteSpaceMode.Trim;
             }
         }
+
+        public void Transform(RawNode item)
+        {
+            throw new NotImplementedException();
+        }
+        public void Transform(MacroNode item)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -36,9 +36,26 @@ namespace ExpressionParser.Transforming.Operators
             {
                 case OperatorType.LogicalNot:
                     return TransformUnary(item, args[0]);
+                case OperatorType.Assign:
+                    switch(item.AssignmentOperatorBehavior)
+                    {
+                        case AssignmentOperatorBehavior.Assign:
+                            throw new NotImplementedException();
+                        case AssignmentOperatorBehavior.NamedParameter:
+                            return TransformNamedArgument(args[0], args[1]);
+                        default:
+                            throw new NotImplementedException();
+                    }
                 default:
                     throw new NotImplementedException();
             }
+        }
+
+        private (string name, object? value) TransformNamedArgument(ASTNode left, ASTNode right)
+        {
+            if (!(left is IdentifierNode identifierNode)) throw new NotImplementedException();
+            var value = right.Transform(NodeTransformer);
+            return (name: identifierNode.TextValue, value);
         }
 
         private object? TransformUnary(StandardOperator item, ASTNode rightNode)
@@ -69,17 +86,31 @@ namespace ExpressionParser.Transforming.Operators
                     return Property(left, args[1]);
                 case SpecialOperatorType.Index:
                     return Index(left, args[1]);
+                case SpecialOperatorType.Pipeline:
+                    return Pipeline(left, args[1]);
                 default:
                     throw new NotImplementedException();
             }
 
             object? Method(object? left, ASTNode right)
             {
-                switch(right)
+                switch (right)
                 {
                     case ArgumentSetNode argSet:
                         var args = argSet.Arguments.Select(arg => arg.Transform(NodeTransformer)).ToArray();
                         return DynamicResolver.CallMethod(ScopeStack, left, args);
+                    default:
+                        throw new NotImplementedException();
+                }
+            }
+            object? Pipeline(object? left, ASTNode right)
+            {
+                switch (right)
+                {
+                    case IdentifierNode identifierNode:
+                        var functions = LanguageDefinition.PipelineFunctions().Where(func => func.function.Name == identifierNode.TextValue).ToArray();
+                        if (functions.Length != 1) throw new NotImplementedException();
+                        return functions[0].overload?.Function?.Invoke(new object?[] { left });
                     default:
                         throw new NotImplementedException();
                 }

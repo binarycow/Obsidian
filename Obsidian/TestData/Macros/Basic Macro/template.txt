@@ -1,0 +1,20 @@
+{% macro input(name, value='', type='text', size=20) -%}
+    <input type="{{ type }}" name="{{ name }}" value="{{
+        value|e }}" size="{{ size }}">
+
+	varargs: {{ varargs }}
+	kwargs: {{ kwargs }}
+{%- endmacro %}
+
+<p>
+	{{ input('username') }}
+</p>
+<p>
+	{{ input('password', type='password') }}
+</p>
+
+input.name: {{ input.name }}
+input.arguments: {{ input.arguments }}
+input.catch_kwargs: {{ input.catch_kwargs }}
+input.catch_varargs: {{ input.catch_varargs }}
+input.caller: {{ input.caller }}

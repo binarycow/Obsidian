@@ -38,5 +38,6 @@ namespace ExpressionParser.Configuration
         Negate,
         DivideFloat,
         DivideInteger,
+        Assign,
     }
 }

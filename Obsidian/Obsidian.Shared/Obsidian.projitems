@@ -14,6 +14,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\BlockParser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\ForParser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\IfParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\MacroParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\RawParser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\State.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\StateAction.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\AbstractContainerNode.cs" />
@@ -24,6 +26,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\IWithChildren.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\MiscNodes\CommentNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\MiscNodes\ConditionalNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\MiscNodes\RawNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\Statements\ExtendsNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\MiscNodes\NewLineNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\MiscNodes\WhiteSpaceNode.cs" />
@@ -32,6 +35,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\Statements\BlockNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\Statements\ForNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\Statements\IfNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\Statements\MacroNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\TemplateNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\StateMachine.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Block.cs" />
@@ -40,6 +44,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)DynamicRootContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ITemplate.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DynamicSelf.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)JinjaUserDefinedFunction.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SpecialVariableInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Templates\CompiledTemplate.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Templates\DynamicTemplate.cs" />

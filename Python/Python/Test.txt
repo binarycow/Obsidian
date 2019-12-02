@@ -1,6 +1,36 @@
+{% macro input(name, value='', type='text', size=20) -%}
+    <input type="{{ type }}" name="{{ name }}" value="{{
+        value|e }}" size="{{ size }}">
 
-	Pre
-{% for item in seq %}
-	{{- item -}}
-{% endfor %}
-	Post
+	varargs: {{ varargs }}
+	kwargs: {{ kwargs }}
+{%- endmacro %}
+
+{% macro inputWithCaller(name, value='', type='text', size=20) -%}
+    <input type="{{ type }}" name="{{ name }}" value="{{
+        value|e }}" size="{{ size }}">
+
+	varargs: {{ varargs }}
+	kwargs: {{ kwargs }}
+	caller: {{ caller }}
+{%- endmacro %}
+
+<p>
+	{{ input('username') }}
+</p>
+<p>
+	{{ input('password', type='password') }}
+</p>
+
+input.name: {{ input.name }}
+input.arguments: {{ input.arguments }}
+input.catch_kwargs: {{ input.catch_kwargs }}
+input.catch_varargs: {{ input.catch_varargs }}
+input.caller: {{ input.caller }}
+
+
+inputWithCaller.name: {{ inputWithCaller.name }}
+inputWithCaller.arguments: {{ inputWithCaller.arguments }}
+inputWithCaller.catch_kwargs: {{ inputWithCaller.catch_kwargs }}
+inputWithCaller.catch_varargs: {{ inputWithCaller.catch_varargs }}
+inputWithCaller.caller: {{ inputWithCaller.caller }}

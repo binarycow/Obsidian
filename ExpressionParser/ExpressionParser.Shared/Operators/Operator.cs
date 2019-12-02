@@ -16,12 +16,12 @@ namespace ExpressionParser.Operators
         }
 
         public Token Token { get; }
-        public static Operator CreateBinary(OperatorDefinition definition, Token token)
+        public static Operator CreateBinary(OperatorDefinition definition, Token token, AssignmentOperatorBehavior assignmentOperatorBehavior)
         {
             switch(definition)
             {
                 case StandardOperatorDefinition standardOperator:
-                    return new StandardOperator(token, standardOperator.OperatorType);
+                    return new StandardOperator(token, standardOperator.OperatorType, assignmentOperatorBehavior);
                 case SpecialOperatorDefinition specialOperator:
                     return new SpecialOperator(token, specialOperator.OperatorType);
                 default:
@@ -33,7 +33,7 @@ namespace ExpressionParser.Operators
             switch (definition)
             {
                 case StandardOperatorDefinition standardOperator:
-                    return new StandardOperator(token, standardOperator.OperatorType);
+                    return new StandardOperator(token, standardOperator.OperatorType, assignmentOperatorBehavior: default);
                 default:
                     throw new NotImplementedException();
             }

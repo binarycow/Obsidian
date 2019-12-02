@@ -54,7 +54,7 @@ namespace Obsidian.AST.Nodes.Statements
             {
                 throw new NotImplementedException();
             }
-            if (ForParser.StartBlock.TryGetAccumulation(ForParser.ForState.Expression, 0, out var expression) == false || variableNames.Length == 0)
+            if (ForParser.StartBlock.TryGetAccumulation(ForParser.ForState.Expression, 0, out var expression) == false)
             {
                 throw new NotImplementedException();
             }

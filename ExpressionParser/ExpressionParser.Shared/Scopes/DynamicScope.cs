@@ -11,21 +11,22 @@ namespace ExpressionParser.Scopes
         public DynamicScope(string name, DynamicScope parent)
         {
             Name = name;
-            ParentScope = parent;
+            DynamicParent = parent;
         }
 
         protected DynamicScope(DynamicScope parent)
         {
             Name = null;
-            ParentScope = parent;
+            DynamicParent = parent;
         }
         protected DynamicScope(string? name)
         {
             Name = name;
-            ParentScope = null;
+            DynamicParent = null;
         }
 
-        public IScope? ParentScope { get; }
+        public IScope? ParentScope => DynamicParent;
+        public DynamicScope? DynamicParent { get; }
 
         public string? Name { get; }
 
@@ -73,7 +74,9 @@ namespace ExpressionParser.Scopes
 
         public bool TryGetVariable(string name, out object? value)
         {
-            return _Variables.TryGetValue(name, out value);
+            if (_Variables.TryGetValue(name, out value)) return true;
+            if (DynamicParent == null) return false;
+            return DynamicParent.TryGetVariable(name, out value);
         }
         public bool TryGetVariable<T>(string name, out T? value) where T : class
         {

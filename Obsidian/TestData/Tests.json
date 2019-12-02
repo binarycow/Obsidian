@@ -16,6 +16,41 @@
         "inputFile": "child.html",
         "expectedFile": "expected.html",
         "actualFile": "actual.html"
+      },
+      {
+        "testName": "Raw",
+        "rootPath": "Basic Tests\\Raw",
+        "inputFile": "template.txt",
+        "expectedFile": "expected.txt",
+        "actualFile": "actual.txt",
+        "variablesFile": "variables.json"
+      }
+    ]
+  },
+  {
+    "categoryName": "Macros",
+    "children": [
+      {
+        "testName": "Basic Macro",
+        "rootPath": "Macros\\Basic Macro",
+        "inputFile": "template.txt",
+        "expectedFile": "expected.txt",
+        "actualFile": "actual.txt"
+      },
+      {
+        "testName": "Call Macro",
+        "rootPath": "Macros\\Call Macro",
+        "inputFile": "template.txt",
+        "expectedFile": "expected.txt",
+        "actualFile": "actual.txt"
+      },
+      {
+        "testName": "Call Macro With Params",
+        "rootPath": "Macros\\Call Macro With Params",
+        "inputFile": "template.txt",
+        "expectedFile": "expected.txt",
+        "actualFile": "actual.txt",
+        "variablesFile": "variables.json"
       }
     ]
   },

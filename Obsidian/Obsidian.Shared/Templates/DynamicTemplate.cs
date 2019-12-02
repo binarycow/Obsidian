@@ -28,7 +28,8 @@ namespace Obsidian.Templates
         public string Render(IDictionary<string, object?> variables)
         {
             var renderer = new StringRenderTransformer(Environment, variables);
-            return TemplateNode.Transform(renderer);
+            TemplateNode.Transform(renderer);
+            return renderer.StringBuilder.ToString();
         }
 
         internal static DynamicTemplate LoadTemplate(JinjaEnvironment environment, string templateText, IDictionary<string, object?> variableTemplate, string? templateName, string? templatePath)
