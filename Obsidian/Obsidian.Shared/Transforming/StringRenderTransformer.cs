@@ -101,6 +101,29 @@ namespace Obsidian.Transforming
                 StringBuilder.AppendCustom(node.ToString());
             }
         }
+
+
+
+        public void Transform(CallNode item)
+        {
+            _EncounteredOutputStyleBlock = true;
+            if (!(ShouldRender && _EncounteredOutputStyleBlock)) return;
+
+            Func<UserDefinedArgumentData, object?> func = arguments =>
+            {
+                item.Contents.Transform(this);
+                return ExpressionParser.Void.Instance;
+            };
+            var functionDeclaration = new FunctionDeclaration("caller", Array.Empty<ParameterDeclaration>());
+
+            Scopes.Push($"Call: {item.Call.Expression}");
+            Scopes.Current.DefineAndSetVariable("caller", new JinjaUserDefinedFunction(functionDeclaration, func));
+            var evalObj = Environment.Evaluation.EvaluateDynamic(item.Call.Expression, Scopes);
+            if (!(evalObj is ExpressionParser.Void)) StringBuilder.AppendCustom(evalObj);
+            Scopes.Pop($"Call: {item.Call.Expression}");
+        }
+
+
         public void Transform(MacroNode item)
         {
             _EncounteredOutputStyleBlock = true;

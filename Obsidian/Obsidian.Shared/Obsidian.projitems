@@ -11,6 +11,7 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)AST\ASTGenerator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\ASTNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\CallParser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\BlockParser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\ForParser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\IfParser.cs" />
@@ -27,6 +28,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\MiscNodes\CommentNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\MiscNodes\ConditionalNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\MiscNodes\RawNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\Statements\CallNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\Statements\ExtendsNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\MiscNodes\NewLineNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\MiscNodes\WhiteSpaceNode.cs" />

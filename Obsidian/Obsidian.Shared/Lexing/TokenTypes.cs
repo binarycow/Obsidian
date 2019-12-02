@@ -42,5 +42,7 @@ namespace Obsidian.Lexing
         Keyword_Block,
         Keyword_EndBlock,
         Keyword_Extends,
+        Keyword_Call,
+        Keyword_EndCall,
     }
 }

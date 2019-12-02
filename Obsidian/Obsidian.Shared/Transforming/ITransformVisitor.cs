@@ -24,6 +24,7 @@ namespace Obsidian.Transforming
         TOutput Transform(ExtendsNode item);
         TOutput Transform(RawNode item);
         TOutput Transform(MacroNode item);
+        TOutput Transform(CallNode item);
     }
 
     public interface ITransformVisitor
@@ -43,5 +44,6 @@ namespace Obsidian.Transforming
         void Transform(ExtendsNode item);
         void Transform(RawNode item);
         void Transform(MacroNode item);
+        void Transform(CallNode item);
     }
 }

@@ -46,6 +46,10 @@ namespace Obsidian.AST.Nodes
             {
                 return true;
             }
+            if (CallNode.TryParseCall(enumerator, out parsedNode))
+            {
+                return true;
+            }
             return false;
         }
 

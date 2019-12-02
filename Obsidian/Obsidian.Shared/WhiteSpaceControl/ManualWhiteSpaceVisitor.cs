@@ -122,5 +122,12 @@ namespace Obsidian.WhiteSpaceControl
             item.Contents.Transform(this);
             SetTrim(item.WhiteSpaceControl.End);
         }
+
+        public void Transform(CallNode item)
+        {
+            SetTrim(item.WhiteSpaceControl.Start);
+            item.Contents.Transform(this);
+            SetTrim(item.WhiteSpaceControl.End);
+        }
     }
 }

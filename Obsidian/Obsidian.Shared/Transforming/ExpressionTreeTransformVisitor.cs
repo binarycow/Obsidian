@@ -92,5 +92,10 @@ namespace Obsidian.Transforming
         {
             throw new NotImplementedException();
         }
+
+        public Expression Transform(CallNode item)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
