@@ -9,6 +9,19 @@ namespace System.Text
 {
     public static class StringBuilderExtensions
     {
+
+        public static void AppendCustom(this StringBuilder stringBuilder, object? value)
+        {
+            stringBuilder = stringBuilder ?? throw new ArgumentNullException(nameof(stringBuilder));
+            stringBuilder.Append(CustomToStringProvider.Instance.ToString(value));
+        }
+
+        public static void AppendLineCustom(this StringBuilder stringBuilder, object? value)
+        {
+            stringBuilder = stringBuilder ?? throw new ArgumentNullException(nameof(stringBuilder));
+            stringBuilder.AppendLine(CustomToStringProvider.Instance.ToString(value));
+        }
+
         public static Expression Append(this ExpressionExtensionData<StringBuilder> stringBuilder, Expression expr)
         {
             return ExpressionEx.StringBuilder.Append(stringBuilder, expr);

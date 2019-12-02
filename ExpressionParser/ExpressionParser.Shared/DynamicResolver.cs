@@ -36,7 +36,7 @@ namespace ExpressionParser
                 case FunctionMethodGroup methodGroup:
                     return FuncMethodGroup(scopeStack, methodGroup, args);
                 case UserDefinedFunction userDefinedFunction:
-                    return userDefinedFunction.Invoke(scopeStack, userDefinedFunction, args);
+                    return userDefinedFunction.Invoke(args);
                 default:
                     throw new NotImplementedException();
             }

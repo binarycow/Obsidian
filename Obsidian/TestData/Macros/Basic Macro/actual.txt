@@ -1,2 +1,14 @@
-<p><inputtype="text"name="username"value=""size="20"></p>
-<p><inputtype="password"name="password"value="(type, password)"size="20"></p>
+
+
+<p>
+	<inputtype="text"name="username"value=""size="20">varargs:()kwargs:{}
+</p>
+<p>
+	<inputtype="password"name="password"value=""size="20">varargs:()kwargs:{}
+</p>
+
+input.name: input
+input.arguments: ('name', 'value', 'type', 'size')
+input.catch_kwargs: True
+input.catch_varargs: True
+input.caller: True

@@ -16,12 +16,14 @@ namespace ExpressionParser
         public Func<UserDefinedArgumentData, object?> Body { get; }
 
 
-        internal object? Invoke<TScope, TRootScope>(ScopeStack<TScope, TRootScope> scopeStack, UserDefinedFunction left, object?[] args)
-            where TScope : class, IScope
-            where TRootScope : class, TScope
+        internal object? Invoke(object?[] args)
         {
-            var argumentData = UserDefinedArgumentData.Create(left.Declaration.Arguments, args);
-            return left.Body.Invoke(argumentData);
+            return Invoke(UserDefinedArgumentData.Create(Declaration.Arguments, args));
+        }
+
+        protected virtual object? Invoke(UserDefinedArgumentData argumentData)
+        {
+            return Body.Invoke(argumentData);
         }
     }
 }

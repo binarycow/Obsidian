@@ -44,6 +44,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)DynamicRootContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ITemplate.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DynamicSelf.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)JinjaUserDefinedFunction.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SpecialVariableInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Templates\CompiledTemplate.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Templates\DynamicTemplate.cs" />

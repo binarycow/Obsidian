@@ -34,14 +34,14 @@ namespace Obsidian.Transforming
         public void Transform(TemplateNode item)
         {
             var toRender = item;
-            while(true)
+            while (true)
             {
                 TransformAll(toRender.Children);
                 if (_NextTemplate == null) break;
 
                 var nextTemplateObj = Environment.Evaluation.EvaluateDynamic(_NextTemplate.Expression, Scopes);
                 _NextTemplate = null;
-                switch(nextTemplateObj)
+                switch (nextTemplateObj)
                 {
                     case DynamicTemplate d:
                         toRender = d.TemplateNode;
@@ -66,13 +66,13 @@ namespace Obsidian.Transforming
             var arr = CollectionEx.ToArray(evalObj);
             arr = arr ?? Array.Empty<object>();
 
-            if(arr.Length == 0 && item.ElseBlock != null)
+            if (arr.Length == 0 && item.ElseBlock != null)
             {
                 item.ElseBlock.Transform(this);
                 return;
             }
 
-            for(var index = 0; index < arr.Length; ++index)
+            for (var index = 0; index < arr.Length; ++index)
             {
                 var arrItem = arr[index];
                 var loopInfo = new LoopInfoClass<object>(arr, index);
@@ -92,6 +92,42 @@ namespace Obsidian.Transforming
             TransformAll(item.Children);
         }
 
+        public void Transform(RawNode item)
+        {
+            _EncounteredOutputStyleBlock = true;
+            if (!(ShouldRender && _EncounteredOutputStyleBlock)) return;
+            foreach (var node in item.Children)
+            {
+                StringBuilder.AppendCustom(node.ToString());
+            }
+        }
+        public void Transform(MacroNode item)
+        {
+            _EncounteredOutputStyleBlock = true;
+            if (!(ShouldRender && _EncounteredOutputStyleBlock)) return;
+            if (Environment.Evaluation.TryParseFunctionDeclaration(item.MacroText, out var functionDeclaration) == false || functionDeclaration == null)
+            {
+                throw new NotImplementedException();
+            }
+
+            Func<UserDefinedArgumentData, object?> func = arguments =>
+            {
+                Scopes.Push($"Macro: {functionDeclaration.Name}");
+                foreach (var arg in arguments.AllArguments)
+                {
+                    Scopes.Current.DefineAndSetVariable(arg.Name, arg.Value);
+                }
+                Scopes.Current.DefineAndSetVariable("varargs", Array.Empty<string>());
+                Scopes.Current.DefineAndSetVariable("kwargs", new Dictionary<string, object?>());
+                item.Contents.Transform(this);
+
+
+
+                Scopes.Pop($"Macro: {functionDeclaration.Name}");
+                return ExpressionParser.Void.Instance;
+            };
+            Scopes.Current.DefineAndSetVariable(functionDeclaration.Name, new JinjaUserDefinedFunction(functionDeclaration, func));
+        }
         public void Transform(ExpressionNode item)
         {
             _EncounteredOutputStyleBlock = true;
@@ -100,7 +136,7 @@ namespace Obsidian.Transforming
             var result = Environment.Evaluation.EvaluateDynamic(item.Expression, Scopes);
             if (result is ExpressionParser.Void) return;
 
-            StringBuilder.Append(result);
+            StringBuilder.AppendCustom(result);
             return;
         }
 
@@ -109,9 +145,9 @@ namespace Obsidian.Transforming
             if (!(ShouldRender && _EncounteredOutputStyleBlock)) return;
             _EncounteredOutputStyleBlock = true;
 
-            if(item.WhiteSpaceMode != WhiteSpaceControl.WhiteSpaceMode.Trim)
+            if (item.WhiteSpaceMode != WhiteSpaceControl.WhiteSpaceMode.Trim)
             {
-                StringBuilder.Append(item.ToString());
+                StringBuilder.AppendCustom(item.ToString());
             }
 
             return;
@@ -121,8 +157,7 @@ namespace Obsidian.Transforming
         {
             _EncounteredOutputStyleBlock = true;
             if (!(ShouldRender && _EncounteredOutputStyleBlock)) return;
-            StringBuilder.Append(item.Value);
-            _EncounteredOutputStyleBlock = true; // TODO: Is this right?
+            StringBuilder.AppendCustom(item.Value);
             return;
         }
 
@@ -133,7 +168,7 @@ namespace Obsidian.Transforming
 
             if (item.WhiteSpaceMode != WhiteSpaceControl.WhiteSpaceMode.Trim)
             {
-                StringBuilder.Append(item.ToString());
+                StringBuilder.AppendCustom(item.ToString());
             }
             return;
         }
@@ -148,7 +183,7 @@ namespace Obsidian.Transforming
                 if (TypeCoercion.CanCast(result.GetType(), typeof(bool)) == false) throw new NotImplementedException();
                 var boolResult = (bool)result;
 
-                if(boolResult)
+                if (boolResult)
                 {
                     _EncounteredOutputStyleBlock = true;
                     condition.Transform(this);
@@ -199,39 +234,5 @@ namespace Obsidian.Transforming
             return;
         }
 
-        public void Transform(RawNode item)
-        {
-            foreach(var node in item.Children)
-            {
-                StringBuilder.Append(node.ToString());
-            }
-        }
-        public void Transform(MacroNode item)
-        {
-            if (Environment.Evaluation.TryParseFunctionDeclaration(item.MacroText, out var functionDeclaration) == false || functionDeclaration == null)
-            {
-                throw new NotImplementedException();
-            }
-
-            Func<UserDefinedArgumentData, object?> func = arguments =>
-            {
-                Scopes.Push($"Macro: {functionDeclaration.Name}");
-                foreach (var arg in arguments.PositionalArguments)
-                {
-                    Scopes.Current.DefineAndSetVariable(arg.name, arg.value);
-                }
-                foreach (var arg in arguments.KeywordArguments)
-                {
-                    Scopes.Current.DefineAndSetVariable(arg.name, arg.value);
-                }
-                item.Contents.Transform(this);
-
-
-
-                Scopes.Pop($"Macro: {functionDeclaration.Name}");
-                return ExpressionParser.Void.Instance;
-            };
-            Scopes.Current.DefineAndSetVariable(functionDeclaration.Name, new UserDefinedFunction(functionDeclaration, func));
-        }
     }
 }

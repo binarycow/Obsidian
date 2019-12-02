@@ -36,6 +36,21 @@
         "inputFile": "template.txt",
         "expectedFile": "expected.txt",
         "actualFile": "actual.txt"
+      },
+      {
+        "testName": "Call Macro",
+        "rootPath": "Macros\\Call Macro",
+        "inputFile": "template.txt",
+        "expectedFile": "expected.txt",
+        "actualFile": "actual.txt"
+      },
+      {
+        "testName": "Call Macro With Params",
+        "rootPath": "Macros\\Call Macro With Params",
+        "inputFile": "template.txt",
+        "expectedFile": "expected.txt",
+        "actualFile": "actual.txt",
+        "variablesFile": "variables.json"
       }
     ]
   },

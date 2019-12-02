@@ -19,18 +19,18 @@ namespace ExpressionParser
         public UserDefinedArgument[] AdditionalKeywordArguments { get; }
 
 
+        public IEnumerable<UserDefinedArgument> AllArguments => DefinedPositionalArguments.Concat(AdditionalPositionalArguments).Concat(AdditionalKeywordArguments);
 
 
         internal static UserDefinedArgumentData Create(ParameterDeclaration[] declaration, object?[] passedValues)
         {
-            throw new NotImplementedException(); // TODO: VALIDATE THIS!!!!! Wrote this and haven't tested it yet.
             var additionalPositionalArguments = new List<UserDefinedArgument>();
             var additionalKeywordArguments = new Dictionary<string, UserDefinedArgument>();
             var declaredArguments = new UserDefinedArgument?[declaration.Length];
             var initialPositionalArguments = passedValues.TakeWhile(arg => !(arg is ValueTuple<string, object?>)).ToArray();
 
 
-            for (var argIndex = initialPositionalArguments.Length; argIndex < passedValues.Length, ++argIndex)
+            for (var argIndex = initialPositionalArguments.Length; argIndex < passedValues.Length; ++argIndex)
             {
                 var arg = passedValues[argIndex];
                 if (arg is ValueTuple<string, object?> tuple)
@@ -63,6 +63,7 @@ namespace ExpressionParser
                 if(dec.Optional)
                 {
                     declaredArguments[argIndex] = new UserDefinedArgument(dec.Name, dec.DefaultValue, argIndex, false);
+                    continue;
                 }
                 throw new NotImplementedException(); //Argument not provided
             }
