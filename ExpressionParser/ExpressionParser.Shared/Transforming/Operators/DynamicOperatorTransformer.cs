@@ -36,9 +36,26 @@ namespace ExpressionParser.Transforming.Operators
             {
                 case OperatorType.LogicalNot:
                     return TransformUnary(item, args[0]);
+                case OperatorType.Assign:
+                    switch(item.AssignmentOperatorBehavior)
+                    {
+                        case AssignmentOperatorBehavior.Assign:
+                            throw new NotImplementedException();
+                        case AssignmentOperatorBehavior.NamedParameter:
+                            return TransformNamedArgument(args[0], args[1]);
+                        default:
+                            throw new NotImplementedException();
+                    }
                 default:
                     throw new NotImplementedException();
             }
+        }
+
+        private (string name, object? value) TransformNamedArgument(ASTNode left, ASTNode right)
+        {
+            if (!(left is IdentifierNode identifierNode)) throw new NotImplementedException();
+            var value = right.Transform(NodeTransformer);
+            return (name: identifierNode.TextValue, value);
         }
 
         private object? TransformUnary(StandardOperator item, ASTNode rightNode)
@@ -90,6 +107,10 @@ namespace ExpressionParser.Transforming.Operators
             {
                 switch (right)
                 {
+                    case IdentifierNode identifierNode:
+                        var functions = LanguageDefinition.PipelineFunctions().Where(func => func.function.Name == identifierNode.TextValue).ToArray();
+                        if (functions.Length != 1) throw new NotImplementedException();
+                        return functions[0].overload?.Function?.Invoke(new object?[] { left });
                     default:
                         throw new NotImplementedException();
                 }

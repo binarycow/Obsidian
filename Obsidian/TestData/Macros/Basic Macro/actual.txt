@@ -1,0 +1,2 @@
+<p><inputtype="text"name="username"value=""size="20"></p>
+<p><inputtype="password"name="password"value="(type, password)"size="20"></p>

@@ -96,7 +96,11 @@ namespace Obsidian.Transforming
         {
             _EncounteredOutputStyleBlock = true;
             if (!(ShouldRender && _EncounteredOutputStyleBlock)) return;
-            StringBuilder.Append(Environment.Evaluation.EvaluateDynamic(item.Expression, Scopes));
+
+            var result = Environment.Evaluation.EvaluateDynamic(item.Expression, Scopes);
+            if (result is ExpressionParser.Void) return;
+
+            StringBuilder.Append(result);
             return;
         }
 
@@ -118,6 +122,7 @@ namespace Obsidian.Transforming
             _EncounteredOutputStyleBlock = true;
             if (!(ShouldRender && _EncounteredOutputStyleBlock)) return;
             StringBuilder.Append(item.Value);
+            _EncounteredOutputStyleBlock = true; // TODO: Is this right?
             return;
         }
 
@@ -212,6 +217,10 @@ namespace Obsidian.Transforming
             {
                 Scopes.Push($"Macro: {functionDeclaration.Name}");
                 foreach (var arg in arguments.PositionalArguments)
+                {
+                    Scopes.Current.DefineAndSetVariable(arg.name, arg.value);
+                }
+                foreach (var arg in arguments.KeywordArguments)
                 {
                     Scopes.Current.DefineAndSetVariable(arg.name, arg.value);
                 }

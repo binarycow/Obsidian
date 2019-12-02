@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)ArgumentDeclaration.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AssignmentOperatorBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\FunctionDefinition.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\MethodOperatorDefinition.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\MultiTypeOverloadDefinition.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\Operators\ExpressionTreeOperatorTransformer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\Operators\IOperatorTransformVisitor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\Operators\ITransformableOperator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UserDefinedArgument.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UserDefinedArgumentData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UserDefinedFunction.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)VariableManagement\TypeVariableManager.cs" />

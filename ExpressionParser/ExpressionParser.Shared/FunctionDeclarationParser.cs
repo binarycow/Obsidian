@@ -26,19 +26,35 @@ namespace ExpressionParser
         {
             declaration = default;
             var functionName = identifier.TextValue;
-            var arguments = argumentSet.Arguments.Select(ParseArgumentDefinition).ToArray();
-            ArgumentDeclaration[] nonNullArguments = arguments.Where(arg => arg != null).Select(arg => arg).ToArray()!;
+            var arguments = argumentSet.Arguments.Select(ParseParameterDeclaration).ToArray();
+
+            // Check for a required parameter that exists after an optional parameter
+            var firstOptionalIndex = int.MaxValue;
+            for(int argIndex = 0; argIndex < arguments.Length; ++argIndex)
+            {
+                if(arguments[argIndex].Optional)
+                {
+                    firstOptionalIndex = Math.Min(firstOptionalIndex, argIndex);
+                }
+                else if(firstOptionalIndex != int.MaxValue)
+                {
+                    // This is *NOT* optional, yet exists after an optional parameter.
+                    throw new NotImplementedException(); 
+                }
+            }
+
+            ParameterDeclaration[] nonNullArguments = arguments.Where(arg => arg != null).Select(arg => arg).ToArray()!;
             if (nonNullArguments.Length != arguments.Length) return false;
             declaration = new FunctionDeclaration(functionName, nonNullArguments);
             return true;
         }
 
-        private static ArgumentDeclaration? ParseArgumentDefinition(ASTNode argument)
+        private static ParameterDeclaration? ParseParameterDeclaration(ASTNode argument)
         {
             switch(argument)
             {
                 case IdentifierNode identifierNode:
-                    return new ArgumentDeclaration(identifierNode.TextValue);
+                    return new ParameterDeclaration(identifierNode.TextValue);
                 case BinaryASTNode binaryNode:
                     return ParseArgumentDefinition(binaryNode);
                 default:
@@ -46,14 +62,14 @@ namespace ExpressionParser
             }
         }
 
-        private static ArgumentDeclaration? ParseArgumentDefinition(BinaryASTNode argument)
+        private static ParameterDeclaration? ParseArgumentDefinition(BinaryASTNode argument)
         {
             if (!(argument.Left is IdentifierNode nameNode)) throw new NotImplementedException();
             if (!(argument.Operator is StandardOperator standardOperator)) throw new NotImplementedException();
             if (standardOperator.OperatorType != Configuration.OperatorType.Assign) throw new NotImplementedException();
             if (!(argument.Right is LiteralNode valueNode)) throw new NotImplementedException();
 
-            return new ArgumentDeclaration(nameNode.TextValue, valueNode.Value);
+            return new ParameterDeclaration(nameNode.TextValue, valueNode.Value);
         }
     }
 }
