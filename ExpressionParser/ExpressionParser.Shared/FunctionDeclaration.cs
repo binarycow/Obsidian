@@ -6,13 +6,15 @@ namespace ExpressionParser
 {
     public class FunctionDeclaration
     {
-        public FunctionDeclaration(string name, ParameterDeclaration[] arguments)
+        public FunctionDeclaration(Type returnType, string name, ParameterDeclaration[] arguments)
         {
             Name = name;
             Arguments = arguments;
+            ReturnType = returnType;
         }
 
         public string Name { get; }
         public ParameterDeclaration[] Arguments { get; }
+        public Type ReturnType { get; }
     }
 }

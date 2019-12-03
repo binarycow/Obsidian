@@ -18,7 +18,6 @@ namespace ExpressionParser
     {
         public ExpressionEval(ILanguageDefinition languageDefinition, Lexer? lexer = null, Parser? parser = null)
         {
-            languageDefinition.Validate();
             LanguageDefinition = languageDefinition;
             Lexer = lexer ?? new Lexer(LanguageDefinition);
             Parser = parser ?? new Parser(LanguageDefinition);

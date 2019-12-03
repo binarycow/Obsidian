@@ -9,7 +9,7 @@ namespace Obsidian
 {
     public class JinjaUserDefinedFunction : UserDefinedFunction
     {
-        internal JinjaUserDefinedFunction(FunctionDeclaration declaration, Func<UserDefinedArgumentData, object?> body) : base(declaration, body)
+        internal JinjaUserDefinedFunction(FunctionDeclaration declaration, UserDefinedFunctionDelegate body) : base(declaration, body)
         {
             name = declaration.Name;
             arguments = new ReadOnlyCollection<string>(declaration.Arguments.Select(arg => arg.Name).ToArray());

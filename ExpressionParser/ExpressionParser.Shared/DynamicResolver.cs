@@ -34,7 +34,7 @@ namespace ExpressionParser
             switch (left)
             {
                 case FunctionMethodGroup methodGroup:
-                    return FuncMethodGroup(scopeStack, methodGroup, args);
+                    return methodGroup.FunctionDefinition.Invoke(args);
                 case UserDefinedFunction userDefinedFunction:
                     return userDefinedFunction.Invoke(args);
                 default:
@@ -45,23 +45,24 @@ namespace ExpressionParser
 
             object? FuncMethodGroup(ScopeStack<TScope, TRootScope> scopeStack, FunctionMethodGroup left, object?[] args)
             {
-                if (left.FunctionDefinition.OverloadDefinitions.Length != 1) throw new NotImplementedException();
-                var overload = left.FunctionDefinition.OverloadDefinitions[0];
-                switch (overload)
-                {
-                    case SingleTypeOverloadDefinition singleOverload:
-                        if (args.Length < singleOverload.MinimumArguments) throw new NotImplementedException();
-                        if (args.Length > singleOverload.MaximumArguments) throw new NotImplementedException();
+                throw new NotImplementedException();
+                //if (left.FunctionDefinition.OverloadDefinitions.Length != 1) throw new NotImplementedException();
+                //var overload = left.FunctionDefinition.OverloadDefinitions[0];
+                //switch (overload)
+                //{
+                //    case SingleTypeOverloadDefinition singleOverload:
+                //        if (args.Length < singleOverload.MinimumArguments) throw new NotImplementedException();
+                //        if (args.Length > singleOverload.MaximumArguments) throw new NotImplementedException();
 
-                        var invalidTypes = args.Any(arg => TypeCoercion.CanCast(arg?.GetType() ?? typeof(object), singleOverload.ArgumentType));
-                        if (invalidTypes) throw new NotImplementedException();
+                //        var invalidTypes = args.Any(arg => TypeCoercion.CanCast(arg?.GetType() ?? typeof(object), singleOverload.ArgumentType));
+                //        if (invalidTypes) throw new NotImplementedException();
 
-                        var result = singleOverload.Invoke(scopeStack.Current, args);
-                        if ((result?.GetType() ?? typeof(object)) != singleOverload.ReturnType) throw new NotImplementedException();
-                        return result;
-                    default:
-                        throw new NotImplementedException();
-                }
+                //        var result = singleOverload.Invoke(scopeStack.Current, args);
+                //        if ((result?.GetType() ?? typeof(object)) != singleOverload.ReturnType) throw new NotImplementedException();
+                //        return result;
+                //    default:
+                //        throw new NotImplementedException();
+                //}
             }
         }
 

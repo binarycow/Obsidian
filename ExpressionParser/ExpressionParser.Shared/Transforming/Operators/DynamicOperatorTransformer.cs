@@ -109,9 +109,9 @@ namespace ExpressionParser.Transforming.Operators
                 switch (right)
                 {
                     case IdentifierNode identifierNode:
-                        var functions = LanguageDefinition.PipelineFunctions().Where(func => func.function.Name == identifierNode.TextValue).ToArray();
+                        var functions = LanguageDefinition.Functions.Where(func => func.Declaration.Name == identifierNode.TextValue).ToArray();
                         if (functions.Length != 1) throw new NotImplementedException();
-                        return functions[0].overload?.Function?.Invoke(new object?[] { left });
+                        return functions[0].Invoke(left);
                     default:
                         throw new NotImplementedException();
                 }

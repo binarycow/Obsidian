@@ -10,12 +10,12 @@ namespace ExpressionParser.References
 {
     public class FunctionMethodGroup : MethodGroup
     {
-        public FunctionMethodGroup(FunctionDefinition functionDefinition) : base(functionDefinition.Name)
+        public FunctionMethodGroup(UserDefinedFunction functionDefinition) : base(functionDefinition.Declaration.Name)
         {
             FunctionDefinition = functionDefinition;
         }
 
-        public FunctionDefinition FunctionDefinition { get; }
+        public UserDefinedFunction FunctionDefinition { get; }
 
     }
 }

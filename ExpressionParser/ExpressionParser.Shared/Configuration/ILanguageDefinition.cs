@@ -11,6 +11,6 @@ namespace ExpressionParser.Configuration
         OperatorDefinition[] Operators { get; }
         IDictionary<char,TokenType> SingleCharTokens { get; }
         bool AllowStringIndexersAsProperties { get; }
-        FunctionDefinition[] Functions { get; }
+        UserDefinedFunction[] Functions { get; }
     }
 }

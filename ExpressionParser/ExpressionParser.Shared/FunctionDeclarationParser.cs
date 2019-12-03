@@ -45,7 +45,7 @@ namespace ExpressionParser
 
             ParameterDeclaration[] nonNullArguments = arguments.Where(arg => arg != null).Select(arg => arg).ToArray()!;
             if (nonNullArguments.Length != arguments.Length) return false;
-            declaration = new FunctionDeclaration(functionName, nonNullArguments);
+            declaration = new FunctionDeclaration(returnType: typeof(object), functionName, nonNullArguments);
             return true;
         }
 

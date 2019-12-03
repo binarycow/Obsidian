@@ -7,16 +7,19 @@ namespace ExpressionParser
 {
     public class UserDefinedFunction
     {
-        public UserDefinedFunction(FunctionDeclaration declaration, Func<UserDefinedArgumentData, object?> body)
+        public delegate object? UserDefinedFunctionDelegate(UserDefinedArgumentData args);
+
+
+        public UserDefinedFunction(FunctionDeclaration declaration, UserDefinedFunctionDelegate body)
         {
             Declaration = declaration;
             Body = body;
         }
         public FunctionDeclaration Declaration { get; }
-        public Func<UserDefinedArgumentData, object?> Body { get; }
+        public UserDefinedFunctionDelegate Body { get; }
 
 
-        internal object? Invoke(object?[] args)
+        internal object? Invoke(params object?[] args)
         {
             return Invoke(UserDefinedArgumentData.Create(Declaration.Arguments, args));
         }

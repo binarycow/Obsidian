@@ -66,17 +66,15 @@ namespace Obsidian
 
         public bool AllowStringIndexersAsProperties => true;
 
-        public FunctionDefinition[] Functions => new FunctionDefinition[]
+        public UserDefinedFunction[] Functions => new UserDefinedFunction[]
         {
-            FunctionDefinition.Create("super",
-                OverloadDefinition.CreateEmpty(JinjaFunctions.Super, returnType: typeof(string))
-            ),
-            FunctionDefinition.Create("e",
-                OverloadDefinition.CreateSingleType(JinjaFunctions.Escape, returnType: typeof(string), minimumArguments: 1, maximumArguments: 1, argumentType: typeof(object))
-            ),
-            FunctionDefinition.Create("upper",
-                OverloadDefinition.CreateSingleType(JinjaFunctions.Upper, returnType: typeof(string), minimumArguments: 1, maximumArguments: 1, argumentType: typeof(object))
-            )
+            new UserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(string), "super", Array.Empty<ParameterDeclaration>()), JinjaFunctions.Super),
+            new UserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(string), "e", new ParameterDeclaration[] {
+                new ParameterDeclaration("s")
+            }), JinjaFunctions.Escape),
+            new UserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(string), "upper", new ParameterDeclaration[] {
+                new ParameterDeclaration("s")
+            }), JinjaFunctions.Upper),
         };
     }
 }
