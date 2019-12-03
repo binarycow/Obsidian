@@ -19,6 +19,10 @@ namespace System
             throw new NotImplementedException();
         }
 
+        public static bool IsAssignableToGenericType(this Type givenType, Type genericType)
+        {
+            return IsAssignableToGenericType(givenType, genericType, out _);
+        }
         public static bool IsAssignableToGenericType(this Type givenType, Type genericType, [NotNullWhen(true)]out Type[]? genericTypeArguments)
         {
             if (givenType.IsGenericType && givenType.GetGenericTypeDefinition() == genericType)

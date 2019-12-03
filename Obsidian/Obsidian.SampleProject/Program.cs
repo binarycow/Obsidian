@@ -21,11 +21,12 @@ namespace Obsidian.SampleProject
             //AutomaticTest(TestRunner.TestItems["Basic Tests"]["Raw"]);
             //AutomaticTest(TestRunner.TestItems["Basic Tests"]["Inheritance"]);
             //AutomaticTest(TestRunner.TestItems["Macros"]["Basic Macro"]);
-            AutomaticTest(TestRunner.TestItems["Macros"]["Call Macro"]);
+            //AutomaticTest(TestRunner.TestItems["Macros"]["Call Macro"]);
             //AutomaticTest(TestRunner.TestItems["Macros"]["Call Macro With Params"]);
             //AutomaticTest(TestRunner.TestItems["Feature Tests"]["Null Master Fallback"]["Standalone"]);
             //AutomaticTest(TestRunner.TestItems["Feature Tests"]["Null Master Fallback"]["Master"]);
             //AutomaticTest(TestRunner.TestItems["Feature Tests"]["For Loop Variables"]);
+            //AutomaticTest(TestRunner.TestItems["Feature Tests"]["Set"]);
             //AutomaticTest(TestRunner.TestItems["Other Tests"]["Test1"]);
             //AutomaticTest(TestRunner.TestItems["Other Tests"]["Test2"]);
             //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["Defaults"]);
@@ -33,7 +34,10 @@ namespace Obsidian.SampleProject
             //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["LStrip"]);
             //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["LStrip And Trim"]);
             //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["Manual Strip"]);
+            AutomaticTest(TestRunner.TestItems["Filters"]["Filters - Basic"]);
+            //AutomaticTest(TestRunner.TestItems["Filters"]["Filters - Batch"]);
 
+            //ManualTest(false, false);
 
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("Done.");
@@ -106,6 +110,8 @@ namespace Obsidian.SampleProject
         }
 
 
+
+
         static void ManualTest(bool lstripBlocks, bool trimBlocks)
         {
             Console.WriteLine($"LStripBlocks : {lstripBlocks}");
@@ -116,20 +122,13 @@ namespace Obsidian.SampleProject
             environment.Settings.LStripBlocks = lstripBlocks;
             environment.Settings.TrimBlocks = trimBlocks;
             environment.Settings.DynamicTemplates = true;
-            var template = environment.GetTemplate("NullMasterChild.html", _Variables);
+            var template = environment.GetTemplate("Template.html", _Variables);
 
             Console.WriteLine("========================== Standalone: False ==========================");
             Console.WriteLine();
             var result = template.Render(_Variables);
             Console.WriteLine($"{result}");
             Console.WriteLine();
-            Console.WriteLine("========================== Standalone: True ===========================");
-            Console.WriteLine();
-            _Variables["standalone"] = true;
-            result = template.Render(_Variables);
-            Console.WriteLine($"{result}");
-            Console.WriteLine();
-            Console.WriteLine("=======================================================================");
         }
     }
 }

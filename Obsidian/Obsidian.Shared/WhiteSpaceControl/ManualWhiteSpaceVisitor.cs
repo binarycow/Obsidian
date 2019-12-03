@@ -16,6 +16,7 @@ namespace Obsidian.WhiteSpaceControl
 
         List<IWhiteSpace> _PendingWhiteSpace = new List<IWhiteSpace>();
 
+
         private void SetTrim(WhiteSpaceMode mode)
         {
             if (mode == WhiteSpaceMode.Default) return;
@@ -130,6 +131,20 @@ namespace Obsidian.WhiteSpaceControl
             SetTrim(item.WhiteSpaceControl.Start);
             item.Contents.Transform(this);
             SetTrim(item.WhiteSpaceControl.End);
+        }
+
+        public void Transform(FilterNode item)
+        {
+            //SetTrim(item.WhiteSpaceControl.Start);
+            item.FilterContents.Transform(this);
+            //SetTrim(item.WhiteSpaceControl.End);
+        }
+
+        public void Transform(SetNode item)
+        {
+            //SetTrim(item.WhiteSpaceControl.Start);
+            item.AssignmentBlock?.Transform(this);
+            //SetTrim(item.WhiteSpaceControl.End);
         }
     }
 }

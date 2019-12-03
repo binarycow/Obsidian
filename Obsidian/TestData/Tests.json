@@ -58,6 +58,13 @@
     "categoryName": "Feature Tests",
     "children": [
       {
+        "testName": "Set",
+        "rootPath": "Feature Tests\\Set",
+        "inputFile": "template.txt",
+        "expectedFile": "expected.txt",
+        "actualFile": "actual.txt"
+      },
+      {
         "testName": "For Loop Variables",
         "rootPath": "Feature Tests\\For Loop Variables",
         "inputFile": "input.txt",
@@ -151,6 +158,26 @@
         "expectedFile": "expected.html",
         "actualFile": "actual.html",
         "variablesFile": "Variables.json"
+      }
+    ]
+  },
+  {
+    "categoryName": "Filters",
+    "children": [
+      {
+        "testName": "Filters - Batch",
+        "rootPath": "Filters\\Batch",
+        "inputFile": "template.txt",
+        "expectedFile": "expected.txt",
+        "actualFile": "actual.txt",
+        "variablesFile": "variables.json"
+      },
+      {
+        "testName": "Filters - Basic",
+        "rootPath": "Filters\\Basic",
+        "inputFile": "template.txt",
+        "expectedFile": "expected.txt",
+        "actualFile": "actual.txt"
       }
     ]
   }

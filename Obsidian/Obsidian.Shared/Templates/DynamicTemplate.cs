@@ -27,7 +27,7 @@ namespace Obsidian.Templates
 
         public string Render(IDictionary<string, object?> variables)
         {
-            var renderer = new StringRenderTransformer(Environment, variables);
+            var renderer = new StringBuilderTransformer(Environment, variables);
             TemplateNode.Transform(renderer);
             return renderer.StringBuilder.ToString();
         }

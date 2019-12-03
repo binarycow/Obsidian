@@ -25,5 +25,10 @@ namespace Obsidian.Tests
         {
             AssertWrapper.TestTemplate(TestRunner.TestItems["Feature Tests"]["For Loop Variables"]);
         }
+        [Test]
+        public void Set()
+        {
+            AssertWrapper.TestTemplate(TestRunner.TestItems["Feature Tests"]["Set"]);
+        }
     }
 }

@@ -64,12 +64,14 @@ namespace ExpressionParser.Transforming.Nodes
 
         public object? Transform(TupleNode item)
         {
-            throw new NotImplementedException();
+            var tupleItems = item.TupleItems.Select(listItem => listItem.Transform(this));
+            return Common.Reflection.MakeGenericTuple(tupleItems);
         }
 
         public object? Transform(ListNode item)
         {
-            throw new NotImplementedException();
+            var listItems = item.ListItems.Select(listItem => listItem.Transform(this));
+            return Common.Reflection.MakeGenericList(listItems);
         }
     }
 }

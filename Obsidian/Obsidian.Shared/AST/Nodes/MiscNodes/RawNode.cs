@@ -1,5 +1,6 @@
 ﻿using Common.Collections;
 using Obsidian.AST.NodeParsers;
+using Obsidian.Lexing;
 using Obsidian.Parsing;
 using Obsidian.Transforming;
 using Obsidian.WhiteSpaceControl;
@@ -35,7 +36,7 @@ namespace Obsidian.AST.Nodes.MiscNodes
             visitor.Transform(this);
         }
 
-        public static bool TryParseRaw(ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
+        public static bool TryParseRaw(Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
         {
             var conditions = new Queue<ConditionalNode>();
             parsedNode = default;

@@ -39,6 +39,7 @@ namespace Obsidian.Lexing
         private static readonly Lazy<Token> _Plus = new Lazy<Token>(() => new Token(TokenTypes.Plus, "+"));
         private static readonly Lazy<Token> _Comma = new Lazy<Token>(() => new Token(TokenTypes.Comma, ","));
         private static readonly Lazy<Token> _Colon = new Lazy<Token>(() => new Token(TokenTypes.Colon, ":"));
+        private static readonly Lazy<Token> _Equal = new Lazy<Token>(() => new Token(TokenTypes.Equal, "="));
 
         private static readonly Lazy<Token> _SquareBrace_Open = new Lazy<Token>(() => new Token(TokenTypes.SquareBrace_Open, "["));
         private static readonly Lazy<Token> _SquareBrace_Close = new Lazy<Token>(() => new Token(TokenTypes.SquareBrace_Close, "]"));
@@ -65,5 +66,7 @@ namespace Obsidian.Lexing
         public static Token CurlyBrace_Close { get { return _CurlyBrace_Close.Value; } }
         public static Token Paren_Open { get { return _Paren_Open.Value; } }
         public static Token Paren_Close { get { return _Paren_Close.Value; } }
+
+        public static Token Equal { get { return _Equal.Value; } }
     }
 }

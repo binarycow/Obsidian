@@ -331,5 +331,15 @@ namespace Obsidian.Transforming
         {
             throw new NotImplementedException();
         }
+
+        public Expression Transform(FilterNode item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Expression Transform(SetNode item)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

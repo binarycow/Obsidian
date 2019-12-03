@@ -1,1 +1,13 @@
-{{ not standalone }}
+## Set Variables
+
+{% raw %}
+	{% set navigation = [('index.html', 'Index'), ('about.html', 'About')] %}
+{% endraw %}
+
+{% set navigation = [('index.html', 'Index'), ('about.html', 'About')] %}
+
+## Navigation
+
+{% for item in navigation %}
+    {{ item }}
+{% endfor %}

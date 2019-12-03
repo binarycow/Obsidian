@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace Common
@@ -84,5 +86,77 @@ namespace Common
             // There's always at least object
             return tested;
         }
+
+
+        public static bool TryGetIEnumerable(object? obj, [NotNullWhen(true)]out IEnumerable<object?>? items)
+        {
+            items = default;
+            var type = obj?.GetType() ?? typeof(object);
+
+            if (type.IsAssignableToGenericType(typeof(IEnumerable<>), out var genericTypeArguments) == false) return false;
+            
+            throw new NotImplementedException();
+        }
+
+        public static bool IsTuple(object? obj, out PropertyInfo[] tupleProperties)
+        {
+            tupleProperties = Array.Empty<PropertyInfo>();
+            var type = obj?.GetType() ?? typeof(object);
+            if (type.Namespace != "System" || type.Name.StartsWith("Tuple`", StringComparison.InvariantCulture) == false) return false;
+            if (int.TryParse(type.Name.Replace("Tuple`", ""), out var tupleLength) == false) return false;
+
+            tupleProperties = Enumerable.Range(0, tupleLength).Select(arrayIndex =>
+            {
+                var itemNumber = arrayIndex + 1;
+                var property = type.GetProperty($"Item{itemNumber}");
+                if (property == default) throw new NotImplementedException();
+                return property;
+            }).ToArray();
+            return true;
+        }
+
+
+        public static object MakeGenericList(IEnumerable<object?> listItems)
+        {
+            listItems = listItems ?? throw new ArgumentNullException(nameof(listItems));
+
+            var listItemArray = listItems.ToArray();
+            var types = listItemArray.Select(listItem => listItem?.GetType() ?? typeof(object));
+            var commonType = GetCommonBaseClass(types);
+
+            var openGenericListType = typeof(List<>);
+            var closedGenericListType = openGenericListType.MakeGenericType(commonType);
+
+            var list = Activator.CreateInstance(closedGenericListType);
+
+            var addMethod = closedGenericListType.GetMethod(nameof(List<int>.Add));
+            foreach (var item in listItemArray)
+            {
+                addMethod.Invoke(list, new object?[] { item });
+            }
+            return list;
+        }
+        public static object MakeGenericTuple(IEnumerable<object?> tupleItems)
+        {
+
+            tupleItems = tupleItems ?? throw new ArgumentNullException(nameof(tupleItems));
+
+            var tupleItemsArray = tupleItems.ToArray();
+
+            if (tupleItemsArray.Length < 2 || tupleItemsArray.Length > 7) throw new NotImplementedException();
+
+            var types = tupleItemsArray.Select(listItem => listItem?.GetType() ?? typeof(object)).ToArray();
+
+
+
+            var openGenericType = typeof(Tuple<string, string>).Assembly.GetType($"System.Tuple`{tupleItemsArray.Length}");
+            var closedGenericType = openGenericType.MakeGenericType(types);
+
+            var constructor = closedGenericType.GetConstructor(types);
+            return constructor.Invoke(tupleItemsArray);
+        }
+
+
+
     }
 }

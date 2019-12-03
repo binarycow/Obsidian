@@ -13,10 +13,12 @@
     <Compile Include="$(MSBuildThisFileDirectory)AST\ASTNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\CallParser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\BlockParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\FilterParser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\ForParser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\IfParser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\MacroParser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\RawParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\SetParser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\State.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\StateAction.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\AbstractContainerNode.cs" />
@@ -35,9 +37,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\OutputNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\StatementNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\Statements\BlockNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\Statements\FilterNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\Statements\ForNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\Statements\IfNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\Statements\MacroNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\Statements\SetNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\TemplateNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\StateMachine.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Block.cs" />
@@ -46,6 +50,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)DynamicRootContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ITemplate.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DynamicSelf.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)JinjaCustomStringProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)JinjaUserDefinedFunction.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SpecialVariableInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Templates\CompiledTemplate.cs" />
@@ -74,6 +79,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Parsing\ParsingNodeType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RenderMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CompiledSelf.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Transforming\StringRenderTransformer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\WhiteSpaceCounterVisitor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TemplateInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\BaseASTTransformer.cs" />
@@ -83,7 +89,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\ITransformable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\ITransformVisitor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\NewASTCompiler.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Transforming\StringRenderTransformer.cs" />
+    <Compile Include="..\Obsidian.Shared\Transforming\StringBuilderTransformer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\TemplateContainerAssembler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)VariableSetterWalker.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\IWhiteSpace.cs" />

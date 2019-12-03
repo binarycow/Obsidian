@@ -10,14 +10,14 @@ namespace Obsidian
 {
     public class DynamicRootContext : DynamicContext
     {
-        private DynamicRootContext(StringRenderTransformer transformer, string? name) : base(name)
+        private DynamicRootContext(StringBuilderTransformer transformer, string? name) : base(name)
         {
             Transformer = transformer;
         }
 
 
 
-        public static DynamicRootContext CreateNew(string? name, StringRenderTransformer transformer, IDictionary<string, object?> variables)
+        public static DynamicRootContext CreateNew(string? name, StringBuilderTransformer transformer, IDictionary<string, object?> variables)
         {
             var scope = new DynamicRootContext(transformer, name);
             foreach (var key in variables.Keys)
@@ -27,7 +27,7 @@ namespace Obsidian
             return scope;
         }
 
-        public StringRenderTransformer Transformer { get; }
+        public StringBuilderTransformer Transformer { get; }
         public string? CurrentBlockName { get; set; }
         public int? CurrentBlockIndex { get; set; }
 

@@ -1,5 +1,7 @@
-﻿using Common.Collections;
+﻿using Common;
+using Common.Collections;
 using Obsidian.AST.NodeParsers;
+using Obsidian.Lexing;
 using Obsidian.Parsing;
 using Obsidian.Transforming;
 using Obsidian.WhiteSpaceControl;
@@ -8,21 +10,24 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
+using static Obsidian.Lexing.TokenTypes;
 
 namespace Obsidian.AST.Nodes.Statements
 {
     public class CallNode : ASTNode, IWhiteSpaceControlling
     {
-        public CallNode(ParsingNode? startParsingNode, ExpressionNode call, ContainerNode contents, ParsingNode? endParsingNode, WhiteSpaceControlSet? whiteSpace = null)
+        public CallNode(ParsingNode? startParsingNode, ExpressionNode callerDefinition, ExpressionNode macroCall, ContainerNode contents, ParsingNode? endParsingNode, WhiteSpaceControlSet? whiteSpace = null)
             : base(startParsingNode, contents.ParsingNodes, endParsingNode)
         {
             Contents = contents;
             WhiteSpaceControl = whiteSpace ?? new WhiteSpaceControlSet();
-            Call = call;
+            MacroCall = macroCall;
+            CallerDefinition = callerDefinition;
         }
 
         public ContainerNode Contents { get; }
-        public ExpressionNode Call { get; }
+        public ExpressionNode MacroCall { get; }
+        public ExpressionNode CallerDefinition { get; }
         public WhiteSpaceControlSet WhiteSpaceControl { get; }
 
         public override TOutput Transform<TOutput>(ITransformVisitor<TOutput> visitor)
@@ -40,7 +45,7 @@ namespace Obsidian.AST.Nodes.Statements
             visitor.Transform(this);
         }
 
-        public static bool TryParseCall(ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
+        public static bool TryParseCall(Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
         {
             parsedNode = default;
 
@@ -55,7 +60,7 @@ namespace Obsidian.AST.Nodes.Statements
             }
             var startParsingNode = enumerator.Current;
             enumerator.MoveNext();
-            var contents = ASTGenerator.ParseUntilFailure(enumerator).ToArray();
+            var contents = ASTGenerator.ParseUntilFailure(lexer, enumerator).ToArray();
             if (CallParser.EndBlock.TryParse(enumerator.Current, out var insideEnd, out var outsideEnd) == false)
             {
                 return false;
@@ -64,10 +69,67 @@ namespace Obsidian.AST.Nodes.Statements
             var contentsNode = new ContainerNode(null, contents, null,
                 new WhiteSpaceControlSet(insideStart, insideEnd)
             );
-            var call = ExpressionNode.FromString(callDefinition);
-            parsedNode = new CallNode(startParsingNode, call, contentsNode, endParsingNode,
+
+            if (TryParseCallDefinition(lexer, callDefinition, out var callArgumentList, out var macroCall) == false) throw new NotImplementedException();
+
+
+            parsedNode = new CallNode(startParsingNode, ExpressionNode.FromString(callArgumentList), ExpressionNode.FromString(macroCall), contentsNode, endParsingNode,
                 new WhiteSpaceControlSet(outsideStart, outsideEnd)
             );
+            return true;
+        }
+
+
+
+        private static bool TryParseCallDefinition(Lexer lexer, string callDefinition, out string argumentList, out string macroCall)
+        {
+            argumentList = string.Empty;
+            macroCall = string.Empty;
+
+            using var argListCheckout = StringBuilderPool.Instance.Checkout();
+            using var macroCallCheckout = StringBuilderPool.Instance.Checkout();
+            var argumentListstringBuilder = argListCheckout.CheckedOutObject;
+            var macroCallStringBuilder = macroCallCheckout.CheckedOutObject;
+            var activeStringBuilder = argumentListstringBuilder;
+
+            var nestingStack = new Stack<Token>();
+
+            using var enumerator = lexer.Tokenize(callDefinition).GetEnumerator();
+            if (enumerator.MoveNext() == false) throw new NotImplementedException();
+            if (enumerator.Current.TokenType != Paren_Open) throw new NotImplementedException();
+
+            do
+            {
+                var token = enumerator.Current;
+                switch (token.TokenType)
+                {
+                    case SquareBrace_Open:
+                    case CurlyBrace_Open:
+                    case Paren_Open:
+                        nestingStack.Push(token);
+                        activeStringBuilder.Append(token.Value);
+                        continue;
+                    case SquareBrace_Close:
+                    case CurlyBrace_Close:
+                    case Paren_Close:
+                        if (nestingStack.Peek().TokenType.IsMatchingBrace(token.TokenType) == false) throw new NotImplementedException();
+                        nestingStack.Pop();
+                        activeStringBuilder.Append(token.Value);
+                        if(nestingStack.Count == 0 && activeStringBuilder == argumentListstringBuilder)
+                        {
+                            activeStringBuilder = macroCallStringBuilder;
+                        }
+                        continue;
+                    default:
+                        activeStringBuilder.Append(token.Value);
+                        continue;
+                }
+            } while (enumerator.MoveNext());
+
+            if (nestingStack.Count != 0) throw new NotImplementedException();
+
+            argumentList = $"caller{argumentListstringBuilder.ToString().Trim()}";
+            macroCall = macroCallStringBuilder.ToString().Trim();
             return true;
         }
 

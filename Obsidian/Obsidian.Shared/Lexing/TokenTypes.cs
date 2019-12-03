@@ -44,5 +44,10 @@ namespace Obsidian.Lexing
         Keyword_Extends,
         Keyword_Call,
         Keyword_EndCall,
+        Keyword_Filter,
+        Keyword_EndFilter,
+        Keyword_Set,
+        Keyword_EndSet,
+        Equal,
     }
 }

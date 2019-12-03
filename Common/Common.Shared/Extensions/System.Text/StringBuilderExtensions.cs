@@ -10,16 +10,34 @@ namespace System.Text
     public static class StringBuilderExtensions
     {
 
-        public static void AppendCustom(this StringBuilder stringBuilder, object? value)
+        public static void AppendCustom(this StringBuilder stringBuilder, object? value, CustomToStringProvider customProvider)
         {
             stringBuilder = stringBuilder ?? throw new ArgumentNullException(nameof(stringBuilder));
-            stringBuilder.Append(CustomToStringProvider.Instance.ToString(value));
+            customProvider = customProvider ?? throw new ArgumentNullException(nameof(customProvider));
+            stringBuilder.Append(customProvider.ToString(value));
         }
 
-        public static void AppendLineCustom(this StringBuilder stringBuilder, object? value)
+        public static void AppendLineCustom(this StringBuilder stringBuilder, object? value, CustomToStringProvider customProvider)
         {
             stringBuilder = stringBuilder ?? throw new ArgumentNullException(nameof(stringBuilder));
-            stringBuilder.AppendLine(CustomToStringProvider.Instance.ToString(value));
+            customProvider = customProvider ?? throw new ArgumentNullException(nameof(customProvider));
+            stringBuilder.AppendLine(customProvider.ToString(value));
+        }
+
+        public static void AppendCustomRange(this StringBuilder stringBuilder, IEnumerable<object?> values, CustomToStringProvider customProvider)
+        {
+            foreach(var value in values)
+            {
+                stringBuilder.AppendCustom(value, customProvider);
+            }
+        }
+
+        public static void AppendLineCustomRange(this StringBuilder stringBuilder, IEnumerable<object?> values, CustomToStringProvider customProvider)
+        {
+            foreach (var value in values)
+            {
+                stringBuilder.AppendLineCustom(value, customProvider);
+            }
         }
 
         public static Expression Append(this ExpressionExtensionData<StringBuilder> stringBuilder, Expression expr)
