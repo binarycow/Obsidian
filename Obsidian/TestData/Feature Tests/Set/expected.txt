@@ -1,0 +1,26 @@
+## Set Variables
+
+
+	{% set navigation = [('index.html', 'Index'), ('about.html', 'About')] %}
+	{% set navigation2 %}
+		<li><a href="/">Index</a>
+		<li><a href="/downloads">Downloads</a>
+	{% endset %}
+
+
+
+
+
+## Navigation
+
+
+	('index.html', 'Index')
+
+	('about.html', 'About')
+
+
+## Navigation2
+
+
+	<li><a href="/">Index</a>
+	<li><a href="/downloads">Downloads</a>

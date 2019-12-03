@@ -1,6 +1,7 @@
 ﻿using Common.Collections;
 using Obsidian.AST.NodeParsers;
 using Obsidian.AST.Nodes.MiscNodes;
+using Obsidian.Lexing;
 using Obsidian.Parsing;
 using Obsidian.Transforming;
 using Obsidian.WhiteSpaceControl;
@@ -41,7 +42,7 @@ namespace Obsidian.AST.Nodes.Statements
             visitor.Transform(this);
         }
 
-        public static bool TryParseMacro(ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
+        public static bool TryParseMacro(Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
         {
             parsedNode = default;
 
@@ -56,10 +57,10 @@ namespace Obsidian.AST.Nodes.Statements
             }
             var startParsingNode = enumerator.Current;
             enumerator.MoveNext();
-            var contents = ASTGenerator.ParseUntilFailure(enumerator).ToArray();
+            var contents = ASTGenerator.ParseUntilFailure(lexer, enumerator).ToArray();
             if (MacroParser.EndBlock.TryParse(enumerator.Current, out var insideEnd, out var outsideEnd) == false)
             {
-                return false;
+                throw new NotImplementedException();
             }
             var endParsingNode = enumerator.Current;
             var contentsNode = new ContainerNode(null, contents, null, 

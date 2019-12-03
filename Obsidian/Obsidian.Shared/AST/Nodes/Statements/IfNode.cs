@@ -42,7 +42,7 @@ namespace Obsidian.AST.Nodes.Statements
         {
             return visitor.Transform(this, force);
         }
-        public static bool TryParseIf(ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
+        public static bool TryParseIf(Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
         {
             WhiteSpaceMode thisConditionEnd = WhiteSpaceMode.Default;
             WhiteSpaceMode nextConditionStart = WhiteSpaceMode.Default;
@@ -60,7 +60,7 @@ namespace Obsidian.AST.Nodes.Statements
                 throw new NotImplementedException();
             }
             enumerator.MoveNext();
-            var blockChildren = ASTGenerator.ParseUntilFailure(enumerator).ToArray();
+            var blockChildren = ASTGenerator.ParseUntilFailure(lexer, enumerator).ToArray();
 
 
             while(IfParser.ElseIfBlock.TryParse(enumerator.Current, out thisConditionEnd, out nextConditionStart))
@@ -73,7 +73,7 @@ namespace Obsidian.AST.Nodes.Statements
                     throw new NotImplementedException();
                 }
                 enumerator.MoveNext();
-                blockChildren = ASTGenerator.ParseUntilFailure(enumerator).ToArray();
+                blockChildren = ASTGenerator.ParseUntilFailure(lexer, enumerator).ToArray();
                 thisConditionStart = nextConditionStart;
             }
 
@@ -85,7 +85,7 @@ namespace Obsidian.AST.Nodes.Statements
                 ));
                 previousBlockExpression = JinjaEnvironment.TRUE;
                 enumerator.MoveNext();
-                blockChildren = ASTGenerator.ParseUntilFailure(enumerator).ToArray();
+                blockChildren = ASTGenerator.ParseUntilFailure(lexer, enumerator).ToArray();
                 thisConditionStart = nextConditionStart;
             }
 

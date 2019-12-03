@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using Obsidian.Lexing;
 using Obsidian.WhiteSpaceControl;
@@ -7,8 +9,17 @@ using Obsidian.WhiteSpaceControl;
 namespace Obsidian.AST.NodeParsers
 {
 
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     internal class StateAction<TState> where TState : struct, Enum
     {
+        internal string DebuggerDisplay
+        {
+            get
+            {
+                return string.Join(Environment.NewLine, _Actions.Select(act => act.DebuggerDisplay));
+            }
+        }
+
         public StateAction(State<TState> parent)
         {
             Parent = parent;
@@ -31,7 +42,7 @@ namespace Obsidian.AST.NodeParsers
         }
         public StateAction<TState> AndNext(TokenTypes tokenType)
         {
-            Parent.SetPredicate(this, enumerator => enumerator.TryGetNext(out var token) && token.TokenType == tokenType);
+            Parent.SetPredicate(this, enumerator => enumerator.TryGetNext(out var token) && token.TokenType == tokenType, $".AndNext({tokenType})");
             return this;
         }
         public StateAction<TState> Return(bool result)
@@ -67,8 +78,10 @@ namespace Obsidian.AST.NodeParsers
         }
     }
 
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     internal abstract class AbstractAction<TState> where TState : struct, Enum
     {
+        public virtual string DebuggerDisplay => ToString();
         public AbstractAction(StateAction<TState> parent)
         {
             Parent = parent;
@@ -78,6 +91,7 @@ namespace Obsidian.AST.NodeParsers
 
     internal class MoveToStateAction<TState> : AbstractAction<TState> where TState : struct, Enum
     {
+        public override string DebuggerDisplay => $".MoveTo({NextState})";
         public MoveToStateAction(StateAction<TState> parent, TState nextState) : base(parent)
         {
             NextState = nextState;
@@ -87,6 +101,7 @@ namespace Obsidian.AST.NodeParsers
     }
     internal class ReturnStateAction<TState> : AbstractAction<TState> where TState : struct, Enum
     {
+        public override string DebuggerDisplay => $".Return({Result})";
         public ReturnStateAction(StateAction<TState> parent, bool result) : base(parent)
         {
             Result = result;
@@ -96,6 +111,7 @@ namespace Obsidian.AST.NodeParsers
     }
     internal class ThrowAction<TState> : AbstractAction<TState> where TState : struct, Enum
     {
+        public override string DebuggerDisplay => $".Throw({Exception})";
         public ThrowAction(StateAction<TState> parent, Exception? exception = null) : base(parent)
         {
             Exception = exception ?? new NotImplementedException();
@@ -104,12 +120,14 @@ namespace Obsidian.AST.NodeParsers
     }
     internal class IgnoreAction<TState> : AbstractAction<TState> where TState : struct, Enum
     {
+        public override string DebuggerDisplay => $".Ignore()";
         public IgnoreAction(StateAction<TState> parent) : base(parent)
         {
         }
     }
     internal class AccumulateAction<TState> : AbstractAction<TState> where TState : struct, Enum
     {
+        public override string DebuggerDisplay => $".Accumulate({Seperator})";
         public AccumulateAction(StateAction<TState> parent, TokenTypes? seperator = default) : base(parent)
         {
             Seperator = seperator;
@@ -119,6 +137,7 @@ namespace Obsidian.AST.NodeParsers
     }
     internal class SetWhiteSpaceAction<TState> : AbstractAction<TState> where TState : struct, Enum
     {
+        public override string DebuggerDisplay => $".SetWhiteSpaceMode({nameof(WhiteSpacePosition)}.{Position}, {nameof(WhiteSpaceMode)}.{Mode})";
         public SetWhiteSpaceAction(StateAction<TState> parent, WhiteSpacePosition position, WhiteSpaceMode mode) : base(parent)
         {
             Position = position;

@@ -17,7 +17,7 @@ namespace Obsidian.AST.Nodes.MiscNodes
         }
         public WhiteSpaceMode WhiteSpaceMode { get; set; }
 
-        private string DebuggerDisplay => $"{nameof(NewLineNode)} : \"{ToString(debug: true)}\"";
+        private string DebuggerDisplay => $"{nameof(NewLineNode)} : \"{ToString(debug: true)}\" Mode: {WhiteSpaceMode}";
         public override TOutput Transform<TOutput>(ITransformVisitor<TOutput> visitor)
         {
             return visitor.Transform(this);

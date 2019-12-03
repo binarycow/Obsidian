@@ -9,6 +9,8 @@ using ExpressionParser.Configuration;
 using ExpressionParser.Exceptions;
 using ExpressionParser.Lexing;
 using ExpressionParser.Parsing;
+using static Obsidian.JinjaLanguageDefinition;
+using static ExpressionParser.Lexing.TokenType;
 
 namespace Obsidian.ExpressionParserExt
 {
@@ -26,13 +28,18 @@ namespace Obsidian.ExpressionParserExt
             TryParseDictionary,
         };
 
-        private bool TryParseCommaSeperatedSet(ILookaroundEnumerator<Token> enumerator, TokenType startTokenType, [NotNullWhen(true)]out IEnumerable<ASTNode>? parsedNodes, int minimumItems, AssignmentOperatorBehavior assignmentOperatorBehavior)
+        private bool TryParseCommaSeperatedSet(ILookaroundEnumerator<Token> enumerator, TokenType startTokenType, string? startTokenText, TokenType endTokenType, [NotNullWhen(true)]out IEnumerable<ASTNode>? parsedNodes, int minimumItems, AssignmentOperatorBehavior assignmentOperatorBehavior)
         {
             parsedNodes = default;
             if (enumerator.Current.TokenType != startTokenType)
             {
                 return false;
             }
+            if(startTokenText != null && enumerator.Current.TextValue != startTokenText)
+            {
+                return false;
+            }
+
             if (enumerator.TryGetPrevious(out var prevToken) == true)
             {
                 if(prevToken.TokenType.IsTerminal())
@@ -59,7 +66,7 @@ namespace Obsidian.ExpressionParserExt
                 throw new NotImplementedException();
             }
 
-            if (enumerator.Current.TokenType.IsMatchingBrace(startTokenType) == false)
+            if (enumerator.Current.TokenType != endTokenType)
             {
                 throw new NotImplementedException();
             }
@@ -70,7 +77,7 @@ namespace Obsidian.ExpressionParserExt
 
         public bool TryParseList(ILookaroundEnumerator<Token> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode, AssignmentOperatorBehavior assignmentOperatorBehavior)
         {
-            if(TryParseCommaSeperatedSet(enumerator, TokenType.SquareBrace_Open, out var parsedListItems, minimumItems: 1, assignmentOperatorBehavior))
+            if(TryParseCommaSeperatedSet(enumerator, TokenType.Operator, OPERATOR_SQUARE_BRACE_OPEN, SquareBrace_Close, out var parsedListItems, minimumItems: 1, assignmentOperatorBehavior))
             {
                 parsedNode = new ListNode(parsedListItems);
                 return true;
@@ -83,7 +90,7 @@ namespace Obsidian.ExpressionParserExt
 
         public bool TryParseTuple(ILookaroundEnumerator<Token> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode, AssignmentOperatorBehavior assignmentOperatorBehavior)
         {
-            if (TryParseCommaSeperatedSet(enumerator, TokenType.Paren_Open, out var parsedListItems, minimumItems: 2, assignmentOperatorBehavior))
+            if (TryParseCommaSeperatedSet(enumerator, TokenType.Operator, OPERATOR_PAREN_OPEN, Paren_Close, out var parsedListItems, minimumItems: 2, assignmentOperatorBehavior))
             {
                 parsedNode = new TupleNode(parsedListItems);
                 return true;

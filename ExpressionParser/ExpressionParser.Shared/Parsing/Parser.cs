@@ -76,6 +76,7 @@ namespace ExpressionParser.Parsing
                 }).FirstOrDefault(res => res.Success)?.Result;
                 if(customResult != default)
                 {
+                    enumerator.MoveNext(); // TODO: Is this right?
                     parsedNode = customResult;
                     return true;
                 }

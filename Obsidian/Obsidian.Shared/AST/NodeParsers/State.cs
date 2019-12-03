@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
@@ -8,16 +9,55 @@ using Obsidian.Lexing;
 
 namespace Obsidian.AST.NodeParsers
 {
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     internal class State<TState> where TState : struct, Enum
     {
+        internal string DebuggerDisplay
+        {
+            get
+            {
+                var sb = new StringBuilder();
+                foreach(var expect in _Tokens.Keys)
+                {
+                    sb.AppendLine($".Expect({expect})");
+                    foreach(var conditional in _Tokens[expect])
+                    {
+                        foreach (var line in conditional.DebuggerDisplay.Split(Environment.NewLine).Select(line => $"     {line}"))
+                        {
+                            sb.AppendLine(line);
+                        }
+                    }
+                }
+                return sb.ToString();
+            }
+        }
+
+        [DebuggerDisplay("{DebuggerDisplay,nq}")]
         private class ConditionalAction
         {
+
+            internal string DebuggerDisplay
+            {
+                get
+                {
+                    if(PredicateDebuggerDisplay != null)
+                    {
+                        return $"{PredicateDebuggerDisplay}{Environment.NewLine}     {Action.DebuggerDisplay}";
+                    }
+                    else
+                    {
+                        return Action.DebuggerDisplay;
+                    }
+                }
+            }
+
             public ConditionalAction(StateAction<TState> action, ConditionalDelegate? predicate = null)
             {
                 Action = action;
                 Predicate = predicate ?? (enumerator => true);
             }
             public ConditionalDelegate Predicate { get; set; }
+            public string? PredicateDebuggerDisplay { get; set; }
             public StateAction<TState> Action { get; }
         }
 
@@ -35,11 +75,12 @@ namespace Obsidian.AST.NodeParsers
         private StateAction<TState>? _ElseAction = default;
         private StateAction<TState>? _ThrowAction = default;
 
-        internal void SetPredicate(StateAction<TState> action, ConditionalDelegate predicate)
+        internal void SetPredicate(StateAction<TState> action, ConditionalDelegate predicate, string predicateDebuggerDisplay)
         {
             var foundAction = _Tokens.Values.SelectMany(cond => cond).FirstOrDefault(listAction => listAction.Action == action);
             if (foundAction == default) throw new NotImplementedException();
             foundAction.Predicate = predicate;
+            foundAction.PredicateDebuggerDisplay = predicateDebuggerDisplay;
         }
 
         public StateAction<TState> Expect(TokenTypes tokenType)

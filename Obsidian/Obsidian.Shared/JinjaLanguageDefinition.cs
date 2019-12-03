@@ -10,6 +10,10 @@ namespace Obsidian
 {
     public class JinjaLanguageDefinition : ILanguageDefinition
     {
+        internal const string OPERATOR_SQUARE_BRACE_OPEN = "[";
+        internal const string OPERATOR_PAREN_OPEN = "(";
+
+
         public KeywordDefinition[] Keywords => new KeywordDefinition[]
         {
             new ValueKeywordDefinition("True", true),
@@ -21,8 +25,8 @@ namespace Obsidian
         {
             OperatorDefinition.CreateMemberAccess(".", 160),
             OperatorDefinition.CreatePipeline("|", 160),
-            OperatorDefinition.CreateMethod("(", TokenType.Comma, TokenType.Paren_Close, 160),
-            OperatorDefinition.CreateIndex("[", TokenType.Comma, TokenType.SquareBrace_Close, 160),
+            OperatorDefinition.CreateMethod(OPERATOR_PAREN_OPEN, TokenType.Comma, TokenType.Paren_Close, 160),
+            OperatorDefinition.CreateIndex(OPERATOR_SQUARE_BRACE_OPEN, TokenType.Comma, TokenType.SquareBrace_Close, 160),
 
             OperatorDefinition.CreateUnary("**", 80, OperatorType.Power),
 
@@ -65,10 +69,13 @@ namespace Obsidian
         public FunctionDefinition[] Functions => new FunctionDefinition[]
         {
             FunctionDefinition.Create("super",
-                OverloadDefinition.CreateEmpty(JinjaFunctions.Super, typeof(string))
+                OverloadDefinition.CreateEmpty(JinjaFunctions.Super, returnType: typeof(string))
             ),
             FunctionDefinition.Create("e",
-                OverloadDefinition.CreateSingleType(JinjaFunctions.Escape, typeof(string), 1, 1, typeof(object))
+                OverloadDefinition.CreateSingleType(JinjaFunctions.Escape, returnType: typeof(string), minimumArguments: 1, maximumArguments: 1, argumentType: typeof(object))
+            ),
+            FunctionDefinition.Create("upper",
+                OverloadDefinition.CreateSingleType(JinjaFunctions.Upper, returnType: typeof(string), minimumArguments: 1, maximumArguments: 1, argumentType: typeof(object))
             )
         };
     }

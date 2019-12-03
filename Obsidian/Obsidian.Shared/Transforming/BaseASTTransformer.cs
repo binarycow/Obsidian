@@ -103,5 +103,20 @@ namespace Obsidian.Transforming
         {
             throw new NotImplementedException();
         }
+
+        public ASTNode Transform(CallNode item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ASTNode Transform(FilterNode item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ASTNode Transform(SetNode item)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

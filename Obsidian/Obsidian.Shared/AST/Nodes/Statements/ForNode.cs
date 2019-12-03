@@ -40,7 +40,7 @@ namespace Obsidian.AST.Nodes.Statements
 
         private string DebuggerDisplay => $"{nameof(ForNode)} : Variables: \"{string.Join(", ", VariableNames)}\" Expression: \"{Expression}\"";
 
-        internal static bool TryParseFor(ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
+        internal static bool TryParseFor(Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
         {
             ContainerNode? elseBlock = null;
             parsedNode = default;
@@ -59,7 +59,7 @@ namespace Obsidian.AST.Nodes.Statements
                 throw new NotImplementedException();
             }
             enumerator.MoveNext();
-            var primaryBlockChildren = ASTGenerator.ParseUntilFailure(enumerator).ToArray();
+            var primaryBlockChildren = ASTGenerator.ParseUntilFailure(lexer, enumerator).ToArray();
 
             ContainerNode primaryBlock;
 
@@ -67,7 +67,7 @@ namespace Obsidian.AST.Nodes.Statements
             {
                 var elseStartParsingNode = enumerator.Current;
                 enumerator.MoveNext();
-                var elseBlockChildren = ASTGenerator.ParseUntilFailure(enumerator).ToArray();
+                var elseBlockChildren = ASTGenerator.ParseUntilFailure(lexer, enumerator).ToArray();
                 if (ForParser.EndBlock.TryParse(enumerator.Current, out var elseInsideEnd, out var outsideEnd) == false)
                 {
                     throw new NotImplementedException();

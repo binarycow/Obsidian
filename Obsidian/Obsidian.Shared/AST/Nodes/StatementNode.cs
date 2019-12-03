@@ -6,6 +6,7 @@ using System.Text;
 using Common.Collections;
 using Obsidian.AST.Nodes.MiscNodes;
 using Obsidian.AST.Nodes.Statements;
+using Obsidian.Lexing;
 using Obsidian.Parsing;
 
 namespace Obsidian.AST.Nodes
@@ -20,33 +21,33 @@ namespace Obsidian.AST.Nodes
 
         public ASTNode[] Children { get; }
 
-        public static bool TryParse(ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
+        public delegate bool TryParseDelegate(Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode);
+
+        private static TryParseDelegate[] _Delegates = new TryParseDelegate[]
         {
-            if (ForNode.TryParseFor(enumerator, out parsedNode))
+            ForNode.TryParseFor,
+            IfNode.TryParseIf,
+            BlockNode.TryParseBlock,
+            ExtendsNode.TryParseExtends,
+            RawNode.TryParseRaw,
+            MacroNode.TryParseMacro,
+            CallNode.TryParseCall,
+            FilterNode.TryParseFilter,
+            SetNode.TryParseSet
+        };
+
+        public static bool TryParse(Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
+        {
+            parsedNode = _Delegates.Select(del =>
             {
-                return true;
-            }
-            if (IfNode.TryParseIf(enumerator, out parsedNode))
-            {
-                return true;
-            }
-            if (BlockNode.TryParseBlock(enumerator, out parsedNode))
-            {
-                return true;
-            }
-            if (ExtendsNode.TryParseExtends(enumerator, out parsedNode))
-            {
-                return true;
-            }
-            if (RawNode.TryParseRaw(enumerator, out parsedNode))
-            {
-                return true;
-            }
-            if (MacroNode.TryParseMacro(enumerator, out parsedNode))
-            {
-                return true;
-            }
-            return false;
+                var Result = del(lexer, enumerator, out var ParsedNode);
+                return new
+                {
+                    Result,
+                    ParsedNode,
+                };
+            }).FirstOrDefault(res => res.Result)?.ParsedNode;
+            return parsedNode != default;
         }
 
     }

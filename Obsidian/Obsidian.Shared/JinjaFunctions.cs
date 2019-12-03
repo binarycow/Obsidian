@@ -40,5 +40,10 @@ namespace Obsidian
             if (args.Length != 1) throw new NotImplementedException();
             return args[0]?.ToString()?.HTMLEscape() ?? string.Empty;
         }
+        public static object? Upper(object?[] args)
+        {
+            if (args.Length != 1) throw new NotImplementedException();
+            return args[0].ToString().ToUpper();
+        }
     }
 }

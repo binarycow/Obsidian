@@ -42,7 +42,7 @@ namespace Obsidian.AST.Nodes.Statements
             return visitor.Transform(this, force);
         }
 
-        public static bool TryParseBlock(ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
+        public static bool TryParseBlock(Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
         {
             parsedNode = default;
             if(BlockParser.StartBlock.TryParse(enumerator.Current) == false)
@@ -57,12 +57,12 @@ namespace Obsidian.AST.Nodes.Statements
             if (string.IsNullOrEmpty(startingBlockName)) throw new NotImplementedException();
             enumerator.MoveNext();
 
-            var contents = ASTGenerator.ParseUntilFailure(enumerator).ToArray();
+            var contents = ASTGenerator.ParseUntilFailure(lexer, enumerator).ToArray();
 
 
             if (BlockParser.EndBlock.TryParse(enumerator.Current) == false)
             {
-                return false;
+                throw new NotImplementedException();
             }
             if (BlockParser.EndBlock.TryGetAccumulation(BlockParser.BlockState.BlockName, 0, out var endBlockName) && !string.IsNullOrEmpty(endBlockName) && endBlockName != startingBlockName)
             {

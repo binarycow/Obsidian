@@ -39,7 +39,7 @@ namespace Obsidian.AST.Nodes.MiscNodes
             visitor.Transform(this);
         }
 
-        public static bool TryParseExtends(ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
+        public static bool TryParseExtends(Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
         {
             ExtendsParser.TryParse(enumerator.Current, out parsedNode);
             return parsedNode != default;

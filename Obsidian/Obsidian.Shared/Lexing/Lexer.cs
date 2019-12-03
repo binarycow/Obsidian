@@ -52,6 +52,7 @@ namespace Obsidian.Lexing
             {')', () => Token.Paren_Close },
             {'+', () => Token.Plus },
             {'-', () => Token.Minus },
+            {'=', () => Token.Equal },
         };
         private Dictionary<char[], TokenTypes> _KeywordLookups = new Dictionary<char[], TokenTypes>
         {
@@ -69,6 +70,12 @@ namespace Obsidian.Lexing
             { "endraw".ToCharArray(), TokenTypes.Keyword_EndRaw },
             { "macro".ToCharArray(), TokenTypes.Keyword_Macro },
             { "endmacro".ToCharArray(), TokenTypes.Keyword_EndMacro },
+            { "call".ToCharArray(), TokenTypes.Keyword_Call },
+            { "endcall".ToCharArray(), TokenTypes.Keyword_EndCall },
+            { "filter".ToCharArray(), TokenTypes.Keyword_Filter },
+            { "endfilter".ToCharArray(), TokenTypes.Keyword_EndFilter },
+            { "set".ToCharArray(), TokenTypes.Keyword_Set },
+            { "endset".ToCharArray(), TokenTypes.Keyword_EndSet },
         };
         private bool TryKeyword(ILookaroundEnumerator<char> enumerator, out Token? token)
         {
