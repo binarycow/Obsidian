@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
@@ -10,8 +11,31 @@ using Obsidian.WhiteSpaceControl;
 
 namespace Obsidian.AST.NodeParsers
 {
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     internal class StateMachine<TState> where TState : struct, Enum
     {
+        private string DebuggerDisplay
+        {
+            get
+            {
+                var sb = new StringBuilder();
+                sb.AppendLine($"{nameof(StateMachine<TState>)}<{typeof(TState).Name}>");
+                sb.AppendLine();
+                foreach (var expect in _States.Keys)
+                {
+                    sb.AppendLine($".State({expect})");
+                    foreach(var line in _States[expect].DebuggerDisplay.Split(Environment.NewLine).Select(line => $"     {line}"))
+                    {
+                        sb.AppendLine(line);
+                    }
+                    
+                }
+                return sb.ToString();
+            }
+        }
+
+
+
         public StateMachine(TState initialState, TState doneState)
         {
             InitialState = initialState;
@@ -85,6 +109,7 @@ namespace Obsidian.AST.NodeParsers
             startingWhiteSpace = WhiteSpaceMode.Default;
             endingWhiteSpace = WhiteSpaceMode.Default;
             if (_Accumulations.IsValueCreated) _Accumulations.Value.Clear();
+            WhiteSpace.Clear();
             CurrentState = InitialState;
             if(enumerator.MoveNext() == false)
             {

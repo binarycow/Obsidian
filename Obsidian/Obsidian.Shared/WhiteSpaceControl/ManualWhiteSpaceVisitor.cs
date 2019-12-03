@@ -65,6 +65,7 @@ namespace Obsidian.WhiteSpaceControl
 
         public void Transform(ExpressionNode item)
         {
+            _PendingWhiteSpace.Clear();
             return;
         }
 
@@ -75,6 +76,7 @@ namespace Obsidian.WhiteSpaceControl
 
         public void Transform(OutputNode item)
         {
+            _PendingWhiteSpace.Clear();
             return;
         }
 

@@ -68,7 +68,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Loaders\BaseLoader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Loaders\FileSystemLoader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LoopInfo.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)OutputCombiner\OutputCombineVisitor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OutputCombiner.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Parsing\Parser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Parsing\ParsingNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Parsing\ParsingNodeType.cs" />

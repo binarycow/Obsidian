@@ -22,26 +22,26 @@ namespace Obsidian.AST.Nodes
 
         public static bool TryParse(ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
         {
-            if (ForNode.TryParseFor(enumerator, out parsedNode))
-            {
-                return true;
-            }
-            if (IfNode.TryParseIf(enumerator, out parsedNode))
-            {
-                return true;
-            }
-            if (BlockNode.TryParseBlock(enumerator, out parsedNode))
-            {
-                return true;
-            }
-            if (ExtendsNode.TryParseExtends(enumerator, out parsedNode))
-            {
-                return true;
-            }
-            if (RawNode.TryParseRaw(enumerator, out parsedNode))
-            {
-                return true;
-            }
+            //if (ForNode.TryParseFor(enumerator, out parsedNode))
+            //{
+            //    return true;
+            //}
+            //if (IfNode.TryParseIf(enumerator, out parsedNode))
+            //{
+            //    return true;
+            //}
+            //if (BlockNode.TryParseBlock(enumerator, out parsedNode))
+            //{
+            //    return true;
+            //}
+            //if (ExtendsNode.TryParseExtends(enumerator, out parsedNode))
+            //{
+            //    return true;
+            //}
+            //if (RawNode.TryParseRaw(enumerator, out parsedNode))
+            //{
+            //    return true;
+            //}
             if (MacroNode.TryParseMacro(enumerator, out parsedNode))
             {
                 return true;

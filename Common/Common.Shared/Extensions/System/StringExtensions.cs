@@ -7,6 +7,11 @@ namespace System
 {
     public static class StringExtensions
     {
+
+        public static string[] Split(this string str, string seperator)
+        {
+            return str.Split(new string[] { seperator }, StringSplitOptions.None);
+        }
         public static string WhiteSpaceEscape(this string str)
         {
             var sb = new StringBuilder();
