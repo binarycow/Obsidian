@@ -19,5 +19,4 @@ output = template.render(**variables)
 lines = output.splitlines()
 
 for line in lines:
-    #print("|" + line + "|")
-    print(line)
+    print("|" + line + "|")

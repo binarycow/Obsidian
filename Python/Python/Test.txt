@@ -1,25 +1,4 @@
-## Set Variables
 
-{% raw %}
-	{% set navigation = [('index.html', 'Index'), ('about.html', 'About')] %}
-	{% set navigation2 %}
-		<li><a href="/">Index</a>
-		<li><a href="/downloads">Downloads</a>
-	{% endset %}
-{% endraw %}
+{% set value = 'Hello, World!' %}
 
-{% set navigation = [('index.html', 'Index'), ('about.html', 'About')] %}
-{% set navigation2 %}
-	<li><a href="/">Index</a>
-	<li><a href="/downloads">Downloads</a>
-{% endset %}
-
-## Navigation
-
-{% for item in navigation %}
-	{{ item }}
-{% endfor %}
-
-## Navigation2
-
-{{ navigation2 }}
+{{ value|center(2) }}

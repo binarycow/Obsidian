@@ -15,7 +15,8 @@
         "rootPath": "Basic Tests\\Inheritance",
         "inputFile": "child.html",
         "expectedFile": "expected.html",
-        "actualFile": "actual.html"
+        "actualFile": "actual.html",
+        "variablesFile": ""
       },
       {
         "testName": "Raw",
@@ -35,14 +36,16 @@
         "rootPath": "Macros\\Basic Macro",
         "inputFile": "template.txt",
         "expectedFile": "expected.txt",
-        "actualFile": "actual.txt"
+        "actualFile": "actual.txt",
+        "variablesFile": ""
       },
       {
         "testName": "Call Macro",
         "rootPath": "Macros\\Call Macro",
         "inputFile": "template.txt",
         "expectedFile": "expected.txt",
-        "actualFile": "actual.txt"
+        "actualFile": "actual.txt",
+        "variablesFile": ""
       },
       {
         "testName": "Call Macro With Params",
@@ -62,7 +65,8 @@
         "rootPath": "Feature Tests\\Set",
         "inputFile": "template.txt",
         "expectedFile": "expected.txt",
-        "actualFile": "actual.txt"
+        "actualFile": "actual.txt",
+        "variablesFile": ""
       },
       {
         "testName": "For Loop Variables",
@@ -124,7 +128,8 @@
         "rootPath": "Whitespace\\Defaults",
         "inputFile": "template.html",
         "expectedFile": "expected.html",
-        "actualFile": "actual.html"
+        "actualFile": "actual.html",
+        "variablesFile": ""
       },
       {
         "testName": "TrimBlocks",
@@ -132,6 +137,7 @@
         "inputFile": "template.html",
         "expectedFile": "expected.html",
         "actualFile": "actual.html",
+        "variablesFile": "",
         "trim_blocks": true
       },
       {
@@ -140,6 +146,7 @@
         "inputFile": "template.html",
         "expectedFile": "expected.html",
         "actualFile": "actual.html",
+        "variablesFile": "",
         "lstrip_blocks": true
       },
       {
@@ -148,8 +155,9 @@
         "inputFile": "template.html",
         "expectedFile": "expected.html",
         "actualFile": "actual.html",
-        "lstrip_blocks": true,
-        "trim_blocks": true
+        "variablesFile": "",
+        "trim_blocks": true,
+        "lstrip_blocks": true
       },
       {
         "testName": "Manual Strip",
@@ -177,7 +185,8 @@
         "rootPath": "Filters\\Basic",
         "inputFile": "template.txt",
         "expectedFile": "expected.txt",
-        "actualFile": "actual.txt"
+        "actualFile": "actual.txt",
+        "variablesFile": ""
       }
     ]
   }

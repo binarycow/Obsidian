@@ -8,16 +8,64 @@ namespace Obsidian.TestCore
 {
     public class Test : Item
     {
-        public string TestName { get; set; }
-        public string RootPath { get; set; }
-        public string InputFile { get; set; }
-        public string ExpectedFile { get; set; }
-        public string ActualFile { get; set; }
-        public string VariablesFile { get; set; }
-        public bool trim_blocks { get; set; } = false;
-        public bool lstrip_blocks { get; set; } = false;
+        private string _TestName = string.Empty;
+        public string TestName
+        {
+            get => _TestName;
+            set
+            {
+                SetField(ref _TestName, value);
+                OnPropertyChanged(nameof(Name));
+            }
+        }
+        private string _RootPath = string.Empty;
+        public string RootPath
+        {
+            get => _RootPath;
+            set => SetField(ref _RootPath, value);
+        }
+        private string _InputFile = string.Empty;
+        public string InputFile
+        {
+            get => _InputFile;
+            set => SetField(ref _InputFile, value);
+        }
+        private string _ExpectedFile = string.Empty;
+        public string ExpectedFile
+        {
+            get => _ExpectedFile;
+            set => SetField(ref _ExpectedFile, value);
+        }
+        private string _ActualFile = string.Empty;
+        public string ActualFile
+        {
+            get => _ActualFile;
+            set => SetField(ref _ActualFile, value);
+        }
+        private string _VariablesFile = string.Empty;
+        public string VariablesFile
+        {
+            get => _VariablesFile;
+            set => SetField(ref _VariablesFile, value);
+        }
+        private bool _trim_blocks;
+        public bool trim_blocks
+        {
+            get => _trim_blocks;
+            set => SetField(ref _trim_blocks, value);
+        }
+        private bool _lstrip_blocks;
+        public bool lstrip_blocks
+        {
+            get => _lstrip_blocks;
+            set => SetField(ref _lstrip_blocks, value);
+        }
 
-        public override string Name => TestName;
+        public override string Name
+        {
+            get => TestName;
+            set => TestName = value;
+        }
 
         public override Item this[string name] => throw new NotImplementedException();
     }

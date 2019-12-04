@@ -42,108 +42,138 @@ namespace Obsidian
         }
         public static object? Escape(UserDefinedArgumentData args)
         {
-            throw new NotImplementedException();
-            //if (args.Length != 1) throw new NotImplementedException();
-            //return args[0]?.ToString()?.HTMLEscape() ?? string.Empty;
+            if (args.TryGetArgumentValue<string>("s", out var obj) == false) throw new NotImplementedException();
+            if (obj == null) throw new NullReferenceException();
+            return obj.ToString().HTMLEscape();
         }
         public static object? Upper(UserDefinedArgumentData args)
         {
-            throw new NotImplementedException();
-            //if (args.Length != 1) throw new NotImplementedException();
-            //return args[0].ToString().ToUpper();
+            if (args.TryGetArgumentValue<string>("s", out var obj) == false) throw new NotImplementedException();
+            if (obj == null) throw new NullReferenceException();
+            return obj.ToString().ToUpper(CultureInfo.InvariantCulture);
         }
         public static object? Abs(UserDefinedArgumentData args)
         {
-            throw new NotImplementedException();
-            //if (args.Length != 1) throw new NotImplementedException();
 
-            //switch(args[0])
-            //{
-            //    case null:
-            //        throw new NullReferenceException();
-            //    case decimal dec:
-            //        return Math.Abs(dec);
-            //    case double doub:
-            //        return Math.Abs(doub);
-            //    case short int16:
-            //        return Math.Abs(int16);
-            //    case int int32:
-            //        return Math.Abs(int32);
-            //    case long int64:
-            //        return Math.Abs(int64);
-            //    case sbyte sByte:
-            //        return Math.Abs(sByte);
-            //    case float single:
-            //        return Math.Abs(single);
-            //    default:
-            //        var str = args[0]?.ToString() ?? throw new NullReferenceException();
+            if (args.TryGetArgumentValue("x", out var obj) == false) throw new NotImplementedException();
 
-            //        if(int.TryParse(str, out var i32))
-            //        {
-            //            return Math.Abs(i32);
-            //        }
-            //        if(double.TryParse(str, out var dou))
-            //        {
-            //            return Math.Abs(dou);
-            //        }
-            //        throw new ArgumentException();
-            //}
+            switch (obj)
+            {
+                case null:
+                    throw new NullReferenceException();
+                case decimal dec:
+                    return Math.Abs(dec);
+                case double doub:
+                    return Math.Abs(doub);
+                case short int16:
+                    return Math.Abs(int16);
+                case int int32:
+                    return Math.Abs(int32);
+                case long int64:
+                    return Math.Abs(int64);
+                case sbyte sByte:
+                    return Math.Abs(sByte);
+                case float single:
+                    return Math.Abs(single);
+                default:
+                    var str = obj?.ToString() ?? throw new NullReferenceException();
+
+                    if (int.TryParse(str, out var i32))
+                    {
+                        return Math.Abs(i32);
+                    }
+                    if (double.TryParse(str, out var dou))
+                    {
+                        return Math.Abs(dou);
+                    }
+                    throw new ArgumentException();
+            }
         }
         public static object? Attr(UserDefinedArgumentData args)
         {
-            throw new NotImplementedException();
-            //if (args == null) throw new NullReferenceException();
-            //if (args.Length != 2) throw new NotImplementedException();
-            //var obj = args[0] ?? throw new NullReferenceException();
-            //if (!(args[1] is string propertyName)) throw new ArgumentException();
-            //return obj.GetType().GetProperty(propertyName)?.GetValue(args[0]);
+
+            if (args.TryGetArgumentValue("obj", out var obj) == false) throw new NotImplementedException();
+            if (args.TryGetArgumentValue<string>("name", out var name) == false) throw new NotImplementedException();
+            if (obj == null) throw new NullReferenceException();
+            if (name == null) throw new NullReferenceException();
+
+            if (!(name is string propertyName)) throw new ArgumentException();
+            return obj.GetType().GetProperty(propertyName)?.GetValue(obj);
         }
 
         public static object? Batch(UserDefinedArgumentData args)
         {
-            throw new NotImplementedException();
-            //if (args == null) throw new NullReferenceException();
-            //if (args.Length < 2 || args.Length > 3) throw new NotImplementedException();
 
-            //var obj = args[0] ?? throw new NotImplementedException();
-            
-            //if (args[1].TryToInt32(out var listSize) == false) throw new NotImplementedException();
-            //var useDefaultValue = args.Length > 2;
+            if (args.TryGetArgumentValue("value", out var value) == false) throw new NotImplementedException();
+            if (args.TryGetArgumentValue<int>("linecount", out var lineCountObj) == false) throw new NotImplementedException();
+            var useDefaultValue = args.TryGetArgumentValue("fill_with", out var fillWith);
 
-            //using var enumerator = EnumeratorFactory.GetEnumerator(obj);
+            value = value ?? throw new NotImplementedException();
 
-            //var toReturn = new List<object?>();
-            //var currentList = new List<object?>();
-            //toReturn.Add(currentList);
-            //var itemCount = 0;
-            //while(enumerator.MoveNext())
-            //{
-            //    currentList.Add(enumerator.Current);
-            //    ++itemCount;
-            //    if(itemCount == listSize)
-            //    {
-            //        itemCount = 0;
-            //        currentList = new List<object?>();
-            //        toReturn.Add(currentList);
-            //    }
-            //}
-            //if(useDefaultValue && itemCount < listSize)
-            //{
-            //    currentList.AddRange(Enumerable.Repeat(args[2], listSize - itemCount));
-            //}
-            //return toReturn;
+            if (lineCountObj.TryToInt32(out var listSize) == false) throw new NotImplementedException();
+
+            using var enumerator = EnumeratorFactory.GetEnumerator(value);
+
+            var toReturn = new List<object?>();
+            var currentList = new List<object?>();
+            toReturn.Add(currentList);
+            var itemCount = 0;
+            while (enumerator.MoveNext())
+            {
+                currentList.Add(enumerator.Current);
+                ++itemCount;
+                if (itemCount == listSize)
+                {
+                    itemCount = 0;
+                    currentList = new List<object?>();
+                    toReturn.Add(currentList);
+                }
+            }
+            if (useDefaultValue && itemCount < listSize)
+            {
+                currentList.AddRange(Enumerable.Repeat(fillWith, listSize - itemCount));
+            }
+            return toReturn;
         }
 
         public static object? Capitalize(UserDefinedArgumentData args)
         {
-            throw new NotImplementedException();
-            //if (args == null || args.Length != 1) throw new NotImplementedException();
-            //var obj = args[0] ?? throw new NullReferenceException();
-
-            //var originalString = obj.ToString();
-            //if (originalString.Length == 0) return originalString;
-            //if (originalString.Length == 1) return originalString.ToUpper(CultureInfo.InvariantCulture);
-            //return originalString[0].ToUpper().Concat(originalString.Substring(1));
+            if (args.TryGetArgumentValue<string>("s", out var obj) == false) throw new NotImplementedException();
+            var originalString = obj.ToString();
+            if (originalString.Length == 0) return originalString;
+            if (originalString.Length == 1) return originalString.ToUpper(CultureInfo.InvariantCulture);
+            return originalString[0].ToUpper().Concat(originalString.Substring(1));
         }
+        public static object? Center(UserDefinedArgumentData args)
+        {
+            if (args.TryGetArgumentValue<string>("value", out var value) == false) throw new NotImplementedException();
+            if (args.TryGetArgumentValue<int>("width", out var width) == false) throw new NotImplementedException();
+
+            if (width <= value.Length)
+            {
+                return value;
+            }
+
+            var totalPaddingWidth = width - value.Length;
+            var leftPaddingWidth = totalPaddingWidth / 2;
+            return $"{new string(' ', leftPaddingWidth)}{value}{new string(' ', totalPaddingWidth - leftPaddingWidth)}";
+        }
+        public static object? Default(UserDefinedArgumentData args)
+        {
+            if (args.TryGetArgumentValue<string>("value", out var value) == false) throw new NotImplementedException();
+            var defaultValue = args.GetArgumentValue<object?>("default_value", "");
+            var boolean = args.GetArgumentValue("boolean", false);
+
+            if (boolean)
+            {
+
+                throw new NotImplementedException();
+            }
+            return value ?? defaultValue;
+        }
+
+
+
+
     }
 }
