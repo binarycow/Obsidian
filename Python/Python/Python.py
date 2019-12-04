@@ -2,6 +2,21 @@ import json
 from pathlib import Path
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
+class Person:
+    name = "John Smith"
+
+    def getName(self):
+        return "Jacob Smith"
+
+dict = {
+    "D": 68,
+    "c": 67,
+    "F": 70,
+    "b": 66,
+    "A": 65,
+    "e": 69
+};
+
 
 def GetTestCases(rootPath):
     with open(rootPath.joinpath('Tests.json'), "r") as testFile:
@@ -20,7 +35,8 @@ def ProcessTest(rootPath, testCase, parentCategories=[]):
     variables = {}
     testCaseRootPath = rootPath.joinpath(testCase['rootPath'])
     if 'variablesFile' in testCase:
-        variables = ReadJson(testCaseRootPath, testCase['variablesFile'])
+        if(testCase['variablesFile'] != ''):
+            variables = ReadJson(testCaseRootPath, testCase['variablesFile'])
 
     category = "/".join(parentCategories)
 
@@ -35,7 +51,9 @@ def ProcessTest(rootPath, testCase, parentCategories=[]):
         #autoescape=select_autoescape(['html', 'xml'])
     )
     template = env.get_template(testCase['inputFile'])
-    renderedResults = template.render(**variables)
+
+
+    renderedResults = template.render(person = Person(), dict = dict, **variables)
     with open(testCaseRootPath.joinpath(testCase['expectedFile']), "w") as expectedFile:
         expectedFile.write(renderedResults)
 

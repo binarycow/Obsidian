@@ -69,7 +69,42 @@ namespace Obsidian
         public UserDefinedFunction[] Functions => new UserDefinedFunction[]
         {
             new UserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(string), "super", Array.Empty<ParameterDeclaration>()), JinjaFunctions.Super),
+
+
+            new UserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(int), "abs", new ParameterDeclaration[] {
+                new ParameterDeclaration("x")
+            }), JinjaFunctions.Abs),
+            new UserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(object), "attr", new ParameterDeclaration[] {
+                new ParameterDeclaration("obj"),
+                new ParameterDeclaration("name"),
+            }), JinjaFunctions.Attr),
+            new UserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(IEnumerable<IEnumerable<object>>), "batch", new ParameterDeclaration[] {
+                new ParameterDeclaration("value"),
+                new ParameterDeclaration("linecount"),
+                new ParameterDeclaration("fill_with", null),
+            }), JinjaFunctions.Batch),
+            new UserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(string), "capitalize", new ParameterDeclaration[] {
+                new ParameterDeclaration("s")
+            }), JinjaFunctions.Capitalize),
+            new UserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(string), "center", new ParameterDeclaration[] {
+                new ParameterDeclaration("s"),
+                new ParameterDeclaration("width", 80)
+            }), JinjaFunctions.Center),
+            new UserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(string), "default", new ParameterDeclaration[] {
+                new ParameterDeclaration("value"),
+                new ParameterDeclaration("default_value", string.Empty),
+                new ParameterDeclaration("boolean", false)
+            }), JinjaFunctions.Default),
+            //new UserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(Dictionary<,>), "dictsort", new ParameterDeclaration[] {
+            //    new ParameterDeclaration("value"),
+            //    new ParameterDeclaration("case_sensitive", false),
+            //    new ParameterDeclaration("by", "key"),
+            //    new ParameterDeclaration("reverse", false)
+            //}), JinjaFunctions.DictSort),
             new UserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(string), "e", new ParameterDeclaration[] {
+                new ParameterDeclaration("s")
+            }), JinjaFunctions.Escape),
+            new UserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(string), "escape", new ParameterDeclaration[] {
                 new ParameterDeclaration("s")
             }), JinjaFunctions.Escape),
             new UserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(string), "upper", new ParameterDeclaration[] {

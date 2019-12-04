@@ -40,7 +40,7 @@
   'Test'|default('the string was empty', True): {{ 'Test'|default('the string was empty', True) }}
 
   'Test'|d('the string was empty', True): {{ 'Test'|d('the string was empty', True) }}
-
+  
   dict: {{ dict }}
 
   dict|dictsort: {{ dict|dictsort }}

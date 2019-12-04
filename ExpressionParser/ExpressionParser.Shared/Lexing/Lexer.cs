@@ -141,6 +141,7 @@ namespace ExpressionParser.Lexing
                 possibleOperators.Add(op);
             }
             if (possibleOperators.Count == 0) return false;
+            possibleOperators = possibleOperators.Distinct(CharArrayEqualityComparer.Instance).ToList();
             if (possibleOperators.Count >= 2) throw new NotImplementedException();
             token = new Token(TokenType.Operator, _Operators[possibleOperators[0]].Text);
             enumerator.MoveNext(possibleOperators[0].Length - 1);

@@ -187,6 +187,14 @@
         "expectedFile": "expected.txt",
         "actualFile": "actual.txt",
         "variablesFile": ""
+      },
+      {
+        "testName": "Filters - A-F",
+        "rootPath": "Filters\\A-F",
+        "inputFile": "template.txt",
+        "expectedFile": "expected.txt",
+        "actualFile": "actual.txt",
+        "variablesFile": "variables.json"
       }
     ]
   }

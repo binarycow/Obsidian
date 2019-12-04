@@ -35,6 +35,7 @@ namespace ExpressionParser.Transforming.Operators
             switch(item.OperatorType)
             {
                 case OperatorType.LogicalNot:
+                case OperatorType.Negate:
                     return TransformUnary(item, args[0]);
                 case OperatorType.Assign:
                     switch(item.AssignmentOperatorBehavior)
@@ -70,6 +71,43 @@ namespace ExpressionParser.Transforming.Operators
                         return !((bool)right);
                     }
                     throw new NotImplementedException();
+                case OperatorType.Negate:
+                    return Negate(right);
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
+        public object? Negate(object? right)
+        {
+            switch(right)
+            {
+                case long s64:
+                    return -s64;
+                case ulong u64:
+                    if (u64 == 9_223_372_036_854_775_808)
+                        return long.MinValue;
+                    if (u64 > long.MaxValue)
+                        throw new NotImplementedException();
+                    return -((long)u64);
+                case int s32:
+                    return -s32;
+                case uint u32:
+                    return -u32;
+                case short s16:
+                    return -s16;
+                case ushort u16:
+                    return -u16;
+                case sbyte s8:
+                    return -s8;
+                case byte u8:
+                    return -u8;
+                case float fl:
+                    return -fl;
+                case double dou:
+                    return -dou;
+                case decimal dec:
+                    return -dec;
                 default:
                     throw new NotImplementedException();
             }
@@ -109,6 +147,7 @@ namespace ExpressionParser.Transforming.Operators
                 switch (right)
                 {
                     case IdentifierNode identifierNode:
+                        var test = identifierNode.TextValue;
                         var functions = LanguageDefinition.Functions.Where(func => func.Declaration.Name == identifierNode.TextValue).ToArray();
                         if (functions.Length != 1) throw new NotImplementedException();
                         return functions[0].Invoke(left);

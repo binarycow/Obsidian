@@ -50,10 +50,20 @@ namespace Obsidian.TestCore
             var actualFile = Path.Combine(TestDataRoot, testInfo.RootPath, testInfo.ActualFile);
             expectedOutput = File.ReadAllText(Path.Combine(TestDataRoot, testInfo.RootPath, testInfo.ExpectedFile));
             var variables = new Dictionary<string, object?>();
-            if (testInfo.VariablesFile != null)
+            if (string.IsNullOrWhiteSpace(testInfo.VariablesFile) == false)
             {
                 variables = VariableCreation.GetVariables(Path.Combine(TestDataRoot, testInfo.RootPath, testInfo.VariablesFile));
             }
+            variables.Add("person", new Person());
+            variables.Add("dict", new Dictionary<string, int>
+            {
+                { "D", 68 },
+                { "c", 67 },
+                { "F", 70 },
+                { "b", 66 },
+                { "A", 65 },
+                { "e", 69 },
+            });
             var environment = new JinjaEnvironment
             {
                 Loader = new FileSystemLoader(searchPath: Path.GetDirectoryName(inputFile)!)

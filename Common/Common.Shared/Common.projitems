@@ -9,6 +9,10 @@
     <Import_RootNamespace>Common</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\Common\NumericalTypeExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Numerical.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)NumericalType.cs" />
+    <Compile Include="..\..\Common\Common.Shared\CharArrayEqualityComparer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CheckoutObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CollectionEx.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Collections\EnumeratorFactory.cs" />
