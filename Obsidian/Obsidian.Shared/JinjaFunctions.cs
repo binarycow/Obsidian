@@ -1,4 +1,5 @@
-﻿using Common.Collections;
+﻿using Common;
+using Common.Collections;
 using ExpressionParser;
 using ExpressionParser.Scopes;
 using System;
@@ -105,7 +106,7 @@ namespace Obsidian
         {
 
             if (args.TryGetArgumentValue("value", out var value) == false) throw new NotImplementedException();
-            if (args.TryGetArgumentValue<int>("linecount", out var lineCountObj) == false) throw new NotImplementedException();
+            if (args.TryGetArgumentValue<Numerical>("linecount", out var lineCountObj) == false) throw new NotImplementedException();
             var useDefaultValue = args.TryGetArgumentValue("fill_with", out var fillWith);
 
             value = value ?? throw new NotImplementedException();
@@ -147,7 +148,7 @@ namespace Obsidian
         public static object? Center(UserDefinedArgumentData args)
         {
             if (args.TryGetArgumentValue<string>("value", out var value) == false) throw new NotImplementedException();
-            if (args.TryGetArgumentValue<int>("width", out var width) == false) throw new NotImplementedException();
+            if (args.TryGetArgumentValue<Numerical>("width", out var width) == false) throw new NotImplementedException();
 
             if (width <= value.Length)
             {
@@ -162,7 +163,7 @@ namespace Obsidian
         {
             if (args.TryGetArgumentValue<string>("value", out var value) == false) throw new NotImplementedException();
             var defaultValue = args.GetArgumentValue<object?>("default_value", "");
-            var boolean = args.GetArgumentValue("boolean", false);
+            var boolean = args.GetArgumentValue<bool>("boolean", false);
 
             if (boolean)
             {
