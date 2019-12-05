@@ -37,6 +37,8 @@ namespace ExpressionParser
                     return methodGroup.FunctionDefinition.Invoke(args);
                 case UserDefinedFunction userDefinedFunction:
                     return userDefinedFunction.Invoke(args);
+                case PipelineMethodGroup pipelineGroup:
+                    return pipelineGroup.FunctionDefinition.Invoke(pipelineGroup.ReferredObject, args);
                 default:
                     throw new NotImplementedException();
             }

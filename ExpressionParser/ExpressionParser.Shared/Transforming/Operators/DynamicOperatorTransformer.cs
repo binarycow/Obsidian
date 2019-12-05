@@ -8,6 +8,7 @@ using ExpressionParser.Scopes;
 using ExpressionParser.Transforming.Nodes;
 using System.Linq;
 using Common;
+using ExpressionParser.References;
 
 namespace ExpressionParser.Transforming.Operators
 {
@@ -62,6 +63,7 @@ namespace ExpressionParser.Transforming.Operators
         private object? TransformUnary(StandardOperator item, ASTNode rightNode)
         {
             var right = rightNode.Transform(NodeTransformer);
+
             switch (item.OperatorType)
             {
                 case OperatorType.LogicalNot:
@@ -108,6 +110,8 @@ namespace ExpressionParser.Transforming.Operators
                     return -dou;
                 case decimal dec:
                     return -dec;
+                case Numerical num:
+                    return -num;
                 default:
                     throw new NotImplementedException();
             }
@@ -116,7 +120,6 @@ namespace ExpressionParser.Transforming.Operators
         public object? Transform(SpecialOperator item, ASTNode[] args)
         {
             var left = args[0].Transform(NodeTransformer);
-            if(left == null) throw new NotImplementedException();
             switch (item.OperatorType)
             {
                 case SpecialOperatorType.MethodCall:
@@ -148,9 +151,11 @@ namespace ExpressionParser.Transforming.Operators
                 {
                     case IdentifierNode identifierNode:
                         var test = identifierNode.TextValue;
-                        var functions = LanguageDefinition.Functions.Where(func => func.Declaration.Name == identifierNode.TextValue).ToArray();
+                        var functions = LanguageDefinition.Functions.Where(func => 
+                            func.Declaration.Name == identifierNode.TextValue || func.Declaration.Aliases.Contains(identifierNode.TextValue)
+                        ).ToArray();
                         if (functions.Length != 1) throw new NotImplementedException();
-                        return functions[0].Invoke(left);
+                        return MethodGroup.Create(functions[0], left);
                     default:
                         throw new NotImplementedException();
                 }

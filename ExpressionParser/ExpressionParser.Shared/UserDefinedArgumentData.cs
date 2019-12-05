@@ -52,17 +52,23 @@ namespace ExpressionParser
             value = default!;
             if (TryGetArgumentValue(argumentName, out var valueObj) == false) return false;
 
-            if (value == null && typeof(T) != typeof(object)) return false;
+            if (valueObj == null && typeof(T).IsValueType) return false;
 
-            if(valueObj == null)
-            {
-                return typeof(T) == typeof(object);
-            }
+            if (valueObj == null) return true;
 
             if(typeof(T) == typeof(string))
             {
                 value = (T)Convert.ChangeType(valueObj.ToString(), typeof(T), CultureInfo.InvariantCulture);
                 return true;
+            }
+
+            if(typeof(T) == typeof(Numerical))
+            {
+                if(Numerical.TryCreate(valueObj, out var numerical))
+                {
+                    value = (T)Convert.ChangeType(numerical, typeof(T), CultureInfo.InvariantCulture);
+                    return true;
+                }
             }
 
             if(TypeCoercion.CanCast(valueObj.GetType(), typeof(T)))

@@ -1,5 +1,25 @@
-	
-  -10|abs: {{ -10|abs }}
+  dict: {{ dict }}
+
+  dict|dictsort: {{ dict|dictsort }}
+
+  dict|dictsort(reverse=true): {{ dict|dictsort(reverse=true) }}
+
+  dict|dictsort(true): {{ dict|dictsort(true) }}
+
+  dict|dictsort(true, reverse=true): {{ dict|dictsort(true, reverse=true) }}
+
+  dict|dictsort(by='value'): {{ dict|dictsort(by='value') }}
+
+  dict|dictsort(reverse=true, by='value'): {{ dict|dictsort(reverse=true, by='value') }}
+
+  dict|dictsort(true, by='value'): {{ dict|dictsort(true, by='value') }}
+
+  dict|dictsort(true, reverse=true, by='value'): {{ dict|dictsort(true, reverse=true, by='value') }}
+
+
+
+
+  (-10)|abs: {{ (-10)|abs }}
 
   person|attr("name"): {{ person|attr("name") }}
 

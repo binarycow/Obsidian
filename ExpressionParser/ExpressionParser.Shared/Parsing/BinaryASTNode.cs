@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using ExpressionParser.Operators;
 using ExpressionParser.Transforming.Nodes;
+using System.Diagnostics;
 
 namespace ExpressionParser.Parsing
 {
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public class BinaryASTNode : ASTNode
     {
         public BinaryASTNode(ASTNode left, Operator @operator, ASTNode right) : base(left.Tokens.Concat(@operator.Token).Concat(right.Tokens))
@@ -18,6 +20,8 @@ namespace ExpressionParser.Parsing
         public ASTNode Left { get; }
         public Operator Operator { get;  }
         public ASTNode Right { get; }
+
+        public override string DebuggerDisplay => $"{Left.DebuggerDisplay} {Operator.DebuggerDisplay} {Right.DebuggerDisplay}";
 
         public override TOutput Transform<TOutput>(INodeTransformVisitor<TOutput> visitor)
         {

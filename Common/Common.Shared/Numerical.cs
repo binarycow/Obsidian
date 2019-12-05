@@ -128,7 +128,7 @@ namespace Common
                 default:
                     throw new ArgumentException($"{item.GetType().Name} with value {item} cannot be converted to {nameof(Numerical)}", nameof(item));
             }
-            return numerical != Unknown;
+            return numerical != null;
         }
 
         public static bool TryCreate(object? item, NumberStyles style, IFormatProvider provider, [NotNullWhen(true)]out Numerical? numerical)
@@ -1792,5 +1792,61 @@ namespace Common
             };
         }
 
+
+        public Numerical Abs()
+        {
+            return Type switch
+            {
+                NumericalType.SignedByte => Math.Abs(_sbyte),
+                NumericalType.UnsignedByte => _byte,
+                NumericalType.SignedShort => Math.Abs(_short),
+                NumericalType.UnsignedShort => _ushort,
+                NumericalType.SignedInt => Math.Abs(_int),
+                NumericalType.UnsignedInt => _uint,
+                NumericalType.SignedLong => Math.Abs(_long),
+                NumericalType.UnsignedLong => _ulong,
+                NumericalType.SinglePrecision => Math.Abs(_float),
+                NumericalType.DoublePrecision => Math.Abs(_double),
+                NumericalType.DecimalNumber => Math.Abs(_decimal),
+                _ => throw new InvalidOperationException(),
+            };
+        }
+        public string ToString(IFormatProvider provider)
+        {
+            return Type switch
+            {
+                NumericalType.SignedByte => _sbyte.ToString(provider),
+                NumericalType.UnsignedByte => _byte.ToString(provider),
+                NumericalType.SignedShort => _short.ToString(provider),
+                NumericalType.UnsignedShort => _ushort.ToString(provider),
+                NumericalType.SignedInt => _int.ToString(provider),
+                NumericalType.UnsignedInt => _uint.ToString(provider),
+                NumericalType.SignedLong => _long.ToString(provider),
+                NumericalType.UnsignedLong => _ulong.ToString(provider),
+                NumericalType.SinglePrecision => _float.ToString(provider),
+                NumericalType.DoublePrecision => _double.ToString(provider),
+                NumericalType.DecimalNumber => _decimal.ToString(provider),
+                _ => base.ToString()
+            };
+        }
+
+        public override string ToString()
+        {
+            return Type switch
+            {
+                NumericalType.SignedByte => _sbyte.ToString(),
+                NumericalType.UnsignedByte => _byte.ToString(),
+                NumericalType.SignedShort => _short.ToString(),
+                NumericalType.UnsignedShort => _ushort.ToString(),
+                NumericalType.SignedInt => _int.ToString(),
+                NumericalType.UnsignedInt => _uint.ToString(),
+                NumericalType.SignedLong => _long.ToString(),
+                NumericalType.UnsignedLong => _ulong.ToString(),
+                NumericalType.SinglePrecision => _float.ToString(),
+                NumericalType.DoublePrecision => _double.ToString(),
+                NumericalType.DecimalNumber => _decimal.ToString(),
+                _ => base.ToString()
+            };
+        }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using ExpressionParser.Scopes;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ExpressionParser
@@ -19,9 +20,13 @@ namespace ExpressionParser
         public UserDefinedFunctionDelegate Body { get; }
 
 
-        internal object? Invoke(params object?[] args)
+        internal object? Invoke(object?[] args)
         {
             return Invoke(UserDefinedArgumentData.Create(Declaration.Arguments, args));
+        }
+        internal object? Invoke(object? pipelineObject, object?[] args)
+        {
+            return Invoke(UserDefinedArgumentData.Create(Declaration.Arguments, pipelineObject.YieldOne().Concat(args).ToArray()));
         }
 
         protected virtual object? Invoke(UserDefinedArgumentData argumentData)

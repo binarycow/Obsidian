@@ -55,40 +55,8 @@ namespace Obsidian
         }
         public static object? Abs(UserDefinedArgumentData args)
         {
-
-            if (args.TryGetArgumentValue("x", out var obj) == false) throw new NotImplementedException();
-
-            switch (obj)
-            {
-                case null:
-                    throw new NullReferenceException();
-                case decimal dec:
-                    return Math.Abs(dec);
-                case double doub:
-                    return Math.Abs(doub);
-                case short int16:
-                    return Math.Abs(int16);
-                case int int32:
-                    return Math.Abs(int32);
-                case long int64:
-                    return Math.Abs(int64);
-                case sbyte sByte:
-                    return Math.Abs(sByte);
-                case float single:
-                    return Math.Abs(single);
-                default:
-                    var str = obj?.ToString() ?? throw new NullReferenceException();
-
-                    if (int.TryParse(str, out var i32))
-                    {
-                        return Math.Abs(i32);
-                    }
-                    if (double.TryParse(str, out var dou))
-                    {
-                        return Math.Abs(dou);
-                    }
-                    throw new ArgumentException();
-            }
+            if (args.TryGetArgumentValue<Numerical>("x", out var obj) == false) throw new NotImplementedException();
+            return obj.Abs();
         }
         public static object? Attr(UserDefinedArgumentData args)
         {
@@ -147,7 +115,7 @@ namespace Obsidian
         }
         public static object? Center(UserDefinedArgumentData args)
         {
-            if (args.TryGetArgumentValue<string>("value", out var value) == false) throw new NotImplementedException();
+            if (args.TryGetArgumentValue<string>("s", out var value) == false) throw new NotImplementedException();
             if (args.TryGetArgumentValue<Numerical>("width", out var width) == false) throw new NotImplementedException();
 
             if (width <= value.Length)
@@ -167,11 +135,47 @@ namespace Obsidian
 
             if (boolean)
             {
-
+                switch (value)
+                {
+                    case string strVal:
+                        return string.IsNullOrEmpty(strVal);
+                }
                 throw new NotImplementedException();
             }
             return value ?? defaultValue;
         }
+
+
+        public static object? DictSort(UserDefinedArgumentData args)
+        {
+            if (args.TryGetArgumentValue("value", out var dictionary) == false) throw new NotImplementedException();
+            if (args.TryGetArgumentValue<bool>("case_sensitive", out var caseSensitive) == false) throw new NotImplementedException();
+            if (args.TryGetArgumentValue<string>("by", out var by) == false) throw new NotImplementedException();
+            if (args.TryGetArgumentValue<bool>("reverse", out var reverse) == false) throw new NotImplementedException();
+
+            var dictionaryType = dictionary.GetType();
+            if (dictionaryType.IsAssignableToGenericType(typeof(Dictionary<,>), out var typeArgs) == false) throw new NotImplementedException();
+
+            
+            switch(by)
+            {
+                case "key":
+                    if(typeArgs[0] != typeof(string))
+                    {
+                        caseSensitive = false;
+                    }
+
+
+
+                    throw new NotImplementedException();
+                case "value":
+                    throw new NotImplementedException();
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
+        
 
 
 

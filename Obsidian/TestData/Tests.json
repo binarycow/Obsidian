@@ -189,8 +189,8 @@
         "variablesFile": ""
       },
       {
-        "testName": "Filters - A-F",
-        "rootPath": "Filters\\A-F",
+        "testName": "Filters - A-E",
+        "rootPath": "Filters\\A-E",
         "inputFile": "template.txt",
         "expectedFile": "expected.txt",
         "actualFile": "actual.txt",

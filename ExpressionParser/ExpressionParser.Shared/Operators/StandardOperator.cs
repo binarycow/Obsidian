@@ -5,9 +5,11 @@ using System.Text;
 using ExpressionParser.Configuration;
 using ExpressionParser.Lexing;
 using ExpressionParser.Transforming.Operators;
+using System.Diagnostics;
 
 namespace ExpressionParser.Operators
 {
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public class StandardOperator : Operator
     {
         public StandardOperator(Token token, OperatorType operatorType, AssignmentOperatorBehavior assignmentOperatorBehavior) : base(token)
