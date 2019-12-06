@@ -155,24 +155,7 @@ namespace Obsidian
 
             var dictionaryType = dictionary.GetType();
             if (dictionaryType.IsAssignableToGenericType(typeof(Dictionary<,>), out var typeArgs) == false) throw new NotImplementedException();
-
-            
-            switch(by)
-            {
-                case "key":
-                    if(typeArgs[0] != typeof(string))
-                    {
-                        caseSensitive = false;
-                    }
-
-
-
-                    throw new NotImplementedException();
-                case "value":
-                    throw new NotImplementedException();
-                default:
-                    throw new NotImplementedException();
-            }
+            return DictionarySorter.SortDictionaryObj(dictionary, by == "key", reverse, caseSensitive);
         }
 
         
