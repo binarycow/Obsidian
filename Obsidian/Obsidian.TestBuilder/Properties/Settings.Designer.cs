@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Obsidian.TestGeneration.Properties
+namespace Obsidian.TestBuilder.Properties
 {
 
 

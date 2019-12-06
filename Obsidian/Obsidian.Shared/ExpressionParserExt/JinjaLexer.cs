@@ -60,7 +60,7 @@ namespace Obsidian.ExpressionParserExt
             {
                 throw new LexingException($"Expected {quoteChar} : Encountered {enumerator.Current}");
             }
-            token = new Token(TokenType.StringLiteral, stringBuilder);
+            token = new Token(TokenType.StringLiteral, null, stringBuilder);
             return true;
         }
     }

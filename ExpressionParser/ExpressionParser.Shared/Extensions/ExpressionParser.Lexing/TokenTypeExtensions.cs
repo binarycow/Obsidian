@@ -70,5 +70,10 @@ namespace ExpressionParser.Lexing
                 _ => false,
             };
         }
+        public static bool IsMatchingBrace(this TokenType tokenType, TokenType? otherTokenType)
+        {
+            return otherTokenType.HasValue && tokenType.IsMatchingBrace(otherTokenType.Value);
+        }
+
     }
 }

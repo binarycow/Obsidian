@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using System.Text;
 using ExpressionParser.Lexing;
 using ExpressionParser.Transforming.Nodes;
+using System.Diagnostics;
+
+
 
 namespace ExpressionParser.Parsing
 {
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public class LiteralNode : ASTNode
     {
         private LiteralNode(Token token, object? value) : base(token)
@@ -14,6 +18,7 @@ namespace ExpressionParser.Parsing
         }
         public object? Value { get; }
 
+        public override string DebuggerDisplay => $"{Value}";
 
         public override TOutput Transform<TOutput>(INodeTransformVisitor<TOutput> visitor)
         {
@@ -46,7 +51,7 @@ namespace ExpressionParser.Parsing
         }
         public static LiteralNode CreateNull()
         {
-            return new LiteralNode(new Token(TokenType.NullLiteral, "null"), null);
+            return new LiteralNode(new Token(TokenType.NullLiteral, null, "null"), null);
         }
     }
 }

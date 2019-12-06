@@ -81,8 +81,9 @@ namespace ExpressionParser.Transforming.Operators
                 case ExpressionMethodGroup expr:
                     return Transform_MethodCall_Expr(expr, args);
                 case FunctionMethodGroup func:
-                    if (func.FunctionDefinition.OverloadDefinitions.Length != 1) throw new NotImplementedException();
-                    return Transform_MethodCall_Func(func, args);
+                    //if (func.FunctionDefinition.OverloadDefinitions.Length != 1) throw new NotImplementedException();
+                    //return Transform_MethodCall_Func(func, args);
+                    throw new NotImplementedException();
                 default:
                     throw new NotImplementedException();
             }
@@ -90,12 +91,13 @@ namespace ExpressionParser.Transforming.Operators
 
         private Expression Transform_MethodCall_Func(FunctionMethodGroup left, Expression[] args)
         {
-            return (left.FunctionDefinition.OverloadDefinitions[0]) switch
-            {
-                SingleTypeOverloadDefinition single => Transform_MethodCall_Func_Single(single, args),
-                MultiTypeOverloadDefinition multi => throw new NotImplementedException(),
-                _ => throw new NotImplementedException(),
-            };
+            throw new NotImplementedException();
+            //return (left.FunctionDefinition.OverloadDefinitions[0]) switch
+            //{
+            //    SingleTypeOverloadDefinition single => Transform_MethodCall_Func_Single(single, args),
+            //    MultiTypeOverloadDefinition multi => throw new NotImplementedException(),
+            //    _ => throw new NotImplementedException(),
+            //};
         }
 
         private Expression Transform_MethodCall_Func_Single(SingleTypeOverloadDefinition left, Expression[] args)

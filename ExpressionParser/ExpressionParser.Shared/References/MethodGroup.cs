@@ -16,9 +16,13 @@ namespace ExpressionParser.References
         }
         public string MethodName { get; }
 
-        public static MethodGroup Create(FunctionDefinition functionDefinition)
+        public static MethodGroup Create(UserDefinedFunction functionDefinition)
         {
             return new FunctionMethodGroup(functionDefinition);
+        }
+        public static MethodGroup Create(UserDefinedFunction functionDefinition, object? referredObject)
+        {
+            return new PipelineMethodGroup(functionDefinition, referredObject);
         }
         public static MethodGroup Create(Expression expression, string methodName)
         {

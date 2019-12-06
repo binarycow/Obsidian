@@ -47,7 +47,7 @@ namespace ExpressionParser.Transforming.Nodes
             if (valueKeyword != default) return valueKeyword.Value;
 
             if (ScopeStack.Current.TryGetVariable(item.TextValue, out var value)) return value;
-            var function = LanguageDefinition.Functions.FirstOrDefault(func => func.Name == item.TextValue);
+            var function = LanguageDefinition.Functions.FirstOrDefault(func => func.Declaration.Name == item.TextValue);
             if (function != null) return MethodGroup.Create(function);
             return null;
         }

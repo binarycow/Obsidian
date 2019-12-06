@@ -20,5 +20,10 @@ namespace Obsidian.Tests
         {
             AssertWrapper.TestTemplate(TestRunner.TestItems["Filters"]["Filters - Basic"]);
         }
+        [Test]
+        public void A_E()
+        {
+            AssertWrapper.TestTemplate(TestRunner.TestItems["Filters"]["Filters - A-E"]);
+        }
     }
 }

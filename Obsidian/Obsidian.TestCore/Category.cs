@@ -9,20 +9,29 @@ namespace Obsidian.TestCore
 {
     public class Category : Item
     {
-        private string _CategoryName;
 
         public override Item this[string name] 
         {
             get => Children.FirstOrDefault(child => child.Name == name);
         }
 
+        private string _CategoryName = string.Empty;
         public string CategoryName
         {
             get => _CategoryName;
-            set => SetField(ref _CategoryName, value);
+            set
+            {
+                SetField(ref _CategoryName, value);
+                OnPropertyChanged(nameof(Name));
+            }
         }
-        public ObservableCollection<Item> Children { get; set; }
 
-        public override string Name => CategoryName;
+        public ObservableCollection<Item> Children { get; set; } = new ObservableCollection<Item>();
+
+        public override string Name
+        {
+            get => CategoryName;
+            set => CategoryName = value;
+        }
     }
 }

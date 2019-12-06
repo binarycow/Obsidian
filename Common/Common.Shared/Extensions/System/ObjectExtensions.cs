@@ -22,5 +22,20 @@ namespace System
             }
             return false;
         }
+
+        public static bool TryToInt32(this object? obj, out int integerValue)
+        {
+            integerValue = default;
+            if(obj == null)
+            {
+                return false;
+            }
+            if (obj is int iVal)
+            {
+                integerValue = iVal;
+                return true;
+            }
+            return int.TryParse(obj.ToString(), out integerValue);
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using ExpressionParser.Configuration;
 using ExpressionParser.Lexing;
@@ -8,6 +9,7 @@ using ExpressionParser.Transforming.Operators;
 
 namespace ExpressionParser.Operators
 {
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public abstract class Operator : ITransformableOperator
     {
         public Operator(Token token)
@@ -45,5 +47,6 @@ namespace ExpressionParser.Operators
 
         public abstract TOutput Transform<TInput, TOutput>(IOperatorTransformVisitor<TInput, TOutput> visitor, TInput[] arguments);
 
+        public virtual string DebuggerDisplay => Token.TextValue;
     }
 }

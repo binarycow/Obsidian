@@ -114,6 +114,7 @@ namespace ExpressionParser.Parsing
                 if(TryParseUnary(enumerator, currentPrecedence, out var right))
                 {
                     parsedNode = new UnaryASTNode(@operator, right);
+                    right.SetParent(parsedNode);
                     return true;
                 }
             }
@@ -160,7 +161,10 @@ namespace ExpressionParser.Parsing
                 }
 
                 var @operator = CreateBinaryOperator(enumerator, operatorToken, operatorDefinition, assignmentOperatorBehavior);
-                left = new BinaryASTNode(left, @operator, right);
+                var newNode = new BinaryASTNode(left, @operator, right);
+                left.SetParent(newNode);
+                right.SetParent(newNode);
+                left = newNode;
             }
             parsedNode = left;
             return true;
@@ -190,7 +194,6 @@ namespace ExpressionParser.Parsing
                     enumerator.MoveNext();
                 }
             }
-
             if (enumerator.Current.TokenType != endingToken) throw new NotImplementedException();
             parsedNode = new ArgumentSetNode(arguments);
             return true;
@@ -200,7 +203,7 @@ namespace ExpressionParser.Parsing
         private bool TryParseBraces(ILookaroundEnumerator<Token> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode, AssignmentOperatorBehavior assignmentOperatorBehavior)
         {
             parsedNode = default;
-            if (enumerator.Current.TokenType.IsOpenBrace() == false)
+            if (enumerator.Current.TokenType.IsOpenBrace() == false && enumerator.Current.SecondaryTokenType?.IsOpenBrace() != true)
             {
                 if(TryParseTerminal(enumerator, out parsedNode, assignmentOperatorBehavior))
                 {
@@ -224,9 +227,9 @@ namespace ExpressionParser.Parsing
 
             if(enumerator.State != EnumeratorState.Active)
             {
-                throw new NotImplementedException(); // Did not find closing brace
+                //throw new NotImplementedException(); // Did not find closing brace
             }
-            if (enumerator.Current.TokenType.IsMatchingBrace(braceToken.TokenType) == false)
+            if (enumerator.Current.TokenType.IsMatchingBrace(braceToken.TokenType) == false && enumerator.Current.TokenType.IsMatchingBrace(braceToken.SecondaryTokenType) != true)
             {
                 throw new NotImplementedException(); // Did not find the right closing brace
             }

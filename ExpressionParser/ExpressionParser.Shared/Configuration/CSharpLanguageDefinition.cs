@@ -61,6 +61,6 @@ namespace ExpressionParser.Configuration
 
         public bool AllowStringIndexersAsProperties => false;
 
-        public FunctionDefinition[] Functions => new FunctionDefinition[] { };
+        public UserDefinedFunction[] Functions => Array.Empty<UserDefinedFunction>();
     }
 }

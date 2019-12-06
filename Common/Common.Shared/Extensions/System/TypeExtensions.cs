@@ -68,5 +68,10 @@ namespace System
                     return true;
                 });
         }
+
+        public static bool IsComparable(this Type type)
+        {
+            return typeof(IComparable<>).MakeGenericType(type).IsAssignableFrom(type);
+        }
     }
 }

@@ -20,6 +20,14 @@ namespace System
         {
             return char.IsWhiteSpace(c);
         }
+        public static char ToUpper(this char c)
+        {
+            return char.ToUpper(c, CultureInfo.InvariantCulture);
+        }
+        public static string Concat(this char c, string strValue)
+        {
+            return new string(c, 1) + strValue;
+        }
 
         public static bool IsValidEscapedChar(this char c)
         {

@@ -4,9 +4,11 @@ using System.Text;
 using ExpressionParser.Configuration;
 using ExpressionParser.Lexing;
 using ExpressionParser.Transforming.Operators;
+using System.Diagnostics;
 
 namespace ExpressionParser.Operators
 {
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public class SpecialOperator : Operator
     {
         public SpecialOperator(Token token, SpecialOperatorType operatorType) : base(token)

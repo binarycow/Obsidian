@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using Common;
 
 namespace ExpressionParser
 {
@@ -18,6 +20,64 @@ namespace ExpressionParser
         public UserDefinedArgument[] AdditionalPositionalArguments { get; }
         public UserDefinedArgument[] AdditionalKeywordArguments { get; }
 
+
+        public bool TryGetArgumentValue(string argumentName, out object? value)
+        {
+            value = default;
+            var argument = DefinedPositionalArguments.FirstOrDefault(arg => arg.Name == argumentName);
+            if (argument != default)
+            {
+                value = argument.Value;
+                return true;
+            }
+            argument = AdditionalKeywordArguments.FirstOrDefault(arg => arg.Name == argumentName);
+            if (argument != default)
+            {
+                value = argument.Value;
+                return true;
+            }
+            return false;
+        }
+
+        public T GetArgumentValue<T>(string argumentName, T defaultValue = default)
+        {
+            if(TryGetArgumentValue<T>(argumentName, out var value))
+            {
+                return value;
+            }
+            return defaultValue;
+        }
+        public bool TryGetArgumentValue<T>(string argumentName, out T value)
+        {
+            value = default!;
+            if (TryGetArgumentValue(argumentName, out var valueObj) == false) return false;
+
+            if (valueObj == null && typeof(T).IsValueType) return false;
+
+            if (valueObj == null) return true;
+
+            if(typeof(T) == typeof(string))
+            {
+                value = (T)Convert.ChangeType(valueObj.ToString(), typeof(T), CultureInfo.InvariantCulture);
+                return true;
+            }
+
+            if(typeof(T) == typeof(Numerical))
+            {
+                if(Numerical.TryCreate(valueObj, out var numerical))
+                {
+                    value = (T)Convert.ChangeType(numerical, typeof(T), CultureInfo.InvariantCulture);
+                    return true;
+                }
+            }
+
+            if(TypeCoercion.CanCast(valueObj.GetType(), typeof(T)))
+            {
+                value = (T)Convert.ChangeType(valueObj, typeof(T), CultureInfo.InvariantCulture);
+                return true;
+            }
+            return false;
+        }
 
         public IEnumerable<UserDefinedArgument> AllArguments => DefinedPositionalArguments.Concat(AdditionalPositionalArguments).Concat(AdditionalKeywordArguments);
 

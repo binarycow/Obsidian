@@ -10,14 +10,24 @@ namespace Obsidian
 {
     public class JinjaLanguageDefinition : ILanguageDefinition
     {
+        private JinjaLanguageDefinition()
+        {
+
+        }
+        private static Lazy<JinjaLanguageDefinition> _Instance = new Lazy<JinjaLanguageDefinition>(() => new JinjaLanguageDefinition());
+        public static JinjaLanguageDefinition Instance => _Instance.Value;
+
+
         internal const string OPERATOR_SQUARE_BRACE_OPEN = "[";
         internal const string OPERATOR_PAREN_OPEN = "(";
-
 
         public KeywordDefinition[] Keywords => new KeywordDefinition[]
         {
             new ValueKeywordDefinition("True", true),
+            new ValueKeywordDefinition("true", true),
+            new ValueKeywordDefinition("false", false),
             new ValueKeywordDefinition("False", false),
+            new ValueKeywordDefinition("none", null),
             new ValueKeywordDefinition("None", null),
         };
 
@@ -25,8 +35,8 @@ namespace Obsidian
         {
             OperatorDefinition.CreateMemberAccess(".", 160),
             OperatorDefinition.CreatePipeline("|", 160),
-            OperatorDefinition.CreateMethod(OPERATOR_PAREN_OPEN, TokenType.Comma, TokenType.Paren_Close, 160),
-            OperatorDefinition.CreateIndex(OPERATOR_SQUARE_BRACE_OPEN, TokenType.Comma, TokenType.SquareBrace_Close, 160),
+            OperatorDefinition.CreateMethod(OPERATOR_PAREN_OPEN, TokenType.Paren_Open, TokenType.Comma, TokenType.Paren_Close, 160),
+            OperatorDefinition.CreateIndex(OPERATOR_SQUARE_BRACE_OPEN, TokenType.Paren_Close, TokenType.Comma, TokenType.SquareBrace_Close, 160),
 
             OperatorDefinition.CreateUnary("**", 80, OperatorType.Power),
 
@@ -66,17 +76,52 @@ namespace Obsidian
 
         public bool AllowStringIndexersAsProperties => true;
 
-        public FunctionDefinition[] Functions => new FunctionDefinition[]
+        public UserDefinedFunction[] Functions => new UserDefinedFunction[]
         {
-            FunctionDefinition.Create("super",
-                OverloadDefinition.CreateEmpty(JinjaFunctions.Super, returnType: typeof(string))
-            ),
-            FunctionDefinition.Create("e",
-                OverloadDefinition.CreateSingleType(JinjaFunctions.Escape, returnType: typeof(string), minimumArguments: 1, maximumArguments: 1, argumentType: typeof(object))
-            ),
-            FunctionDefinition.Create("upper",
-                OverloadDefinition.CreateSingleType(JinjaFunctions.Upper, returnType: typeof(string), minimumArguments: 1, maximumArguments: 1, argumentType: typeof(object))
-            )
+            new UserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(string), "super", Array.Empty<ParameterDeclaration>()), JinjaFunctions.Super),
+
+
+            #region Filters
+            new UserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(int), "abs", new ParameterDeclaration[] {
+                new ParameterDeclaration("x")
+            }), JinjaFunctions.Abs),
+            new UserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(object), "attr", new ParameterDeclaration[] {
+                new ParameterDeclaration("obj"),
+                new ParameterDeclaration("name"),
+            }), JinjaFunctions.Attr),
+            new UserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(IEnumerable<IEnumerable<object>>), "batch", new ParameterDeclaration[] {
+                new ParameterDeclaration("value"),
+                new ParameterDeclaration("linecount"),
+                new ParameterDeclaration("fill_with", null),
+            }), JinjaFunctions.Batch),
+            new UserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(string), "capitalize", new ParameterDeclaration[] {
+                new ParameterDeclaration("s")
+            }), JinjaFunctions.Capitalize),
+            new UserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(string), "center", new ParameterDeclaration[] {
+                new ParameterDeclaration("s"),
+                new ParameterDeclaration("width", 80)
+            }), JinjaFunctions.Center),
+            new UserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(string), "default", new ParameterDeclaration[] {
+                new ParameterDeclaration("value"),
+                new ParameterDeclaration("default_value", string.Empty),
+                new ParameterDeclaration("boolean", false)
+            }, aliases: new []{ "d" }), JinjaFunctions.Default),
+            new UserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(Dictionary<,>), "dictsort", new ParameterDeclaration[] {
+                new ParameterDeclaration("value"),
+                new ParameterDeclaration("case_sensitive", false),
+                new ParameterDeclaration("by", "key"),
+                new ParameterDeclaration("reverse", false)
+            }), JinjaFunctions.DictSort),
+            new UserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(string), "e", new ParameterDeclaration[] {
+                new ParameterDeclaration("s")
+            }, aliases: new []{ "e" }), JinjaFunctions.Escape),
+
+
+
+            new UserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(string), "upper", new ParameterDeclaration[] {
+                new ParameterDeclaration("s")
+            }), JinjaFunctions.Upper),
+            #endregion Filters
         };
     }
 }

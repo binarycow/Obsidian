@@ -29,8 +29,7 @@ namespace Obsidian
         public BaseLoader? Loader { get; set; }
 
 
-        private Lazy<JinjaLanguageDefinition> _LanguageDefinition = new Lazy<JinjaLanguageDefinition>();
-        public JinjaLanguageDefinition LanguageDefinition => _LanguageDefinition.Value;
+        public JinjaLanguageDefinition LanguageDefinition => JinjaLanguageDefinition.Instance;
         internal ExpressionEval Evaluation => _Evaluation.Value;
         private readonly Lazy<ExpressionEval> _Evaluation;
 

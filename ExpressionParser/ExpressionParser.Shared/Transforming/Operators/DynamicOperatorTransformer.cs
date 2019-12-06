@@ -8,6 +8,7 @@ using ExpressionParser.Scopes;
 using ExpressionParser.Transforming.Nodes;
 using System.Linq;
 using Common;
+using ExpressionParser.References;
 
 namespace ExpressionParser.Transforming.Operators
 {
@@ -35,6 +36,7 @@ namespace ExpressionParser.Transforming.Operators
             switch(item.OperatorType)
             {
                 case OperatorType.LogicalNot:
+                case OperatorType.Negate:
                     return TransformUnary(item, args[0]);
                 case OperatorType.Assign:
                     switch(item.AssignmentOperatorBehavior)
@@ -61,6 +63,7 @@ namespace ExpressionParser.Transforming.Operators
         private object? TransformUnary(StandardOperator item, ASTNode rightNode)
         {
             var right = rightNode.Transform(NodeTransformer);
+
             switch (item.OperatorType)
             {
                 case OperatorType.LogicalNot:
@@ -70,6 +73,45 @@ namespace ExpressionParser.Transforming.Operators
                         return !((bool)right);
                     }
                     throw new NotImplementedException();
+                case OperatorType.Negate:
+                    return Negate(right);
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
+        public object? Negate(object? right)
+        {
+            switch(right)
+            {
+                case long s64:
+                    return -s64;
+                case ulong u64:
+                    if (u64 == 9_223_372_036_854_775_808)
+                        return long.MinValue;
+                    if (u64 > long.MaxValue)
+                        throw new NotImplementedException();
+                    return -((long)u64);
+                case int s32:
+                    return -s32;
+                case uint u32:
+                    return -u32;
+                case short s16:
+                    return -s16;
+                case ushort u16:
+                    return -u16;
+                case sbyte s8:
+                    return -s8;
+                case byte u8:
+                    return -u8;
+                case float fl:
+                    return -fl;
+                case double dou:
+                    return -dou;
+                case decimal dec:
+                    return -dec;
+                case Numerical num:
+                    return -num;
                 default:
                     throw new NotImplementedException();
             }
@@ -78,7 +120,6 @@ namespace ExpressionParser.Transforming.Operators
         public object? Transform(SpecialOperator item, ASTNode[] args)
         {
             var left = args[0].Transform(NodeTransformer);
-            if(left == null) throw new NotImplementedException();
             switch (item.OperatorType)
             {
                 case SpecialOperatorType.MethodCall:
@@ -109,9 +150,12 @@ namespace ExpressionParser.Transforming.Operators
                 switch (right)
                 {
                     case IdentifierNode identifierNode:
-                        var functions = LanguageDefinition.PipelineFunctions().Where(func => func.function.Name == identifierNode.TextValue).ToArray();
+                        var test = identifierNode.TextValue;
+                        var functions = LanguageDefinition.Functions.Where(func => 
+                            func.Declaration.Name == identifierNode.TextValue || func.Declaration.Aliases.Contains(identifierNode.TextValue)
+                        ).ToArray();
                         if (functions.Length != 1) throw new NotImplementedException();
-                        return functions[0].overload?.Function?.Invoke(new object?[] { left });
+                        return MethodGroup.Create(functions[0], left);
                     default:
                         throw new NotImplementedException();
                 }

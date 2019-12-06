@@ -236,9 +236,7 @@ namespace Obsidian.Transforming
                 ExpressionEx.Console.Write("Queue Count: "),
                 ExpressionEx.Console.WriteLine(SelfEx.TemplateQueueCount(SelfVar)),
                 //Expression.Constant(SelfEx.DequeueTemplate(SelfVar)),
-                ExpressionEx.Console.WriteLine(
-                    Expression.Call(typeof(Test).GetMethod(nameof(Test.Something)), SelfEx.DequeueTemplate(SelfVar))
-                ),
+
                 //ExpressionEx.Console.WriteLine(SelfEx.DequeueTemplate(SelfVar)),
                 ExpressionEx.Console.Write("Queue Count: "),
                 ExpressionEx.Console.WriteLine(SelfEx.TemplateQueueCount(SelfVar))

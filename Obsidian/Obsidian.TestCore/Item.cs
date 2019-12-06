@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Obsidian.TestCore
 {
@@ -25,6 +26,7 @@ namespace Obsidian.TestCore
         {
             get;
         }
-        public abstract string Name { get; }
+        [JsonIgnore]
+        public abstract string Name { get; set; }
     }
 }

@@ -14,6 +14,12 @@ namespace ExpressionParser.Configuration
             OperandCount = operandCount;
         }
 
+        protected OperatorDefinition(string text, TokenType? secondaryTokenType, int precedence, OperandCount operandCount) : this(text, precedence, operandCount)
+        {
+            SecondaryTokenType = secondaryTokenType;
+        }
+
+        public TokenType? SecondaryTokenType { get; }
         public string Text { get; }
         public int Precedence { get; }
         public OperandCount OperandCount { get; }
@@ -36,6 +42,15 @@ namespace ExpressionParser.Configuration
         internal static OperatorDefinition CreateIndex(string startText, TokenType argSeperator, TokenType endText, int precedence)
         {
             return SpecialOperatorDefinition.Create(startText, precedence, SpecialOperatorType.Index, argSeperator, endText, 1, int.MaxValue);
+        }
+        internal static OperatorDefinition CreateMethod(string startText, TokenType secondaryTokenType, TokenType argSeperator, TokenType endText, int precedence)
+        {
+            return SpecialOperatorDefinition.Create(startText, secondaryTokenType, precedence, SpecialOperatorType.MethodCall, argSeperator, endText, 0, int.MaxValue);
+        }
+
+        internal static OperatorDefinition CreateIndex(string startText, TokenType secondaryTokenType, TokenType argSeperator, TokenType endText, int precedence)
+        {
+            return SpecialOperatorDefinition.Create(startText, secondaryTokenType, precedence, SpecialOperatorType.Index, argSeperator, endText, 1, int.MaxValue);
         }
 
         public static OperatorDefinition CreateBinary(string text, int precedence, OperatorType operatorType)

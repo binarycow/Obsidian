@@ -49,7 +49,7 @@ namespace ExpressionParser.Transforming.Nodes
             {
                 return Expression.Constant(valueKeyword.Value);
             }
-            var functionDefinition = LanguageDefinition.Functions.Where(func => func.Name == item.TextValue).FirstOrDefault();
+            var functionDefinition = LanguageDefinition.Functions.Where(func => func.Declaration.Name == item.TextValue).FirstOrDefault();
             if(functionDefinition != null)
             {
                 return Expression.Constant(MethodGroup.Create(functionDefinition));

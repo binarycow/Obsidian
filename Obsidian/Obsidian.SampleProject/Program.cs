@@ -34,7 +34,8 @@ namespace Obsidian.SampleProject
             //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["LStrip"]);
             //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["LStrip And Trim"]);
             //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["Manual Strip"]);
-            AutomaticTest(TestRunner.TestItems["Filters"]["Filters - Basic"]);
+            AutomaticTest(TestRunner.TestItems["Filters"]["Filters - A-E"]);
+            //AutomaticTest(TestRunner.TestItems["Filters"]["Filters - Basic"]);
             //AutomaticTest(TestRunner.TestItems["Filters"]["Filters - Batch"]);
 
             //ManualTest(false, false);

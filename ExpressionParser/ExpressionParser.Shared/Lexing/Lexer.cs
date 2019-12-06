@@ -68,7 +68,7 @@ namespace ExpressionParser.Lexing
                 {
                     if(hasUnknown)
                     {
-                        yield return new Token(TokenType.Unknown, currentUnknownChars);
+                        yield return new Token(TokenType.Unknown, null, currentUnknownChars);
                         currentUnknownChars.Clear();
                         hasUnknown = false;
                     }
@@ -77,13 +77,13 @@ namespace ExpressionParser.Lexing
             }
             if (hasUnknown)
             {
-                yield return new Token(TokenType.Unknown, currentUnknownChars);
+                yield return new Token(TokenType.Unknown, null, currentUnknownChars);
             }
         }
         public virtual bool TryReadSingleChar(ILookaroundEnumerator<char> enumerator, [NotNullWhen(true)]out Token? token)
         {
             token = LanguageDefinition.SingleCharTokens.TryGetValue(enumerator.Current, out var tokenType) ?
-                new Token(tokenType, enumerator.Current) :
+                new Token(tokenType, null, enumerator.Current) :
                 default;
             return token != default;
         }
@@ -102,7 +102,7 @@ namespace ExpressionParser.Lexing
             {
                 stringBuilder.Append(enumerator.MoveNextAndGetValue(out _));
             }
-            token = new Token(TokenType.WhiteSpace, stringBuilder);
+            token = new Token(TokenType.WhiteSpace, null, stringBuilder);
             return true;
         }
 
@@ -141,8 +141,9 @@ namespace ExpressionParser.Lexing
                 possibleOperators.Add(op);
             }
             if (possibleOperators.Count == 0) return false;
+            possibleOperators = possibleOperators.Distinct(CharArrayEqualityComparer.Instance).ToList();
             if (possibleOperators.Count >= 2) throw new NotImplementedException();
-            token = new Token(TokenType.Operator, _Operators[possibleOperators[0]].Text);
+            token = new Token(TokenType.Operator, _Operators[possibleOperators[0]].SecondaryTokenType, _Operators[possibleOperators[0]].Text);
             enumerator.MoveNext(possibleOperators[0].Length - 1);
             return true;
         }
@@ -160,7 +161,7 @@ namespace ExpressionParser.Lexing
             {
                 stringBuilder.Append(enumerator.MoveNextAndGetValue(out _));
             }
-            token = new Token(TokenType.Identifier, stringBuilder);
+            token = new Token(TokenType.Identifier, null, stringBuilder);
             return true;
         }
 
@@ -207,7 +208,7 @@ namespace ExpressionParser.Lexing
             {
                 throw new LexingException("Too many characters in character literal");
             }
-            token = new Token(TokenType.CharacterLiteral, escaped ? enumerator.Current.Escape() : enumerator.Current);
+            token = new Token(TokenType.CharacterLiteral, null, escaped ? enumerator.Current.Escape() : enumerator.Current);
             enumerator.MoveNext(); //Move to quote
             return true;
         }
@@ -245,7 +246,7 @@ namespace ExpressionParser.Lexing
                 stringBuilder.Append(enumerator.MoveNextAndGetValue(out _));
             }
 
-            token = new Token(hasDecimal ? TokenType.FloatingLiteral : TokenType.IntegerLiteral, stringBuilder);
+            token = new Token(hasDecimal ? TokenType.FloatingLiteral : TokenType.IntegerLiteral, null, stringBuilder);
             return true;
         }
 

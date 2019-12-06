@@ -57,6 +57,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Parsing\Parser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Parsing\TupleNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Parsing\UnaryASTNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)References\PipelineMethodGroup.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Reflection\Array.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionResolver.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ScopeStack.cs" />

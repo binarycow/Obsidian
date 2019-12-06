@@ -261,7 +261,8 @@ namespace Obsidian.Transforming
                 Scopes.Pop($"Macro: {functionDeclaration.Name}");
                 return stringBuilder.ToString();
             };
-            Scopes.Current.DefineAndSetVariable(functionDeclaration.Name, new JinjaUserDefinedFunction(functionDeclaration, func));
+            UserDefinedFunction.UserDefinedFunctionDelegate del = args => func(args);
+            Scopes.Current.DefineAndSetVariable(functionDeclaration.Name, new JinjaUserDefinedFunction(functionDeclaration, del));
 
             yield break;
         }
@@ -290,7 +291,8 @@ namespace Obsidian.Transforming
             }
 
             Scopes.Push($"Call: {item.CallerDefinition.Expression}");
-            Scopes.Current.DefineAndSetVariable("caller", new JinjaUserDefinedFunction(functionDeclaration, func));
+            UserDefinedFunction.UserDefinedFunctionDelegate del = args => func(args);
+            Scopes.Current.DefineAndSetVariable("caller", new JinjaUserDefinedFunction(functionDeclaration, del));
             var evalObj = Environment.Evaluation.EvaluateDynamic(item.MacroCall.Expression, Scopes);
             if (!(evalObj is ExpressionParser.Void))
             {

@@ -55,7 +55,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)SpecialVariableInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Templates\CompiledTemplate.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Templates\DynamicTemplate.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Test.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\ASTCompiler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EnvironmentSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\LoaderNotDefinedException.cs" />
