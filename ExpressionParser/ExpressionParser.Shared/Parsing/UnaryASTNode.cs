@@ -9,7 +9,7 @@ using ExpressionParser.Transforming.Nodes;
 namespace ExpressionParser.Parsing
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public class UnaryASTNode : ASTNode
+    internal class UnaryASTNode : ASTNode
     {
         public UnaryASTNode(Operator @operator, ASTNode right) : base(@operator.Token.YieldOne().Concat(right.Tokens))
         {

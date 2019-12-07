@@ -66,7 +66,7 @@ namespace ExpressionParser.SampleProject
 
 
 
-        static void Main(string[] args)
+        static void Main()
         {
             //var testResults = new[] { TestCompiled(), TestDynamic() };
             //foreach(var testResult in testResults)

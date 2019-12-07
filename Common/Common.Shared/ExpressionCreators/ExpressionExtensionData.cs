@@ -8,7 +8,7 @@ using System.Text;
 namespace Common.ExpressionCreators
 {
 
-    public class ExpressionExtensionData<TData> : ExpressionExtensionData
+    internal class ExpressionExtensionData<TData> : ExpressionExtensionData
     {
         public ExpressionExtensionData(ParameterExpression expression) : base(expression, typeof(TData))
         {
@@ -60,7 +60,7 @@ namespace Common.ExpressionCreators
         }
     }
 
-    public class ExpressionExtensionData
+    internal class ExpressionExtensionData
     {
         public ExpressionExtensionData(ParameterExpression expression, Type type)
         {

@@ -15,7 +15,7 @@ namespace Common.ExpressionCreators
         private Dictionary<Type, MethodInfo> ToArray => _ToArray_Methods.Value;
 
 
-        private MethodInfo GetToArrayMethod(Type type)
+        private MethodInfo? GetToArrayMethod(Type type)
         {
             if (ToArray.TryGetValue(type, out var methodInfo))
             {

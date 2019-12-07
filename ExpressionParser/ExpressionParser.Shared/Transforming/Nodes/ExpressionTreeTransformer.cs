@@ -13,7 +13,7 @@ using ExpressionParser.VariableManagement;
 
 namespace ExpressionParser.Transforming.Nodes
 {
-    public class ExpressionTreeTransformer : INodeTransformVisitor<Expression>
+    internal class ExpressionTreeTransformer : INodeTransformVisitor<Expression>
     {
         public ExpressionTreeTransformer(ILanguageDefinition languageDefinition, CompiledScope scope)
         {

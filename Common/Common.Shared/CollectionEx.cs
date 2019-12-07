@@ -10,11 +10,11 @@ namespace Common
     {
 
 
-        public static object?[]? ToArray(object? obj)
+        public static object?[]? ToArray(object? arrayObject)
         {
-            if (obj == null) return null;
-            if (obj is Array arr) return (object?[])arr;
-            if (obj is IEnumerable ienum) return ienum.OfType<object>().ToArray();
+            if (arrayObject == null) return null;
+            if (arrayObject is Array arr) return (object?[])arr;
+            if (arrayObject is IEnumerable ienum) return ienum.OfType<object>().ToArray();
             throw new NotImplementedException();
         }
     }

@@ -10,7 +10,7 @@ using System.Diagnostics;
 namespace ExpressionParser.Parsing
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public class LiteralNode : ASTNode
+    internal class LiteralNode : ASTNode
     {
         private LiteralNode(Token token, object? value) : base(token)
         {

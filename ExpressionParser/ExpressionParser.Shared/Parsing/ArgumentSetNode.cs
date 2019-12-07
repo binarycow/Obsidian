@@ -8,7 +8,7 @@ using System.Diagnostics;
 namespace ExpressionParser.Parsing
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public class ArgumentSetNode : ASTNode
+    internal class ArgumentSetNode : ASTNode
     {
         public ArgumentSetNode(IEnumerable<ASTNode> arguments) : base(arguments.SelectMany(arg => arg.Tokens))
         {

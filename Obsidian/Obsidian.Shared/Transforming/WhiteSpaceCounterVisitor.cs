@@ -6,7 +6,7 @@ using Obsidian.AST.Nodes.MiscNodes;
 
 namespace Obsidian.Transforming
 {
-    public class WhiteSpaceCounterVisitor : BaseASTTransformer
+    internal class WhiteSpaceCounterVisitor : BaseASTTransformer
     {
         private int _Tally = 0;
 

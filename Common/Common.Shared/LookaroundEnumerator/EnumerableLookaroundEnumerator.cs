@@ -12,6 +12,7 @@ namespace Common.LookaroundEnumerator
     {
         public EnumerableLookaroundEnumerator(IEnumerable<T> source, byte lookaheadCount, byte lookbehindCount = 0)
         {
+            source = source ?? throw new ArgumentNullException(nameof(source));
             _Enumerator = source.GetEnumerator();
             LookaheadCount = lookaheadCount;
             LookbehindCount = lookbehindCount;
@@ -127,6 +128,7 @@ namespace Common.LookaroundEnumerator
             {
                 _Previous.ShiftRight(1);
                 _Previous[0] = Current;
+                _ValidPreviousValues = (_ValidPreviousValues + 1).ClampMax(_Previous.Length);
             }
 
             if(_ValidNextValues == 0)

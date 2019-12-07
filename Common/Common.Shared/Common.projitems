@@ -11,6 +11,7 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)DictionarySorter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\Common\NumericalTypeExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\System\IntExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Numerical.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NumericalType.cs" />
     <Compile Include="..\..\Common\Common.Shared\CharArrayEqualityComparer.cs" />

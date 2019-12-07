@@ -11,7 +11,7 @@ using ExpressionParser.Exceptions;
 
 namespace ExpressionParser.Lexing
 {
-    public class Lexer
+    internal class Lexer
     {
         private const int MIN_LOOKAHEAD_COUNT = 1;
 

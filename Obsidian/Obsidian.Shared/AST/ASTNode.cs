@@ -68,7 +68,7 @@ namespace Obsidian.AST
 
 
 
-        public static ASTNode GetTemplateNode(JinjaEnvironment environment, string templateText)
+        internal static ASTNode GetTemplateNode(JinjaEnvironment environment, string templateText)
         {
 
             var whiteSpaceCounter = new WhiteSpaceCounterVisitor();
@@ -84,7 +84,7 @@ namespace Obsidian.AST
         }
 
 #if DEBUG
-        public static string CheckOriginalText(JinjaEnvironment environment, string templateText)
+        internal static string CheckOriginalText(JinjaEnvironment environment, string templateText)
         {
             var whiteSpaceCounter = new WhiteSpaceCounterVisitor();
             var lexer = new Lexer(environment);

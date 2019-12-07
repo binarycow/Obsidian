@@ -35,7 +35,7 @@ namespace ExpressionParser.Scopes
             get
             {
                 if (TryGetVariable(name, out var parameter)) return parameter;
-                throw new NotImplementedException();
+                throw new KeyNotFoundException($"Variable of name {name} not defined.");
             }
         }
 

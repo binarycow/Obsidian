@@ -67,6 +67,6 @@ namespace Obsidian.TestCore
             set => TestName = value;
         }
 
-        public override Item this[string name] => throw new NotImplementedException();
+        public override Item this[string name] => throw new InvalidOperationException();
     }
 }

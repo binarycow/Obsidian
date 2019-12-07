@@ -12,7 +12,7 @@ using Console = Common.ExpressionCreators.Console;
 
 namespace Common
 {
-    public class ExpressionEx
+    internal class ExpressionEx
     {
 #if DEBUG
         public static Lazy<Console> _ConsoleWriter = new Lazy<Console>();

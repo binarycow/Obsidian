@@ -30,7 +30,10 @@ namespace Obsidian.TestCore
             var keysProperty = obj.GetType().GetProperty("Keys");
             var indexer = obj.GetType().GetProperty("Item");
             var keys = keysProperty?.GetValue(obj);
-            var enumerableKeys = keys as IEnumerable;
+            if(!(keys is IEnumerable enumerableKeys))
+            {
+                throw new NotImplementedException();
+            }
             foreach(var keyObj in enumerableKeys)
             {
                 var key = keyObj.ToString();
@@ -41,7 +44,7 @@ namespace Obsidian.TestCore
 
         }
 
-        public static object ToObject(JObject jsonObject)
+        internal static object ToObject(JObject jsonObject)
         {
             var children = jsonObject.Children().Select(child =>
             {
@@ -56,7 +59,7 @@ namespace Obsidian.TestCore
                 throw new NotImplementedException();
             }).ToArray();
 
-            var commonBaseType = Reflection.GetCommonBaseClass(children.Select(child => child.Value.GetType()));
+            var commonBaseType = Reflection.GetCommonBaseClass(children.Select(child => child.Value?.GetType()).NonNullItems());
 
             var dictionaryType = typeof(Dictionary<,>);
             var genericType = dictionaryType.MakeGenericType(typeof(string), commonBaseType);
@@ -81,7 +84,7 @@ namespace Obsidian.TestCore
 
 
 
-        public static object ToObject(JToken token)
+        public static object? ToObject(JToken token)
         {
             return token switch
             {
@@ -94,8 +97,9 @@ namespace Obsidian.TestCore
 
         public static object ToObject(JArray array)
         {
+            array = array ?? throw new ArgumentNullException(nameof(array));
             var childrenObjects = array.Children().Select(child => ToObject(child)).ToArray();
-            var baseType = Reflection.GetCommonBaseClass(childrenObjects.Select(obj => obj.GetType()));
+            var baseType = Reflection.GetCommonBaseClass(childrenObjects.NonNullItems().Select(obj => obj.GetType()));
 
 
             var listType = typeof(List<>);

@@ -37,9 +37,9 @@ namespace ExpressionParser.Scopes
 
 
 
-        public static DynamicScope CreateRootScope(string? name, IDictionary<string, object?> variables)
+        internal static DynamicScope CreateRootScope(string? name, IDictionary<string, object?> variables)
         {
-            var scope = new DynamicScope(name, null);
+            var scope = new DynamicScope(name);
             foreach(var key in variables.Keys)
             {
                 scope.DefineAndSetVariable(key, variables[key]);

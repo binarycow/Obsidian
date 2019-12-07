@@ -7,7 +7,7 @@ using Common.ExpressionCreators;
 
 namespace System.Text
 {
-    public static class StringBuilderExtensions
+    internal static class StringBuilderExtensions
     {
 
         public static void AppendCustom(this StringBuilder stringBuilder, object? value, CustomToStringProvider customProvider)

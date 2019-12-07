@@ -96,10 +96,12 @@ namespace Common
             }
         }
 
+
         /// <summary>
         /// Special type used to match any generic parameter type in GetMethodExt().
         /// </summary>
         /// <remarks>From: https://stackoverflow.com/a/7182379</remarks>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1034:Nested types should not be visible", Justification = "<Pending>")]
         public class T
         { }
 

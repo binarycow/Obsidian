@@ -30,7 +30,7 @@ namespace Common
 
             bool checkPass = false;
 
-            Type tested = null;
+            Type? tested = null;
 
             while (!checkPass)
             {
@@ -88,10 +88,10 @@ namespace Common
         }
 
 
-        public static bool TryGetIEnumerable(object? obj, [NotNullWhen(true)]out IEnumerable<object?>? items)
+        public static bool TryGetIEnumerable(object? enumerableObject, [NotNullWhen(true)]out IEnumerable<object?>? items)
         {
             items = default;
-            var type = obj?.GetType() ?? typeof(object);
+            var type = enumerableObject?.GetType() ?? typeof(object);
 
             if (type.IsAssignableToGenericType(typeof(IEnumerable<>), out var genericTypeArguments) == false) return false;
             

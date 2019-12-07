@@ -10,7 +10,7 @@ using ExpressionParser.Lexing;
 
 namespace Obsidian.ExpressionParserExt
 {
-    public class JinjaLexer : Lexer
+    internal class JinjaLexer : Lexer
     {
         public JinjaLexer(JinjaLanguageDefinition languageDefinition) : base(languageDefinition)
         {

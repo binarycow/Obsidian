@@ -26,7 +26,7 @@ namespace Obsidian.TestCore
             }
         }
 
-        public ObservableCollection<Item> Children { get; set; } = new ObservableCollection<Item>();
+        public ObservableCollection<Item> Children { get; } = new ObservableCollection<Item>();
 
         public override string Name
         {

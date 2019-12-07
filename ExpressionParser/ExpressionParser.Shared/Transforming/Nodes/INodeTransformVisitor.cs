@@ -6,7 +6,7 @@ using ExpressionParser.Parsing;
 
 namespace ExpressionParser.Transforming.Nodes
 {
-    public interface INodeTransformVisitor<TOutput>
+    internal interface INodeTransformVisitor<TOutput>
     {
         TOutput Transform(BinaryASTNode item);
         TOutput Transform(UnaryASTNode item);

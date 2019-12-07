@@ -8,7 +8,7 @@ using System.Diagnostics;
 namespace ExpressionParser.Parsing
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public class DictionaryItemNode : ASTNode
+    internal class DictionaryItemNode : ASTNode
     {
         public DictionaryItemNode(ASTNode key, ASTNode value) : base(key.Tokens.Concat(value.Tokens))
         {

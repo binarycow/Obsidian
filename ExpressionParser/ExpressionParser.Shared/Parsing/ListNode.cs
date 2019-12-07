@@ -8,7 +8,7 @@ using System.Diagnostics;
 namespace ExpressionParser.Parsing
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public class ListNode : ASTNode
+    internal class ListNode : ASTNode
     {
         public ListNode(IEnumerable<ASTNode> listItems) : base(listItems.SelectMany(child => child.Tokens))
         {

@@ -7,15 +7,15 @@ namespace System
 {
     public static class ObjectExtensions
     {
-        public static IEnumerable<T> YieldOne<T>(this T obj)
+        public static IEnumerable<T> YieldOne<T>(this T item)
         {
-            yield return obj;
+            yield return item;
         }
 
-        public static bool TryConvert<T>(this object obj, [NotNullWhen(true)]out T converted)
+        public static bool TryConvert<T>(this object item, [NotNullWhen(true)]out T converted)
         {
             converted = default!;
-            if(obj is T convertedLocal)
+            if(item is T convertedLocal)
             {
                 converted = convertedLocal;
                 return true;

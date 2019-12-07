@@ -16,7 +16,13 @@ namespace ExpressionParser
 {
     public class ExpressionEval
     {
-        public ExpressionEval(ILanguageDefinition languageDefinition, Lexer? lexer = null, Parser? parser = null)
+        public ExpressionEval(ILanguageDefinition languageDefinition)
+        {
+            LanguageDefinition = languageDefinition;
+            Lexer = new Lexer(LanguageDefinition);
+            Parser = new Parser(LanguageDefinition);
+        }
+        internal ExpressionEval(ILanguageDefinition languageDefinition, Lexer? lexer = null, Parser? parser = null)
         {
             LanguageDefinition = languageDefinition;
             Lexer = lexer ?? new Lexer(LanguageDefinition);
@@ -24,8 +30,8 @@ namespace ExpressionParser
         }
 
         public ILanguageDefinition LanguageDefinition { get; }
-        public Lexer Lexer { get; }
-        public Parser Parser { get; }
+        internal Lexer Lexer { get; }
+        internal Parser Parser { get; }
 
         public object? EvaluateDynamic<TScope, TRootScope>(string expressionText, ScopeStack<TScope, TRootScope> scopeStack) 
             where TScope : DynamicScope

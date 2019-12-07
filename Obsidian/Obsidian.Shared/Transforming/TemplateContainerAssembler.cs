@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Obsidian.Transforming
 {
-    public class TemplateContainerAssembler : BaseASTTransformer
+    internal class TemplateContainerAssembler : BaseASTTransformer
     {
         private readonly static Lazy<TemplateContainerAssembler> _Instance = new Lazy<TemplateContainerAssembler>();
         public static TemplateContainerAssembler Instance => _Instance.Value;

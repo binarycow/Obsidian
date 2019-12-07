@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Obsidian.Transforming
 {
-    public class BaseASTTransformer : ITransformVisitor<ASTNode>
+    internal class BaseASTTransformer : ITransformVisitor<ASTNode>
     {
         protected virtual IEnumerable<ASTNode> TransformAll(IEnumerable<ASTNode> nodes)
         {

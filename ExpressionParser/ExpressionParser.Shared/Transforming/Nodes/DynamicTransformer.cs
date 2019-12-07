@@ -10,7 +10,7 @@ using ExpressionParser.References;
 
 namespace ExpressionParser.Transforming.Nodes
 {
-    public class DynamicTransformer<TScope, TRootScope> : INodeTransformVisitor<object?>
+    internal class DynamicTransformer<TScope, TRootScope> : INodeTransformVisitor<object?>
         where TScope : DynamicScope
         where TRootScope : TScope
     {

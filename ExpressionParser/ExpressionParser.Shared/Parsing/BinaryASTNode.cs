@@ -9,7 +9,7 @@ using System.Diagnostics;
 namespace ExpressionParser.Parsing
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public class BinaryASTNode : ASTNode
+    internal class BinaryASTNode : ASTNode
     {
         public BinaryASTNode(ASTNode left, Operator @operator, ASTNode right) : base(left.Tokens.Concat(@operator.Token).Concat(right.Tokens))
         {

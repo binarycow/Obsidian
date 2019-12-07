@@ -8,7 +8,7 @@ namespace Obsidian
 {
     public class LoopInfoClass<T> where T : class
     {
-        public LoopInfoClass(T[] array, int currentindex)
+        public LoopInfoClass(T?[] array, int currentindex)
         {
             index0 = currentindex;
             revindex0 = array.Length - 1 - currentindex;

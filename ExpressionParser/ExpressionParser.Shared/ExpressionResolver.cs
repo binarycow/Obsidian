@@ -12,7 +12,7 @@ using ExpressionParser.Scopes;
 
 namespace ExpressionParser
 {
-    public static class ExpressionResolver
+    internal static class ExpressionResolver
     {
 
 

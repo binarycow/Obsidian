@@ -12,7 +12,7 @@ using ExpressionParser.Transforming.Nodes;
 
 namespace ExpressionParser.Transforming.Operators
 {
-    public class ExpressionTreeOperatorTransformer : IOperatorTransformVisitor<ASTNode, Expression>
+    internal class ExpressionTreeOperatorTransformer : IOperatorTransformVisitor<ASTNode, Expression>
     {
         public ExpressionTreeOperatorTransformer(INodeTransformVisitor<Expression> nodeTransformVisitor, ILanguageDefinition languageDefinition)
         {

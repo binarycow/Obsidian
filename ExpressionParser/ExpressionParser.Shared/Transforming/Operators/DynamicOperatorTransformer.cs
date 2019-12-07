@@ -12,7 +12,7 @@ using ExpressionParser.References;
 
 namespace ExpressionParser.Transforming.Operators
 {
-    public class DynamicOperatorTransformer<TScope, TRootScope> : IOperatorTransformVisitor<ASTNode, object?>
+    internal class DynamicOperatorTransformer<TScope, TRootScope> : IOperatorTransformVisitor<ASTNode, object?>
         where TScope : DynamicScope
         where TRootScope : TScope
     {

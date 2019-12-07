@@ -38,7 +38,7 @@ namespace Obsidian.Lexing
 
 
         private delegate bool TryDelegate(ILookaroundEnumerator<char> enumerator, out Token? token);
-        private TryDelegate[] _Delegates = new TryDelegate[] { };
+        private TryDelegate[] _Delegates = Array.Empty<TryDelegate>();
 
         private Dictionary<char, Func<Token>> _SingleChar = new Dictionary<char, Func<Token>>
         {

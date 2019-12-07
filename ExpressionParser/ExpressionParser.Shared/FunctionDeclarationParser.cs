@@ -32,7 +32,8 @@ namespace ExpressionParser
             var firstOptionalIndex = int.MaxValue;
             for(int argIndex = 0; argIndex < arguments.Length; ++argIndex)
             {
-                if(arguments[argIndex].Optional)
+                var arg = arguments[argIndex] ?? throw new NotImplementedException();
+                if(arg.Optional)
                 {
                     firstOptionalIndex = Math.Min(firstOptionalIndex, argIndex);
                 }

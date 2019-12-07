@@ -66,7 +66,7 @@ namespace Obsidian
             if (obj == null) throw new NullReferenceException();
             if (name == null) throw new NullReferenceException();
 
-            if (!(name is string propertyName)) throw new ArgumentException();
+            if (!(name is string propertyName)) throw new ArgumentException("name");
             return obj.GetType().GetProperty(propertyName)?.GetValue(obj);
         }
 
@@ -150,13 +150,14 @@ namespace Obsidian
         }
 
 
-        public static object? DictSort(UserDefinedArgumentData args)
+        internal static object? DictSort(UserDefinedArgumentData args)
         {
             if (args.TryGetArgumentValue("value", out var dictionary) == false) throw new NotImplementedException();
             if (args.TryGetArgumentValue<bool>("case_sensitive", out var caseSensitive) == false) throw new NotImplementedException();
             if (args.TryGetArgumentValue<string>("by", out var by) == false) throw new NotImplementedException();
             if (args.TryGetArgumentValue<bool>("reverse", out var reverse) == false) throw new NotImplementedException();
 
+            dictionary = dictionary ?? throw new NotImplementedException();
             var dictionaryType = dictionary.GetType();
             if (dictionaryType.IsAssignableToGenericType(typeof(Dictionary<,>), out var typeArgs) == false) throw new NotImplementedException();
             return DictionarySorter.SortDictionaryObj(dictionary, by == "key", reverse, caseSensitive);

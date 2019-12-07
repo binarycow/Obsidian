@@ -37,7 +37,7 @@ namespace ExpressionParser.Lexing
         {
             SecondaryTokenType = secondaryTokenType;
         }
-        public Token(TokenType tokenType, TokenType? secondaryTokenType, char @char) : this(tokenType, @char)
+        public Token(TokenType tokenType, TokenType? secondaryTokenType, char tokenCharacter) : this(tokenType, tokenCharacter)
         {
             SecondaryTokenType = secondaryTokenType;
         }

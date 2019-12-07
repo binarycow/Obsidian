@@ -14,7 +14,7 @@ namespace Obsidian.SampleProject
             { "standalone", false },
         };
 
-        static void Main(string[] args)
+        static void Main()
         {
             TestRunner.Init(TestRunner.TestFileName);
             //AutomaticTest(TestRunner.TestItems["Basic Tests"]["Basic Template"]);

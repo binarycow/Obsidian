@@ -18,7 +18,7 @@ namespace Obsidian.Transforming
         }
 
         public JinjaEnvironment Environment { get; set; }
-        public IDictionary<string, object?> Variables { get; set; }
+        public IDictionary<string, object?> Variables { get; }
 
         public Expression Transform(ForNode item)
         {

@@ -9,7 +9,7 @@ using ExpressionParser.Transforming.Nodes;
 namespace ExpressionParser.Parsing
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public abstract class ASTNode : ITransformableNode
+    internal abstract class ASTNode : ITransformableNode
     {
         public ASTNode(IEnumerable<Token> tokens)
         {

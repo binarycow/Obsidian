@@ -21,7 +21,7 @@ namespace Obsidian
         internal const string OPERATOR_SQUARE_BRACE_OPEN = "[";
         internal const string OPERATOR_PAREN_OPEN = "(";
 
-        public KeywordDefinition[] Keywords => new KeywordDefinition[]
+        public IEnumerable<KeywordDefinition> Keywords => new KeywordDefinition[]
         {
             new ValueKeywordDefinition("True", true),
             new ValueKeywordDefinition("true", true),
@@ -31,7 +31,7 @@ namespace Obsidian
             new ValueKeywordDefinition("None", null),
         };
 
-        public OperatorDefinition[] Operators => new OperatorDefinition[]
+        public IEnumerable<OperatorDefinition> Operators => new OperatorDefinition[]
         {
             OperatorDefinition.CreateMemberAccess(".", 160),
             OperatorDefinition.CreatePipeline("|", 160),
@@ -76,7 +76,7 @@ namespace Obsidian
 
         public bool AllowStringIndexersAsProperties => true;
 
-        public UserDefinedFunction[] Functions => new UserDefinedFunction[]
+        public IEnumerable<UserDefinedFunction> Functions => new UserDefinedFunction[]
         {
             new UserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(string), "super", Array.Empty<ParameterDeclaration>()), JinjaFunctions.Super),
 

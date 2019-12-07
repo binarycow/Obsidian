@@ -7,10 +7,10 @@ namespace ExpressionParser.Configuration
 {
     public interface ILanguageDefinition
     {
-        KeywordDefinition[] Keywords { get; }
-        OperatorDefinition[] Operators { get; }
+        IEnumerable<KeywordDefinition> Keywords { get; }
+        IEnumerable<OperatorDefinition> Operators { get; }
         IDictionary<char,TokenType> SingleCharTokens { get; }
         bool AllowStringIndexersAsProperties { get; }
-        UserDefinedFunction[] Functions { get; }
+        IEnumerable<UserDefinedFunction> Functions { get; }
     }
 }
