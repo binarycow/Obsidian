@@ -10,6 +10,7 @@ namespace Common.Collections
 {
     public interface ILookaroundEnumerator<T> : IEnumerator<T>
     {
+        bool TryGetNextArray(int count, out T[] value);
         bool TryGetNext([NotNullWhen(true)]out T value, int count = 1);
         bool TryGetPrevious([NotNullWhen(true)]out T value, int count = 1);
         //LookaroundData<T> Data { get; }

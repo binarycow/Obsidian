@@ -52,6 +52,7 @@ namespace Obsidian
                         continue;
                 }
             }
+            if (pendingOutput.Count > 0) output.Enqueue(MakeNode(pendingOutput, ParsingNodeType.Output));
             return output;
 
             ParsingNode MakeNode(Queue<ParsingNode> queue, ParsingNodeType nodeType)

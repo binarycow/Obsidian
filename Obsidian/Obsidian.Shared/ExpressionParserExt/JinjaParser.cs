@@ -90,11 +90,11 @@ namespace Obsidian.ExpressionParserExt
 
         public bool TryParseTuple(ILookaroundEnumerator<Token> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode, AssignmentOperatorBehavior assignmentOperatorBehavior)
         {
-            //if (TryParseCommaSeperatedSet(enumerator, TokenType.Operator, OPERATOR_PAREN_OPEN, Paren_Close, out var parsedListItems, minimumItems: 2, assignmentOperatorBehavior))
-            //{
-            //    parsedNode = new TupleNode(parsedListItems);
-            //    return true;
-            //}
+            if (TryParseCommaSeperatedSet(enumerator, TokenType.Operator, OPERATOR_PAREN_OPEN, Paren_Close, out var parsedListItems, minimumItems: 2, assignmentOperatorBehavior))
+            {
+                parsedNode = new TupleNode(parsedListItems);
+                return true;
+            }
             parsedNode = default;
             return false;
         }

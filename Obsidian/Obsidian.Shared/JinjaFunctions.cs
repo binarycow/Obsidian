@@ -98,9 +98,13 @@ namespace Obsidian
                     toReturn.Add(currentList);
                 }
             }
-            if (useDefaultValue && itemCount < listSize)
+            if (useDefaultValue && itemCount > 0 && itemCount < listSize)
             {
                 currentList.AddRange(Enumerable.Repeat(fillWith, listSize - itemCount));
+            }
+            if(currentList.Count == 0)
+            {
+                toReturn.Remove(currentList);
             }
             return toReturn;
         }

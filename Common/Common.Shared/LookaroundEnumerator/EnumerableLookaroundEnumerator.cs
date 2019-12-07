@@ -202,6 +202,22 @@ namespace Common.LookaroundEnumerator
             }
             return true;
         }
+
+        public bool TryGetNextArray(int count, out T[] value)
+        {
+            var items = new List<T>();
+            foreach(var num in Enumerable.Range(1, count))
+            {
+                if(TryGetNext(out var item, num))
+                {
+                    items.Add(item);
+                    continue;
+                }
+                break;
+            }
+            value = items.ToArray();
+            return value.Length == count;
+        }
     }
 
 }

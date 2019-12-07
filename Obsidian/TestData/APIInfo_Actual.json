@@ -506,6 +506,20 @@
             ]
           }
         ]
+      },
+      {
+        "Name": "DictSort",
+        "Overloads": [
+          {
+            "ReturnType": "System.Object, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "args",
+                "Type": "ExpressionParser.UserDefinedArgumentData, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              }
+            ]
+          }
+        ]
       }
     ],
     "Properties": [],
@@ -515,6 +529,10 @@
     "FullName": "Obsidian.JinjaLanguageDefinition",
     "Methods": [],
     "Properties": [
+      {
+        "Name": "Instance",
+        "Type": "Obsidian.JinjaLanguageDefinition, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+      },
       {
         "Name": "Keywords",
         "Type": "ExpressionParser.Configuration.KeywordDefinition[], Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
@@ -4757,6 +4775,10 @@
     "Methods": [],
     "Properties": [
       {
+        "Name": "Aliases",
+        "Type": "System.String[], System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+      },
+      {
         "Name": "Name",
         "Type": "System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
       },
@@ -5115,6 +5137,20 @@
               {
                 "Name": "args",
                 "Type": "ExpressionParser.Parsing.ASTNode[], Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Name": "Negate",
+        "Overloads": [
+          {
+            "ReturnType": "System.Object, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "right",
+                "Type": "System.Object, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
               }
             ]
           }
@@ -6077,6 +6113,10 @@
       {
         "Name": "Token",
         "Type": "ExpressionParser.Lexing.Token, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+      },
+      {
+        "Name": "DebuggerDisplay",
+        "Type": "System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
       }
     ],
     "Fields": null
@@ -6192,6 +6232,19 @@
             "ReturnType": "ExpressionParser.References.MethodGroup, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
             "Parameters": [
               {
+                "Name": "functionDefinition",
+                "Type": "ExpressionParser.UserDefinedFunction, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              },
+              {
+                "Name": "referredObject",
+                "Type": "System.Object, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          },
+          {
+            "ReturnType": "ExpressionParser.References.MethodGroup, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Parameters": [
+              {
                 "Name": "expression",
                 "Type": "System.Linq.Expressions.Expression, System.Linq.Expressions, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"
               },
@@ -6208,6 +6261,21 @@
       {
         "Name": "MethodName",
         "Type": "System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+      }
+    ],
+    "Fields": null
+  },
+  {
+    "FullName": "ExpressionParser.References.PipelineMethodGroup",
+    "Methods": [],
+    "Properties": [
+      {
+        "Name": "FunctionDefinition",
+        "Type": "ExpressionParser.UserDefinedFunction, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+      },
+      {
+        "Name": "ReferredObject",
+        "Type": "System.Object, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
       }
     ],
     "Fields": null
@@ -6234,6 +6302,10 @@
       {
         "Name": "Arguments",
         "Type": "ExpressionParser.Parsing.ASTNode[], Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+      },
+      {
+        "Name": "DebuggerDisplay",
+        "Type": "System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
       }
     ],
     "Fields": null
@@ -6258,12 +6330,20 @@
     ],
     "Properties": [
       {
+        "Name": "Parent",
+        "Type": "ExpressionParser.Parsing.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+      },
+      {
         "Name": "TextValue",
         "Type": "System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
       },
       {
         "Name": "Tokens",
         "Type": "ExpressionParser.Lexing.Token[], Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+      },
+      {
+        "Name": "DebuggerDisplay",
+        "Type": "System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
       }
     ],
     "Fields": null
@@ -6298,6 +6378,10 @@
       {
         "Name": "Right",
         "Type": "ExpressionParser.Parsing.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+      },
+      {
+        "Name": "DebuggerDisplay",
+        "Type": "System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
       }
     ],
     "Fields": null
@@ -6328,6 +6412,10 @@
       {
         "Name": "Value",
         "Type": "ExpressionParser.Parsing.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+      },
+      {
+        "Name": "DebuggerDisplay",
+        "Type": "System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
       }
     ],
     "Fields": null
@@ -6354,6 +6442,10 @@
       {
         "Name": "Values",
         "Type": "ExpressionParser.Parsing.DictionaryItemNode[], Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+      },
+      {
+        "Name": "DebuggerDisplay",
+        "Type": "System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
       }
     ],
     "Fields": null
@@ -6376,7 +6468,12 @@
         ]
       }
     ],
-    "Properties": [],
+    "Properties": [
+      {
+        "Name": "DebuggerDisplay",
+        "Type": "System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+      }
+    ],
     "Fields": null
   },
   {
@@ -6401,6 +6498,10 @@
       {
         "Name": "ListItems",
         "Type": "ExpressionParser.Parsing.ASTNode[], Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+      },
+      {
+        "Name": "DebuggerDisplay",
+        "Type": "System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
       }
     ],
     "Fields": null
@@ -6492,6 +6593,10 @@
       {
         "Name": "Value",
         "Type": "System.Object, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+      },
+      {
+        "Name": "DebuggerDisplay",
+        "Type": "System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
       }
     ],
     "Fields": null
@@ -6586,6 +6691,10 @@
       {
         "Name": "TupleItems",
         "Type": "ExpressionParser.Parsing.ASTNode[], Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+      },
+      {
+        "Name": "DebuggerDisplay",
+        "Type": "System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
       }
     ],
     "Fields": null
@@ -6616,6 +6725,10 @@
       {
         "Name": "Right",
         "Type": "ExpressionParser.Parsing.ASTNode, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+      },
+      {
+        "Name": "DebuggerDisplay",
+        "Type": "System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
       }
     ],
     "Fields": null
@@ -6692,6 +6805,19 @@
               {
                 "Name": "otherTokenType",
                 "Type": "ExpressionParser.Lexing.TokenType, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "tokenType",
+                "Type": "ExpressionParser.Lexing.TokenType, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              },
+              {
+                "Name": "otherTokenType",
+                "Type": "System.Nullable`1[[ExpressionParser.Lexing.TokenType, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
               }
             ]
           }
@@ -6878,6 +7004,10 @@
       {
         "Name": "TokenType",
         "Type": "ExpressionParser.Lexing.TokenType, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+      },
+      {
+        "Name": "SecondaryTokenType",
+        "Type": "System.Nullable`1[[ExpressionParser.Lexing.TokenType, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
       },
       {
         "Name": "TextValue",
@@ -7566,6 +7696,43 @@
                 "Type": "System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
               },
               {
+                "Name": "secondaryTokenType",
+                "Type": "System.Nullable`1[[ExpressionParser.Lexing.TokenType, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              },
+              {
+                "Name": "precedence",
+                "Type": "System.Int32, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              },
+              {
+                "Name": "operatorType",
+                "Type": "ExpressionParser.Configuration.SpecialOperatorType, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              },
+              {
+                "Name": "argumentSeperator",
+                "Type": "ExpressionParser.Lexing.TokenType, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              },
+              {
+                "Name": "endingText",
+                "Type": "ExpressionParser.Lexing.TokenType, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              },
+              {
+                "Name": "minArguments",
+                "Type": "System.Int32, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              },
+              {
+                "Name": "maxArguments",
+                "Type": "System.Int32, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          },
+          {
+            "ReturnType": "ExpressionParser.Configuration.SpecialOperatorDefinition, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Parameters": [
+              {
+                "Name": "text",
+                "Type": "System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              },
+              {
                 "Name": "precedence",
                 "Type": "System.Int32, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
               },
@@ -7758,6 +7925,10 @@
       }
     ],
     "Properties": [
+      {
+        "Name": "SecondaryTokenType",
+        "Type": "System.Nullable`1[[ExpressionParser.Lexing.TokenType, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+      },
       {
         "Name": "Text",
         "Type": "System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
@@ -8198,6 +8369,20 @@
             ]
           }
         ]
+      },
+      {
+        "Name": "IsComparable",
+        "Overloads": [
+          {
+            "ReturnType": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "type",
+                "Type": "System.Type, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          }
+        ]
       }
     ],
     "Properties": [],
@@ -8498,6 +8683,1154 @@
       }
     ],
     "Properties": [],
+    "Fields": null
+  },
+  {
+    "FullName": "Common.DictionarySorter",
+    "Methods": [
+      {
+        "Name": "SortDictionary",
+        "Overloads": [
+          {
+            "ReturnType": null,
+            "Parameters": [
+              {
+                "Name": "dictionary",
+                "Type": null
+              },
+              {
+                "Name": "byKey",
+                "Type": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              },
+              {
+                "Name": "reverse",
+                "Type": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              },
+              {
+                "Name": "caseSensitive",
+                "Type": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Name": "SortDictionaryByStringKeys",
+        "Overloads": [
+          {
+            "ReturnType": null,
+            "Parameters": [
+              {
+                "Name": "dictionary",
+                "Type": null
+              },
+              {
+                "Name": "reverse",
+                "Type": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              },
+              {
+                "Name": "caseSensitive",
+                "Type": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Name": "SortDictionaryObj",
+        "Overloads": [
+          {
+            "ReturnType": "System.Object, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "dictionary",
+                "Type": "System.Object, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              },
+              {
+                "Name": "byKey",
+                "Type": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              },
+              {
+                "Name": "reverse",
+                "Type": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              },
+              {
+                "Name": "caseSensitive",
+                "Type": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Name": "SortDictionaryByKeys",
+        "Overloads": [
+          {
+            "ReturnType": null,
+            "Parameters": [
+              {
+                "Name": "dictionary",
+                "Type": null
+              },
+              {
+                "Name": "reverse",
+                "Type": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Name": "SortDictionaryByValues",
+        "Overloads": [
+          {
+            "ReturnType": null,
+            "Parameters": [
+              {
+                "Name": "dictionary",
+                "Type": null
+              },
+              {
+                "Name": "reverse",
+                "Type": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Name": "SortDictionaryByStringValues",
+        "Overloads": [
+          {
+            "ReturnType": null,
+            "Parameters": [
+              {
+                "Name": "dictionary",
+                "Type": null
+              },
+              {
+                "Name": "reverse",
+                "Type": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              },
+              {
+                "Name": "caseSensitive",
+                "Type": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "Properties": [],
+    "Fields": null
+  },
+  {
+    "FullName": "Common.NumericalTypeExtensions",
+    "Methods": [
+      {
+        "Name": "GetTypeObject",
+        "Overloads": [
+          {
+            "ReturnType": "System.Type, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "numericalType",
+                "Type": "Common.NumericalType, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Name": "GetCombinedConversions",
+        "Overloads": [
+          {
+            "ReturnType": "Common.ImplicitNumericalTypeConversions, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Parameters": [
+              {
+                "Name": "numericalType",
+                "Type": "Common.NumericalType, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Name": "GetSimpleConversions",
+        "Overloads": [
+          {
+            "ReturnType": "Common.ImplicitNumericalTypeConversions, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Parameters": [
+              {
+                "Name": "numericalType",
+                "Type": "Common.NumericalType, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Name": "FastHasFlag",
+        "Overloads": [
+          {
+            "ReturnType": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "numericalType",
+                "Type": "Common.ImplicitNumericalTypeConversions, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              },
+              {
+                "Name": "flag",
+                "Type": "Common.ImplicitNumericalTypeConversions, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "Properties": [],
+    "Fields": null
+  },
+  {
+    "FullName": "Common.Numerical",
+    "Methods": [
+      {
+        "Name": "ToInt32",
+        "Overloads": [
+          {
+            "ReturnType": "System.Int32, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": []
+          }
+        ]
+      },
+      {
+        "Name": "ToUInt32",
+        "Overloads": [
+          {
+            "ReturnType": "System.UInt32, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": []
+          }
+        ]
+      },
+      {
+        "Name": "ToInt64",
+        "Overloads": [
+          {
+            "ReturnType": "System.Int64, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": []
+          }
+        ]
+      },
+      {
+        "Name": "ToUInt64",
+        "Overloads": [
+          {
+            "ReturnType": "System.UInt64, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": []
+          }
+        ]
+      },
+      {
+        "Name": "ToSingle",
+        "Overloads": [
+          {
+            "ReturnType": "System.Single, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": []
+          }
+        ]
+      },
+      {
+        "Name": "ToDouble",
+        "Overloads": [
+          {
+            "ReturnType": "System.Double, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": []
+          }
+        ]
+      },
+      {
+        "Name": "ToDecimal",
+        "Overloads": [
+          {
+            "ReturnType": "System.Decimal, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": []
+          }
+        ]
+      },
+      {
+        "Name": "Equals",
+        "Overloads": [
+          {
+            "ReturnType": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "obj",
+                "Type": "System.Object, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "other",
+                "Type": "System.SByte, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "other",
+                "Type": "System.Byte, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "other",
+                "Type": "System.Int16, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "other",
+                "Type": "System.UInt16, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "other",
+                "Type": "System.Int32, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "other",
+                "Type": "System.UInt32, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "other",
+                "Type": "System.Int64, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "other",
+                "Type": "System.UInt64, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "other",
+                "Type": "System.Single, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "other",
+                "Type": "System.Double, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "other",
+                "Type": "System.Decimal, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "other",
+                "Type": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Name": "CompareTo",
+        "Overloads": [
+          {
+            "ReturnType": "System.Int32, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "other",
+                "Type": "System.SByte, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.Int32, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "other",
+                "Type": "System.Byte, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.Int32, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "other",
+                "Type": "System.Int16, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.Int32, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "other",
+                "Type": "System.UInt16, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.Int32, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "other",
+                "Type": "System.Int32, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.Int32, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "other",
+                "Type": "System.UInt32, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.Int32, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "other",
+                "Type": "System.Int64, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.Int32, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "other",
+                "Type": "System.UInt64, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.Int32, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "other",
+                "Type": "System.Single, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.Int32, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "other",
+                "Type": "System.Double, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.Int32, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "other",
+                "Type": "System.Decimal, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.Int32, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "other",
+                "Type": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Name": "GetHashCode",
+        "Overloads": [
+          {
+            "ReturnType": "System.Int32, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": []
+          }
+        ]
+      },
+      {
+        "Name": "Abs",
+        "Overloads": [
+          {
+            "ReturnType": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Parameters": []
+          }
+        ]
+      },
+      {
+        "Name": "ToString",
+        "Overloads": [
+          {
+            "ReturnType": "System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "provider",
+                "Type": "System.IFormatProvider, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": []
+          }
+        ]
+      },
+      {
+        "Name": "Copy",
+        "Overloads": [
+          {
+            "ReturnType": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Parameters": [
+              {
+                "Name": "numerical",
+                "Type": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Name": "TryCreate",
+        "Overloads": [
+          {
+            "ReturnType": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "item",
+                "Type": "System.Object, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              },
+              {
+                "Name": "numerical",
+                "Type": "System.Nullable`1[[Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]&, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "item",
+                "Type": "System.Object, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              },
+              {
+                "Name": "style",
+                "Type": "System.Globalization.NumberStyles, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              },
+              {
+                "Name": "provider",
+                "Type": "System.IFormatProvider, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              },
+              {
+                "Name": "numerical",
+                "Type": "System.Nullable`1[[Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]&, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Name": "TryParse",
+        "Overloads": [
+          {
+            "ReturnType": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "str",
+                "Type": "System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              },
+              {
+                "Name": "style",
+                "Type": "System.Globalization.NumberStyles, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              },
+              {
+                "Name": "provider",
+                "Type": "System.IFormatProvider, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              },
+              {
+                "Name": "numerical",
+                "Type": "System.Nullable`1[[Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]&, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          },
+          {
+            "ReturnType": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "str",
+                "Type": "System.String, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              },
+              {
+                "Name": "numerical",
+                "Type": "System.Nullable`1[[Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]&, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Name": "Plus",
+        "Overloads": [
+          {
+            "ReturnType": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Parameters": [
+              {
+                "Name": "item",
+                "Type": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Name": "Negate",
+        "Overloads": [
+          {
+            "ReturnType": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Parameters": [
+              {
+                "Name": "item",
+                "Type": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Name": "Increment",
+        "Overloads": [
+          {
+            "ReturnType": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Parameters": [
+              {
+                "Name": "item",
+                "Type": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Name": "Decrement",
+        "Overloads": [
+          {
+            "ReturnType": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Parameters": [
+              {
+                "Name": "item",
+                "Type": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Name": "OnesComplement",
+        "Overloads": [
+          {
+            "ReturnType": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Parameters": [
+              {
+                "Name": "item",
+                "Type": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Name": "Add",
+        "Overloads": [
+          {
+            "ReturnType": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Parameters": [
+              {
+                "Name": "left",
+                "Type": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              },
+              {
+                "Name": "right",
+                "Type": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Name": "Subtract",
+        "Overloads": [
+          {
+            "ReturnType": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Parameters": [
+              {
+                "Name": "left",
+                "Type": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              },
+              {
+                "Name": "right",
+                "Type": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Name": "Multiply",
+        "Overloads": [
+          {
+            "ReturnType": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Parameters": [
+              {
+                "Name": "left",
+                "Type": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              },
+              {
+                "Name": "right",
+                "Type": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Name": "Divide",
+        "Overloads": [
+          {
+            "ReturnType": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Parameters": [
+              {
+                "Name": "left",
+                "Type": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              },
+              {
+                "Name": "right",
+                "Type": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Name": "Mod",
+        "Overloads": [
+          {
+            "ReturnType": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Parameters": [
+              {
+                "Name": "left",
+                "Type": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              },
+              {
+                "Name": "right",
+                "Type": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Name": "BitwiseAnd",
+        "Overloads": [
+          {
+            "ReturnType": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Parameters": [
+              {
+                "Name": "left",
+                "Type": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              },
+              {
+                "Name": "right",
+                "Type": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Name": "BitwiseOr",
+        "Overloads": [
+          {
+            "ReturnType": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Parameters": [
+              {
+                "Name": "left",
+                "Type": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              },
+              {
+                "Name": "right",
+                "Type": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Name": "Xor",
+        "Overloads": [
+          {
+            "ReturnType": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Parameters": [
+              {
+                "Name": "left",
+                "Type": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              },
+              {
+                "Name": "right",
+                "Type": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Name": "LeftShift",
+        "Overloads": [
+          {
+            "ReturnType": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Parameters": [
+              {
+                "Name": "left",
+                "Type": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              },
+              {
+                "Name": "right",
+                "Type": "System.Int32, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Name": "RightShift",
+        "Overloads": [
+          {
+            "ReturnType": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Parameters": [
+              {
+                "Name": "left",
+                "Type": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+              },
+              {
+                "Name": "right",
+                "Type": "System.Int32, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Name": "FromSByte",
+        "Overloads": [
+          {
+            "ReturnType": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Parameters": [
+              {
+                "Name": "b",
+                "Type": "System.SByte, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Name": "FromByte",
+        "Overloads": [
+          {
+            "ReturnType": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Parameters": [
+              {
+                "Name": "b",
+                "Type": "System.Byte, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Name": "FromInt16",
+        "Overloads": [
+          {
+            "ReturnType": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Parameters": [
+              {
+                "Name": "b",
+                "Type": "System.Int16, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Name": "FromUInt16",
+        "Overloads": [
+          {
+            "ReturnType": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Parameters": [
+              {
+                "Name": "b",
+                "Type": "System.UInt16, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Name": "FromInt32",
+        "Overloads": [
+          {
+            "ReturnType": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Parameters": [
+              {
+                "Name": "b",
+                "Type": "System.Int32, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Name": "FromUInt32",
+        "Overloads": [
+          {
+            "ReturnType": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Parameters": [
+              {
+                "Name": "b",
+                "Type": "System.UInt32, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Name": "FromInt64",
+        "Overloads": [
+          {
+            "ReturnType": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Parameters": [
+              {
+                "Name": "b",
+                "Type": "System.Int64, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Name": "FromUInt64",
+        "Overloads": [
+          {
+            "ReturnType": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Parameters": [
+              {
+                "Name": "b",
+                "Type": "System.UInt64, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Name": "FromSingle",
+        "Overloads": [
+          {
+            "ReturnType": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Parameters": [
+              {
+                "Name": "b",
+                "Type": "System.Single, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Name": "FromDouble",
+        "Overloads": [
+          {
+            "ReturnType": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Parameters": [
+              {
+                "Name": "b",
+                "Type": "System.Double, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Name": "FromDecimal",
+        "Overloads": [
+          {
+            "ReturnType": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Parameters": [
+              {
+                "Name": "b",
+                "Type": "System.Decimal, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Name": "ToSByte",
+        "Overloads": [
+          {
+            "ReturnType": "System.SByte, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": []
+          }
+        ]
+      },
+      {
+        "Name": "ToByte",
+        "Overloads": [
+          {
+            "ReturnType": "System.Byte, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": []
+          }
+        ]
+      },
+      {
+        "Name": "ToInt16",
+        "Overloads": [
+          {
+            "ReturnType": "System.Int16, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": []
+          }
+        ]
+      },
+      {
+        "Name": "ToUInt16",
+        "Overloads": [
+          {
+            "ReturnType": "System.UInt16, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": []
+          }
+        ]
+      }
+    ],
+    "Properties": [
+      {
+        "Name": "Unknown",
+        "Type": "Common.Numerical, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+      },
+      {
+        "Name": "Type",
+        "Type": "Common.NumericalType, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+      },
+      {
+        "Name": "IsTrue",
+        "Type": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+      }
+    ],
+    "Fields": null
+  },
+  {
+    "FullName": "Common.NumericalType",
+    "Methods": [],
+    "Properties": [],
+    "Fields": null
+  },
+  {
+    "FullName": "Common.ImplicitNumericalTypeConversions",
+    "Methods": [],
+    "Properties": [],
+    "Fields": null
+  },
+  {
+    "FullName": "Common.CharArrayEqualityComparer",
+    "Methods": [
+      {
+        "Name": "Equals",
+        "Overloads": [
+          {
+            "ReturnType": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "x",
+                "Type": "System.Char[], System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              },
+              {
+                "Name": "y",
+                "Type": "System.Char[], System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Name": "GetHashCode",
+        "Overloads": [
+          {
+            "ReturnType": "System.Int32, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "obj",
+                "Type": "System.Char[], System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "Properties": [
+      {
+        "Name": "Instance",
+        "Type": "Common.CharArrayEqualityComparer, Obsidian, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+      }
+    ],
     "Fields": null
   },
   {
@@ -9068,6 +10401,24 @@
             ]
           }
         ]
+      },
+      {
+        "Name": "TryGetNextArray",
+        "Overloads": [
+          {
+            "ReturnType": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "count",
+                "Type": "System.Int32, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              },
+              {
+                "Name": "value",
+                "Type": null
+              }
+            ]
+          }
+        ]
       }
     ],
     "Properties": [
@@ -9188,6 +10539,24 @@
               {
                 "Name": "count",
                 "Type": "System.Int32, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "Name": "TryGetNextArray",
+        "Overloads": [
+          {
+            "ReturnType": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "count",
+                "Type": "System.Int32, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              },
+              {
+                "Name": "value",
+                "Type": null
               }
             ]
           }
@@ -9550,6 +10919,24 @@
   {
     "FullName": "Common.Collections.ILookaroundEnumerator`1",
     "Methods": [
+      {
+        "Name": "TryGetNextArray",
+        "Overloads": [
+          {
+            "ReturnType": "System.Boolean, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e",
+            "Parameters": [
+              {
+                "Name": "count",
+                "Type": "System.Int32, System.Private.CoreLib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e"
+              },
+              {
+                "Name": "value",
+                "Type": null
+              }
+            ]
+          }
+        ]
+      },
       {
         "Name": "TryGetNext",
         "Overloads": [
