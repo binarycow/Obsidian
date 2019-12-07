@@ -9,7 +9,7 @@ using Obsidian.WhiteSpaceControl;
 
 namespace Obsidian.AST
 {
-    public abstract class ASTNode : ITransformable, IForceTransformable
+    internal abstract class ASTNode : ITransformable, IForceTransformable
     {
         public ASTNode(ParsingNode parsingNode)
         {

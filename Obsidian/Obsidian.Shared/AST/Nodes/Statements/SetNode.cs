@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -13,7 +13,7 @@ using Obsidian.Transforming;
 namespace Obsidian.AST.Nodes.Statements
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public class SetNode : AbstractContainerNode
+    internal class SetNode : AbstractContainerNode
     {
 
         public SetNode(ParsingNode? startParsingNode, string[] variableNames, ContainerNode assignmentBlock, ParsingNode? endParsingNode)

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Obsidian.AST;
@@ -11,10 +11,10 @@ namespace Obsidian.WhiteSpaceControl
 {
     internal class ManualWhiteSpaceVisitor : ITransformVisitor
     {
-        private static Lazy<ManualWhiteSpaceVisitor> _Instance = new Lazy<ManualWhiteSpaceVisitor>(() => new ManualWhiteSpaceVisitor());
+        private static readonly Lazy<ManualWhiteSpaceVisitor> _Instance = new Lazy<ManualWhiteSpaceVisitor>(() => new ManualWhiteSpaceVisitor());
         public static ManualWhiteSpaceVisitor Instance => _Instance.Value;
 
-        List<IWhiteSpace> _PendingWhiteSpace = new List<IWhiteSpace>();
+        readonly List<IWhiteSpace> _PendingWhiteSpace = new List<IWhiteSpace>();
 
 
         private void SetTrim(WhiteSpaceMode mode)

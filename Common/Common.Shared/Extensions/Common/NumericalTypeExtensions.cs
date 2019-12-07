@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Common
 {
-    public static class NumericalTypeExtensions
+    internal static class NumericalTypeExtensions
     {
 
         public static Type GetTypeObject(this NumericalType numericalType)

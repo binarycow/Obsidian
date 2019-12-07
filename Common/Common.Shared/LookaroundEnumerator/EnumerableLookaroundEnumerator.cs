@@ -20,10 +20,10 @@ namespace Common.LookaroundEnumerator
             _Next = new T[lookaheadCount];
         }
 
-        private IEnumerator<T> _Enumerator;
+        private readonly IEnumerator<T> _Enumerator;
 
-        private T[] _Previous;
-        private T[] _Next;
+        private readonly T[] _Previous;
+        private readonly T[] _Next;
 
         //public LookaroundData<T> Data { private get; private set; } = new LookaroundData<T>(Array.Empty<T>(), default!, Array.Empty<T>());
 

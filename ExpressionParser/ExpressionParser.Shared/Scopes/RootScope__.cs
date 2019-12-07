@@ -1,4 +1,4 @@
-﻿//using System;
+//using System;
 //using System.Collections.Generic;
 //using System.Diagnostics.CodeAnalysis;
 //using System.Linq;
@@ -8,7 +8,7 @@
 
 //namespace ExpressionParser.Scopes
 //{
-//    public class RootScope : Scope
+//    internal class RootScope : Scope
 //    {
 //        private RootScope(IDictionary<string, object?> variables) : base(null)
 //        {

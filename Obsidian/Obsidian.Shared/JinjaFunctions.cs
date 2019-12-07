@@ -1,4 +1,4 @@
-﻿using Common;
+using Common;
 using Common.Collections;
 using ExpressionParser;
 using ExpressionParser.Scopes;
@@ -10,9 +10,9 @@ using System.Text;
 
 namespace Obsidian
 {
-    public static class JinjaFunctions
+    internal static class JinjaFunctions
     {
-
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>")]
         public static object? Super(UserDefinedArgumentData args)
         {
             throw new NotImplementedException();
@@ -45,19 +45,21 @@ namespace Obsidian
         {
             if (args.TryGetArgumentValue<string>("s", out var obj) == false) throw new NotImplementedException();
             if (obj == null) throw new NullReferenceException();
-            return obj.ToString().HTMLEscape();
+            return obj.ToString(CultureInfo.InvariantCulture).HTMLEscape();
         }
         public static object? Upper(UserDefinedArgumentData args)
         {
             if (args.TryGetArgumentValue<string>("s", out var obj) == false) throw new NotImplementedException();
             if (obj == null) throw new NullReferenceException();
-            return obj.ToString().ToUpper(CultureInfo.InvariantCulture);
+            return obj.ToString(CultureInfo.InvariantCulture).ToUpper(CultureInfo.InvariantCulture);
         }
         public static object? Abs(UserDefinedArgumentData args)
         {
             if (args.TryGetArgumentValue<Numerical>("x", out var obj) == false) throw new NotImplementedException();
             return obj.Abs();
         }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "<Pending>")]
         public static object? Attr(UserDefinedArgumentData args)
         {
 
@@ -112,7 +114,7 @@ namespace Obsidian
         public static object? Capitalize(UserDefinedArgumentData args)
         {
             if (args.TryGetArgumentValue<string>("s", out var obj) == false) throw new NotImplementedException();
-            var originalString = obj.ToString();
+            var originalString = obj.ToString(CultureInfo.InvariantCulture);
             if (originalString.Length == 0) return originalString;
             if (originalString.Length == 1) return originalString.ToUpper(CultureInfo.InvariantCulture);
             return originalString[0].ToUpper().Concat(originalString.Substring(1));
@@ -139,12 +141,11 @@ namespace Obsidian
 
             if (boolean)
             {
-                switch (value)
+                return value switch
                 {
-                    case string strVal:
-                        return string.IsNullOrEmpty(strVal);
-                }
-                throw new NotImplementedException();
+                    string strVal => string.IsNullOrEmpty(strVal),
+                    _ => throw new NotImplementedException(),
+                };
             }
             return value ?? defaultValue;
         }
@@ -159,7 +160,7 @@ namespace Obsidian
 
             dictionary = dictionary ?? throw new NotImplementedException();
             var dictionaryType = dictionary.GetType();
-            if (dictionaryType.IsAssignableToGenericType(typeof(Dictionary<,>), out var typeArgs) == false) throw new NotImplementedException();
+            if (dictionaryType.IsAssignableToGenericType(typeof(Dictionary<,>), out var _) == false) throw new NotImplementedException();
             return DictionarySorter.SortDictionaryObj(dictionary, by == "key", reverse, caseSensitive);
         }
 

@@ -9,7 +9,7 @@ using Obsidian.AST.Nodes.Statements;
 
 namespace Obsidian.Transforming
 {
-    public class ExpressionTreeTransformVisitor : ITransformVisitor<Expression>
+    internal class ExpressionTreeTransformVisitor : ITransformVisitor<Expression>
     {
         public ExpressionTreeTransformVisitor(JinjaEnvironment environment, IDictionary<string, object?> variables)
         {

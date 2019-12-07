@@ -1,11 +1,11 @@
-﻿using ExpressionParser.Scopes;
+using ExpressionParser.Scopes;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace ExpressionParser.Configuration
 {
-    public class SingleTypeOverloadDefinition : OverloadDefinition
+    internal class SingleTypeOverloadDefinition : OverloadDefinition
     {
         public SingleTypeOverloadDefinition(Func<object?[], object?> func, Type returnType, Type argumentType,
             int minimumArguments, int maximumArguments) : base(func, returnType)

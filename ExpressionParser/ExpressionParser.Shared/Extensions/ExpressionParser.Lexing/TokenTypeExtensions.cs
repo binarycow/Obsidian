@@ -6,7 +6,7 @@ using ExpressionParser.Lexing;
 
 namespace ExpressionParser.Lexing
 {
-    public static class TokenTypeExtensions
+    internal static class TokenTypeExtensions
     {
 
         public static bool IsLiteral(this TokenType tokenType)
@@ -41,9 +41,9 @@ namespace ExpressionParser.Lexing
         {
             return tokenType switch
             {
-                TokenType.Paren_Open => true,
-                TokenType.SquareBrace_Open => true,
-                TokenType.CurlyBrace_Open => true,
+                TokenType.ParenOpen => true,
+                TokenType.SquareBraceOpen => true,
+                TokenType.CurlyBraceOpen => true,
                 _ => false,
             };
         }
@@ -51,9 +51,9 @@ namespace ExpressionParser.Lexing
         {
             return tokenType switch
             {
-                TokenType.Paren_Open => true,
-                TokenType.SquareBrace_Close => false,
-                TokenType.CurlyBrace_Close => false,
+                TokenType.ParenOpen => true,
+                TokenType.SquareBraceClose => false,
+                TokenType.CurlyBraceClose => false,
                 _ => false,
             };
         }
@@ -61,12 +61,12 @@ namespace ExpressionParser.Lexing
         {
             return tokenType switch
             {
-                TokenType.Paren_Open => otherTokenType == TokenType.Paren_Close,
-                TokenType.Paren_Close => otherTokenType == TokenType.Paren_Open,
-                TokenType.SquareBrace_Open => otherTokenType == TokenType.SquareBrace_Close,
-                TokenType.SquareBrace_Close => otherTokenType == TokenType.SquareBrace_Open,
-                TokenType.CurlyBrace_Open => otherTokenType == TokenType.CurlyBrace_Close,
-                TokenType.CurlyBrace_Close => otherTokenType == TokenType.CurlyBrace_Open,
+                TokenType.ParenOpen => otherTokenType == TokenType.ParenClose,
+                TokenType.ParenClose => otherTokenType == TokenType.ParenOpen,
+                TokenType.SquareBraceOpen => otherTokenType == TokenType.SquareBraceClose,
+                TokenType.SquareBraceClose => otherTokenType == TokenType.SquareBraceOpen,
+                TokenType.CurlyBraceOpen => otherTokenType == TokenType.CurlyBraceClose,
+                TokenType.CurlyBraceClose => otherTokenType == TokenType.CurlyBraceOpen,
                 _ => false,
             };
         }

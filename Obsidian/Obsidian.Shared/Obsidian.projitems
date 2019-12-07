@@ -52,6 +52,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)DynamicSelf.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)JinjaCustomStringProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)JinjaUserDefinedFunction.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ObsidianStrings.Designer.cs">
+      <DependentUpon>ObsidianStrings.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)SpecialVariableInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Templates\CompiledTemplate.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Templates\DynamicTemplate.cs" />
@@ -68,7 +73,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)JinjaLanguageDefinition.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Lexing\Lexer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Lexing\Token.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Lexing\TokenTypes.cs" />
+    <Compile Include="..\Obsidian.Shared\Lexing\TokenType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Loaders\BaseLoader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Loaders\FileSystemLoader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LoopInfo.cs" />
@@ -99,5 +104,15 @@
     <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\WhiteSpaceControlSet.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\WhiteSpaceMode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\WhiteSpacePosition.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)ObsidianStrings.resx">
+      <LastGenOutput>ObsidianStrings.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)PublicAPI.Shipped.txt" />
+    <Content Include="$(MSBuildThisFileDirectory)PublicAPI.Unshipped.txt" />
   </ItemGroup>
 </Project>

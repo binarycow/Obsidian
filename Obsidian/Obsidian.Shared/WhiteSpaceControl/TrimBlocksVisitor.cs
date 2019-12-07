@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Obsidian.AST;
@@ -11,7 +11,7 @@ namespace Obsidian.WhiteSpaceControl
 {
     internal class TrimBlocksVisitor : ITransformVisitor
     {
-        private static Lazy<TrimBlocksVisitor> _Instance = new Lazy<TrimBlocksVisitor>();
+        private static readonly Lazy<TrimBlocksVisitor> _Instance = new Lazy<TrimBlocksVisitor>();
         public static TrimBlocksVisitor Instance => _Instance.Value;
 
 

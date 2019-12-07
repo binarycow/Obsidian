@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 
 namespace Common
 {
-    public class ObjectPool<T>
+    internal class ObjectPool<T>
     {
         public ObjectPool(Func<T> creationFunction, Action<T> clearAction)
         {
@@ -19,13 +19,12 @@ namespace Common
 
         private readonly Lazy<ConcurrentDictionary<CheckoutObject<T>, byte>> _CheckedOut;
         private ConcurrentDictionary<CheckoutObject<T>, byte> CheckedOut => _CheckedOut.Value;
-        private Func<T> _CreationFunction;
-        private Action<T> _ClearAction;
+        private readonly Func<T> _CreationFunction;
+        private readonly Action<T> _ClearAction;
 
         public CheckoutObject<T> Checkout()
         {
-            CheckoutObject<T> checkoutRecord;
-            if (Available.Count > 0 && Available.TryDequeue(out checkoutRecord) == false)
+            if (Available.Count > 0 && Available.TryDequeue(out CheckoutObject<T> checkoutRecord) == false)
             {
                 CheckedOut.TryAdd(checkoutRecord, 0);
                 return checkoutRecord;

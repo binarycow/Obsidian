@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -8,7 +8,7 @@ using Obsidian.AST.Nodes.Statements;
 
 namespace Obsidian
 {
-    public class CompiledSelf
+    internal class CompiledSelf
     {
         public RenderMode RenderMode { get; set; } = RenderMode.Direct;
         private Dictionary<string, List<Block>> Blocks { get; } = new Dictionary<string, List<Block>>();

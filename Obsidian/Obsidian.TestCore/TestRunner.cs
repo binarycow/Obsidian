@@ -42,7 +42,7 @@ namespace Obsidian.TestCore
         }
 
 
-        public static Dictionary<string, Item> TestItems = new Dictionary<string, Item>();
+        public static Dictionary<string, Item> TestItems { get; } = new Dictionary<string, Item>();
 
         public static void TestTemplate(Item test, out string actualOutput, out string expectedOutput)
         {

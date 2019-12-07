@@ -14,10 +14,10 @@ using Obsidian.WhiteSpaceControl;
 namespace Obsidian.AST.Nodes.Statements
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public class ForNode : StatementNode, IWhiteSpaceControlling
+    internal class ForNode : StatementNode, IWhiteSpaceControlling
     {
         public ForNode(ContainerNode primaryBlock, ContainerNode? elseBlock,
-            string[] variableNames, ExpressionNode expression, ParsingNode endParsingNode, WhiteSpaceControlSet? whiteSpace = null)
+            string[] variableNames, ExpressionNode expression, ParsingNode? endParsingNode, WhiteSpaceControlSet? whiteSpace = null)
             : base(
                   startParsingNode: null,
                   children: primaryBlock.YieldOne().Concat(elseBlock?.YieldOne() ?? Enumerable.Empty<ContainerNode>()),

@@ -1,4 +1,4 @@
-﻿using Common.Collections;
+using Common.Collections;
 using Obsidian.AST.NodeParsers;
 using Obsidian.Lexing;
 using Obsidian.Parsing;
@@ -11,7 +11,7 @@ using System.Text;
 
 namespace Obsidian.AST.Nodes.MiscNodes
 {
-    public class RawNode : ASTNode
+    internal class RawNode : ASTNode
     {
         public RawNode(ParsingNode? startParsingNode, IEnumerable<ParsingNode> contents, ParsingNode? endParsingNode)
             : base(startParsingNode, contents, endParsingNode)
@@ -36,9 +36,9 @@ namespace Obsidian.AST.Nodes.MiscNodes
             visitor.Transform(this);
         }
 
+        [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>")]
         public static bool TryParseRaw(Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
         {
-            var conditions = new Queue<ConditionalNode>();
             parsedNode = default;
             
 

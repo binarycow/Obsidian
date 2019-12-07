@@ -10,6 +10,13 @@ namespace Obsidian
 {
     public class JinjaLanguageDefinition : ILanguageDefinition
     {
+        private const string STRING_MEMBERACCESS = ".";
+        private const string STRING_PIPELINE = "|";
+        private const string STRING_EXPONENT = "**";
+        private const string STRING_PLUS = "+";
+        private const string STRING_MINUS = "-";
+
+
         private JinjaLanguageDefinition()
         {
 
@@ -23,25 +30,22 @@ namespace Obsidian
 
         public IEnumerable<KeywordDefinition> Keywords => new KeywordDefinition[]
         {
-            new ValueKeywordDefinition("True", true),
-            new ValueKeywordDefinition("true", true),
-            new ValueKeywordDefinition("false", false),
-            new ValueKeywordDefinition("False", false),
-            new ValueKeywordDefinition("none", null),
-            new ValueKeywordDefinition("None", null),
+            new ValueKeywordDefinition(true, "True", "true"),
+            new ValueKeywordDefinition(false, "False", "false"),
+            new ValueKeywordDefinition(null, "None", "none"),
         };
 
         public IEnumerable<OperatorDefinition> Operators => new OperatorDefinition[]
         {
-            OperatorDefinition.CreateMemberAccess(".", 160),
-            OperatorDefinition.CreatePipeline("|", 160),
-            OperatorDefinition.CreateMethod(OPERATOR_PAREN_OPEN, TokenType.Paren_Open, TokenType.Comma, TokenType.Paren_Close, 160),
-            OperatorDefinition.CreateIndex(OPERATOR_SQUARE_BRACE_OPEN, TokenType.Paren_Close, TokenType.Comma, TokenType.SquareBrace_Close, 160),
+            OperatorDefinition.CreateMemberAccess(STRING_MEMBERACCESS, 160),
+            OperatorDefinition.CreatePipeline(STRING_PIPELINE, 160),
+            OperatorDefinition.CreateMethod(OPERATOR_PAREN_OPEN, TokenType.ParenOpen, TokenType.Comma, TokenType.ParenClose, 160),
+            OperatorDefinition.CreateIndex(OPERATOR_SQUARE_BRACE_OPEN, TokenType.ParenClose, TokenType.Comma, TokenType.SquareBraceClose, 160),
 
-            OperatorDefinition.CreateUnary("**", 80, OperatorType.Power),
+            OperatorDefinition.CreateUnary(STRING_EXPONENT, 80, OperatorType.Power),
 
-            OperatorDefinition.CreateUnary("+", 70, OperatorType.UnaryPlus),
-            OperatorDefinition.CreateUnary("-", 70, OperatorType.Negate),
+            OperatorDefinition.CreateUnary(STRING_PLUS, 70, OperatorType.UnaryPlus),
+            OperatorDefinition.CreateUnary(STRING_MINUS, 70, OperatorType.Negate),
 
             OperatorDefinition.CreateBinary("*", 60, OperatorType.Multiply),
             OperatorDefinition.CreateBinary("/", 60, OperatorType.DivideFloat),

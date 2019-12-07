@@ -11,7 +11,7 @@ using Obsidian.Parsing;
 
 namespace Obsidian.AST.Nodes
 {
-    public abstract class StatementNode : ASTNode, IWithChildren
+    internal abstract class StatementNode : ASTNode, IWithChildren
     {
         public StatementNode(ParsingNode? startParsingNode, IEnumerable<ASTNode> children, ParsingNode? endParsingNode) 
             : base(startParsingNode, children.SelectMany(x => x.ParsingNodes), endParsingNode)
@@ -23,7 +23,7 @@ namespace Obsidian.AST.Nodes
 
         public delegate bool TryParseDelegate(Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode);
 
-        private static TryParseDelegate[] _Delegates = new TryParseDelegate[]
+        private static readonly TryParseDelegate[] _Delegates = new TryParseDelegate[]
         {
             ForNode.TryParseFor,
             IfNode.TryParseIf,

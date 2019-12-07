@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using Obsidian.TestCore;
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Obsidian.Tests
 {
-    public static class AssertWrapper
+    internal static class AssertWrapper
     {
         public static void TestTemplate(Item test)
         {

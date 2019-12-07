@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Obsidian
 {
-    public class LoopInfoClass<T> where T : class
+    internal class LoopInfoClass<T> where T : class
     {
         public LoopInfoClass(T?[] array, int currentindex)
         {

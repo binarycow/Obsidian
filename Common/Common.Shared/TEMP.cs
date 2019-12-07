@@ -1,12 +1,13 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Reflection;
 using System.Text;
 
 namespace Common
 {
     // TODO: Find a better home for this stuff.
-    public static class TEMP
+    internal static class TEMP
     {
         /// <summary>
         /// Search for a method by name and parameter types.  
@@ -89,8 +90,7 @@ namespace Common
                         if (matchingMethod == null)
                             matchingMethod = methodInfo;
                         else
-                            throw new AmbiguousMatchException(
-                                   "More than one matching method found!");
+                            throw new AmbiguousMatchException(CommonStrings.ResourceManager.GetString("ReflectionError_AmbiguousMethodMatch", CultureInfo.InvariantCulture));
                     }
                 }
             }
@@ -102,7 +102,8 @@ namespace Common
         /// </summary>
         /// <remarks>From: https://stackoverflow.com/a/7182379</remarks>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1034:Nested types should not be visible", Justification = "<Pending>")]
-        public class T
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1812:Avoid uninstantiated internal classes", Justification = "<Pending>")]
+        internal class T
         { }
 
         /// <summary>

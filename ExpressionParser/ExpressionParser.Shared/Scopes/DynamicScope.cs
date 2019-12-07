@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
@@ -6,7 +6,7 @@ using System.Text;
 
 namespace ExpressionParser.Scopes
 {
-    public class DynamicScope : IScope
+    internal class DynamicScope : IScope
     {
         public DynamicScope(string name, DynamicScope parent)
         {
@@ -33,7 +33,7 @@ namespace ExpressionParser.Scopes
         public bool IsRootScope => ParentScope == null;
 
 
-        private Dictionary<string, object?> _Variables = new Dictionary<string, object?>();
+        private readonly Dictionary<string, object?> _Variables = new Dictionary<string, object?>();
 
 
 

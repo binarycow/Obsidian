@@ -1,4 +1,4 @@
-﻿using Obsidian.AST;
+using Obsidian.AST;
 using Obsidian.AST.Nodes;
 using Obsidian.AST.Nodes.MiscNodes;
 using Obsidian.AST.Nodes.Statements;

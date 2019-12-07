@@ -1,12 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Obsidian.TestCore
 {
-    public class Person
+    internal class Person
     {
-        public string name => "John Smith";
+        public static string name => "John Smith";
 
         public string getName()
         {

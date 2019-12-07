@@ -5,7 +5,7 @@ using System.Text;
 
 namespace System
 {
-    public static class ArrayExtensions
+    internal static class ArrayExtensions
     {
         public static void ShiftLeft<T>(this T[] array, int count, out T[] poppedObjects)
         {

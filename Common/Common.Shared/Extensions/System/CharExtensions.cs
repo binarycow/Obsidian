@@ -6,7 +6,7 @@ using System.Text;
 
 namespace System
 {
-    public static class CharExtensions
+    internal static class CharExtensions
     {
         public static bool IsDigit(this char c)
         {

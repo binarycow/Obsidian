@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using ExpressionParser.Lexing;
@@ -8,7 +8,7 @@ using System.Diagnostics;
 namespace ExpressionParser.Parsing
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public class IdentifierNode : ASTNode
+    internal class IdentifierNode : ASTNode
     {
         public IdentifierNode(Token token) : base(token)
         {

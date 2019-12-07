@@ -37,7 +37,7 @@ namespace Common
             Dispose(false);
         }
     }
-    public static class CheckoutObject
+    internal static class CheckoutObject
     {
         public static CheckoutObject<T> Create<T>(T obj)
         {

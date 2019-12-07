@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -14,7 +14,7 @@ namespace Common
         IEquatable<sbyte>, IEquatable<byte>, IEquatable<short>, IEquatable<ushort>, IEquatable<int>, IEquatable<uint>, IEquatable<long>, IEquatable<ulong>, IEquatable<float>, IEquatable<double>, IEquatable<decimal>, IEquatable<Numerical>,
         IComparable<sbyte>, IComparable<byte>, IComparable<short>, IComparable<ushort>, IComparable<int>, IComparable<uint>, IComparable<long>, IComparable<ulong>, IComparable<float>, IComparable<double>, IComparable<decimal>, IComparable<Numerical>
     {
-        private static Lazy<ConcurrentDictionary<NumericalType, MethodInfo?>> _TrueOperators = new Lazy<ConcurrentDictionary<NumericalType, MethodInfo?>>();
+        private static readonly Lazy<ConcurrentDictionary<NumericalType, MethodInfo?>> _TrueOperators = new Lazy<ConcurrentDictionary<NumericalType, MethodInfo?>>();
         private static ConcurrentDictionary<NumericalType, MethodInfo?> TrueOperators => _TrueOperators.Value;
 
 
@@ -40,8 +40,10 @@ namespace Common
         }
         public static Numerical Copy(Numerical numerical)
         {
-            var newObj = new Numerical(numerical.Type);
-            newObj._decimal = numerical._decimal;
+            var newObj = new Numerical(numerical.Type)
+            {
+                _decimal = numerical._decimal
+            };
             return newObj;
         }
 
@@ -74,7 +76,7 @@ namespace Common
         private decimal _decimal;
 
         [FieldOffset(16)]
-        private NumericalType _Type;
+        private readonly NumericalType _Type;
         public NumericalType Type => _Type;
 
         #endregion Fields
@@ -1301,72 +1303,52 @@ namespace Common
         public static implicit operator Numerical(decimal d) => FromDecimal(d);
 
 
-        public static Numerical FromSByte(sbyte b)
+        public static Numerical FromSByte(sbyte b) => new Numerical(NumericalType.SignedByte)
         {
-            var newObj = new Numerical(NumericalType.SignedByte);
-            newObj._sbyte = b;
-            return newObj;
-        }
-        public static Numerical FromByte(byte b)
+            _sbyte = b
+        };
+
+        public static Numerical FromByte(byte b) => new Numerical(NumericalType.UnsignedByte)
         {
-            var newObj = new Numerical(NumericalType.UnsignedByte);
-            newObj._byte = b;
-            return newObj;
-        }
-        public static Numerical FromInt16(short b)
+            _byte = b
+        };
+
+        public static Numerical FromInt16(short b) => new Numerical(NumericalType.SignedShort)
         {
-            var newObj = new Numerical(NumericalType.SignedShort);
-            newObj._short = b;
-            return newObj;
-        }
-        public static Numerical FromUInt16(ushort b)
+            _short = b
+        };
+        public static Numerical FromUInt16(ushort b) => new Numerical(NumericalType.UnsignedShort)
         {
-            var newObj = new Numerical(NumericalType.UnsignedShort);
-            newObj._ushort = b;
-            return newObj;
-        }
-        public static Numerical FromInt32(int b)
+            _ushort = b
+        };
+        public static Numerical FromInt32(int b) => new Numerical(NumericalType.SignedInt)
         {
-            var newObj = new Numerical(NumericalType.SignedInt);
-            newObj._int = b;
-            return newObj;
-        }
-        public static Numerical FromUInt32(uint b)
+            _int = b
+        };
+        public static Numerical FromUInt32(uint b) => new Numerical(NumericalType.UnsignedInt)
         {
-            var newObj = new Numerical(NumericalType.UnsignedInt);
-            newObj._uint = b;
-            return newObj;
-        }
-        public static Numerical FromInt64(long b)
+            _uint = b
+        };
+        public static Numerical FromInt64(long b) => new Numerical(NumericalType.SignedLong)
         {
-            var newObj = new Numerical(NumericalType.SignedLong);
-            newObj._long = b;
-            return newObj;
-        }
-        public static Numerical FromUInt64(ulong b)
+            _long = b
+        };
+        public static Numerical FromUInt64(ulong b) => new Numerical(NumericalType.UnsignedLong)
         {
-            var newObj = new Numerical(NumericalType.UnsignedLong);
-            newObj._ulong = b;
-            return newObj;
-        }
-        public static Numerical FromSingle(float b)
+            _ulong = b
+        };
+        public static Numerical FromSingle(float b) => new Numerical(NumericalType.SinglePrecision)
         {
-            var newObj = new Numerical(NumericalType.SinglePrecision);
-            newObj._float = b;
-            return newObj;
-        }
-        public static Numerical FromDouble(double b)
+            _float = b
+        };
+        public static Numerical FromDouble(double b) => new Numerical(NumericalType.DoublePrecision)
         {
-            var newObj = new Numerical(NumericalType.DoublePrecision);
-            newObj._double = b;
-            return newObj;
-        }
-        public static Numerical FromDecimal(decimal b)
+            _double = b
+        };
+        public static Numerical FromDecimal(decimal b) => new Numerical(NumericalType.DecimalNumber)
         {
-            var newObj = new Numerical(NumericalType.DecimalNumber);
-            newObj._decimal = b;
-            return newObj;
-        }
+            _decimal = b
+        };
 
         public sbyte ToSByte()
         {
@@ -1834,17 +1816,17 @@ namespace Common
         {
             return Type switch
             {
-                NumericalType.SignedByte => _sbyte.ToString(),
-                NumericalType.UnsignedByte => _byte.ToString(),
-                NumericalType.SignedShort => _short.ToString(),
-                NumericalType.UnsignedShort => _ushort.ToString(),
-                NumericalType.SignedInt => _int.ToString(),
-                NumericalType.UnsignedInt => _uint.ToString(),
-                NumericalType.SignedLong => _long.ToString(),
-                NumericalType.UnsignedLong => _ulong.ToString(),
-                NumericalType.SinglePrecision => _float.ToString(),
-                NumericalType.DoublePrecision => _double.ToString(),
-                NumericalType.DecimalNumber => _decimal.ToString(),
+                NumericalType.SignedByte => _sbyte.ToString(CultureInfo.InvariantCulture),
+                NumericalType.UnsignedByte => _byte.ToString(CultureInfo.InvariantCulture),
+                NumericalType.SignedShort => _short.ToString(CultureInfo.InvariantCulture),
+                NumericalType.UnsignedShort => _ushort.ToString(CultureInfo.InvariantCulture),
+                NumericalType.SignedInt => _int.ToString(CultureInfo.InvariantCulture),
+                NumericalType.UnsignedInt => _uint.ToString(CultureInfo.InvariantCulture),
+                NumericalType.SignedLong => _long.ToString(CultureInfo.InvariantCulture),
+                NumericalType.UnsignedLong => _ulong.ToString(CultureInfo.InvariantCulture),
+                NumericalType.SinglePrecision => _float.ToString(CultureInfo.InvariantCulture),
+                NumericalType.DoublePrecision => _double.ToString(CultureInfo.InvariantCulture),
+                NumericalType.DecimalNumber => _decimal.ToString(CultureInfo.InvariantCulture),
                 _ => base.ToString()
             };
         }

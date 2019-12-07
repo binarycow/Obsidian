@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ExpressionParser
@@ -11,12 +12,12 @@ namespace ExpressionParser
             Name = name;
             Arguments = arguments;
             ReturnType = returnType;
-            Aliases = aliases ?? Array.Empty<string>();
+            Aliases = aliases ?? Enumerable.Empty<string>();
         }
 
-        public string[] Aliases { get; }
+        public IEnumerable<string> Aliases { get; }
         public string Name { get; }
-        public ParameterDeclaration[] Arguments { get; }
+        public IEnumerable<ParameterDeclaration> Arguments { get; }
         public Type ReturnType { get; }
     }
 }

@@ -7,7 +7,8 @@ using System;
 
 namespace Obsidian.Tests
 {
-    public class BasicTests : TestClass
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1812:Avoid uninstantiated internal classes", Justification = "<Pending>")]
+    internal class BasicTests : TestClass
     {
 
         [Test]

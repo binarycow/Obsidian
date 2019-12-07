@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Linq;
+using System.Resources;
 using System.Text;
+using System.Threading;
 using Common;
 using Common.Collections;
 using Common.LookaroundEnumerator;
@@ -34,7 +37,7 @@ namespace ExpressionParser.Lexing
         }
         public ILanguageDefinition LanguageDefinition { get; }
 
-        private TryReadDelegate[] _Delegates;
+        private readonly TryReadDelegate[] _Delegates;
         protected virtual TryReadDelegate[] Delegates => _Delegates;
 
         private readonly Dictionary<char[], OperatorDefinition> _Operators;
@@ -185,28 +188,28 @@ namespace ExpressionParser.Lexing
             enumerator.MoveNext(); //Eat the quote.
             if(enumerator.TryGetNext(out var nextChar) == false)
             {
-                throw new LexingException("Newline in constant");
+                throw new LexingException(ExpressionParserStrings.ResourceManager.GetString("LexerError_NewlineInConstant", CultureInfo.InvariantCulture));
             }
             if(enumerator.Current == '\'')
             {
-                throw new LexingException("Empty character literal");
+                throw new LexingException(ExpressionParserStrings.ResourceManager.GetString("LexerError_EmptyCharacterLiteral", CultureInfo.InvariantCulture));
             }
             if(enumerator.Current == '\\')
             {
                 if(nextChar.IsValidEscapedChar() == false)
                 {
-                    throw new LexingException("Unrecognized escape sequence");
+                    throw new LexingException(ExpressionParserStrings.ResourceManager.GetString("LexerError_UnrecognizedEscape", CultureInfo.InvariantCulture));
                 }
                 enumerator.MoveNext(); // Pass the backslash
                 escaped = true;
             }
             if(enumerator.TryGetNext(out nextChar) == false)
             {
-                throw new LexingException("Newline in constant");
+                throw new LexingException(ExpressionParserStrings.ResourceManager.GetString("LexerError_NewlineInConstant", CultureInfo.InvariantCulture));
             }
             if(nextChar != '\'')
             {
-                throw new LexingException("Too many characters in character literal");
+                throw new LexingException(ExpressionParserStrings.ResourceManager.GetString("LexerError_TooManyCharsInCharLiteral", CultureInfo.InvariantCulture));
             }
             token = new Token(TokenType.CharacterLiteral, null, escaped ? enumerator.Current.Escape() : enumerator.Current);
             enumerator.MoveNext(); //Move to quote

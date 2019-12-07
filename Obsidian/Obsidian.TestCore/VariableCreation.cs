@@ -11,9 +11,9 @@ using System.Collections;
 
 namespace Obsidian.TestCore
 {
-    public static class VariableCreation
+    internal static class VariableCreation
     {
-        public static Dictionary<string, object> GetVariables(string filename)
+        public static Dictionary<string, object?> GetVariables(string filename)
         {
             var fileText = File.ReadAllText(filename);
             if (!(JsonConvert.DeserializeObject(fileText) is JObject x))
@@ -21,11 +21,11 @@ namespace Obsidian.TestCore
                 throw new NotImplementedException();
             }
             var obj = ToObject(x);
-            if(obj is Dictionary<string, object> objDict)
+            if(obj is Dictionary<string, object?> objDict)
             {
                 return objDict;
             }
-            objDict = new Dictionary<string, object>();
+            objDict = new Dictionary<string, object?>();
 
             var keysProperty = obj.GetType().GetProperty("Keys");
             var indexer = obj.GetType().GetProperty("Item");
@@ -59,7 +59,7 @@ namespace Obsidian.TestCore
                 throw new NotImplementedException();
             }).ToArray();
 
-            var commonBaseType = Reflection.GetCommonBaseClass(children.Select(child => child.Value?.GetType()).NonNullItems());
+            var commonBaseType = ReflectionHelpers.GetCommonBaseClass(children.Select(child => child.Value?.GetType()).NonNullItems());
 
             var dictionaryType = typeof(Dictionary<,>);
             var genericType = dictionaryType.MakeGenericType(typeof(string), commonBaseType);
@@ -99,7 +99,7 @@ namespace Obsidian.TestCore
         {
             array = array ?? throw new ArgumentNullException(nameof(array));
             var childrenObjects = array.Children().Select(child => ToObject(child)).ToArray();
-            var baseType = Reflection.GetCommonBaseClass(childrenObjects.NonNullItems().Select(obj => obj.GetType()));
+            var baseType = ReflectionHelpers.GetCommonBaseClass(childrenObjects.NonNullItems().Select(obj => obj.GetType()));
 
 
             var listType = typeof(List<>);
@@ -118,7 +118,7 @@ namespace Obsidian.TestCore
             }
             foreach (var child in childrenObjects)
             {
-                addMethod.Invoke(retVal, new object[] { child });
+                addMethod.Invoke(retVal, new object?[] { child });
             }
             return retVal;
         }

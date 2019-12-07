@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -55,7 +55,7 @@ namespace Obsidian
             if (pendingOutput.Count > 0) output.Enqueue(MakeNode(pendingOutput, ParsingNodeType.Output));
             return output;
 
-            ParsingNode MakeNode(Queue<ParsingNode> queue, ParsingNodeType nodeType)
+            static ParsingNode MakeNode(Queue<ParsingNode> queue, ParsingNodeType nodeType)
             {
                 var allTokens = queue.SelectMany(node => node.Tokens);
                 var node = new ParsingNode(nodeType, allTokens);

@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace ExpressionParser.Configuration
 {
-    public class FunctionDefinition
+    internal class FunctionDefinition
     {
         public FunctionDefinition(string name, params OverloadDefinition[] overloads)
         {

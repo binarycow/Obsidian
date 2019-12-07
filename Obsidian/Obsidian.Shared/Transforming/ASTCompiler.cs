@@ -20,11 +20,11 @@
 
 //namespace Obsidian
 //{
-//    public class ASTCompiler : ITransformVisitor<Expression>, IForceTransformVisitor<Expression>
+//    internal class ASTCompiler : ITransformVisitor<Expression>, IForceTransformVisitor<Expression>
 //    {
 //        private class SpecialVariableInfo
 //        {
-//            public class AssignInfo<T> : AssignInfo
+//            internal class AssignInfo<T> : AssignInfo
 //            {
 //                public AssignInfo(ExpressionExtensionData<T> extensionData, BinaryExpression assignmentExpression) : base(extensionData, assignmentExpression)
 //                {
@@ -32,7 +32,7 @@
 //                }
 //                public ExpressionExtensionData<T> TypedExtensionData { get; }
 //            }
-//            public class AssignInfo
+//            internal class AssignInfo
 //            {
 //                public AssignInfo(ExpressionExtensionData extensionData, BinaryExpression assignmentExpression)
 //                {

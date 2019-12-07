@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -71,7 +71,7 @@ namespace Obsidian.AST.NodeParsers
 
         public TState? StateEnum { get; }
         public StateMachine<TState> Parent { get; }
-        private Dictionary<TokenTypes, List<ConditionalAction>> _Tokens = new Dictionary<TokenTypes, List<ConditionalAction>>();
+        private readonly Dictionary<TokenType, List<ConditionalAction>> _Tokens = new Dictionary<TokenType, List<ConditionalAction>>();
         private StateAction<TState>? _ElseAction = default;
         private StateAction<TState>? _ThrowAction = default;
 
@@ -83,7 +83,7 @@ namespace Obsidian.AST.NodeParsers
             foundAction.PredicateDebuggerDisplay = predicateDebuggerDisplay;
         }
 
-        public StateAction<TState> Expect(TokenTypes tokenType)
+        public StateAction<TState> Expect(TokenType tokenType)
         {
             var action = new StateAction<TState>(this);
             _Tokens.Add(tokenType, new List<ConditionalAction>
@@ -92,7 +92,7 @@ namespace Obsidian.AST.NodeParsers
             });
             return action;
         }
-        public StateAction<TState> Ignore(TokenTypes tokenType)
+        public StateAction<TState> Ignore(TokenType tokenType)
         {
             var action = new StateAction<TState>(this);
             _Tokens.Add(tokenType, new List<ConditionalAction>

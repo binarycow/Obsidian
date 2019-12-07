@@ -1,4 +1,4 @@
-﻿using ExpressionParser;
+using ExpressionParser;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Obsidian
 {
-    public class Block
+    internal class Block
     {
         public Block(string name, int index, Expression expression)
         {

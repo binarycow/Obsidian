@@ -1,4 +1,4 @@
-﻿using Common;
+using Common;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -8,7 +8,7 @@ using System.Text;
 
 namespace ExpressionParser.Scopes
 {
-    public class CompiledScope : IScope
+    internal class CompiledScope : IScope
     {
         private CompiledScope(string? name, CompiledScope? parentScope)
         {

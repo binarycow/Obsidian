@@ -5,7 +5,8 @@ using System.Text;
 
 namespace ExpressionParser.Configuration
 {
-    public class MethodOperatorDefinition : OperatorDefinition
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1812:Avoid uninstantiated internal classes", Justification = "<Pending>")]
+    internal class MethodOperatorDefinition : OperatorDefinition
     {
         public MethodOperatorDefinition(string startText, string endText, int precedence, SpecialOperatorType operatorType) : base(startText, precedence, OperandCount.Binary)
         {

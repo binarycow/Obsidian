@@ -11,10 +11,11 @@ using ExpressionParser.Lexing;
 using ExpressionParser.Parsing;
 using static Obsidian.JinjaLanguageDefinition;
 using static ExpressionParser.Lexing.TokenType;
+using System.Globalization;
 
 namespace Obsidian.ExpressionParserExt
 {
-    public class JinjaParser : Parser
+    internal class JinjaParser : Parser
     {
         public JinjaParser(JinjaLanguageDefinition languageDefinition) : base(languageDefinition, 1, 1)
         {
@@ -58,7 +59,7 @@ namespace Obsidian.ExpressionParserExt
                 }
                 if (enumerator.MoveNext() == false)
                 {
-                    throw new ParseException($"Unterminated collection literal");
+                    throw new ParseException(ExpressionParserStrings.ResourceManager.GetString("ParsingError_UnterminatedCollectionLiteral", CultureInfo.InvariantCulture));
                 }
             }
             if(queue.Count < minimumItems)
@@ -77,7 +78,7 @@ namespace Obsidian.ExpressionParserExt
 
         public bool TryParseList(ILookaroundEnumerator<Token> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode, AssignmentOperatorBehavior assignmentOperatorBehavior)
         {
-            if (TryParseCommaSeperatedSet(enumerator, TokenType.Operator, OPERATOR_SQUARE_BRACE_OPEN, SquareBrace_Close, out var parsedListItems, minimumItems: 1, assignmentOperatorBehavior))
+            if (TryParseCommaSeperatedSet(enumerator, TokenType.Operator, OPERATOR_SQUARE_BRACE_OPEN, SquareBraceClose, out var parsedListItems, minimumItems: 1, assignmentOperatorBehavior))
             {
                 parsedNode = new ListNode(parsedListItems);
                 return true;
@@ -90,7 +91,7 @@ namespace Obsidian.ExpressionParserExt
 
         public bool TryParseTuple(ILookaroundEnumerator<Token> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode, AssignmentOperatorBehavior assignmentOperatorBehavior)
         {
-            if (TryParseCommaSeperatedSet(enumerator, TokenType.Operator, OPERATOR_PAREN_OPEN, Paren_Close, out var parsedListItems, minimumItems: 2, assignmentOperatorBehavior))
+            if (TryParseCommaSeperatedSet(enumerator, TokenType.Operator, OPERATOR_PAREN_OPEN, ParenClose, out var parsedListItems, minimumItems: 2, assignmentOperatorBehavior))
             {
                 parsedNode = new TupleNode(parsedListItems);
                 return true;
@@ -104,7 +105,7 @@ namespace Obsidian.ExpressionParserExt
         public bool TryParseDictionary(ILookaroundEnumerator<Token> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode, AssignmentOperatorBehavior assignmentOperatorBehavior)
         {
             parsedNode = default;
-            if (enumerator.Current.TokenType != TokenType.CurlyBrace_Open)
+            if (enumerator.Current.TokenType != TokenType.CurlyBraceOpen)
             {
                 return false;
             }
@@ -121,7 +122,7 @@ namespace Obsidian.ExpressionParserExt
                 }
             }
 
-            if(enumerator.State == EnumeratorState.Complete || enumerator.Current.TokenType != TokenType.CurlyBrace_Close)
+            if(enumerator.State == EnumeratorState.Complete || enumerator.Current.TokenType != TokenType.CurlyBraceClose)
             {
                 throw new NotImplementedException();
             }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace Obsidian
@@ -8,8 +9,11 @@ namespace Obsidian
 
         private Dictionary<string, ITemplate> _TemplateCache = new Dictionary<string, ITemplate>();
 
-        public ITemplate Load(JinjaEnvironment environment, string name, IDictionary<string, object?> variableTemplate)
+        public virtual ITemplate Load(JinjaEnvironment environment, string name, IDictionary<string, object?> variableTemplate)
         {
+            environment = environment ?? throw new ArgumentNullException(nameof(environment));
+            name = name ?? throw new ArgumentNullException(nameof(name));
+            variableTemplate = variableTemplate ?? throw new ArgumentNullException(nameof(variableTemplate));
             var templateInfo = GetSource(environment, name);
             if(_TemplateCache.ContainsKey(name) == false || templateInfo.UpToDate == false)
             {

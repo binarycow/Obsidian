@@ -1,4 +1,4 @@
-﻿using Common.Collections;
+using Common.Collections;
 using Obsidian.AST.NodeParsers;
 using Obsidian.AST.Nodes.MiscNodes;
 using Obsidian.Lexing;
@@ -13,7 +13,7 @@ using System.Text;
 
 namespace Obsidian.AST.Nodes.Statements
 {
-    public class MacroNode : ASTNode, IWhiteSpaceControlling
+    internal class MacroNode : ASTNode, IWhiteSpaceControlling
     {
         public MacroNode(ParsingNode? startParsingNode, string macroText, ContainerNode contents, ParsingNode? endParsingNode, WhiteSpaceControlSet? whiteSpace = null)
             : base(startParsingNode, contents.ParsingNodes, endParsingNode)

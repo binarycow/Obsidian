@@ -10,7 +10,7 @@ using Obsidian.Transforming;
 namespace Obsidian.AST.Nodes
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public class OutputNode : ASTNode
+    internal class OutputNode : ASTNode
     {
         public OutputNode(ParsingNode parsingNode) : base(parsingNode)
         {
@@ -35,7 +35,7 @@ namespace Obsidian.AST.Nodes
 
         internal static OutputNode FromString(string @string)
         {
-            return new OutputNode(new ParsingNode(ParsingNodeType.Output, new[] { new Token(TokenTypes.Unknown, @string) }));
+            return new OutputNode(new ParsingNode(ParsingNodeType.Output, new[] { new Token(TokenType.Unknown, @string) }));
         }
     }
 }

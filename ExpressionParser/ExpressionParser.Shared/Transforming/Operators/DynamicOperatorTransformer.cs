@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using ExpressionParser.Configuration;
@@ -39,15 +39,12 @@ namespace ExpressionParser.Transforming.Operators
                 case OperatorType.Negate:
                     return TransformUnary(item, args[0]);
                 case OperatorType.Assign:
-                    switch(item.AssignmentOperatorBehavior)
+                    return item.AssignmentOperatorBehavior switch
                     {
-                        case AssignmentOperatorBehavior.Assign:
-                            throw new NotImplementedException();
-                        case AssignmentOperatorBehavior.NamedParameter:
-                            return TransformNamedArgument(args[0], args[1]);
-                        default:
-                            throw new NotImplementedException();
-                    }
+                        AssignmentOperatorBehavior.Assign => throw new NotImplementedException(),
+                        AssignmentOperatorBehavior.NamedParameter => TransformNamedArgument(args[0], args[1]),
+                        _ => throw new NotImplementedException(),
+                    };
                 default:
                     throw new NotImplementedException();
             }
@@ -80,7 +77,7 @@ namespace ExpressionParser.Transforming.Operators
             }
         }
 
-        public object? Negate(object? right)
+        public static object? Negate(object? right)
         {
             switch(right)
             {
@@ -120,20 +117,14 @@ namespace ExpressionParser.Transforming.Operators
         public object? Transform(SpecialOperator item, ASTNode[] args)
         {
             var left = args[0].Transform(NodeTransformer);
-            switch (item.OperatorType)
+            return item.OperatorType switch
             {
-                case SpecialOperatorType.MethodCall:
-                    return Method(left, args[1]);
-                case SpecialOperatorType.PropertyAccess:
-                    return Property(left, args[1]);
-                case SpecialOperatorType.Index:
-                    return Index(left, args[1]);
-                case SpecialOperatorType.Pipeline:
-                    return Pipeline(left, args[1]);
-                default:
-                    throw new NotImplementedException();
-            }
-
+                SpecialOperatorType.MethodCall => Method(left, args[1]),
+                SpecialOperatorType.PropertyAccess => Property(left, args[1]),
+                SpecialOperatorType.Index => Index(left, args[1]),
+                SpecialOperatorType.Pipeline => Pipeline(left, args[1]),
+                _ => throw new NotImplementedException(),
+            };
             object? Method(object? left, ASTNode right)
             {
                 switch (right)

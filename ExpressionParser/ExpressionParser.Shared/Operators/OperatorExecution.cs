@@ -5,7 +5,9 @@ using System.Text;
 
 namespace ExpressionParser.Operators
 {
-    public class OperatorExecution
+#pragma warning disable CA1812 // Avoid uninstantiated internal classes
+    internal class OperatorExecution
+#pragma warning restore CA1812 // Avoid uninstantiated internal classes
     {
         public OperatorExecution()
         {

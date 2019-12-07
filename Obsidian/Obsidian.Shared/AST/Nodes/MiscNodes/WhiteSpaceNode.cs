@@ -11,7 +11,7 @@ using Obsidian.WhiteSpaceControl;
 namespace Obsidian.AST.Nodes.MiscNodes
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public class WhiteSpaceNode : ASTNode, IWhiteSpace
+    internal class WhiteSpaceNode : ASTNode, IWhiteSpace
     {
         public WhiteSpaceNode(IEnumerable<ParsingNode> parsingNodes) : base(null, parsingNodes, null)
         {

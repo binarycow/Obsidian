@@ -8,7 +8,9 @@ using System.Diagnostics;
 namespace ExpressionParser.Parsing
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
+#pragma warning disable CA1812 // Avoid uninstantiated internal classes
     internal class DictionaryItemNode : ASTNode
+#pragma warning restore CA1812 // Avoid uninstantiated internal classes
     {
         public DictionaryItemNode(ASTNode key, ASTNode value) : base(key.Tokens.Concat(value.Tokens))
         {

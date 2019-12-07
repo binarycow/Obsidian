@@ -1,10 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using Common.ExpressionCreators;
-using Enumerable = Common.ExpressionCreators.Enumerable;
 using Object = Common.ExpressionCreators.Object;
 #if DEBUG
 using Console = Common.ExpressionCreators.Console;
@@ -20,8 +19,8 @@ namespace Common
 #endif
         public static Lazy<StringBuilder> _StringBuilder = new Lazy<StringBuilder>();
         public static StringBuilder StringBuilder => _StringBuilder.Value;
-        public static Lazy<Enumerable> _Enumerable = new Lazy<Enumerable>();
-        public static Enumerable Enumerable => _Enumerable.Value;
+        //public static Lazy<Enumerable> _Enumerable = new Lazy<Enumerable>();
+        //public static Enumerable Enumerable => _Enumerable.Value;
 
         public static Lazy<Object> _Object = new Lazy<Object>();
         public static Object Object => _Object.Value;

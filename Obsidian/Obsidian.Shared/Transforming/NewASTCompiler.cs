@@ -1,4 +1,4 @@
-﻿#if DEBUG
+#if DEBUG
 
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,6 @@ using Common;
 using Common.ExpressionCreators;
 using ExpressionParser;
 using ExpressionParser.Scopes;
-using ExpressionToString;
 using Obsidian.AST;
 using Obsidian.AST.Nodes;
 using Obsidian.AST.Nodes.MiscNodes;
@@ -20,13 +19,12 @@ using StringBuilder = System.Text.StringBuilder;
 
 namespace Obsidian.Transforming
 {
-    public class NewASTCompiler : ITransformVisitor<Expression>
+    internal class NewASTCompiler : ITransformVisitor<Expression>
     {
-        private static string SCOPE_NAME_INTERNAL = "Internal";
-        private static string VARNAME_STRING_BUILDER = "stringBuilder";
-        private static string VARNAME_STRING_SELF = "self";
-        private static string SCOPE_NAME_TEMPLATE = "TEMPLATE: {0}";
-        private static string SCOPE_NAME_BLOCK = "BLOCK: {0}";
+        private const string SCOPE_NAME_INTERNAL = "Internal";
+        private const string VARNAME_STRING_BUILDER = "stringBuilder";
+        private const string VARNAME_STRING_SELF = "self";
+        private const string SCOPE_NAME_TEMPLATE = "TEMPLATE: {0}";
 
         public Expression SelfVar => CurrentScope[VARNAME_STRING_SELF];
         public Expression StringBuilderVar => CurrentScope[VARNAME_STRING_BUILDER];
@@ -54,7 +52,7 @@ namespace Obsidian.Transforming
 
             return internalBlock;
 
-            BinaryExpression CreateVariable(NewASTCompiler localCompiler, string name, Expression createExpression)
+            static BinaryExpression CreateVariable(NewASTCompiler localCompiler, string name, Expression createExpression)
             {
                 localCompiler.CurrentScope.DefineAndSetVariable(name, createExpression, out var assignExpression);
                 return assignExpression;
@@ -69,7 +67,7 @@ namespace Obsidian.Transforming
         }
 
         public JinjaEnvironment Environment { get; }
-        private Stack<CompiledScope> _Scopes = new Stack<CompiledScope>();
+        private readonly Stack<CompiledScope> _Scopes = new Stack<CompiledScope>();
         public CompiledScope CurrentScope => _Scopes.Peek();
 
         public void PushScope(string name)
@@ -136,7 +134,6 @@ namespace Obsidian.Transforming
 
         public Expression Transform(WhiteSpaceNode item)
         {
-            return Expression.Empty();
             return ExpressionEx.Console.Write(item.ToString());
         }
 

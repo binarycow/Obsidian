@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using Common;
 using Common.Collections;
+using ExpressionParser;
 using ExpressionParser.Exceptions;
 using ExpressionParser.Lexing;
 
@@ -40,11 +42,11 @@ namespace Obsidian.ExpressionParserExt
                 {
                     if(enumerator.TryGetNext(out var nextChar) == false)
                     {
-                        throw new LexingException("Unrecognized escape sequence");
+                        throw new LexingException(ExpressionParserStrings.ResourceManager.GetString("LexerError_UnrecognizedEscape", CultureInfo.InvariantCulture));
                     }
                     if(nextChar.IsValidEscapedChar() == false)
                     {
-                        throw new LexingException("Unrecognized escape sequence");
+                        throw new LexingException(ExpressionParserStrings.ResourceManager.GetString("LexerError_UnrecognizedEscape", CultureInfo.InvariantCulture));
                     }
                     enumerator.MoveNext(); //Eat the backslash
                     stringBuilder.Append(enumerator.Current.Escape());
@@ -54,7 +56,7 @@ namespace Obsidian.ExpressionParserExt
             }
             if(enumerator.State == EnumeratorState.Complete)
             {
-                throw new LexingException("Newline in constant");
+                throw new LexingException(ExpressionParserStrings.ResourceManager.GetString("LexerError_NewlineInConstant", CultureInfo.InvariantCulture));
             }
             if(enumerator.Current != quoteChar)
             {

@@ -1,10 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Obsidian.Lexing;
 using Obsidian.WhiteSpaceControl;
 using static Obsidian.AST.NodeParsers.ForParser.ForState;
-using static Obsidian.Lexing.TokenTypes;
+using static Obsidian.Lexing.TokenType;
+using System.Globalization;
 
 namespace Obsidian.AST.NodeParsers
 {
@@ -24,9 +25,9 @@ namespace Obsidian.AST.NodeParsers
 
         public static readonly Lazy<StateMachine<ForState>> _StartBlockParser = new Lazy<StateMachine<ForState>>(() => CreateStartParser());
         public static StateMachine<ForState> StartBlock => _StartBlockParser.Value;
-        public static readonly Lazy<StateMachine<ForState>> _ElseBlockParser = new Lazy<StateMachine<ForState>>(() => CreateElseEndForParser(TokenTypes.Keyword_Else));
+        public static readonly Lazy<StateMachine<ForState>> _ElseBlockParser = new Lazy<StateMachine<ForState>>(() => CreateElseEndForParser(TokenType.Keyword_Else));
         public static StateMachine<ForState> ElseBlock => _ElseBlockParser.Value;
-        public static readonly Lazy<StateMachine<ForState>> _EndBlockParser = new Lazy<StateMachine<ForState>>(() => CreateElseEndForParser(TokenTypes.Keyword_EndFor));
+        public static readonly Lazy<StateMachine<ForState>> _EndBlockParser = new Lazy<StateMachine<ForState>>(() => CreateElseEndForParser(TokenType.Keyword_EndFor));
         public static StateMachine<ForState> EndBlock => _EndBlockParser.Value;
 
         private static StateMachine<ForState> CreateStartParser()
@@ -73,10 +74,13 @@ namespace Obsidian.AST.NodeParsers
                 .Else()
                     .Accumulate();
             parser.Else()
-                .Throw(new Exception("Unhandled State?"));
+                .Throw(new Exception(
+                    ObsidianStrings.ResourceManager.GetString("ASTStateMachineError_UnhandledState",
+                    CultureInfo.InvariantCulture)
+                ));
             return parser;
         }
-        private static StateMachine<ForState> CreateElseEndForParser(TokenTypes keyword)
+        private static StateMachine<ForState> CreateElseEndForParser(TokenType keyword)
         {
             var parser = new StateMachine<ForState>(StartJinja, Done);
             parser.State(StartJinja)
@@ -114,7 +118,10 @@ namespace Obsidian.AST.NodeParsers
                 .Else()
                     .Accumulate();
             parser.Else()
-                .Throw(new Exception("Unhandled State?"));
+                .Throw(new Exception(
+                    ObsidianStrings.ResourceManager.GetString("ASTStateMachineError_UnhandledState",
+                    CultureInfo.InvariantCulture)
+                ));
             return parser;
         }
 

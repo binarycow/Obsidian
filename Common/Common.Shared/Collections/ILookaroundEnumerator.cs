@@ -8,7 +8,7 @@ using Common.LookaroundEnumerator;
 
 namespace Common.Collections
 {
-    public interface ILookaroundEnumerator<T> : IEnumerator<T>
+    internal interface ILookaroundEnumerator<T> : IEnumerator<T>
     {
         bool TryGetNextArray(int count, out T[] value);
         bool TryGetNext([NotNullWhen(true)]out T value, int count = 1);

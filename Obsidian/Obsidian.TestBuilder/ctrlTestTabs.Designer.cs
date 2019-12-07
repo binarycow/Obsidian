@@ -1,4 +1,4 @@
-﻿namespace Obsidian.TestBuilder
+namespace Obsidian.TestBuilder
 {
     partial class ctrlTestTabs
     {

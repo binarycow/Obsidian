@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -11,7 +11,7 @@ namespace Common
     internal static class TypeCoercion
     {
 
-        static Dictionary<Type, List<Type>> ImplicitNumericConversions = new Dictionary<Type, List<Type>>();
+        static readonly Dictionary<Type, List<Type>> ImplicitNumericConversions = new Dictionary<Type, List<Type>>();
 
         static TypeCoercion()
         {
@@ -54,8 +54,7 @@ namespace Common
             {
                 return true;
             }
-            List<Type>? list;
-            if (ImplicitNumericConversions.TryGetValue(from, out list))
+            if (ImplicitNumericConversions.TryGetValue(from, out List<Type> list))
             {
                 if (list.Contains(to))
                     return true;

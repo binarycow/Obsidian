@@ -1,11 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using ExpressionParser.Lexing;
 
 namespace ExpressionParser.Configuration
 {
-    public class SpecialOperatorDefinition : OperatorDefinition
+    internal class SpecialOperatorDefinition : OperatorDefinition
     {
         private SpecialOperatorDefinition(string text, TokenType? secondaryTokenType, int precedence, SpecialOperatorType operatorType, 
             TokenType? argumentSeperator = null, TokenType? endingText = null, int minArguments = 0, int maxArguments = 0) 
@@ -29,9 +30,20 @@ namespace ExpressionParser.Configuration
             TokenType endingText, int minArguments, int maxArguments = int.MaxValue)
         {
             if (minArguments < 0) throw new ArgumentOutOfRangeException(nameof(minArguments), minArguments,
-                $"{nameof(minArguments)} must be greater than or equal to zero.");
+                string.Format(
+                    CultureInfo.InvariantCulture,
+                    ExpressionParserStrings.ResourceManager.GetString("OperatorError_MinArgsInvalid", CultureInfo.InvariantCulture),
+                    nameof(minArguments)
+                )
+            );
+
             if (maxArguments < minArguments) throw new ArgumentOutOfRangeException(nameof(maxArguments), maxArguments,
-                $"{nameof(maxArguments)} must be greater than or equal to {nameof(minArguments)}.");
+                string.Format(
+                    CultureInfo.InvariantCulture,
+                    ExpressionParserStrings.ResourceManager.GetString("OperatorError_MaxArgsInvalid", CultureInfo.InvariantCulture),
+                    nameof(maxArguments), nameof(minArguments)
+                )
+            );
             return new SpecialOperatorDefinition(text, secondaryTokenType, precedence, operatorType, argumentSeperator, endingText, minArguments, maxArguments);
         }
 

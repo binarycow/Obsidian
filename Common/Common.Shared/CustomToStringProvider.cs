@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -9,14 +9,14 @@ using System.Text;
 
 namespace Common
 {
-    public abstract class CustomToStringProvider
+    internal abstract class CustomToStringProvider
     {
         protected CustomToStringProvider()
         {
         }
 
 
-        private Dictionary<Type, Func<object, string>> _Dictionary = new Dictionary<Type, Func<object, string>>();
+        private readonly Dictionary<Type, Func<object, string>> _Dictionary = new Dictionary<Type, Func<object, string>>();
 
 
         public virtual string FormatTuple(object? tuple, PropertyInfo[] tupleProperties)
@@ -54,19 +54,18 @@ namespace Common
             {
                 return str;
             }
-            var type = item?.GetType() ?? typeof(object);
             // Check if its "IEnumerable" or "IEnumerable<T>"
 
             if (item is IEnumerable enumerable)
             {
                 return FormatIEnumerable(enumerable.OfType<object?>());
             }
-            if (Reflection.TryGetIEnumerable(item, out var ienumerableT))
+            if (ReflectionHelpers.TryGetIEnumerable(item, out var ienumerableT))
             {
                 return FormatIEnumerable(ienumerableT);
             }
             // Check for Tuple
-            if(Reflection.IsTuple(item, out var tupleProperties))
+            if(ReflectionHelpers.IsTuple(item, out var tupleProperties))
             {
                 return FormatTuple(item, tupleProperties);
             }

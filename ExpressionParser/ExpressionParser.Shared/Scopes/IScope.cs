@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
@@ -6,7 +6,7 @@ using System.Text;
 
 namespace ExpressionParser.Scopes
 {
-    public interface IScope
+    internal interface IScope
     {
         public IScope? ParentScope { get; }
         public string? Name { get; }

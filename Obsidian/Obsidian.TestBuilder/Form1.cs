@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,11 +14,14 @@ namespace Obsidian.TestBuilder
 {
     public partial class Form1 : Form
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2211:Non-constant fields should not be visible", Justification = "<Pending>")]
         public static string RootPath = Path.GetFullPath(Path.Combine(Application.ExecutablePath, "..", "..", "..", "..", "TestData"));
+        
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Code Quality", "IDE0069:Disposable fields should be disposed", Justification = "<Pending>")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2213:Disposable fields should be disposed", Justification = "<Pending>")]
+        private readonly ctrlTestTabs testTabs = new ctrlTestTabs() { Visible = false, Dock = DockStyle.Fill };
 
-        private ctrlTestTabs testTabs = new ctrlTestTabs() { Visible = false, Dock = DockStyle.Fill };
-
-        private Dictionary<Item, TreeNode> _Nodes = new Dictionary<Item, TreeNode>();
+        private readonly Dictionary<Item, TreeNode> _Nodes = new Dictionary<Item, TreeNode>();
 
         public Form1()
         {
@@ -29,27 +32,28 @@ namespace Obsidian.TestBuilder
             splitContainer1.Panel2.Controls.Add(testTabs);
         }
 
-
-
-
-        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "<Pending>")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
+        private void SaveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
                 TestRunner.Save("Tests.json");
-                MessageBox.Show("Save Complete.");
+                _ = MessageBox.Show("Save Complete.");
             }
             catch(Exception ex)
             {
-                MessageBox.Show($"Couldn't save: {Environment.NewLine}{ex.GetType().Name}{Environment.NewLine}{ex.Message}");
+                _ = MessageBox.Show($"Couldn't save: {Environment.NewLine}{ex.GetType().Name}{Environment.NewLine}{ex.Message}");
             }
         }
 
-        private void resetFromFileToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ResetFromFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Reset();
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "<Pending>")]
         void Reset(bool messageBox = true)
         {
 
@@ -61,47 +65,48 @@ namespace Obsidian.TestBuilder
 
                 foreach (var item in TestRunner.TestItems.Values)
                 {
-                    treeView1.Nodes.Add(CreateNode(item));
+                    _ = treeView1.Nodes.Add(CreateNode(item));
                 }
                 treeView1.ExpandAll();
                 if(messageBox)
                 {
-                    MessageBox.Show("Reset Complete.");
+                    _ = MessageBox.Show("Reset Complete.");
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Couldn't reset: {Environment.NewLine}{ex.GetType().Name}{Environment.NewLine}{ex.Message}");
+                _ = MessageBox.Show($"Couldn't reset: {Environment.NewLine}{ex.GetType().Name}{Environment.NewLine}{ex.Message}");
             }
         }
 
         private TreeNode CreateNode(Item item)
         {
-            switch(item)
+            return item switch
             {
-                case Test test:
-                    return CreateTestNode(test);
-                case Category category:
-                    return CreateCategoryNode(category);
-                default:
-                    throw new NotImplementedException();
-            }
+                Test test => CreateTestNode(test),
+                Category category => CreateCategoryNode(category),
+                _ => throw new NotImplementedException(),
+            };
         }
         private TreeNode CreateTestNode(Test item)
         {
-            var treeNode = new TreeNode($"Test: {item.Name}");
-            treeNode.Tag = item;
+            var treeNode = new TreeNode($"Test: {item.Name}")
+            {
+                Tag = item
+            };
             item.PropertyChanged += Test_PropertyChanged;
             _Nodes.Add(item, treeNode);
             return treeNode;
         }
         private TreeNode CreateCategoryNode(Category item)
         {
-            var treeNode = new TreeNode($"Category: {item.Name}");
-            treeNode.Tag = item;
-            foreach(var child in item.Children)
+            var treeNode = new TreeNode($"Category: {item.Name}")
             {
-                treeNode.Nodes.Add(CreateNode(child));
+                Tag = item
+            };
+            foreach (var child in item.Children)
+            {
+                _ = treeNode.Nodes.Add(CreateNode(child));
             }
             item.PropertyChanged += Category_PropertyChanged;
             _Nodes.Add(item, treeNode);
@@ -133,7 +138,7 @@ namespace Obsidian.TestBuilder
             }
         }
 
-        private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
+        private void TreeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
             switch(e.Node.Tag)
             {
@@ -141,7 +146,7 @@ namespace Obsidian.TestBuilder
                     testTabs.Visible = true;
                     testTabs.SetTest(test);
                     break;
-                case Category category:
+                case Category _:
                     testTabs.Visible = false;
                     break;
                 default:
@@ -149,7 +154,7 @@ namespace Obsidian.TestBuilder
             }
         }
 
-        private void runTestToolStripMenuItem_Click(object sender, EventArgs e)
+        private void RunTestToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var test = ((sender as ToolStripMenuItem)?.GetCurrentParent() as ContextMenuStrip)?.Tag as Test;
             if (test == default) throw new NotImplementedException();
@@ -159,7 +164,7 @@ namespace Obsidian.TestBuilder
             testTabs.tabControl1.SelectTab(testTabs.tabTestResults);
         }
 
-        private void treeView1_MouseDown(object sender, MouseEventArgs e)
+        private void TreeView1_MouseDown(object sender, MouseEventArgs e)
         {
             // Make sure this is the right button.
             if (e.Button != MouseButtons.Right) return;
@@ -187,7 +192,7 @@ namespace Obsidian.TestBuilder
             }
         }
 
-        private void addTestToolStripMenuItem_Click(object sender, EventArgs e)
+        private void AddTestToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
         }

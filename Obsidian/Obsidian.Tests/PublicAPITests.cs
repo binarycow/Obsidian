@@ -11,7 +11,8 @@ using Obsidian.TestCore;
 
 namespace Obsidian.Tests
 {
-    public class PublicAPITests
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1812:Avoid uninstantiated internal classes", Justification = "<Pending>")]
+    internal class PublicAPITests
     {
         private class MyParameterInfo
         {
@@ -105,6 +106,8 @@ namespace Obsidian.Tests
                 Type = property.FieldType
             };
         }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
         private MyFieldInfo[] GetFieldInfo(Type type)
         {
             return type.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance | BindingFlags.DeclaredOnly)

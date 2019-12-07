@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Common
 {
-    public class CharArrayEqualityComparer : IEqualityComparer<char[]>
+    internal class CharArrayEqualityComparer : IEqualityComparer<char[]>
     {
         private CharArrayEqualityComparer()
         {

@@ -7,7 +7,7 @@ using System.Text;
 namespace ExpressionParser.Lexing
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public struct Token : IEquatable<Token>
+    internal struct Token : IEquatable<Token>
     {
         private string DebuggerDisplay => $"{nameof(Token)} : {TokenType} : '{TextValue}'";
         private Token(TokenType tokenType, StringBuilder stringBuilder) : this(tokenType, stringBuilder.ToString())
@@ -58,7 +58,7 @@ namespace ExpressionParser.Lexing
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
+            if (obj is null) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
             if (!(obj is Token token)) return false;

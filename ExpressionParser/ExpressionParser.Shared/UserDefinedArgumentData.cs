@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -16,9 +16,9 @@ namespace ExpressionParser
             AdditionalKeywordArguments = additionalKeywordArguments.ToArrayWithoutInstantiation();
         }
 
-        public UserDefinedArgument[] DefinedPositionalArguments { get; }
-        public UserDefinedArgument[] AdditionalPositionalArguments { get; }
-        public UserDefinedArgument[] AdditionalKeywordArguments { get; }
+        public IEnumerable<UserDefinedArgument> DefinedPositionalArguments { get; }
+        public IEnumerable<UserDefinedArgument> AdditionalPositionalArguments { get; }
+        public IEnumerable<UserDefinedArgument> AdditionalKeywordArguments { get; }
 
 
         public bool TryGetArgumentValue(string argumentName, out object? value)

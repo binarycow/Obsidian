@@ -1,11 +1,11 @@
-﻿using ExpressionParser.Scopes;
+using ExpressionParser.Scopes;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace ExpressionParser.Configuration
 {
-    public abstract class OverloadDefinition
+    internal abstract class OverloadDefinition
     {
         public OverloadDefinition(Func<object?[], object?> func, Type returnType)
         {

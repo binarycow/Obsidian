@@ -7,7 +7,7 @@ using Obsidian;
 
 namespace Obsidian.Lexing
 {
-    public class Lexer
+    internal class Lexer
     {
         public Lexer(JinjaEnvironment environment)
         {
@@ -19,19 +19,19 @@ namespace Obsidian.Lexing
                 TryKeyword,
                 TrySingleChar,
             };
-            _KeywordLookups.Add(environment.Settings.BlockStartString.ToCharArray(), TokenTypes.StatementStart);
-            _KeywordLookups.Add(environment.Settings.BlockEndString.ToCharArray(), TokenTypes.StatementEnd);
-            _KeywordLookups.Add(environment.Settings.VariableStartString.ToCharArray(), TokenTypes.ExpressionStart);
-            _KeywordLookups.Add(environment.Settings.VariableEndString.ToCharArray(), TokenTypes.ExpressionEnd);
-            _KeywordLookups.Add(environment.Settings.CommentStartString.ToCharArray(), TokenTypes.CommentStart);
-            _KeywordLookups.Add(environment.Settings.CommentEndString.ToCharArray(), TokenTypes.CommentEnd);
+            _KeywordLookups.Add(environment.Settings.BlockStartString.ToCharArray(), TokenType.StatementStart);
+            _KeywordLookups.Add(environment.Settings.BlockEndString.ToCharArray(), TokenType.StatementEnd);
+            _KeywordLookups.Add(environment.Settings.VariableStartString.ToCharArray(), TokenType.ExpressionStart);
+            _KeywordLookups.Add(environment.Settings.VariableEndString.ToCharArray(), TokenType.ExpressionEnd);
+            _KeywordLookups.Add(environment.Settings.CommentStartString.ToCharArray(), TokenType.CommentStart);
+            _KeywordLookups.Add(environment.Settings.CommentEndString.ToCharArray(), TokenType.CommentEnd);
             if (environment.Settings.LineCommentPrefix != null)
             {
-                _KeywordLookups.Add(environment.Settings.LineCommentPrefix.ToCharArray(), TokenTypes.LineComment);
+                _KeywordLookups.Add(environment.Settings.LineCommentPrefix.ToCharArray(), TokenType.LineComment);
             }
             if (environment.Settings.LineStatementPrefix != null)
             {
-                _KeywordLookups.Add(environment.Settings.LineStatementPrefix.ToCharArray(), TokenTypes.LineStatement);
+                _KeywordLookups.Add(environment.Settings.LineStatementPrefix.ToCharArray(), TokenType.LineStatement);
             }
         }
         public JinjaEnvironment Environment { get; }
@@ -54,28 +54,28 @@ namespace Obsidian.Lexing
             {'-', () => Token.Minus },
             {'=', () => Token.Equal },
         };
-        private Dictionary<char[], TokenTypes> _KeywordLookups = new Dictionary<char[], TokenTypes>
+        private Dictionary<char[], TokenType> _KeywordLookups = new Dictionary<char[], TokenType>
         {
-            { "for".ToCharArray(), TokenTypes.Keyword_For },
-            { "endfor".ToCharArray(), TokenTypes.Keyword_EndFor },
-            { "in".ToCharArray(), TokenTypes.Keyword_In },
-            { "if".ToCharArray(), TokenTypes.Keyword_If },
-            { "else".ToCharArray(), TokenTypes.Keyword_Else },
-            { "elif".ToCharArray(), TokenTypes.Keyword_Elif },
-            { "endif".ToCharArray(), TokenTypes.Keyword_Endif },
-            { "block".ToCharArray(), TokenTypes.Keyword_Block },
-            { "endblock".ToCharArray(), TokenTypes.Keyword_EndBlock },
-            { "extends".ToCharArray(), TokenTypes.Keyword_Extends },
-            { "raw".ToCharArray(), TokenTypes.Keyword_Raw },
-            { "endraw".ToCharArray(), TokenTypes.Keyword_EndRaw },
-            { "macro".ToCharArray(), TokenTypes.Keyword_Macro },
-            { "endmacro".ToCharArray(), TokenTypes.Keyword_EndMacro },
-            { "call".ToCharArray(), TokenTypes.Keyword_Call },
-            { "endcall".ToCharArray(), TokenTypes.Keyword_EndCall },
-            { "filter".ToCharArray(), TokenTypes.Keyword_Filter },
-            { "endfilter".ToCharArray(), TokenTypes.Keyword_EndFilter },
-            { "set".ToCharArray(), TokenTypes.Keyword_Set },
-            { "endset".ToCharArray(), TokenTypes.Keyword_EndSet },
+            { "for".ToCharArray(), TokenType.Keyword_For },
+            { "endfor".ToCharArray(), TokenType.Keyword_EndFor },
+            { "in".ToCharArray(), TokenType.Keyword_In },
+            { "if".ToCharArray(), TokenType.Keyword_If },
+            { "else".ToCharArray(), TokenType.Keyword_Else },
+            { "elif".ToCharArray(), TokenType.Keyword_Elif },
+            { "endif".ToCharArray(), TokenType.Keyword_Endif },
+            { "block".ToCharArray(), TokenType.Keyword_Block },
+            { "endblock".ToCharArray(), TokenType.Keyword_EndBlock },
+            { "extends".ToCharArray(), TokenType.Keyword_Extends },
+            { "raw".ToCharArray(), TokenType.Keyword_Raw },
+            { "endraw".ToCharArray(), TokenType.Keyword_EndRaw },
+            { "macro".ToCharArray(), TokenType.Keyword_Macro },
+            { "endmacro".ToCharArray(), TokenType.Keyword_EndMacro },
+            { "call".ToCharArray(), TokenType.Keyword_Call },
+            { "endcall".ToCharArray(), TokenType.Keyword_EndCall },
+            { "filter".ToCharArray(), TokenType.Keyword_Filter },
+            { "endfilter".ToCharArray(), TokenType.Keyword_EndFilter },
+            { "set".ToCharArray(), TokenType.Keyword_Set },
+            { "endset".ToCharArray(), TokenType.Keyword_EndSet },
         };
         private bool TryKeyword(ILookaroundEnumerator<char> enumerator, out Token? token)
         {
@@ -105,15 +105,12 @@ namespace Obsidian.Lexing
             }
             return false;
         }
+
         public IEnumerable<Token> Tokenize(IEnumerable<char> source)
         {
             var maximumLength = _KeywordLookups.Keys.Max(keyword => keyword.Length);
-            var enumerator = LookaroundEnumeratorFactory.CreateLookaroundEnumerator(source, (byte)maximumLength);
-            return Tokenize(enumerator);
-        }
+            using var enumerator = LookaroundEnumeratorFactory.CreateLookaroundEnumerator(source, (byte)maximumLength);
 
-        public IEnumerable<Token> Tokenize(ILookaroundEnumerator<char> enumerator)
-        {
             var currentUnknown = new Queue<char>();
             while (enumerator.MoveNext())
             {
@@ -130,7 +127,7 @@ namespace Obsidian.Lexing
                 {
                     if (currentUnknown.Count != 0)
                     {
-                        yield return new Token(TokenTypes.Unknown, new string(currentUnknown.ToArray()));
+                        yield return new Token(TokenType.Unknown, new string(currentUnknown.ToArray()));
                         currentUnknown.Clear();
                     }
                     yield return token;
@@ -142,7 +139,7 @@ namespace Obsidian.Lexing
             }
             if (currentUnknown.Count != 0)
             {
-                yield return new Token(TokenTypes.Unknown, new string(currentUnknown.ToArray()));
+                yield return new Token(TokenType.Unknown, new string(currentUnknown.ToArray()));
             }
         }
 
@@ -190,7 +187,7 @@ namespace Obsidian.Lexing
                     break;
                 }
             }
-            token = new Token(TokenTypes.WhiteSpace, queue);
+            token = new Token(TokenType.WhiteSpace, queue);
             return true;
         }
 

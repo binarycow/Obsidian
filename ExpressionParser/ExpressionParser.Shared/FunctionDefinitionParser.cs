@@ -1,11 +1,11 @@
-﻿using ExpressionParser.Parsing;
+using ExpressionParser.Parsing;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace ExpressionParser
 {
-    public static class FunctionDefinitionParser
+    internal static class FunctionDefinitionParser
     {
 
         public static void ParseFunctionDefinition(ASTNode node)

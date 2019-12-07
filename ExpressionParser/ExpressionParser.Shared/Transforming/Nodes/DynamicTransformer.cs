@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using ExpressionParser.Configuration;
@@ -43,7 +43,7 @@ namespace ExpressionParser.Transforming.Nodes
 
         public object? Transform(IdentifierNode item)
         {
-            var valueKeyword = LanguageDefinition.Keywords.OfType<ValueKeywordDefinition>().FirstOrDefault(x => x.Text == item.TextValue);
+            var valueKeyword = LanguageDefinition.Keywords.OfType<ValueKeywordDefinition>().FirstOrDefault(x => x.Names.Contains(item.TextValue));
             if (valueKeyword != default) return valueKeyword.Value;
 
             if (ScopeStack.Current.TryGetVariable(item.TextValue, out var value)) return value;
@@ -65,13 +65,13 @@ namespace ExpressionParser.Transforming.Nodes
         public object? Transform(TupleNode item)
         {
             var tupleItems = item.TupleItems.Select(listItem => listItem.Transform(this));
-            return Common.Reflection.MakeGenericTuple(tupleItems);
+            return Common.ReflectionHelpers.MakeGenericTuple(tupleItems);
         }
 
         public object? Transform(ListNode item)
         {
             var listItems = item.ListItems.Select(listItem => listItem.Transform(this));
-            return Common.Reflection.MakeGenericList(listItems);
+            return Common.ReflectionHelpers.MakeGenericList(listItems);
         }
     }
 }

@@ -7,7 +7,8 @@ using NUnit.Framework;
 
 namespace Obsidian.Tests
 {
-    public class WhiteSpace : TestClass
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1812:Avoid uninstantiated internal classes", Justification = "<Pending>")]
+    internal class WhiteSpace : TestClass
     {
         [Test]
         public void Defaults()

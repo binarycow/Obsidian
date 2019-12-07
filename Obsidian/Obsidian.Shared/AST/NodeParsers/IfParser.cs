@@ -1,10 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Obsidian.Lexing;
 using Obsidian.WhiteSpaceControl;
 using static Obsidian.AST.NodeParsers.IfParser.IfState;
-using static Obsidian.Lexing.TokenTypes;
+using static Obsidian.Lexing.TokenType;
+using System.Globalization;
 
 namespace Obsidian.AST.NodeParsers
 {
@@ -30,7 +31,7 @@ namespace Obsidian.AST.NodeParsers
         public static readonly Lazy<StateMachine<IfState>> _EndBlockParser = new Lazy<StateMachine<IfState>>(() => CreateElseEndForParser(Keyword_Endif));
         public static StateMachine<IfState> EndBlock => _EndBlockParser.Value;
 
-        private static StateMachine<IfState> CreateStartElseIfParser(TokenTypes keyword)
+        private static StateMachine<IfState> CreateStartElseIfParser(TokenType keyword)
         {
             var parser = new StateMachine<IfState>(StartJinja, Done);
             parser.State(StartJinja)
@@ -69,11 +70,14 @@ namespace Obsidian.AST.NodeParsers
                 .Else()
                     .Throw();
             parser.Else()
-                .Throw(new Exception("Unhandled State?"));
+                .Throw(new Exception(
+                    ObsidianStrings.ResourceManager.GetString("ASTStateMachineError_UnhandledState",
+                    CultureInfo.InvariantCulture)
+                ));
             return parser;
         }
 
-        private static StateMachine<IfState> CreateElseEndForParser(TokenTypes keyword)
+        private static StateMachine<IfState> CreateElseEndForParser(TokenType keyword)
         {
             var parser = new StateMachine<IfState>(StartJinja, Done);
             parser.State(StartJinja)
@@ -111,7 +115,10 @@ namespace Obsidian.AST.NodeParsers
                 .Else()
                     .Throw();
             parser.Else()
-                .Throw(new Exception("Unhandled State?"));
+                .Throw(new Exception(
+                    ObsidianStrings.ResourceManager.GetString("ASTStateMachineError_UnhandledState",
+                    CultureInfo.InvariantCulture)
+                ));
             return parser;
         }
     }

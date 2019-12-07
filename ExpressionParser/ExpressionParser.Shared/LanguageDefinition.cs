@@ -7,7 +7,7 @@ using ExpressionParser.Lexing;
 
 namespace ExpressionParser
 {
-    public static class LanguageDefinition
+    internal static class LanguageDefinition
     {
         public static readonly Lazy<CSharpLanguageDefinition> _CSharp = new Lazy<CSharpLanguageDefinition>();
         public static ILanguageDefinition CSharp => _CSharp.Value;
@@ -15,12 +15,12 @@ namespace ExpressionParser
 
         public static IDictionary<char, TokenType> StandardSingleCharacterTokens => new Dictionary<char, TokenType>
         {
-            { '(', TokenType.Paren_Open },
-            { ')', TokenType.Paren_Close },
-            { '[', TokenType.SquareBrace_Open },
-            { ']', TokenType.SquareBrace_Close },
-            { '{', TokenType.CurlyBrace_Open },
-            { '}', TokenType.CurlyBrace_Close },
+            { '(', TokenType.ParenOpen },
+            { ')', TokenType.ParenClose },
+            { '[', TokenType.SquareBraceOpen },
+            { ']', TokenType.SquareBraceClose },
+            { '{', TokenType.CurlyBraceOpen },
+            { '}', TokenType.CurlyBraceClose },
             { ',', TokenType.Comma },
             { ':', TokenType.Colon },
             { '\'', TokenType.SingleQuote },

@@ -1,9 +1,10 @@
-﻿using Obsidian.WhiteSpaceControl;
+using Obsidian.WhiteSpaceControl;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using static Obsidian.AST.NodeParsers.SetParser.SetState;
-using static Obsidian.Lexing.TokenTypes;
+using static Obsidian.Lexing.TokenType;
 
 namespace Obsidian.AST.NodeParsers
 {
@@ -76,7 +77,10 @@ namespace Obsidian.AST.NodeParsers
                 .Else()
                     .Accumulate();
             parser.Else()
-                .Throw(new Exception("Unhandled State?"));
+                .Throw(new Exception(
+                    ObsidianStrings.ResourceManager.GetString("ASTStateMachineError_UnhandledState",
+                    CultureInfo.InvariantCulture)
+                ));
             return parser;
         }
         private static StateMachine<SetState> CreateEndParser()
@@ -119,7 +123,10 @@ namespace Obsidian.AST.NodeParsers
                 .Else()
                     .Accumulate();
             parser.Else()
-                .Throw(new Exception("Unhandled State?"));
+                .Throw(new Exception(
+                    ObsidianStrings.ResourceManager.GetString("ASTStateMachineError_UnhandledState",
+                    CultureInfo.InvariantCulture)
+                ));
             return parser;
         }
 

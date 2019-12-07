@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
@@ -6,13 +6,13 @@ using System.Text;
 
 namespace Common
 {
-    public static class MethodLookups
+    internal static class MethodLookups
     {
 
 
 
-        private static Type _Enumerable = typeof(System.Linq.Enumerable);
-        private static Lazy<Dictionary<Type, MethodInfo>> _EnumerableToArray = new Lazy<Dictionary<Type, MethodInfo>>();
+        private static readonly Type _Enumerable = typeof(System.Linq.Enumerable);
+        private static readonly Lazy<Dictionary<Type, MethodInfo>> _EnumerableToArray = new Lazy<Dictionary<Type, MethodInfo>>();
 
 
         public static bool TryGet_Enumerable_ToArray(Type type, [NotNullWhen(true)]out MethodInfo? methodInfo)
@@ -34,8 +34,8 @@ namespace Common
             return false;
         }
 
-        private static Dictionary<Tuple<Type, Type[], Type[]>, ConstructorInfo> Constructors = new Dictionary<Tuple<Type, Type[], Type[]>, ConstructorInfo>();
-        private static HashSet<Tuple<Type, Type[], Type[]>> NoConstructors = new HashSet<Tuple<Type, Type[], Type[]>>();
+        private static readonly Dictionary<Tuple<Type, Type[], Type[]>, ConstructorInfo> Constructors = new Dictionary<Tuple<Type, Type[], Type[]>, ConstructorInfo>();
+        private static readonly HashSet<Tuple<Type, Type[], Type[]>> NoConstructors = new HashSet<Tuple<Type, Type[], Type[]>>();
 
         public static bool TryGet_Constructor([NotNullWhen(true)]out ConstructorInfo? constructorInfo,
             Type type, Type[] constructorArguments)
@@ -65,8 +65,8 @@ namespace Common
         }
 
 
-        private static Dictionary<Tuple<Type, string, Type[]>, MethodInfo> Methods = new Dictionary<Tuple<Type, string, Type[]>, MethodInfo>();
-        private static HashSet<Tuple<Type, string, Type[]>> NoMethods = new HashSet<Tuple<Type, string, Type[]>>();
+        private static readonly Dictionary<Tuple<Type, string, Type[]>, MethodInfo> Methods = new Dictionary<Tuple<Type, string, Type[]>, MethodInfo>();
+        private static readonly HashSet<Tuple<Type, string, Type[]>> NoMethods = new HashSet<Tuple<Type, string, Type[]>>();
 
 
         internal static MethodInfo GetMethod(Type type, string methodName, Type[] methodArguments)

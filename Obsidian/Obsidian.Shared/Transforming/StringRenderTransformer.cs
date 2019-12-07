@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Common;
@@ -11,7 +11,7 @@ using Obsidian.Templates;
 
 namespace Obsidian.Transforming
 {
-    public class StringRenderTransformer : ITransformVisitor<IEnumerable<string>>
+    internal class StringRenderTransformer : ITransformVisitor<IEnumerable<string>>
     {
         public StringRenderTransformer(JinjaEnvironment environment, ScopeStack<DynamicContext, DynamicRootContext> scopes)
         {
@@ -25,7 +25,6 @@ namespace Obsidian.Transforming
         private ExpressionNode? _NextTemplate = null;
         private bool _EncounteredOutputStyleBlock { get; set; }
         public bool ShouldRender => _NextTemplate == null;
-        private DynamicSelf _Self = new DynamicSelf();
 
 
         public IEnumerable<string> Transform(TemplateNode item)
@@ -49,7 +48,7 @@ namespace Obsidian.Transforming
                         toRender = d.TemplateNode;
                         break;
                     case string templateName:
-                        var temp = Environment.GetTemplate(templateName, Scopes.Current);
+                        var temp = Environment.GetDynamicTemplate(templateName);
                         if (!(temp is DynamicTemplate dt)) throw new NotImplementedException();
                         toRender = dt.TemplateNode;
                         break;

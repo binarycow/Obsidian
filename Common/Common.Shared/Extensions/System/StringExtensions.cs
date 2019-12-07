@@ -5,7 +5,7 @@ using System.Text;
 
 namespace System
 {
-    public static class StringExtensions
+    internal static class StringExtensions
     {
 
         public static string[] Split(this string str, string seperator)

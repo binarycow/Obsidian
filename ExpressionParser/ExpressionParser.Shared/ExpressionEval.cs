@@ -8,7 +8,6 @@ using ExpressionParser.Configuration;
 using ExpressionParser.Parsing;
 using ExpressionParser.Transforming;
 using ExpressionParser.Transforming.Nodes;
-using ExpressionParser.VariableManagement;
 using ExpressionParser.Scopes;
 using System.Diagnostics.CodeAnalysis;
 
@@ -18,6 +17,7 @@ namespace ExpressionParser
     {
         public ExpressionEval(ILanguageDefinition languageDefinition)
         {
+            languageDefinition = languageDefinition ?? throw new ArgumentNullException(nameof(languageDefinition));
             LanguageDefinition = languageDefinition;
             Lexer = new Lexer(LanguageDefinition);
             Parser = new Parser(LanguageDefinition);
@@ -33,7 +33,7 @@ namespace ExpressionParser
         internal Lexer Lexer { get; }
         internal Parser Parser { get; }
 
-        public object? EvaluateDynamic<TScope, TRootScope>(string expressionText, ScopeStack<TScope, TRootScope> scopeStack) 
+        internal object? EvaluateDynamic<TScope, TRootScope>(string expressionText, ScopeStack<TScope, TRootScope> scopeStack) 
             where TScope : DynamicScope
             where TRootScope : TScope
         {
@@ -43,7 +43,7 @@ namespace ExpressionParser
             return astNode.Transform(transformer);
         }
 
-        public Expression ToExpression(string expressionText, CompiledScope scope)
+        internal Expression ToExpression(string expressionText, CompiledScope scope)
         {
             var tokens = Lexer.Tokenize(expressionText).ToArray();
             var astNode = Parser.Parse(tokens);
@@ -64,12 +64,12 @@ namespace ExpressionParser
             }
         }
 
-        public ExpressionData Compile(string expressionText, CompiledScope scope)
+        internal ExpressionData Compile(string expressionText, CompiledScope scope)
         {
             var expression = ToExpression(expressionText, scope);
             return ExpressionData.CreateCompiled(expression, scope);
         }
-        public ExpressionData Dynamic(string expressionText, CompiledScope scope)
+        internal ExpressionData Dynamic(string expressionText, CompiledScope scope)
         {
             var expression = ToExpression(expressionText, scope);
             return ExpressionData.CreateDynamic(expression, scope);
@@ -77,12 +77,14 @@ namespace ExpressionParser
 
         public T EvaluateAs<T>(string expressionText, IDictionary<string, object?> variables)
         {
+            variables = variables ?? throw new ArgumentNullException(nameof(variables));
             var rootScope = CompiledScope.CreateRootScope("root", variables);
             var data = Dynamic(expressionText, rootScope);
             return data.EvaluateAs<T>(variables);
         }
         public object? Evaluate(string expressionText, IDictionary<string, object?> variables)
         {
+            variables = variables ?? throw new ArgumentNullException(nameof(variables));
             var rootScope = CompiledScope.CreateRootScope("root", variables);
             var data = Dynamic(expressionText, rootScope);
             return data.Evaluate(variables);

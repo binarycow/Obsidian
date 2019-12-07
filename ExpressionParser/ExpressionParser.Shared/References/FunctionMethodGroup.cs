@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
@@ -8,7 +8,7 @@ using ExpressionParser.Parsing;
 
 namespace ExpressionParser.References
 {
-    public class FunctionMethodGroup : MethodGroup
+    internal class FunctionMethodGroup : MethodGroup
     {
         public FunctionMethodGroup(UserDefinedFunction functionDefinition) : base(functionDefinition.Declaration.Name)
         {

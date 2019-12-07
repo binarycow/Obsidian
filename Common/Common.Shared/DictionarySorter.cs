@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Common
 {
-    public static class DictionarySorter
+    internal static class DictionarySorter
     {
 
         internal class CaseInsensitiveComparer : IComparer<string>
@@ -82,9 +82,12 @@ namespace Common
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>")]
+#pragma warning disable CA1801 // Review unused parameters
         private static MethodInfo CreateMethod(string methodName, Type[] genericTypes, int boolCount)
+#pragma warning restore CA1801 // Review unused parameters
         {
-            var args = typeof(Dictionary<,>).YieldOne().Concat(Enumerable.Repeat(typeof(bool), boolCount)).ToArray();
+            //var args = typeof(Dictionary<,>).YieldOne().Concat(Enumerable.Repeat(typeof(bool), boolCount)).ToArray();
             var method = typeof(DictionarySorter).GetMethod(methodName);
             return method.MakeGenericMethod(genericTypes);
         }

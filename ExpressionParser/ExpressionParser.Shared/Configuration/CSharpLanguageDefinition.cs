@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +7,8 @@ using ExpressionParser.Lexing;
 namespace ExpressionParser.Configuration
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores", Justification = "<Pending>")]
-    public class CSharpLanguageDefinition : ILanguageDefinition
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1812:Avoid uninstantiated internal classes", Justification = "<Pending>")]
+    internal class CSharpLanguageDefinition : ILanguageDefinition
     {
         public const string STRING_TRUE = "true";
         public const string STRING_FALSE = "false";
@@ -16,11 +17,9 @@ namespace ExpressionParser.Configuration
 
         public IEnumerable<KeywordDefinition> Keywords => new[]
         {
-#pragma warning disable CA1303 // Do not pass literals as localized parameters
-            new ValueKeywordDefinition(STRING_TRUE, true),
-            new ValueKeywordDefinition(STRING_FALSE, false),
-            new ValueKeywordDefinition(STRING_NULL, null),
-#pragma warning restore CA1303 // Do not pass literals as localized parameters
+            new ValueKeywordDefinition(true, STRING_TRUE),
+            new ValueKeywordDefinition(false, STRING_FALSE),
+            new ValueKeywordDefinition(null, STRING_NULL),
         };
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "<Pending>")]

@@ -1,4 +1,4 @@
-﻿//using System;
+//using System;
 //using System.Collections.Generic;
 //using System.Linq;
 //using System.Text;
@@ -10,7 +10,7 @@
 
 //namespace Obsidian.CommentRemover
 //{
-//    public class CommentRemoverTransformer : ITransformVisitor<ASTNode>
+//    internal class CommentRemoverTransformer : ITransformVisitor<ASTNode>
 //    {
 
 //        private IEnumerable<ASTNode> TransformAll(IEnumerable<ASTNode> items)

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Obsidian.AST.Nodes;
@@ -7,7 +7,7 @@ using Obsidian.AST.Nodes.Statements;
 
 namespace Obsidian.Transforming
 {
-    public interface ITransformVisitor<TOutput>
+    internal interface ITransformVisitor<TOutput>
     {
         TOutput Transform(TemplateNode item);
         TOutput Transform(EmptyNode emptyNode);
@@ -29,7 +29,7 @@ namespace Obsidian.Transforming
         TOutput Transform(SetNode item);
     }
 
-    public interface ITransformVisitor
+    internal interface ITransformVisitor
     {
         void Transform(TemplateNode item);
         void Transform(EmptyNode emptyNode);

@@ -23,6 +23,7 @@ namespace Obsidian
         public List<string> SearchPaths { get; }
         public Encoding Encoding { get; set; }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         private FileInfo? FindFile(string filename)
         {
             var searchPaths = new Stack<DirectoryInfo>();
@@ -45,7 +46,7 @@ namespace Obsidian
                 {
                     if(item is FileInfo fileInfo)
                     {
-                        if(fileInfo.Name.ToLowerInvariant() == filename.ToLowerInvariant())
+                        if(fileInfo.Name.ToUpperInvariant() == filename.ToUpperInvariant())
                         {
                             return fileInfo;
                         }

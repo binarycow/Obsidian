@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using ExpressionParser.Scopes;
@@ -12,7 +12,7 @@ using Common;
 
 namespace Obsidian.Transforming
 {
-    public class StringBuilderTransformer : ITransformVisitor
+    internal class StringBuilderTransformer : ITransformVisitor
     {
         public StringBuilderTransformer(JinjaEnvironment environment, IDictionary<string, object?> variables)
         {

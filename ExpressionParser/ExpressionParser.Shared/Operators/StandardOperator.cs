@@ -10,7 +10,7 @@ using System.Diagnostics;
 namespace ExpressionParser.Operators
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public class StandardOperator : Operator
+    internal class StandardOperator : Operator
     {
         public StandardOperator(Token token, OperatorType operatorType, AssignmentOperatorBehavior assignmentOperatorBehavior) : base(token)
         {

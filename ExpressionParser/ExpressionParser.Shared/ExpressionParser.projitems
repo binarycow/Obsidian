@@ -31,7 +31,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\LexingException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\ParseException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionEval.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Extensions\ExpressionParser.Configuration\ILanguageDefinitionExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Localization\ExpressionParserStrings.Designer.cs">
+      <DependentUpon>ExpressionParserStrings.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ExpressionParser.Lexing\TokenTypeExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FunctionDeclaration.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)FunctionDeclarationParser.cs" />
@@ -78,8 +82,19 @@
     <Compile Include="$(MSBuildThisFileDirectory)UserDefinedArgument.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UserDefinedArgumentData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UserDefinedFunction.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)VariableManagement\TypeVariableManager.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)VariableManagement\VariableInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Void.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Localization\ExpressionParserStrings.resx">
+      <LastGenOutput>ExpressionParserStrings.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Localization\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)PublicAPI.Shipped.txt" />
+    <Content Include="$(MSBuildThisFileDirectory)PublicAPI.Unshipped.txt" />
   </ItemGroup>
 </Project>

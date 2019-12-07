@@ -10,7 +10,7 @@ using Obsidian.WhiteSpaceControl;
 namespace Obsidian.AST.Nodes
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public class ContainerNode : AbstractContainerNode, IWhiteSpaceControlling
+    internal class ContainerNode : AbstractContainerNode, IWhiteSpaceControlling
     {
         public ContainerNode(ParsingNode? startParsingNode, IEnumerable<ASTNode> children, ParsingNode? endParsingNode, WhiteSpaceControlSet? whiteSpace = null)
             : base(startParsingNode, children, endParsingNode)
@@ -20,7 +20,7 @@ namespace Obsidian.AST.Nodes
 
         public WhiteSpaceControlSet WhiteSpaceControl { get; }
 
-        private string DebuggerDisplay => $"{nameof(ContainerNode)}";
+        private static string DebuggerDisplay => $"{nameof(ContainerNode)}";
 
         public override TOutput Transform<TOutput>(ITransformVisitor<TOutput> visitor)
         {

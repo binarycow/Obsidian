@@ -1,4 +1,4 @@
-﻿using Common;
+using Common;
 using Obsidian.AST.Nodes;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Obsidian
 {
-    public class JinjaCustomStringProvider : CustomToStringProvider
+    internal class JinjaCustomStringProvider : CustomToStringProvider
     {
         private JinjaCustomStringProvider()
         {

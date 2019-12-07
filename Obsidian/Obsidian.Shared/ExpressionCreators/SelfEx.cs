@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -10,7 +10,7 @@ using Obsidian.AST.Nodes.Statements;
 
 namespace Obsidian.ExpressionCreators
 {
-    public static class SelfEx
+    internal static class SelfEx
     {
         private static Lazy<MethodInfo> _EnqueueTemplate = new Lazy<MethodInfo>(() =>
             MethodLookups.GetMethod(typeof(Obsidian.CompiledSelf), nameof(Obsidian.CompiledSelf.EnqueueTemplate), new[] { typeof(Expression) }));

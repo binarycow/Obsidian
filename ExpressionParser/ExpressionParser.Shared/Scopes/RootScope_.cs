@@ -1,11 +1,11 @@
-﻿//using System;
+//using System;
 //using System.Collections.Generic;
 //using System.Linq.Expressions;
 //using System.Text;
 
 //namespace ExpressionParser.Scopes
 //{
-//    public class RootScope : Scope
+//    internal class RootScope : Scope
 //    {
 //        private RootScope(string name) : base(null, name) { }
 //        private RootScope() : base(null, null) { }

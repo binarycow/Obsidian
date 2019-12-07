@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Obsidian.TestCore
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores", Justification = "<Pending>")]
     public class Test : Item
     {
         private string _TestName = string.Empty;
@@ -49,6 +50,7 @@ namespace Obsidian.TestCore
             set => SetField(ref _VariablesFile, value);
         }
         private bool _trim_blocks;
+
         public bool trim_blocks
         {
             get => _trim_blocks;

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -11,7 +11,7 @@ using ExpressionParser.Operators;
 
 namespace ExpressionParser.Parsing
 {
-    public class Parser
+    internal class Parser
     {
         public Parser(ILanguageDefinition languageDefinition, byte minimumLookahead = 1, byte minimumLookbehind = 1)
         {
@@ -34,14 +34,14 @@ namespace ExpressionParser.Parsing
 
         public delegate bool TryParseDelegate(ILookaroundEnumerator<Token> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode, AssignmentOperatorBehavior assignmentOperatorBehavior);
 
-        private TryParseDelegate[] _CustomParseDelegates = Array.Empty<TryParseDelegate>();
+        private readonly TryParseDelegate[] _CustomParseDelegates = Array.Empty<TryParseDelegate>();
         public virtual TryParseDelegate[] CustomParseDelegates => _CustomParseDelegates;
 
-        private TryParseDelegate[] _LiteralParseDelegates = Array.Empty<TryParseDelegate>();
+        private readonly TryParseDelegate[] _LiteralParseDelegates = Array.Empty<TryParseDelegate>();
         public virtual TryParseDelegate[] LiteralParseDelegates => _LiteralParseDelegates;
 
-        private IGrouping<int, OperatorDefinition>[] _PrecedenceGroups;
-        private string[][] _ValidOperatorTextValues;
+        private readonly IGrouping<int, OperatorDefinition>[] _PrecedenceGroups;
+        private readonly string[][] _ValidOperatorTextValues;
 
         public ASTNode Parse(IEnumerable<Token> tokens)
         {
@@ -87,15 +87,12 @@ namespace ExpressionParser.Parsing
                 return TryParseBraces(enumerator, out parsedNode, assignmentOperatorBehavior);
             }
 
-            switch(_PrecedenceGroups[currentPrecedence].First().OperandCount)
+            return _PrecedenceGroups[currentPrecedence].First().OperandCount switch
             {
-                case OperandCount.Binary:
-                    return TryParseBinary(enumerator, currentPrecedence, out parsedNode, assignmentOperatorBehavior);
-                case OperandCount.Unary:
-                    return TryParseUnary(enumerator, currentPrecedence, out parsedNode);
-                default:
-                    throw new NotImplementedException();
-            }
+                OperandCount.Binary => TryParseBinary(enumerator, currentPrecedence, out parsedNode, assignmentOperatorBehavior),
+                OperandCount.Unary => TryParseUnary(enumerator, currentPrecedence, out parsedNode),
+                _ => throw new NotImplementedException(),
+            };
         }
 
         private bool TryParseUnary(ILookaroundEnumerator<Token> enumerator, int currentPrecedence, [NotNullWhen(true)]out ASTNode? parsedNode)
@@ -160,7 +157,7 @@ namespace ExpressionParser.Parsing
                     }
                 }
 
-                var @operator = CreateBinaryOperator(enumerator, operatorToken, operatorDefinition, assignmentOperatorBehavior);
+                var @operator = CreateBinaryOperator(operatorToken, operatorDefinition, assignmentOperatorBehavior);
                 var newNode = new BinaryASTNode(left, @operator, right);
                 left.SetParent(newNode);
                 right.SetParent(newNode);
@@ -170,7 +167,7 @@ namespace ExpressionParser.Parsing
             return true;
         }
 
-        private Operator CreateBinaryOperator(ILookaroundEnumerator<Token> enumerator, Token operatorToken, OperatorDefinition operatorDefinition, AssignmentOperatorBehavior assignmentOperatorBehavior)
+        private static Operator CreateBinaryOperator(Token operatorToken, OperatorDefinition operatorDefinition, AssignmentOperatorBehavior assignmentOperatorBehavior)
         {
             return operatorDefinition switch
             {
@@ -231,7 +228,6 @@ namespace ExpressionParser.Parsing
             }
             if (enumerator.Current.TokenType.IsMatchingBrace(braceToken.TokenType) == false && enumerator.Current.TokenType.IsMatchingBrace(braceToken.SecondaryTokenType) != true)
             {
-                enumerator.TryGetNextArray(5, out var nextTokens);
                 throw new NotImplementedException(); // Did not find the right closing brace
             }
             enumerator.MoveNext();  // Consume the closing brace

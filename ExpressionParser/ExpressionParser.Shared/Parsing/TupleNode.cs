@@ -8,6 +8,7 @@ using ExpressionParser.Transforming.Nodes;
 namespace ExpressionParser.Parsing
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1812:Avoid uninstantiated internal classes", Justification = "<Pending>")]
     internal class TupleNode : ASTNode
     {
         public TupleNode(IEnumerable<ASTNode> listItems) : base(listItems.SelectMany(child => child.Tokens))

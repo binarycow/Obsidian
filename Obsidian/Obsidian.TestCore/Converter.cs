@@ -8,14 +8,15 @@ using Newtonsoft.Json.Linq;
 
 namespace Obsidian.TestCore
 {
-    public class Converter : JsonConverter
+    internal class Converter : JsonConverter
     {
         public override bool CanConvert(Type objectType)
         {
             return (objectType == typeof(Item));
         }
 
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+
+        public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
         {
             JObject jo = JObject.Load(reader);
             if (jo["categoryName"] != null)
@@ -29,7 +30,7 @@ namespace Obsidian.TestCore
             get { return false; }
         }
 
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, object? value, JsonSerializer serializer)
         {
             throw new NotImplementedException();
         }

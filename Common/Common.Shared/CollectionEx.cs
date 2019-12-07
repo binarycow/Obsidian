@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Collections;
 
 namespace Common
 {
-    public static class CollectionEx
+    internal static class CollectionEx
     {
 
 

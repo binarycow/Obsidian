@@ -9,7 +9,7 @@
 
 //namespace ExpressionParser.Scopes
 //{
-//    public class Scope
+//    internal class Scope
 //    {
 //        protected Scope(Scope? parentScope, string? name = null)
 //        {

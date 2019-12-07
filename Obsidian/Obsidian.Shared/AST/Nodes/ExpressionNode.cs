@@ -12,14 +12,14 @@ using Obsidian.Transforming;
 namespace Obsidian.AST.Nodes
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public class ExpressionNode : ASTNode
+    internal class ExpressionNode : ASTNode
     {
         public ExpressionNode(ParsingNode parsingNode, string expression) : base(parsingNode)
         {
             Expression = expression;
         }
 
-        private ExpressionNode(string expression) : base(new ParsingNode(ParsingNodeType.Expression, new[] { new Token(TokenTypes.Unknown, expression) }))
+        private ExpressionNode(string expression) : base(new ParsingNode(ParsingNodeType.Expression, new[] { new Token(TokenType.Unknown, expression) }))
         {
             Expression = expression;
             Output = false;
@@ -72,7 +72,7 @@ namespace Obsidian.AST.Nodes
             public static bool TryParse(ParsingNode node, [NotNullWhen(true)]out ASTNode? parsedNode)
             {
                 parsedNode = default;
-                var enumerator = LookaroundEnumeratorFactory.CreateLookaroundEnumerator(node.Tokens, 1);
+                using var enumerator = LookaroundEnumeratorFactory.CreateLookaroundEnumerator(node.Tokens, 1);
                 var state = States.StartJinja;
                 var expressionQueue = new Queue<Token>();
                 while (enumerator.MoveNext())
@@ -83,7 +83,7 @@ namespace Obsidian.AST.Nodes
                         case States.StartJinja:
                             switch (token.TokenType)
                             {
-                                case TokenTypes.ExpressionStart:
+                                case TokenType.ExpressionStart:
                                     state = States.WhiteSpaceOrExpression;
                                     continue;
                                 default:
@@ -92,9 +92,11 @@ namespace Obsidian.AST.Nodes
                         case States.WhiteSpaceOrExpression:
                             switch (token.TokenType)
                             {
-                                case TokenTypes.Minus:
+                                case TokenType.Minus:
                                     throw new NotImplementedException();
+#pragma warning disable CS0162 // Unreachable code detected
                                     continue;
+#pragma warning restore CS0162 // Unreachable code detected
                                 default:
                                     state = States.Expression;
                                     expressionQueue.Enqueue(token);
@@ -103,16 +105,18 @@ namespace Obsidian.AST.Nodes
                         case States.Expression:
                             switch (token.TokenType)
                             {
-                                case TokenTypes.Minus:
-                                    if (enumerator.TryGetNext(out var nextToken) && nextToken.TokenType == TokenTypes.ExpressionEnd)
+                                case TokenType.Minus:
+                                    if (enumerator.TryGetNext(out var nextToken) && nextToken.TokenType == TokenType.ExpressionEnd)
                                     {
                                         throw new NotImplementedException();
+#pragma warning disable CS0162 // Unreachable code detected
                                         state = States.EndJinja;
                                         continue;
+#pragma warning restore CS0162 // Unreachable code detected
                                     }
                                     expressionQueue.Enqueue(token);
                                     continue;
-                                case TokenTypes.ExpressionEnd:
+                                case TokenType.ExpressionEnd:
                                     state = States.Done;
                                     continue;
                                 default:
@@ -122,7 +126,7 @@ namespace Obsidian.AST.Nodes
                         case States.EndJinja:
                             switch (token.TokenType)
                             {
-                                case TokenTypes.ExpressionEnd:
+                                case TokenType.ExpressionEnd:
                                     state = States.Done;
                                     continue;
                                 default:

@@ -6,14 +6,12 @@ using System.Linq.Expressions;
 using System.Reflection;
 using Common;
 using ExpressionParser.Scopes;
-using ExpressionParser.VariableManagement;
-using ExpressionToString;
 
 namespace ExpressionParser
 {
-    public class ExpressionData
+    internal class ExpressionData
     {
-        public class ParameterInfo
+        internal class ParameterInfo
         {
             public ParameterInfo(string name, Type type)
             {
@@ -57,6 +55,8 @@ namespace ExpressionParser
             }
             return invokeMethod.Invoke(Delegate, typedArguments);
         }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>")]
         public T EvaluateAs<T>(IDictionary<string, object?> variables)
         {
             throw new NotImplementedException();
@@ -69,7 +69,6 @@ namespace ExpressionParser
 
         public static ExpressionData CreateDynamic(Expression expression, CompiledScope scope)
         {
-            var debug = expression.ToString("C#");
             var parameterExpressions = scope.Variables.ToArray();
             var parameterInfo = parameterExpressions.Select(param => new ParameterInfo(param.Name, param.Type)).ToArray();
             var parameterTypes = parameterExpressions.Select(param => param.Type).ToArray();

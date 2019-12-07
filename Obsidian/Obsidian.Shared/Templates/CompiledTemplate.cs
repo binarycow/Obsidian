@@ -11,11 +11,10 @@ using Obsidian.Parsing;
 using Obsidian.Transforming;
 using Obsidian.AST.Nodes.Statements;
 using ExpressionParser.Scopes;
-using ExpressionToString;
 
 namespace Obsidian.Templates
 {
-    public class CompiledTemplate : ITemplate
+    internal class CompiledTemplate : ITemplate
     {
 
         private CompiledTemplate(JinjaEnvironment environment, ExpressionData templateNode, string? templateName, string? templatePath)
@@ -41,12 +40,17 @@ namespace Obsidian.Templates
         {
             Compile(new Dictionary<string, object?>());
         }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>")]
         public void Compile(IDictionary<string, object?> variables)
         {
             //var compiler = new ExpressionTreeTransformVisitor(Environment, variables);
             //var compiled = TemplateNode.Transform(compiler);
             throw new NotImplementedException();
         }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
         private string RenderCompiled(IDictionary<string, object?> variables)
         {
             throw new NotImplementedException();
@@ -56,27 +60,16 @@ namespace Obsidian.Templates
         //    var expr = ToExpression(environment, templateText, variableTemplate, out var compiler);
         //    return new Template(environment, compiler.Compile(expr), templateName, templatePath);
         //}
-        internal static CompiledTemplate LoadTemplate(JinjaEnvironment environment, string templateText, CompiledScope scope, string? templateName, string? templatePath)
+        internal static CompiledTemplate LoadTemplate(JinjaEnvironment environment, string templateText, CompiledScope scope, string templateName, string? templatePath)
         {
             var expr = ToExpression(templateName, environment, templateText, scope);
-
-            var debug = expr.ToString("C#");
-            var test = new VariableSetterWalker();
-            var x = test.Visit(expr);
-            ;
-
             return new CompiledTemplate(environment, ExpressionData.CreateCompiled(expr, scope), templateName, templatePath);
         }
 
-        internal static CompiledTemplate LoadTemplate(JinjaEnvironment environment, string templateText, IDictionary<string, object?> variableTemplate, string? templateName, string? templatePath)
+        internal static CompiledTemplate LoadTemplate(JinjaEnvironment environment, string templateText, IDictionary<string, object?> variableTemplate, string templateName, string? templatePath)
         {
             var rootScope = CompiledScope.CreateRootScope("GLOBALS", variableTemplate);
             var expr = ToExpression(templateName, environment, templateText, rootScope);
-
-            var debug = expr.ToString("C#");
-            var test = new VariableSetterWalker();
-            var x = test.Visit(expr);
-            ;
 
             return new CompiledTemplate(environment, ExpressionData.CreateCompiled(expr, rootScope), templateName, templatePath);
         }

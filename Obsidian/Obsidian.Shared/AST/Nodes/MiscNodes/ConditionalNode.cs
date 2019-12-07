@@ -10,7 +10,7 @@ using Obsidian.WhiteSpaceControl;
 namespace Obsidian.AST.Nodes.MiscNodes
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public class ConditionalNode : AbstractContainerNode, IWhiteSpaceControlling
+    internal class ConditionalNode : AbstractContainerNode, IWhiteSpaceControlling
     {
         public ConditionalNode(ParsingNode? startParsingNode, ExpressionNode expression, IEnumerable<ASTNode> children, ParsingNode? endParsingNode, WhiteSpaceControlSet? whiteSpace = null) :
             base(startParsingNode, children, endParsingNode)

@@ -1,4 +1,4 @@
-﻿using System.Windows.Forms;
+using System.Windows.Forms;
 
 namespace Obsidian.TestBuilder
 {
@@ -144,7 +144,7 @@ namespace Obsidian.TestBuilder
             this.btnBrowseRootPath.TabIndex = 4;
             this.btnBrowseRootPath.Text = "Browse...";
             this.btnBrowseRootPath.UseVisualStyleBackColor = true;
-            this.btnBrowseRootPath.Click += new System.EventHandler(this.btnBrowseRootPath_Click);
+            this.btnBrowseRootPath.Click += new System.EventHandler(this.BtnBrowseRootPath_Click);
             // 
             // label3
             // 
@@ -275,7 +275,7 @@ namespace Obsidian.TestBuilder
             this.btnBrowseVariables.TabIndex = 14;
             this.btnBrowseVariables.Text = "Browse...";
             this.btnBrowseVariables.UseVisualStyleBackColor = true;
-            this.btnBrowseVariables.Click += new System.EventHandler(this.btnBrowseVariables_Click);
+            this.btnBrowseVariables.Click += new System.EventHandler(this.BtnBrowseVariables_Click);
             // 
             // ctrlTestProperties
             // 

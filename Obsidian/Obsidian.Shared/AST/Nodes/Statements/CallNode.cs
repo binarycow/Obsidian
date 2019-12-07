@@ -1,4 +1,4 @@
-﻿using Common;
+using Common;
 using Common.Collections;
 using Obsidian.AST.NodeParsers;
 using Obsidian.Lexing;
@@ -10,11 +10,11 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
-using static Obsidian.Lexing.TokenTypes;
+using static Obsidian.Lexing.TokenType;
 
 namespace Obsidian.AST.Nodes.Statements
 {
-    public class CallNode : ASTNode, IWhiteSpaceControlling
+    internal class CallNode : ASTNode, IWhiteSpaceControlling
     {
         public CallNode(ParsingNode? startParsingNode, ExpressionNode callerDefinition, ExpressionNode macroCall, ContainerNode contents, ParsingNode? endParsingNode, WhiteSpaceControlSet? whiteSpace = null)
             : base(startParsingNode, contents.ParsingNodes, endParsingNode)

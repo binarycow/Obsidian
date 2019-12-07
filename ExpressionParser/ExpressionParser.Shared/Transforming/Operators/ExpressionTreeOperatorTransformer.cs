@@ -26,12 +26,10 @@ namespace ExpressionParser.Transforming.Operators
         public Expression Transform(StandardOperator item, ASTNode[] args)
         {
             var left = args[0].Transform(NodeTransformVisitor);
-            switch (item.OperatorType)
+            return item.OperatorType switch
             {
-                case OperatorType.Add:
-                    return Expression.Add(left, args[1].Transform(NodeTransformVisitor));
-                case OperatorType.LogicalNot:
-                    return Expression.Block(
+                OperatorType.Add => Expression.Add(left, args[1].Transform(NodeTransformVisitor)),
+                OperatorType.LogicalNot => Expression.Block(
 #if DEBUG
                         ExpressionEx.Console.Write("NOT : LEFT : "),
                         ExpressionEx.Console.WriteLine(left),
@@ -41,11 +39,9 @@ namespace ExpressionParser.Transforming.Operators
                             Expression.Constant("NULL!"),
                             Expression.Not(left)
                         )
-                    );
-                default:
-                    throw new NotImplementedException();
-            }
-
+                    ),
+                _ => throw new NotImplementedException(),
+            };
         }
 
         public Expression Transform(SpecialOperator item, ASTNode[] args)
@@ -78,19 +74,18 @@ namespace ExpressionParser.Transforming.Operators
             if (!(right is ArgumentSetNode argSet)) throw new NotImplementedException();
 
             var args = argSet.Arguments.Select(arg => arg.Transform(NodeTransformVisitor)).ToArray();
-            switch (constLeft.Value)
+            return constLeft.Value switch
             {
-                case ExpressionMethodGroup expr:
-                    return Transform_MethodCall_Expr(expr, args);
-                case FunctionMethodGroup func:
-                    //if (func.FunctionDefinition.OverloadDefinitions.Length != 1) throw new NotImplementedException();
-                    //return Transform_MethodCall_Func(func, args);
-                    throw new NotImplementedException();
-                default:
-                    throw new NotImplementedException();
-            }
+                ExpressionMethodGroup expr => Transform_MethodCall_Expr(expr, args),
+                FunctionMethodGroup func => throw new NotImplementedException(),
+                //if (func.FunctionDefinition.OverloadDefinitions.Length != 1) throw new NotImplementedException();
+                //return Transform_MethodCall_Func(func, args);
+                _ => throw new NotImplementedException(),
+            };
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
         private Expression Transform_MethodCall_Func(FunctionMethodGroup left, Expression[] args)
         {
             throw new NotImplementedException();
@@ -102,6 +97,7 @@ namespace ExpressionParser.Transforming.Operators
             //};
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
         private Expression Transform_MethodCall_Func_Single(SingleTypeOverloadDefinition left, Expression[] args)
         {
             if (args.Length < left.MinimumArguments) throw new NotImplementedException();
@@ -138,6 +134,8 @@ namespace ExpressionParser.Transforming.Operators
             }
             throw new NotImplementedException();
         }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>")]
         private Expression Transform_MethodCall_Expr(ExpressionMethodGroup left, Expression[] args)
         {
             throw new NotImplementedException();

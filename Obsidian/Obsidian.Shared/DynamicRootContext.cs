@@ -1,4 +1,4 @@
-﻿using Obsidian.AST.Nodes;
+using Obsidian.AST.Nodes;
 using Obsidian.AST.Nodes.Statements;
 using Obsidian.Transforming;
 using System;
@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Obsidian
 {
-    public class DynamicRootContext : DynamicContext
+    internal class DynamicRootContext : DynamicContext
     {
         private DynamicRootContext(StringBuilderTransformer transformer, string? name) : base(name)
         {
@@ -32,7 +32,7 @@ namespace Obsidian
         public int? CurrentBlockIndex { get; set; }
 
 
-        private Dictionary<string, List<ContainerNode>> _Blocks = new Dictionary<string, List<ContainerNode>>();
+        private readonly Dictionary<string, List<ContainerNode>> _Blocks = new Dictionary<string, List<ContainerNode>>();
         public void AddBlock(string name, ContainerNode containerNode)
         {
             if (_Blocks.TryGetValue(name, out var blockList) == false)

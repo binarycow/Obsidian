@@ -9,7 +9,7 @@ using NUnit.Framework;
 
 namespace Obsidian.Tests
 {
-    public abstract class TestClass
+    internal abstract class TestClass
     {
         [SetUp]
         public void Init()

@@ -1,4 +1,4 @@
-﻿using ExpressionParser.Scopes;
+using ExpressionParser.Scopes;
 using Obsidian.AST.Nodes.Statements;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Obsidian
 {
-    public class DynamicContext : DynamicScope
+    internal class DynamicContext : DynamicScope
     {
         public DynamicContext(string name, DynamicContext parent) : base(name, parent)
         {

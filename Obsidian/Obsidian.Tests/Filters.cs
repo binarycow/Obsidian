@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using Obsidian.TestCore;
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,8 @@ using System.Text;
 
 namespace Obsidian.Tests
 {
-    public class Filters : TestClass
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1812:Avoid uninstantiated internal classes", Justification = "<Pending>")]
+    internal class Filters : TestClass
     {
 
         [Test]

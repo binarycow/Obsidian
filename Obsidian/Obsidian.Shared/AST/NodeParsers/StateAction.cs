@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -40,7 +40,7 @@ namespace Obsidian.AST.NodeParsers
             _Actions.Add(new SetWhiteSpaceAction<TState>(this, position, mode));
             return this;
         }
-        public StateAction<TState> AndNext(TokenTypes tokenType)
+        public StateAction<TState> AndNext(TokenType tokenType)
         {
             Parent.SetPredicate(this, enumerator => enumerator.TryGetNext(out var token) && token.TokenType == tokenType, $".AndNext({tokenType})");
             return this;
@@ -62,13 +62,13 @@ namespace Obsidian.AST.NodeParsers
             return this;
         }
 
-        public StateAction<TState> Accumulate(TokenTypes? seperator = default)
+        public StateAction<TState> Accumulate(TokenType? seperator = default)
         {
-            _Actions.Add(new AccumulateAction<TState>(this));
+            _Actions.Add(new AccumulateAction<TState>(this, seperator));
             return this;
         }
 
-        public StateAction<TState> Expect(TokenTypes tokenType)
+        public StateAction<TState> Expect(TokenType tokenType)
         {
             return Parent.Expect(tokenType);
         }
@@ -128,12 +128,12 @@ namespace Obsidian.AST.NodeParsers
     internal class AccumulateAction<TState> : AbstractAction<TState> where TState : struct, Enum
     {
         public override string DebuggerDisplay => $".Accumulate({Seperator})";
-        public AccumulateAction(StateAction<TState> parent, TokenTypes? seperator = default) : base(parent)
+        public AccumulateAction(StateAction<TState> parent, TokenType? seperator = default) : base(parent)
         {
             Seperator = seperator;
         }
 
-        public TokenTypes? Seperator { get; }
+        public TokenType? Seperator { get; }
     }
     internal class SetWhiteSpaceAction<TState> : AbstractAction<TState> where TState : struct, Enum
     {

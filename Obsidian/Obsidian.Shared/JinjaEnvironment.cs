@@ -29,7 +29,7 @@ namespace Obsidian
         public BaseLoader? Loader { get; set; }
 
 
-        public JinjaLanguageDefinition LanguageDefinition => JinjaLanguageDefinition.Instance;
+        public static JinjaLanguageDefinition LanguageDefinition => JinjaLanguageDefinition.Instance;
         internal ExpressionEval Evaluation => _Evaluation.Value;
         private readonly Lazy<ExpressionEval> _Evaluation;
 
@@ -45,23 +45,23 @@ namespace Obsidian
         {
             return GetTemplate(templateInfo.Source, variableTemplate, templateName, templateInfo.Filename);
         }
-        internal ITemplate GetTemplate(string templateText, IDictionary<string, object?> variableTemplate, string? templateName, string? templatePath)
+        internal ITemplate GetTemplate(string templateText, IDictionary<string, object?> variableTemplate, string templateName, string? templatePath)
         {
             Settings.IsReadOnly = true;
             return Settings.DynamicTemplates ?
-                (ITemplate)DynamicTemplate.LoadTemplate(this, templateText, variableTemplate, templateName, templatePath) :
+                (ITemplate)DynamicTemplate.LoadTemplate(this, templateText, templateName, templatePath) :
                 CompiledTemplate.LoadTemplate(this, templateText, variableTemplate, templateName, templatePath);
         }
-        internal DynamicTemplate GetTemplate(string templateText, DynamicContext scope, string? templateName, string? templatePath)
+        internal DynamicTemplate GetDynamicTemplate(string templateText, string? templateName, string? templatePath)
         {
             Settings.IsReadOnly = true;
             if (Settings.DynamicTemplates == false)
             {
                 throw new NotImplementedException();
             }
-            return DynamicTemplate.LoadTemplate(this, templateText, scope, templateName, templatePath);
+            return DynamicTemplate.LoadTemplate(this, templateText, templateName, templatePath);
         }
-        internal CompiledTemplate GetTemplate<T>(string templateText, CompiledScope scope, string? templateName, string? templatePath)
+        internal CompiledTemplate GetTemplate<T>(string templateText, CompiledScope scope, string templateName, string? templatePath)
         {
             Settings.IsReadOnly = true;
             if (Settings.DynamicTemplates)
@@ -86,15 +86,15 @@ namespace Obsidian
             return Loader.GetSource(this, templateName);
         }
 
-        public Expression GetTemplateExpression(string templateName, CompiledScope scope)
+        internal Expression GetTemplateExpression(string templateName, CompiledScope scope)
         {
             var templateInfo = GetTemplateInfo(templateName);
             return CompiledTemplate.ToExpression(templateName, this, templateInfo.Source, scope);
         }
-        public DynamicTemplate GetTemplate(string templateName, DynamicContext scope)
+        internal DynamicTemplate GetDynamicTemplate(string templateName)
         {
             var templateInfo = GetTemplateInfo(templateName);
-            return GetTemplate(templateInfo.Source, scope, templateName, null);
+            return GetDynamicTemplate(templateInfo.Source, templateName, null);
         }
 
     }

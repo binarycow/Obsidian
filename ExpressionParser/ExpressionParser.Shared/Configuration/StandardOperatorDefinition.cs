@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ExpressionParser.Configuration
 {
-    public class StandardOperatorDefinition : OperatorDefinition
+    internal class StandardOperatorDefinition : OperatorDefinition
     {
         public StandardOperatorDefinition(string text, int precedence, OperatorType operatorType, OperandCount operandCount) : base(text, precedence, operandCount)
         {

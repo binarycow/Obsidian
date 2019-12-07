@@ -1,4 +1,4 @@
-﻿namespace Obsidian.TestBuilder
+namespace Obsidian.TestBuilder
 {
     partial class Form1
     {
@@ -63,14 +63,14 @@
             this.resetFromFileToolStripMenuItem.Name = "resetFromFileToolStripMenuItem";
             this.resetFromFileToolStripMenuItem.Size = new System.Drawing.Size(99, 20);
             this.resetFromFileToolStripMenuItem.Text = "Reset From File";
-            this.resetFromFileToolStripMenuItem.Click += new System.EventHandler(this.resetFromFileToolStripMenuItem_Click);
+            this.resetFromFileToolStripMenuItem.Click += new System.EventHandler(this.ResetFromFileToolStripMenuItem_Click);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             this.saveToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
             this.saveToolStripMenuItem.Text = "Save";
-            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
+            this.saveToolStripMenuItem.Click += new System.EventHandler(this.SaveToolStripMenuItem_Click);
             // 
             // splitContainer1
             // 
@@ -92,8 +92,8 @@
             this.treeView1.Name = "treeView1";
             this.treeView1.Size = new System.Drawing.Size(266, 426);
             this.treeView1.TabIndex = 0;
-            this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
-            this.treeView1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.treeView1_MouseDown);
+            this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.TreeView1_AfterSelect);
+            this.treeView1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.TreeView1_MouseDown);
             // 
             // contextMenuCategory
             // 
@@ -108,7 +108,7 @@
             this.addTestToolStripMenuItem.Name = "addTestToolStripMenuItem";
             this.addTestToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.addTestToolStripMenuItem.Text = "Add Test";
-            this.addTestToolStripMenuItem.Click += new System.EventHandler(this.addTestToolStripMenuItem_Click);
+            this.addTestToolStripMenuItem.Click += new System.EventHandler(this.AddTestToolStripMenuItem_Click);
             // 
             // contextMenuTest
             // 
@@ -122,7 +122,7 @@
             this.runTestToolStripMenuItem.Name = "runTestToolStripMenuItem";
             this.runTestToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
             this.runTestToolStripMenuItem.Text = "Run Test";
-            this.runTestToolStripMenuItem.Click += new System.EventHandler(this.runTestToolStripMenuItem_Click);
+            this.runTestToolStripMenuItem.Click += new System.EventHandler(this.RunTestToolStripMenuItem_Click);
             // 
             // addCategoryToolStripMenuItem
             // 

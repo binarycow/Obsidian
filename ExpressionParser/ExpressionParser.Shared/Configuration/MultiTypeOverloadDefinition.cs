@@ -1,11 +1,11 @@
-﻿using ExpressionParser.Scopes;
+using ExpressionParser.Scopes;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace ExpressionParser.Configuration
 {
-    public class MultiTypeOverloadDefinition : OverloadDefinition
+    internal class MultiTypeOverloadDefinition : OverloadDefinition
     {
         public MultiTypeOverloadDefinition(Func<object?[], object?> func, Type returnType, params Type[] argumentTypes) : base(func, returnType)
         {

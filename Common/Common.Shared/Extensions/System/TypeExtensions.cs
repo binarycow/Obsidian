@@ -7,7 +7,7 @@ using System.Text;
 
 namespace System
 {
-    public static class TypeExtensions
+    internal static class TypeExtensions
     {
         public static bool TryGetEnumerableBaseType(this Type type, [NotNullWhen(true)]out Type? baseType)
         {

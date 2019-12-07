@@ -9,7 +9,6 @@ using ExpressionParser.Parsing;
 using ExpressionParser.References;
 using ExpressionParser.Scopes;
 using ExpressionParser.Transforming.Operators;
-using ExpressionParser.VariableManagement;
 
 namespace ExpressionParser.Transforming.Nodes
 {
@@ -44,7 +43,7 @@ namespace ExpressionParser.Transforming.Nodes
 
         public Expression Transform(IdentifierNode item)
         {
-            var valueKeyword = LanguageDefinition.Keywords.OfType<ValueKeywordDefinition>().FirstOrDefault(keyword => keyword.Text == item.TextValue);
+            var valueKeyword = LanguageDefinition.Keywords.OfType<ValueKeywordDefinition>().FirstOrDefault(keyword => keyword.Names.Contains(item.TextValue));
             if(valueKeyword != null)
             {
                 return Expression.Constant(valueKeyword.Value);
@@ -100,7 +99,7 @@ namespace ExpressionParser.Transforming.Nodes
             var constructor = genericType.GetConstructor(types);
             return Expression.New(constructor, tupleItems);
 
-            Type GetTupleType(int count)
+            static Type GetTupleType(int count)
             {
                 return count switch
                 {

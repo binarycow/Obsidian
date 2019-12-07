@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace System
 {
-    public static class ObjectExtensions
+    internal static class ObjectExtensions
     {
         public static IEnumerable<T> YieldOne<T>(this T item)
         {

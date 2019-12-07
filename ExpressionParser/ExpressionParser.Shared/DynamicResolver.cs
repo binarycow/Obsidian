@@ -1,4 +1,4 @@
-﻿using Common;
+using Common;
 using ExpressionParser.Configuration;
 using ExpressionParser.References;
 using ExpressionParser.Scopes;
@@ -10,7 +10,7 @@ using System.Text;
 
 namespace ExpressionParser
 {
-    public static class DynamicResolver
+    internal static class DynamicResolver
     {
         [Flags]
         public enum MemberTypes
@@ -26,26 +26,25 @@ namespace ExpressionParser
             return ((left & right) != 0);
         }
 
-
+        [SuppressMessage("Usage", "CA1801:Review unused parameters", Justification = "<Pending>")]
+        [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>")]
         internal static object? CallMethod<TScope, TRootScope>(ScopeStack<TScope, TRootScope> scopeStack, object? left, object?[] args)
             where TScope : class, IScope
             where TRootScope : class, TScope
         {
-            switch (left)
+            return left switch
             {
-                case FunctionMethodGroup methodGroup:
-                    return methodGroup.FunctionDefinition.Invoke(args);
-                case UserDefinedFunction userDefinedFunction:
-                    return userDefinedFunction.Invoke(args);
-                case PipelineMethodGroup pipelineGroup:
-                    return pipelineGroup.FunctionDefinition.Invoke(pipelineGroup.ReferredObject, args);
-                default:
-                    throw new NotImplementedException();
-            }
+                FunctionMethodGroup methodGroup => methodGroup.FunctionDefinition.Invoke(args),
+                UserDefinedFunction userDefinedFunction => userDefinedFunction.Invoke(args),
+                PipelineMethodGroup pipelineGroup => pipelineGroup.FunctionDefinition.Invoke(pipelineGroup.ReferredObject, args),
+                _ => throw new NotImplementedException(),
+            };
 
 
 
-            object? FuncMethodGroup(ScopeStack<TScope, TRootScope> scopeStack, FunctionMethodGroup left, object?[] args)
+#pragma warning disable CS8321 // Local function is declared but never used
+            static object? FuncMethodGroup(ScopeStack<TScope, TRootScope> scopeStack, FunctionMethodGroup left, object?[] args)
+#pragma warning restore CS8321 // Local function is declared but never used
             {
                 throw new NotImplementedException();
                 //if (left.FunctionDefinition.OverloadDefinitions.Length != 1) throw new NotImplementedException();

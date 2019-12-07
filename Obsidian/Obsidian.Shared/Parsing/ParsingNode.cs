@@ -8,7 +8,7 @@ using Obsidian.Lexing;
 namespace Obsidian.Parsing
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public class ParsingNode
+    internal class ParsingNode
     {
         public ParsingNode(ParsingNodeType nodeType, IEnumerable<Token> tokens)
         {

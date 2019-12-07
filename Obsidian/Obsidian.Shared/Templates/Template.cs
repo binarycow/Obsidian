@@ -20,7 +20,7 @@ using ExpressionToString;
 
 namespace Obsidian
 {
-    public class Template : ITemplate
+    internal class Template : ITemplate
     {
 
         private Template(JinjaEnvironment environment, ExpressionData templateNode, string? templateName, string? templatePath)

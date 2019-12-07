@@ -1,12 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace ExpressionParser.Configuration
 {
-    public class ValueKeywordDefinition : KeywordDefinition
+    internal class ValueKeywordDefinition : KeywordDefinition
     {
-        public ValueKeywordDefinition(string text, object? value) : base(text)
+        public ValueKeywordDefinition(object? value, params string[] names) : base(names)
         {
             Value = value;
         }

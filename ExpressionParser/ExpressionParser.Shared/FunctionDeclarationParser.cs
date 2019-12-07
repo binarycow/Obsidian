@@ -1,4 +1,4 @@
-﻿using ExpressionParser.Operators;
+using ExpressionParser.Operators;
 using ExpressionParser.Parsing;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Text;
 
 namespace ExpressionParser
 {
-    public static class FunctionDeclarationParser
+    internal static class FunctionDeclarationParser
     {
 
         public static bool TryParseFunctionDeclaration(ASTNode node, [NotNullWhen(true)]out FunctionDeclaration? declaration)
@@ -52,15 +52,12 @@ namespace ExpressionParser
 
         private static ParameterDeclaration? ParseParameterDeclaration(ASTNode argument)
         {
-            switch(argument)
+            return argument switch
             {
-                case IdentifierNode identifierNode:
-                    return new ParameterDeclaration(identifierNode.TextValue);
-                case BinaryASTNode binaryNode:
-                    return ParseArgumentDefinition(binaryNode);
-                default:
-                    throw new NotImplementedException();
-            }
+                IdentifierNode identifierNode => new ParameterDeclaration(identifierNode.TextValue),
+                BinaryASTNode binaryNode => ParseArgumentDefinition(binaryNode),
+                _ => throw new NotImplementedException(),
+            };
         }
 
         private static ParameterDeclaration? ParseArgumentDefinition(BinaryASTNode argument)

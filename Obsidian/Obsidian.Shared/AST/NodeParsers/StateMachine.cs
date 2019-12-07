@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -47,10 +47,10 @@ namespace Obsidian.AST.NodeParsers
         public TState DoneState { get; }
         public TState CurrentState { get; private set; }
 
-        private Dictionary<TState, State<TState>> _States = new Dictionary<TState, State<TState>>();
+        private readonly Dictionary<TState, State<TState>> _States = new Dictionary<TState, State<TState>>();
         private State<TState>? _ElseState = default;
 
-        private Lazy<Dictionary<State<TState>, Queue<Queue<Token>>>> _Accumulations = new Lazy<Dictionary<State<TState>, Queue<Queue<Token>>>>();
+        private readonly Lazy<Dictionary<State<TState>, Queue<Queue<Token>>>> _Accumulations = new Lazy<Dictionary<State<TState>, Queue<Queue<Token>>>>();
         private Dictionary<State<TState>, Queue<Queue<Token>>> Accumulations => _Accumulations.Value;
 
         public Queue<(WhiteSpacePosition position, WhiteSpaceMode mode)> WhiteSpace { get; } = new Queue<(WhiteSpacePosition position, WhiteSpaceMode mode)>();
@@ -154,7 +154,7 @@ namespace Obsidian.AST.NodeParsers
             return state != default;
         }
 
-        private bool TryGetAction(ILookaroundEnumerator<Token> enumerator, State<TState> state, [NotNullWhen(true)]out StateAction<TState>? action)
+        private static bool TryGetAction(ILookaroundEnumerator<Token> enumerator, State<TState> state, [NotNullWhen(true)]out StateAction<TState>? action)
         {
             _ = state.TryParse(enumerator, out action);
             return action != default;
