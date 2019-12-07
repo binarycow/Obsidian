@@ -231,6 +231,7 @@ namespace ExpressionParser.Parsing
             }
             if (enumerator.Current.TokenType.IsMatchingBrace(braceToken.TokenType) == false && enumerator.Current.TokenType.IsMatchingBrace(braceToken.SecondaryTokenType) != true)
             {
+                enumerator.TryGetNextArray(5, out var nextTokens);
                 throw new NotImplementedException(); // Did not find the right closing brace
             }
             enumerator.MoveNext();  // Consume the closing brace

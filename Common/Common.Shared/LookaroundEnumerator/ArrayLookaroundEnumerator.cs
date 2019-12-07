@@ -109,6 +109,11 @@ namespace Common.LookaroundEnumerator
             }
             return true;
         }
+
+        public bool TryGetNextArray(int count, out T[] value)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }
