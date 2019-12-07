@@ -21,7 +21,7 @@ namespace Obsidian
         {
 
         }
-        private static Lazy<JinjaLanguageDefinition> _Instance = new Lazy<JinjaLanguageDefinition>(() => new JinjaLanguageDefinition());
+        private static readonly Lazy<JinjaLanguageDefinition> _Instance = new Lazy<JinjaLanguageDefinition>(() => new JinjaLanguageDefinition());
         public static JinjaLanguageDefinition Instance => _Instance.Value;
 
 

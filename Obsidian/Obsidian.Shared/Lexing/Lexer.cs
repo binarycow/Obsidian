@@ -38,9 +38,9 @@ namespace Obsidian.Lexing
 
 
         private delegate bool TryDelegate(ILookaroundEnumerator<char> enumerator, out Token? token);
-        private TryDelegate[] _Delegates = Array.Empty<TryDelegate>();
+        private readonly TryDelegate[] _Delegates = Array.Empty<TryDelegate>();
 
-        private Dictionary<char, Func<Token>> _SingleChar = new Dictionary<char, Func<Token>>
+        private readonly Dictionary<char, Func<Token>> _SingleChar = new Dictionary<char, Func<Token>>
         {
             {',', () => Token.Comma },
             {':', () => Token.Colon },
@@ -54,7 +54,7 @@ namespace Obsidian.Lexing
             {'-', () => Token.Minus },
             {'=', () => Token.Equal },
         };
-        private Dictionary<char[], TokenType> _KeywordLookups = new Dictionary<char[], TokenType>
+        private readonly Dictionary<char[], TokenType> _KeywordLookups = new Dictionary<char[], TokenType>
         {
             { "for".ToCharArray(), TokenType.Keyword_For },
             { "endfor".ToCharArray(), TokenType.Keyword_EndFor },

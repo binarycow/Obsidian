@@ -7,7 +7,7 @@ namespace Obsidian
     {
         public abstract TemplateInfo GetSource(JinjaEnvironment environment, string templateName);
 
-        private Dictionary<string, ITemplate> _TemplateCache = new Dictionary<string, ITemplate>();
+        private readonly Dictionary<string, ITemplate> _TemplateCache = new Dictionary<string, ITemplate>();
 
         public virtual ITemplate Load(JinjaEnvironment environment, string name, IDictionary<string, object?> variableTemplate)
         {

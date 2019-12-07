@@ -9,7 +9,7 @@ namespace Obsidian
 {
     public class FileSystemLoader : BaseLoader
     {
-        private Dictionary<string, string> _TemplateContentsCache = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> _TemplateContentsCache = new Dictionary<string, string>();
 
         public FileSystemLoader(IEnumerable<string> searchPaths, Encoding encoding)
         {

@@ -14,7 +14,7 @@ namespace Obsidian
             Register<ContainerNode>(containerNode => $"{nameof(ContainerNode)}");
         }
 
-        private static Lazy<JinjaCustomStringProvider> _Instance = new Lazy<JinjaCustomStringProvider>(() => new JinjaCustomStringProvider());
+        private static readonly Lazy<JinjaCustomStringProvider> _Instance = new Lazy<JinjaCustomStringProvider>(() => new JinjaCustomStringProvider());
         public static JinjaCustomStringProvider Instance => _Instance.Value;
 
         public override string FormatIEnumerable(IEnumerable<object?> enumerable)

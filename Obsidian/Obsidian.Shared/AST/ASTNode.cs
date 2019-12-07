@@ -70,8 +70,6 @@ namespace Obsidian.AST
 
         internal static ASTNode GetTemplateNode(JinjaEnvironment environment, string templateText)
         {
-
-            var whiteSpaceCounter = new WhiteSpaceCounterVisitor();
             var lexer = new Lexer(environment);
             var tokens = lexer.Tokenize(templateText).ToArray();
             var parsed = Parser.Parse(tokens).ToArray();
@@ -86,7 +84,6 @@ namespace Obsidian.AST
 #if DEBUG
         internal static string CheckOriginalText(JinjaEnvironment environment, string templateText)
         {
-            var whiteSpaceCounter = new WhiteSpaceCounterVisitor();
             var lexer = new Lexer(environment);
             var tokens = lexer.Tokenize(templateText).ToArray();
             var parsed = Parser.Parse(tokens).ToArray();
