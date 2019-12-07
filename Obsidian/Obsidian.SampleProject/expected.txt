@@ -1,20 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>My Webpage</title>
+</head>
+<body>
+    <ul id="navigation">
+        
+            <li><a href="www.google.com">Google</a></li>
+        
+            <li><a href="www.yahoo.com">Yahoo</a></li>
+        
+            <li><a href="www.bing.com">Bing</a></li>
+        
+    </ul>
 
+    <h1>My Webpage</h1>
+    Hello, World!
 
-<p>
-	<input type="text" name="username" value="" size="20">
-
-	varargs: ()
-	kwargs: {}
-</p>
-<p>
-	<input type="password" name="password" value="" size="20">
-
-	varargs: ()
-	kwargs: {}
-</p>
-
-input.name: input
-input.arguments: ('name', 'value', 'type', 'size')
-input.catch_kwargs: True
-input.catch_varargs: True
-input.caller: False
+    
+</body>
+</html>

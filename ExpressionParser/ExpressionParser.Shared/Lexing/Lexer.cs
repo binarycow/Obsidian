@@ -59,7 +59,7 @@ namespace ExpressionParser.Lexing
                     var Success = del(enumerator, out var Result);
                     return new { Success, Result };
                 }).FirstOrDefault(res => res.Success)?.Result;
-                if(foundToken == default)
+                if(foundToken == null)
                 {
                     hasUnknown = true;
                     currentUnknownChars.Append(enumerator.Current);
@@ -72,7 +72,7 @@ namespace ExpressionParser.Lexing
                         currentUnknownChars.Clear();
                         hasUnknown = false;
                     }
-                    yield return foundToken;
+                    yield return foundToken.Value;
                 }
             }
             if (hasUnknown)

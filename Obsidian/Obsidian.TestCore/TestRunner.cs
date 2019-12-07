@@ -77,6 +77,7 @@ namespace Obsidian.TestCore
             File.WriteAllText(actualFile, actualOutput);
         }
 
+#if DEBUG
         public static void CheckOriginalText(Item test, out string actualOutput, out string expectedOutput)
         {
             var testInfo = test as Test;
@@ -89,6 +90,7 @@ namespace Obsidian.TestCore
             };
             actualOutput = environment.CheckOriginalText(Path.GetFileName(inputFile));
         }
+#endif
 
 
         public static string TestDataRoot { get; set; } = Path.Combine(AssemblyLocation, "..", "..", "..", "..", "TestData");

@@ -54,7 +54,7 @@ namespace ExpressionParser
                 case false:
                     return false;
                 case true:
-                    return firstToken != null && firstToken.TokenType.IsLiteral();
+                    return firstToken != null && firstToken.Value.TokenType.IsLiteral();
             }
         }
 

@@ -4,16 +4,20 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using Common.ExpressionCreators;
-using Console = Common.ExpressionCreators.Console;
 using Enumerable = Common.ExpressionCreators.Enumerable;
 using Object = Common.ExpressionCreators.Object;
+#if DEBUG
+using Console = Common.ExpressionCreators.Console;
+#endif
 
 namespace Common
 {
     public class ExpressionEx
     {
+#if DEBUG
         public static Lazy<Console> _ConsoleWriter = new Lazy<Console>();
         public static Console Console => _ConsoleWriter.Value;
+#endif
         public static Lazy<StringBuilder> _StringBuilder = new Lazy<StringBuilder>();
         public static StringBuilder StringBuilder => _StringBuilder.Value;
         public static Lazy<Enumerable> _Enumerable = new Lazy<Enumerable>();

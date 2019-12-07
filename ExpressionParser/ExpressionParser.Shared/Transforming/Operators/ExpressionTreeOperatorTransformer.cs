@@ -32,8 +32,10 @@ namespace ExpressionParser.Transforming.Operators
                     return Expression.Add(left, args[1].Transform(NodeTransformVisitor));
                 case OperatorType.LogicalNot:
                     return Expression.Block(
+#if DEBUG
                         ExpressionEx.Console.Write("NOT : LEFT : "),
                         ExpressionEx.Console.WriteLine(left),
+#endif
                         Expression.IfThenElse(
                             Expression.Call(typeof(object), nameof(object.Equals), Type.EmptyTypes, Expression.Convert(left, typeof(object)), Expression.Constant(null)),
                             Expression.Constant("NULL!"),

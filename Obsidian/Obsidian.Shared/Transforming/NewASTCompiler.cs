@@ -1,4 +1,6 @@
-﻿using System;
+﻿#if DEBUG
+
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -111,7 +113,9 @@ namespace Obsidian.Transforming
             var expression = Environment.Evaluation.ToExpression(item.Expression, CurrentScope);
             if (item.Output)
             {
+#if DEBUG
                 return IfRenderMode(ExpressionEx.Console.Write(expression), Expression.Empty());
+#endif
             }
             return expression;
         }
@@ -124,6 +128,7 @@ namespace Obsidian.Transforming
 
         public Expression Transform(OutputNode item)
         {
+
             var direct = ExpressionEx.Console.Write(item.Value);
             var renderAtCompletion = ExpressionEx.Console.Write($"Render at completion: {item.GetType().Name} {item.Value}");
             return IfRenderMode(direct, renderAtCompletion);
@@ -232,14 +237,18 @@ namespace Obsidian.Transforming
                 Expression.IfThen(
                     Expression.Equal(SelfEx.TemplateQueueCount(SelfVar), Expression.Constant(0)),
                     Expression.Break(breakLabel)
-                ),
-                ExpressionEx.Console.Write("Queue Count: "),
+                )
+#if DEBUG
+                ,ExpressionEx.Console.Write("Queue Count: "),
                 ExpressionEx.Console.WriteLine(SelfEx.TemplateQueueCount(SelfVar)),
+#endif
                 //Expression.Constant(SelfEx.DequeueTemplate(SelfVar)),
 
                 //ExpressionEx.Console.WriteLine(SelfEx.DequeueTemplate(SelfVar)),
+#if DEBUG
                 ExpressionEx.Console.Write("Queue Count: "),
                 ExpressionEx.Console.WriteLine(SelfEx.TemplateQueueCount(SelfVar))
+#endif
             );
 
             var loop = Expression.Loop(loopBody, breakLabel);
@@ -341,3 +350,6 @@ namespace Obsidian.Transforming
         }
     }
 }
+
+
+#endif

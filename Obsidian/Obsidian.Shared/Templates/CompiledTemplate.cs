@@ -98,15 +98,23 @@ namespace Obsidian.Templates
         internal static Expression ToExpression(string templateName, JinjaEnvironment environment, string templateText, CompiledScope rootScope)
         {
             var containerAssembled = ASTNode.GetTemplateNode(environment, templateText);
+#if DEBUG
             var finished = NewASTCompiler.ToExpression(templateName, environment, containerAssembled, out var newcompiler, rootScope);
             return finished;
+#else
+            throw new NotImplementedException();
+#endif
         }
 
         internal static CompiledTemplate FromBlockNode(string templateName, JinjaEnvironment environment, BlockNode blockNode, IDictionary<string, object?> variableTemplate)
         {
             var rootScope = CompiledScope.CreateRootScope("GLOBALS", variableTemplate);
+#if DEBUG
             var expr = NewASTCompiler.ToExpression(templateName, environment, blockNode, out var newcompiler, rootScope);
             return new CompiledTemplate(environment, ExpressionData.CreateCompiled(expr, rootScope), blockNode.Name, null);
+#else
+            throw new NotImplementedException();
+#endif
         }
 
         public string Render(IDictionary<string, object?> variables)
