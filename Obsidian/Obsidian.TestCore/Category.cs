@@ -16,7 +16,7 @@ namespace Obsidian.TestCore
         }
 
         private string _CategoryName = string.Empty;
-        internal string CategoryName
+        public string CategoryName
         {
             get => _CategoryName;
             set
