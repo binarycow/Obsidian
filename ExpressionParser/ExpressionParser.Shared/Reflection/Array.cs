@@ -14,7 +14,7 @@ namespace ExpressionParser.Reflection
 
 
 
-        public static bool TryLength(Expression array, [NotNullWhen(true)]out Expression? arrayLengthProperty)
+        internal static bool TryLength(Expression array, [NotNullWhen(true)]out Expression? arrayLengthProperty)
         {
             arrayLengthProperty = default;
             if (array.Type.IsArray == false) return false;

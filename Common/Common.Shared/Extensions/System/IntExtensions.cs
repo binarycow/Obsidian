@@ -6,6 +6,6 @@ namespace System
 {
     internal static class IntExtensions
     {
-        public static int ClampMax(this int number, int maximum) => number > maximum ? maximum : number;
+        internal static int ClampMax(this int number, int maximum) => number > maximum ? maximum : number;
     }
 }

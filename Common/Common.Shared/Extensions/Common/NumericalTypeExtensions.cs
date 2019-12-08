@@ -7,7 +7,7 @@ namespace Common
     internal static class NumericalTypeExtensions
     {
 
-        public static Type GetTypeObject(this NumericalType numericalType)
+        internal static Type GetTypeObject(this NumericalType numericalType)
         {
             return numericalType switch
             {
@@ -26,7 +26,7 @@ namespace Common
             };
         }
 
-        public static ImplicitNumericalTypeConversions GetCombinedConversions(this NumericalType numericalType)
+        internal static ImplicitNumericalTypeConversions GetCombinedConversions(this NumericalType numericalType)
         {
             return numericalType switch
             {
@@ -45,7 +45,7 @@ namespace Common
             };
         }
 
-        public static ImplicitNumericalTypeConversions GetSimpleConversions(this NumericalType numericalType)
+        internal static ImplicitNumericalTypeConversions GetSimpleConversions(this NumericalType numericalType)
         {
             return numericalType switch
             {
@@ -65,7 +65,7 @@ namespace Common
         }
 
 
-        public static bool FastHasFlag(this ImplicitNumericalTypeConversions numericalType, ImplicitNumericalTypeConversions flag)
+        internal static bool FastHasFlag(this ImplicitNumericalTypeConversions numericalType, ImplicitNumericalTypeConversions flag)
         {
             return (numericalType & flag) == flag;
         }

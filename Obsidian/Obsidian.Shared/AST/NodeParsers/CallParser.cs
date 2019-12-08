@@ -11,7 +11,7 @@ namespace Obsidian.AST.NodeParsers
 {
     internal static class CallParser
     {
-        public enum CallState
+        internal enum CallState
         {
             StartJinja,
             WhiteSpaceOrKeyword,
@@ -23,10 +23,10 @@ namespace Obsidian.AST.NodeParsers
         }
 
 
-        public static readonly Lazy<StateMachine<CallState>> _StartBlockParser = new Lazy<StateMachine<CallState>>(() => CreateParser(Keyword_Call));
-        public static StateMachine<CallState> StartBlock => _StartBlockParser.Value;
-        public static readonly Lazy<StateMachine<CallState>> _EndBlockParser = new Lazy<StateMachine<CallState>>(() => CreateParser(Keyword_EndCall));
-        public static StateMachine<CallState> EndBlock => _EndBlockParser.Value;
+        internal static readonly Lazy<StateMachine<CallState>> _StartBlockParser = new Lazy<StateMachine<CallState>>(() => CreateParser(Keyword_Call));
+        internal static StateMachine<CallState> StartBlock => _StartBlockParser.Value;
+        internal static readonly Lazy<StateMachine<CallState>> _EndBlockParser = new Lazy<StateMachine<CallState>>(() => CreateParser(Keyword_EndCall));
+        internal static StateMachine<CallState> EndBlock => _EndBlockParser.Value;
 
         private static StateMachine<CallState> CreateParser(TokenType keyword)
         {

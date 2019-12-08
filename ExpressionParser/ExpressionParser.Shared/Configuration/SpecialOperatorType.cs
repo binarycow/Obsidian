@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ExpressionParser.Configuration
 {
-    public enum SpecialOperatorType
+    internal enum SpecialOperatorType
     {
         Unknown = 0,
         PropertyAccess,

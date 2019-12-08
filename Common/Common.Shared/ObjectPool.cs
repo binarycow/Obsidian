@@ -5,7 +5,7 @@ namespace Common
 {
     internal class ObjectPool<T>
     {
-        public ObjectPool(Func<T> creationFunction, Action<T> clearAction)
+        internal ObjectPool(Func<T> creationFunction, Action<T> clearAction)
         {
             _Available = new Lazy<ConcurrentQueue<CheckoutObject<T>>>(); 
             _CheckedOut = new Lazy<ConcurrentDictionary<CheckoutObject<T>, byte>>();
@@ -22,7 +22,7 @@ namespace Common
         private readonly Func<T> _CreationFunction;
         private readonly Action<T> _ClearAction;
 
-        public CheckoutObject<T> Checkout()
+        internal CheckoutObject<T> Checkout()
         {
             if (Available.Count > 0 && Available.TryDequeue(out CheckoutObject<T> checkoutRecord) == false)
             {
@@ -43,7 +43,7 @@ namespace Common
             }
         }
 
-        public void Return(CheckoutObject<T> checkoutRecord)
+        internal void Return(CheckoutObject<T> checkoutRecord)
         {
             CheckedOut.TryRemove(checkoutRecord, out _);
             _ClearAction(checkoutRecord.CheckedOutObject);

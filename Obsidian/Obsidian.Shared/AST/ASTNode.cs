@@ -11,13 +11,13 @@ namespace Obsidian.AST
 {
     internal abstract class ASTNode : ITransformable, IForceTransformable
     {
-        public ASTNode(ParsingNode parsingNode)
+        internal ASTNode(ParsingNode parsingNode)
         {
             ParsingNodes = new ParsingNode[] { parsingNode };
             StartParsingNode = default;
             EndParsingNode = default;
         }
-        public ASTNode(ParsingNode? startingParsingNode, IEnumerable<ParsingNode> contentParsingNodes, ParsingNode? endingParsingNode)
+        internal ASTNode(ParsingNode? startingParsingNode, IEnumerable<ParsingNode> contentParsingNodes, ParsingNode? endingParsingNode)
         {
             ParsingNodes =
                 (startingParsingNode?.YieldOne() ?? Enumerable.Empty<ParsingNode>())
@@ -28,9 +28,9 @@ namespace Obsidian.AST
             EndParsingNode = endingParsingNode;
         }
 
-        public ParsingNode[] ParsingNodes { get; }
-        public ParsingNode? StartParsingNode { get; }
-        public ParsingNode? EndParsingNode { get; }
+        internal ParsingNode[] ParsingNodes { get; }
+        internal ParsingNode? StartParsingNode { get; }
+        internal ParsingNode? EndParsingNode { get; }
 
 
         public override string ToString()
@@ -38,19 +38,19 @@ namespace Obsidian.AST
             return string.Join(string.Empty, ParsingNodes.SelectMany(x => x.ToString()));
         }
 
-        public string ToString(bool debug)
+        internal string ToString(bool debug)
         {
             return debug ? ToString().WhiteSpaceEscape() : ToString();
         }
 
-        public virtual void ToOriginalText(StringBuilder stringBuilder)
+        internal virtual void ToOriginalText(StringBuilder stringBuilder)
         {
             foreach (var node in ParsingNodes)
             {
                 node.ToOriginalText(stringBuilder);
             }
         }
-        public string OriginalText
+        internal string OriginalText
         {
             get
             {

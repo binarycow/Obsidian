@@ -10,7 +10,7 @@ namespace Common.ExpressionCreators
 
     internal class ExpressionExtensionData<TData> : ExpressionExtensionData
     {
-        public ExpressionExtensionData(ParameterExpression expression) : base(expression, typeof(TData))
+        internal ExpressionExtensionData(ParameterExpression expression) : base(expression, typeof(TData))
         {
             ParameterExpression = expression;
             Type = expression.Type;
@@ -22,7 +22,7 @@ namespace Common.ExpressionCreators
         }
 
 
-        public static bool TryCreate(ParameterExpression expression, [NotNullWhen(true)]out ExpressionExtensionData<TData>? expressionData)
+        internal static bool TryCreate(ParameterExpression expression, [NotNullWhen(true)]out ExpressionExtensionData<TData>? expressionData)
         {
             expressionData = default;
             if(expression.Type == typeof(TData))
@@ -32,7 +32,7 @@ namespace Common.ExpressionCreators
             return expressionData != null;
         }
 
-        public static bool TryCreate_Generic(ParameterExpression variableExpression,
+        internal static bool TryCreate_Generic(ParameterExpression variableExpression,
             [NotNullWhen(true)]out ExpressionExtensionData<TData>? expressionData,
             [NotNullWhen(true)]out Expression? newExpression,
             Type[] typeArguments,
@@ -51,7 +51,7 @@ namespace Common.ExpressionCreators
             expressionData = new ExpressionExtensionData<TData>(variableExpression);
             return true;
         }
-        public static bool TryCreate(ParameterExpression variableExpression,
+        internal static bool TryCreate(ParameterExpression variableExpression,
             [NotNullWhen(true)]out ExpressionExtensionData<TData>? expressionData,
             [NotNullWhen(true)]out Expression? newExpression,
             params Expression[] constructorArguments)
@@ -62,13 +62,13 @@ namespace Common.ExpressionCreators
 
     internal class ExpressionExtensionData
     {
-        public ExpressionExtensionData(ParameterExpression expression, Type type)
+        internal ExpressionExtensionData(ParameterExpression expression, Type type)
         {
             ParameterExpression = expression;
             Type = type;
         }
-        public ParameterExpression ParameterExpression { get; set; }
-        public Type Type { get; set; }
+        internal ParameterExpression ParameterExpression { get; set; }
+        internal Type Type { get; set; }
 
 
         public static implicit operator ExpressionExtensionData(ParameterExpression expr)
@@ -80,11 +80,11 @@ namespace Common.ExpressionCreators
             return expr.ParameterExpression;
         }
 
-        public static bool TryCreate<TData>(ParameterExpression expression, [NotNullWhen(true)]out ExpressionExtensionData<TData>? expressionData)
+        internal static bool TryCreate<TData>(ParameterExpression expression, [NotNullWhen(true)]out ExpressionExtensionData<TData>? expressionData)
         {
             return ExpressionExtensionData<TData>.TryCreate(expression, out expressionData);
         }
-        public static bool TryCreate_Generic<TData>(ParameterExpression variableExpression,
+        internal static bool TryCreate_Generic<TData>(ParameterExpression variableExpression,
             [NotNullWhen(true)]out ExpressionExtensionData<TData>? expressionData,
             [NotNullWhen(true)]out Expression? newExpression,
             Type[] typeArguments,
@@ -92,7 +92,7 @@ namespace Common.ExpressionCreators
         {
             return ExpressionExtensionData<TData>.TryCreate_Generic(variableExpression, out expressionData, out newExpression, typeArguments, constructorArguments);
         }
-        public static bool TryCreate<TData>(ParameterExpression variableExpression,
+        internal static bool TryCreate<TData>(ParameterExpression variableExpression,
             [NotNullWhen(true)]out ExpressionExtensionData<TData>? expressionData,
             [NotNullWhen(true)]out Expression? newExpression,
             params Expression[] constructorArguments)

@@ -9,11 +9,11 @@ namespace ExpressionParser
 {
     internal static class LanguageDefinition
     {
-        public static readonly Lazy<CSharpLanguageDefinition> _CSharp = new Lazy<CSharpLanguageDefinition>();
-        public static ILanguageDefinition CSharp => _CSharp.Value;
+        internal static readonly Lazy<CSharpLanguageDefinition> _CSharp = new Lazy<CSharpLanguageDefinition>();
+        internal static ILanguageDefinition CSharp => _CSharp.Value;
 
 
-        public static IDictionary<char, TokenType> StandardSingleCharacterTokens => new Dictionary<char, TokenType>
+        internal static IDictionary<char, TokenType> StandardSingleCharacterTokens => new Dictionary<char, TokenType>
         {
             { '(', TokenType.ParenOpen },
             { ')', TokenType.ParenClose },

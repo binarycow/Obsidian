@@ -19,13 +19,13 @@
 
 //        private Scope? ParentScope { get; }
 //        private Dictionary<string, ParameterExpression> _LocalVariables = new Dictionary<string, ParameterExpression>();
-//        public IEnumerable<ParameterExpression> LocalVariables => _LocalVariables.Values;
+//        internal IEnumerable<ParameterExpression> LocalVariables => _LocalVariables.Values;
 //        private Dictionary<string, ParameterExpression> _InternalVariables = new Dictionary<string, ParameterExpression>();
-//        public IEnumerable<ParameterExpression> InternalVariables => _InternalVariables.Values;
-//        public IEnumerable<ParameterExpression> AllVariables => InternalVariables.Concat(LocalVariables);
-//        public List<ParameterExpression> Parameters { get; } = new List<ParameterExpression>();
+//        internal IEnumerable<ParameterExpression> InternalVariables => _InternalVariables.Values;
+//        internal IEnumerable<ParameterExpression> AllVariables => InternalVariables.Concat(LocalVariables);
+//        internal List<ParameterExpression> Parameters { get; } = new List<ParameterExpression>();
 
-//        public BlockExpression CloseScope(Expression[] body, bool includeParameters = false, bool includeInternalVariables = false)
+//        internal BlockExpression CloseScope(Expression[] body, bool includeParameters = false, bool includeInternalVariables = false)
 //        {
 //            var variables = LocalVariables;
 //            if (includeInternalVariables)
@@ -39,11 +39,11 @@
 //            return Expression.Block(variables, body);
 //        }
 
-//        public virtual bool IsRoot => false;
+//        internal virtual bool IsRoot => false;
 
-//        public string? Name { get; }
+//        internal string? Name { get; }
 
-//        //public ExpressionExtensionData<TData> AddAndCreateLocalVariable_Generic<TData>(string name, out BinaryExpression assignExpression,
+//        //internal ExpressionExtensionData<TData> AddAndCreateLocalVariable_Generic<TData>(string name, out BinaryExpression assignExpression,
 //        //    Type[] typeArguments,
 //        //    params Expression[] constructorArguments)
 //        //{
@@ -57,22 +57,22 @@
 //        //    assignExpression = Expression.Assign(variable, newExpression);
 //        //    return expressionExtensionData;
 //        //}
-//        //public ExpressionExtensionData<TData> AddAndCreateLocalVariable<TData>(string name, out BinaryExpression assignExpression, 
+//        //internal ExpressionExtensionData<TData> AddAndCreateLocalVariable<TData>(string name, out BinaryExpression assignExpression, 
 //        //    params Expression[] constructorArguments)
 //        //{
 //        //    return AddAndCreateLocalVariable_Generic<TData>(name, out assignExpression, Type.EmptyTypes, constructorArguments);
 //        //}
 
-//        public virtual ParameterExpression AddParameter(string name, Expression assignValue, out BinaryExpression assignExpression)
+//        internal virtual ParameterExpression AddParameter(string name, Expression assignValue, out BinaryExpression assignExpression)
 //        {
 //            return AddVariable(_LocalVariables, name, assignValue, out assignExpression, parameter: true);
 //        }
-//        public virtual ParameterExpression AddLocalVariable(string name, Expression assignValue, out BinaryExpression assignExpression)
+//        internal virtual ParameterExpression AddLocalVariable(string name, Expression assignValue, out BinaryExpression assignExpression)
 //        {
 //            return AddVariable(_LocalVariables, name, assignValue, out assignExpression);
 //        }
 
-//        public ParameterExpression AddInternalVariable(string name, Expression assignValue, out BinaryExpression assignExpression)
+//        internal ParameterExpression AddInternalVariable(string name, Expression assignValue, out BinaryExpression assignExpression)
 //        {
 //            return AddVariable(_InternalVariables, name, assignValue, out assignExpression);
 //        }
@@ -90,12 +90,12 @@
 //            return variable;
 //        }
 
-//        public ParameterExpression this[string internalVariableName]
+//        internal ParameterExpression this[string internalVariableName]
 //        {
 //            get => _InternalVariables[internalVariableName];
 //        }
 
-//        public virtual bool TryGetVariable(string variableName, [NotNullWhen(true)]out ParameterExpression? expression)
+//        internal virtual bool TryGetVariable(string variableName, [NotNullWhen(true)]out ParameterExpression? expression)
 //        {
 //            if (_LocalVariables.TryGetValue(variableName, out expression))
 //            {
@@ -107,17 +107,17 @@
 //                false;
 //        }
 
-//        public virtual Scope FindRootScope()
+//        internal virtual Scope FindRootScope()
 //        {
 //            return ParentScope?.FindRootScope() ?? this;
 //        }
 
-//        public Scope CreateChild(string? name = null)
+//        internal Scope CreateChild(string? name = null)
 //        {
 //            return new Scope(this, name);
 //        }
 
-//        public IDictionary<string, Expression> VariableWalk()
+//        internal IDictionary<string, Expression> VariableWalk()
 //        {
 //            return VariableWalk(new Dictionary<string, Expression>());
 //        }

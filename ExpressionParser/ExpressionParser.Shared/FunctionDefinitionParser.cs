@@ -8,7 +8,7 @@ namespace ExpressionParser
     internal static class FunctionDefinitionParser
     {
 
-        public static void ParseFunctionDefinition(ASTNode node)
+        internal static void ParseFunctionDefinition(ASTNode node)
         {
 
         }

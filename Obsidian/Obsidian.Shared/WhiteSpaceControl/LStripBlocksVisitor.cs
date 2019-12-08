@@ -11,9 +11,9 @@ namespace Obsidian.WhiteSpaceControl
     internal class LStripBlocksVisitor : ITransformVisitor
     {
         private static readonly Lazy<LStripBlocksVisitor> _Instance = new Lazy<LStripBlocksVisitor>();
-        public static LStripBlocksVisitor Instance => _Instance.Value;
+        internal static LStripBlocksVisitor Instance => _Instance.Value;
 
-        public bool Strip { get; private set; }
+        internal bool Strip { get; private set; }
 
         private readonly Queue<WhiteSpaceNode> pendingWhiteSpace = new Queue<WhiteSpaceNode>();
 

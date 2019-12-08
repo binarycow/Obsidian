@@ -21,7 +21,7 @@ namespace Common
     }
 
     [Flags]
-    public enum ImplicitNumericalTypeConversions
+    internal enum ImplicitNumericalTypeConversions
     {
         None                        = 0b0000_0000_0000,
         SimpleSignedByte            = 0b0000_0000_0001,

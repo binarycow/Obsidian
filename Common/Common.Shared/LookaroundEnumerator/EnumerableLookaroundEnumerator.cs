@@ -8,9 +8,9 @@ using Common.Collections;
 
 namespace Common.LookaroundEnumerator
 {
-    public sealed class EnumerableLookaroundEnumerator<T> : ILookaroundEnumerator<T>
+    internal sealed class EnumerableLookaroundEnumerator<T> : ILookaroundEnumerator<T>
     {
-        public EnumerableLookaroundEnumerator(IEnumerable<T> source, byte lookaheadCount, byte lookbehindCount = 0)
+        internal EnumerableLookaroundEnumerator(IEnumerable<T> source, byte lookaheadCount, byte lookbehindCount = 0)
         {
             source = source ?? throw new ArgumentNullException(nameof(source));
             _Enumerator = source.GetEnumerator();
@@ -25,7 +25,7 @@ namespace Common.LookaroundEnumerator
         private readonly T[] _Previous;
         private readonly T[] _Next;
 
-        //public LookaroundData<T> Data { private get; private set; } = new LookaroundData<T>(Array.Empty<T>(), default!, Array.Empty<T>());
+        //internal LookaroundData<T> Data { private get; private set; } = new LookaroundData<T>(Array.Empty<T>(), default!, Array.Empty<T>());
 
         public int LookaheadCount { get; private set; }
         public int LookbehindCount { get; private set; }
@@ -34,7 +34,7 @@ namespace Common.LookaroundEnumerator
 
         public EnumeratorState State { get; private set; }
         private EnumeratorState _UnderlyingEnumeratorState;
-        public EnumeratorState UnderlyingEnumeratorState 
+        internal EnumeratorState UnderlyingEnumeratorState 
         {
             get => LookaheadCount > 0 ? _UnderlyingEnumeratorState : State;
             private set

@@ -12,9 +12,9 @@ using System.IO;
 
 namespace Obsidian.TestBuilder
 {
-    public partial class ctrlTestProperties : UserControl
+    internal partial class ctrlTestProperties : UserControl
     {
-        public ctrlTestProperties()
+        internal ctrlTestProperties()
         {
             InitializeComponent();
         }
@@ -22,7 +22,7 @@ namespace Obsidian.TestBuilder
 
         private Test _Test;
 
-        public Test Test
+        internal Test Test
         {
             get => _Test; 
             set 

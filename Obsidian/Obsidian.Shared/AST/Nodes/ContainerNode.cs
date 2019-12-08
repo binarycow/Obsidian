@@ -12,7 +12,7 @@ namespace Obsidian.AST.Nodes
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
     internal class ContainerNode : AbstractContainerNode, IWhiteSpaceControlling
     {
-        public ContainerNode(ParsingNode? startParsingNode, IEnumerable<ASTNode> children, ParsingNode? endParsingNode, WhiteSpaceControlSet? whiteSpace = null)
+        internal ContainerNode(ParsingNode? startParsingNode, IEnumerable<ASTNode> children, ParsingNode? endParsingNode, WhiteSpaceControlSet? whiteSpace = null)
             : base(startParsingNode, children, endParsingNode)
         {
             WhiteSpaceControl = whiteSpace ?? new WhiteSpaceControlSet();

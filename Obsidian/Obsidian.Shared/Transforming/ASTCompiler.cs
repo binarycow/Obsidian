@@ -26,24 +26,24 @@
 //        {
 //            internal class AssignInfo<T> : AssignInfo
 //            {
-//                public AssignInfo(ExpressionExtensionData<T> extensionData, BinaryExpression assignmentExpression) : base(extensionData, assignmentExpression)
+//                internal AssignInfo(ExpressionExtensionData<T> extensionData, BinaryExpression assignmentExpression) : base(extensionData, assignmentExpression)
 //                {
 //                    TypedExtensionData = extensionData;
 //                }
-//                public ExpressionExtensionData<T> TypedExtensionData { get; }
+//                internal ExpressionExtensionData<T> TypedExtensionData { get; }
 //            }
 //            internal class AssignInfo
 //            {
-//                public AssignInfo(ExpressionExtensionData extensionData, BinaryExpression assignmentExpression)
+//                internal AssignInfo(ExpressionExtensionData extensionData, BinaryExpression assignmentExpression)
 //                {
 //                    ExtensionData = extensionData;
 //                    AssignmentExpression = assignmentExpression;
 //                }
-//                public ExpressionExtensionData ExtensionData { get; }
-//                public BinaryExpression AssignmentExpression { get; }
+//                internal ExpressionExtensionData ExtensionData { get; }
+//                internal BinaryExpression AssignmentExpression { get; }
 //            }
 
-//            public SpecialVariableInfo(AssignInfo<StringBuilder> stringBuilder, AssignInfo<Self> self)
+//            internal SpecialVariableInfo(AssignInfo<StringBuilder> stringBuilder, AssignInfo<Self> self)
 //            {
 //                _StringBuilder = stringBuilder;
 //                _Self = self;
@@ -52,17 +52,17 @@
 //            private AssignInfo<StringBuilder> _StringBuilder;
 //            private AssignInfo<Self> _Self;
 
-//            public ExpressionExtensionData<StringBuilder> StringBuilder => _StringBuilder.TypedExtensionData;
-//            public ExpressionExtensionData<Self> Self => _Self.TypedExtensionData;
+//            internal ExpressionExtensionData<StringBuilder> StringBuilder => _StringBuilder.TypedExtensionData;
+//            internal ExpressionExtensionData<Self> Self => _Self.TypedExtensionData;
 
-//            public IEnumerable<AssignInfo> AllAssignInfo => new AssignInfo[]
+//            internal IEnumerable<AssignInfo> AllAssignInfo => new AssignInfo[]
 //            {
 //                _StringBuilder,
 //                _Self,
 //            };
 
-//            public IEnumerable<ParameterExpression> AllVariables => AllAssignInfo.Select(x => x.ExtensionData.ParameterExpression);
-//            public IEnumerable<BinaryExpression> AllAssignments => AllAssignInfo.Select(x => x.AssignmentExpression);
+//            internal IEnumerable<ParameterExpression> AllVariables => AllAssignInfo.Select(x => x.ExtensionData.ParameterExpression);
+//            internal IEnumerable<BinaryExpression> AllAssignments => AllAssignInfo.Select(x => x.AssignmentExpression);
 //        }
 
 
@@ -79,17 +79,17 @@
 //        private Scope _RootScope;
 //        private Stack<Scope> _Scopes;
 //        private SpecialVariableInfo SpecialVariables { get; }
-//        public Scope CurrentScope => _Scopes.Peek();
+//        internal Scope CurrentScope => _Scopes.Peek();
 
-//        public void PushScope(string name)
+//        internal void PushScope(string name)
 //        {
 //            _Scopes.Push(CurrentScope.CreateChild(name));
 //        }
-//        public BlockExpression PopScope(string name, Expression childOne, params Expression[] children)
+//        internal BlockExpression PopScope(string name, Expression childOne, params Expression[] children)
 //        {
 //            return PopScope(name, childOne.YieldOne().Concat(children));
 //        }
-//        public BlockExpression PopScope(string name, IEnumerable<Expression> children)
+//        internal BlockExpression PopScope(string name, IEnumerable<Expression> children)
 //        {
 //            var scope = _Scopes.Pop();
 //            var block = scope.CloseScope(children);
@@ -99,7 +99,7 @@
 //            }
 //            return block;
 //        }
-//        public BlockExpression PopScope(string name, Expression child)
+//        internal BlockExpression PopScope(string name, Expression child)
 //        {
 //            return PopScope(name, child.YieldOne());
 //        }
@@ -145,8 +145,8 @@
 
 
 
-//        public Expression Transform(ContainerNode item) => Transform(item, false);
-//        public Expression Transform(ContainerNode item, bool forceRender)
+//        internal Expression Transform(ContainerNode item) => Transform(item, false);
+//        internal Expression Transform(ContainerNode item, bool forceRender)
 //        {
 //            if (forceRender)
 //            {
@@ -158,8 +158,8 @@
 //            );
 //        }
 
-//        public Expression Transform(ExpressionNode item) => Transform(item, false);
-//        public Expression Transform(ExpressionNode item, bool forceRender)
+//        internal Expression Transform(ExpressionNode item) => Transform(item, false);
+//        internal Expression Transform(ExpressionNode item, bool forceRender)
 //        {
 //            var expression = _Environment.Evaluation.ToExpression(item.Expression, CurrentScope);
 //            if (item.Output)
@@ -176,8 +176,8 @@
 //            return expression;
 //        }
 
-//        public Expression Transform(NewLineNode item) => Transform(item, false);
-//        public Expression Transform(NewLineNode item, bool forceRender)
+//        internal Expression Transform(NewLineNode item) => Transform(item, false);
+//        internal Expression Transform(NewLineNode item, bool forceRender)
 //        {
 //            if (forceRender)
 //            {
@@ -189,8 +189,8 @@
 //            );
 //        }
 
-//        public Expression Transform(OutputNode item) => Transform(item, false);
-//        public Expression Transform(OutputNode item, bool forceRender)
+//        internal Expression Transform(OutputNode item) => Transform(item, false);
+//        internal Expression Transform(OutputNode item, bool forceRender)
 //        {
 //            if (forceRender)
 //            {
@@ -202,8 +202,8 @@
 //            );
 //        }
 
-//        public Expression Transform(WhiteSpaceNode item) => Transform(item, false);
-//        public Expression Transform(WhiteSpaceNode item, bool forceRender)
+//        internal Expression Transform(WhiteSpaceNode item) => Transform(item, false);
+//        internal Expression Transform(WhiteSpaceNode item, bool forceRender)
 //        {
 //            if (forceRender)
 //            {
@@ -215,8 +215,8 @@
 //            );
 //        }
 
-//        public Expression Transform(IfNode item) => Transform(item, false);
-//        public Expression Transform(IfNode item, bool forceRender)
+//        internal Expression Transform(IfNode item) => Transform(item, false);
+//        internal Expression Transform(IfNode item, bool forceRender)
 //        {
 //            if(item.Conditions.Length == 1)
 //            {
@@ -251,26 +251,26 @@
 //            );
 //        }
 
-//        public Expression Transform(ConditionalNode item) => Transform(item, false);
-//        public Expression Transform(ConditionalNode item, bool forceRender)
+//        internal Expression Transform(ConditionalNode item) => Transform(item, false);
+//        internal Expression Transform(ConditionalNode item, bool forceRender)
 //        {
 //            throw new NotImplementedException();
 //        }
 
-//        public Expression Transform(CommentNode item) => Transform(item, false);
-//        public Expression Transform(CommentNode item, bool forceRender)
+//        internal Expression Transform(CommentNode item) => Transform(item, false);
+//        internal Expression Transform(CommentNode item, bool forceRender)
 //        {
 //            throw new NotImplementedException();
 //        }
 
-//        public Expression Transform(BlockNode item) => Transform(item, false);
-//        public Expression Transform(BlockNode item, bool forceRender)
+//        internal Expression Transform(BlockNode item) => Transform(item, false);
+//        internal Expression Transform(BlockNode item, bool forceRender)
 //        {
 //            throw new NotImplementedException();
 //        }
 
-//        public Expression Transform(ExtendsNode item) => Transform(item, false);
-//        public Expression Transform(ExtendsNode item, bool forceRender)
+//        internal Expression Transform(ExtendsNode item) => Transform(item, false);
+//        internal Expression Transform(ExtendsNode item, bool forceRender)
 //        {
 //            throw new NotImplementedException();
 //        }
@@ -290,8 +290,8 @@
 //            return nodes.Select(node => node.Transform(this, forceRender));
 //        }
 
-//        public Expression Transform(ForNode item) => Transform(item, false);
-//        public Expression Transform(ForNode item, bool forceRender)
+//        internal Expression Transform(ForNode item) => Transform(item, false);
+//        internal Expression Transform(ForNode item, bool forceRender)
 //        {
 //            if (ExpressionEx.ToArray(item.Expression.Transform(this, forceRender), out var expression, out var elementType) == false ||
 //                expression == null || elementType == null)
@@ -378,8 +378,8 @@
 //            );
 //        }
 
-//        public Expression Transform(TemplateNode item) => Transform(item, false);
-//        public Expression Transform(TemplateNode item, bool forceRender)
+//        internal Expression Transform(TemplateNode item) => Transform(item, false);
+//        internal Expression Transform(TemplateNode item, bool forceRender)
 //        {
 //            throw new NotImplementedException();
 //        }

@@ -13,7 +13,7 @@ namespace ExpressionParser.Parsing
 {
     internal class Parser
     {
-        public Parser(ILanguageDefinition languageDefinition, byte minimumLookahead = 1, byte minimumLookbehind = 1)
+        internal Parser(ILanguageDefinition languageDefinition, byte minimumLookahead = 1, byte minimumLookbehind = 1)
         {
             LanguageDefinition = languageDefinition;
             _PrecedenceGroups = LanguageDefinition.Operators
@@ -27,23 +27,23 @@ namespace ExpressionParser.Parsing
             MinimumLookbehind = Math.Max(minimumLookbehind, (byte)1);
         }
 
-        public byte MinimumLookahead { get; }
-        public byte MinimumLookbehind { get; }
+        internal byte MinimumLookahead { get; }
+        internal byte MinimumLookbehind { get; }
 
-        public ILanguageDefinition LanguageDefinition { get; }
+        internal ILanguageDefinition LanguageDefinition { get; }
 
-        public delegate bool TryParseDelegate(ILookaroundEnumerator<Token> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode, AssignmentOperatorBehavior assignmentOperatorBehavior);
+        internal delegate bool TryParseDelegate(ILookaroundEnumerator<Token> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode, AssignmentOperatorBehavior assignmentOperatorBehavior);
 
         private readonly TryParseDelegate[] _CustomParseDelegates = Array.Empty<TryParseDelegate>();
-        public virtual TryParseDelegate[] CustomParseDelegates => _CustomParseDelegates;
+        internal virtual TryParseDelegate[] CustomParseDelegates => _CustomParseDelegates;
 
         private readonly TryParseDelegate[] _LiteralParseDelegates = Array.Empty<TryParseDelegate>();
-        public virtual TryParseDelegate[] LiteralParseDelegates => _LiteralParseDelegates;
+        internal virtual TryParseDelegate[] LiteralParseDelegates => _LiteralParseDelegates;
 
         private readonly IGrouping<int, OperatorDefinition>[] _PrecedenceGroups;
         private readonly string[][] _ValidOperatorTextValues;
 
-        public ASTNode Parse(IEnumerable<Token> tokens)
+        internal ASTNode Parse(IEnumerable<Token> tokens)
         {
             var tokensExcludingWhiteSpace = tokens.Where(token => token.TokenType != TokenType.WhiteSpace);
             using var enumerator = LookaroundEnumeratorFactory.CreateLookaroundEnumerator(tokensExcludingWhiteSpace, 1, 1);
@@ -65,7 +65,7 @@ namespace ExpressionParser.Parsing
             return parsedNode;
         }
 
-        public bool TryParse(ILookaroundEnumerator<Token> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode, AssignmentOperatorBehavior assignmentOperatorBehavior, int currentPrecedence = 0)
+        internal bool TryParse(ILookaroundEnumerator<Token> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode, AssignmentOperatorBehavior assignmentOperatorBehavior, int currentPrecedence = 0)
         {
             if(currentPrecedence == 0 && CustomParseDelegates != default)
             {

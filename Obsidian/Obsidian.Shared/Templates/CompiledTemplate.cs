@@ -25,24 +25,24 @@ namespace Obsidian.Templates
             TemplatePath = templatePath;
         }
 
-        public ExpressionData TemplateNode { get; }
+        internal ExpressionData TemplateNode { get; }
         public JinjaEnvironment Environment { get; }
         public string? TemplateName { get; }
         public string? TemplatePath { get; }
 
-        public string Render()
+        internal string Render()
         {
             return Render(new Dictionary<string, object?>());
         }
 
-        public bool Compiled { get; private set; }
-        public void Compile()
+        internal bool Compiled { get; private set; }
+        internal void Compile()
         {
             Compile(new Dictionary<string, object?>());
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>")]
-        public void Compile(IDictionary<string, object?> variables)
+        internal void Compile(IDictionary<string, object?> variables)
         {
             //var compiler = new ExpressionTreeTransformVisitor(Environment, variables);
             //var compiled = TemplateNode.Transform(compiler);

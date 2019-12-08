@@ -15,7 +15,7 @@ namespace Obsidian.AST.Nodes.Statements
 {
     internal class MacroNode : ASTNode, IWhiteSpaceControlling
     {
-        public MacroNode(ParsingNode? startParsingNode, string macroText, ContainerNode contents, ParsingNode? endParsingNode, WhiteSpaceControlSet? whiteSpace = null)
+        internal MacroNode(ParsingNode? startParsingNode, string macroText, ContainerNode contents, ParsingNode? endParsingNode, WhiteSpaceControlSet? whiteSpace = null)
             : base(startParsingNode, contents.ParsingNodes, endParsingNode)
         {
             Contents = contents;
@@ -23,8 +23,8 @@ namespace Obsidian.AST.Nodes.Statements
             MacroText = macroText;
         }
 
-        public ContainerNode Contents { get; }
-        public string MacroText { get; }
+        internal ContainerNode Contents { get; }
+        internal string MacroText { get; }
         public WhiteSpaceControlSet WhiteSpaceControl { get; }
 
         public override TOutput Transform<TOutput>(ITransformVisitor<TOutput> visitor)
@@ -42,7 +42,7 @@ namespace Obsidian.AST.Nodes.Statements
             visitor.Transform(this);
         }
 
-        public static bool TryParseMacro(Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
+        internal static bool TryParseMacro(Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
         {
             parsedNode = default;
 

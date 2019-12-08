@@ -9,12 +9,12 @@ namespace ExpressionParser.References
 {
     internal class ExpressionMethodGroup : MethodGroup
     {
-        public ExpressionMethodGroup(Expression referredObject, string methodName) : base(methodName)
+        internal ExpressionMethodGroup(Expression referredObject, string methodName) : base(methodName)
         {
             ReferredObject = referredObject;
         }
 
-        public Expression ReferredObject { get; }
+        internal Expression ReferredObject { get; }
 
         
     }

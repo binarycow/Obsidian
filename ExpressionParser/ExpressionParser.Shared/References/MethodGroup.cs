@@ -10,21 +10,21 @@ namespace ExpressionParser.References
 {
     internal abstract class MethodGroup
     {
-        public MethodGroup(string methodName)
+        internal MethodGroup(string methodName)
         {
             MethodName = methodName;
         }
-        public string MethodName { get; }
+        internal string MethodName { get; }
 
-        public static MethodGroup Create(UserDefinedFunction functionDefinition)
+        internal static MethodGroup Create(UserDefinedFunction functionDefinition)
         {
             return new FunctionMethodGroup(functionDefinition);
         }
-        public static MethodGroup Create(UserDefinedFunction functionDefinition, object? referredObject)
+        internal static MethodGroup Create(UserDefinedFunction functionDefinition, object? referredObject)
         {
             return new PipelineMethodGroup(functionDefinition, referredObject);
         }
-        public static MethodGroup Create(Expression expression, string methodName)
+        internal static MethodGroup Create(Expression expression, string methodName)
         {
             return new ExpressionMethodGroup(expression, methodName);
         }

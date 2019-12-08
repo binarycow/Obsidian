@@ -82,26 +82,6 @@ namespace Obsidian.TestCore
             File.WriteAllText(actualFile, actualOutput);
         }
 
-#if DEBUG
-        public static void CheckOriginalText(Item test, out string actualOutput, out string expectedOutput)
-        {
-            test = test ?? throw new ArgumentNullException(nameof(test));
-            if (!(test is Test testInfo))
-            {
-                throw new ArgumentException($"Item provided is of type {test.GetType().Name}, which is not {nameof(Test)}", nameof(test));
-            }
-            var inputFile = Path.Combine(TestDataRoot, testInfo.RootPath, testInfo.InputFile);
-            var actualFile = Path.Combine(TestDataRoot, testInfo.RootPath, testInfo.ActualFile);
-            expectedOutput = File.ReadAllText(inputFile);
-            var environment = new JinjaEnvironment
-            {
-                Loader = new FileSystemLoader(searchPath: Path.GetDirectoryName(inputFile)!)
-            };
-            actualOutput = environment.CheckOriginalText(Path.GetFileName(inputFile));
-        }
-#endif
-
-
         public static string TestDataRoot { get; set; } = Path.Combine(AssemblyLocation, "..", "..", "..", "..", "TestData");
         public static string TestFileName => "Tests.json";
         public static string APIInfoExpected => Path.Combine(TestDataRoot, "APIInfo_Expected.json");

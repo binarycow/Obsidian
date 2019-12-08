@@ -5,17 +5,17 @@ using System.Text;
 
 namespace Obsidian
 {
-    public readonly struct TemplateInfo : IEquatable<TemplateInfo>
+    internal readonly struct TemplateInfo : IEquatable<TemplateInfo>
     {
-        public TemplateInfo(string source, string filename, bool upToDate)
+        internal TemplateInfo(string source, string filename, bool upToDate)
         {
             Source = source;
             Filename = filename;
             UpToDate = upToDate;
         }
-        public string Source { get; }
-        public string Filename { get; }
-        public bool UpToDate { get; }
+        internal string Source { get; }
+        internal string Filename { get; }
+        internal bool UpToDate { get; }
 
         public override bool Equals(object obj)
         {

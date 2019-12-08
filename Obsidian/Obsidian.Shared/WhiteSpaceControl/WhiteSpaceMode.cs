@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Obsidian.WhiteSpaceControl
 {
-    public enum WhiteSpaceMode
+    internal enum WhiteSpaceMode
     {
         Default,
         Trim,

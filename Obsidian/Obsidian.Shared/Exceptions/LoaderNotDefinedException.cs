@@ -7,15 +7,15 @@ namespace Obsidian.Exceptions
 {
     public class LoaderNotDefinedException : Exception
     {
-        public LoaderNotDefinedException() : base()
+        internal LoaderNotDefinedException() : base()
         {
 
         }
-        public LoaderNotDefinedException(string message) : base(message)
+        internal LoaderNotDefinedException(string message) : base(message)
         {
         }
 
-        public LoaderNotDefinedException(string message, Exception innerException) : base(message, innerException)
+        internal LoaderNotDefinedException(string message, Exception innerException) : base(message, innerException)
         {
         }
     }

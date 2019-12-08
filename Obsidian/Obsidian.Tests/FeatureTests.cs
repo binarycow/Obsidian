@@ -12,22 +12,22 @@ namespace Obsidian.Tests
     {
 
         [Test]
-        public void NullMasterFallback_Standalone()
+        internal void NullMasterFallback_Standalone()
         {
             AssertWrapper.TestTemplate(TestRunner.TestItems["Feature Tests"]["Null Master Fallback"]["Standalone"]);
         }
         [Test]
-        public void NullMasterFallback_Master()
+        internal void NullMasterFallback_Master()
         {
             AssertWrapper.TestTemplate(TestRunner.TestItems["Feature Tests"]["Null Master Fallback"]["Master"]);
         }
         [Test]
-        public void ForLoopVariables()
+        internal void ForLoopVariables()
         {
             AssertWrapper.TestTemplate(TestRunner.TestItems["Feature Tests"]["For Loop Variables"]);
         }
         [Test]
-        public void Set()
+        internal void Set()
         {
             AssertWrapper.TestTemplate(TestRunner.TestItems["Feature Tests"]["Set"]);
         }

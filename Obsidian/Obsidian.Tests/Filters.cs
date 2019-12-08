@@ -11,18 +11,18 @@ namespace Obsidian.Tests
     {
 
         [Test]
-        public void Batch()
+        internal void Batch()
         {
             AssertWrapper.TestTemplate(TestRunner.TestItems["Filters"]["Filters - Batch"]);
         }
 
         [Test]
-        public void Basic()
+        internal void Basic()
         {
             AssertWrapper.TestTemplate(TestRunner.TestItems["Filters"]["Filters - Basic"]);
         }
         [Test]
-        public void A_E()
+        internal void A_E()
         {
             AssertWrapper.TestTemplate(TestRunner.TestItems["Filters"]["Filters - A-E"]);
         }

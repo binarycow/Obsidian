@@ -11,7 +11,7 @@ namespace Obsidian.AST.Nodes
     internal class EmptyNode : ASTNode
     {
         private static readonly Lazy<EmptyNode> _Instance = new Lazy<EmptyNode>(() => new EmptyNode());
-        public static EmptyNode Instance => _Instance.Value;
+        internal static EmptyNode Instance => _Instance.Value;
         private EmptyNode() : base(new ParsingNode(ParsingNodeType.Empty, Enumerable.Empty<Token>()))
         {
 

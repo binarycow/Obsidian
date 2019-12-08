@@ -51,17 +51,17 @@ namespace Obsidian.AST.NodeParsers
                 }
             }
 
-            public ConditionalAction(StateAction<TState> action, ConditionalDelegate? predicate = null)
+            internal ConditionalAction(StateAction<TState> action, ConditionalDelegate? predicate = null)
             {
                 Action = action;
                 Predicate = predicate ?? (enumerator => true);
             }
-            public ConditionalDelegate Predicate { get; set; }
-            public string? PredicateDebuggerDisplay { get; set; }
-            public StateAction<TState> Action { get; }
+            internal ConditionalDelegate Predicate { get; set; }
+            internal string? PredicateDebuggerDisplay { get; set; }
+            internal StateAction<TState> Action { get; }
         }
 
-        public State(StateMachine<TState> parent, TState? stateEnum)
+        internal State(StateMachine<TState> parent, TState? stateEnum)
         {
             Parent = parent;
             StateEnum = stateEnum;
@@ -69,8 +69,8 @@ namespace Obsidian.AST.NodeParsers
 
         internal delegate bool ConditionalDelegate(ILookaroundEnumerator<Token> enumerator);
 
-        public TState? StateEnum { get; }
-        public StateMachine<TState> Parent { get; }
+        internal TState? StateEnum { get; }
+        internal StateMachine<TState> Parent { get; }
         private readonly Dictionary<TokenType, List<ConditionalAction>> _Tokens = new Dictionary<TokenType, List<ConditionalAction>>();
         private StateAction<TState>? _ElseAction = default;
         private StateAction<TState>? _ThrowAction = default;
@@ -83,7 +83,7 @@ namespace Obsidian.AST.NodeParsers
             foundAction.PredicateDebuggerDisplay = predicateDebuggerDisplay;
         }
 
-        public StateAction<TState> Expect(TokenType tokenType)
+        internal StateAction<TState> Expect(TokenType tokenType)
         {
             var action = new StateAction<TState>(this);
             _Tokens.Add(tokenType, new List<ConditionalAction>
@@ -92,7 +92,7 @@ namespace Obsidian.AST.NodeParsers
             });
             return action;
         }
-        public StateAction<TState> Ignore(TokenType tokenType)
+        internal StateAction<TState> Ignore(TokenType tokenType)
         {
             var action = new StateAction<TState>(this);
             _Tokens.Add(tokenType, new List<ConditionalAction>
@@ -103,14 +103,14 @@ namespace Obsidian.AST.NodeParsers
             return action;
         }
 
-        public StateAction<TState> Else()
+        internal StateAction<TState> Else()
         {
             if (_ElseAction != default) throw new NotImplementedException();
             _ElseAction = new StateAction<TState>(this);
             return _ElseAction;
         }
 
-        public StateAction<TState> Throw(Exception? exception = null)
+        internal StateAction<TState> Throw(Exception? exception = null)
         {
             if (_ThrowAction != default) throw new NotImplementedException();
             _ThrowAction = new StateAction<TState>(this);
@@ -118,7 +118,7 @@ namespace Obsidian.AST.NodeParsers
             return _ThrowAction;
         }
 
-        public bool TryParse(ILookaroundEnumerator<Token> enumerator, [NotNullWhen(true)]out StateAction<TState>? action)
+        internal bool TryParse(ILookaroundEnumerator<Token> enumerator, [NotNullWhen(true)]out StateAction<TState>? action)
         {
             action = default;
             if(_ThrowAction != default)

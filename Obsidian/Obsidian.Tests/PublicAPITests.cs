@@ -16,38 +16,38 @@ namespace Obsidian.Tests
     {
         private class MyParameterInfo
         {
-            public string? Name { get; set; }
-            public Type? Type { get; set; }
+            internal string? Name { get; set; }
+            internal Type? Type { get; set; }
         }
         private class MyOverloadInfo
         {
-            public Type? ReturnType { get; set; }
-            public MyParameterInfo[]? Parameters { get; set; }
+            internal Type? ReturnType { get; set; }
+            internal MyParameterInfo[]? Parameters { get; set; }
         }
 
         private class MyMethodInfo
         {
-            public string? Name { get; set; }
-            public MyOverloadInfo[]? Overloads { get; set; }
+            internal string? Name { get; set; }
+            internal MyOverloadInfo[]? Overloads { get; set; }
         }
 
         private class MyTypeInfo
         {
-            public string? FullName { get; set; }
-            public MyMethodInfo[]? Methods { get; set; }
-            public MyPropertyInfo[]? Properties { get; set; }
-            public MyFieldInfo[]? Fields { get; set; }
+            internal string? FullName { get; set; }
+            internal MyMethodInfo[]? Methods { get; set; }
+            internal MyPropertyInfo[]? Properties { get; set; }
+            internal MyFieldInfo[]? Fields { get; set; }
         }
 
         private class MyPropertyInfo
         {
-            public string? Name { get; set; }
-            public Type? Type { get; set; }
+            internal string? Name { get; set; }
+            internal Type? Type { get; set; }
         }
         private class MyFieldInfo
         {
-            public string? Name { get; set; }
-            public Type? Type { get; set; }
+            internal string? Name { get; set; }
+            internal Type? Type { get; set; }
         }
 
         private MyParameterInfo GetParameterInfo(ParameterInfo parameter)
@@ -127,7 +127,7 @@ namespace Obsidian.Tests
         }
 
         [Test]
-        public void TestAPI()
+        internal void TestAPI()
         {
             var actualPath = TestRunner.APIInfoActual;
             var results = typeof(CompiledTemplate).Assembly.GetTypes().Where(type => type.IsPublic || type.IsNestedPublic).Select(GetTypeInfo).ToArray();

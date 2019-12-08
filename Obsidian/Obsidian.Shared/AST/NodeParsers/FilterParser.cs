@@ -11,7 +11,7 @@ namespace Obsidian.AST.NodeParsers
 {
     internal static class FilterParser
     {
-        public enum FilterState
+        internal enum FilterState
         {
             StartJinja,
             WhiteSpaceOrKeyword,
@@ -23,10 +23,10 @@ namespace Obsidian.AST.NodeParsers
         }
 
 
-        public static readonly Lazy<StateMachine<FilterState>> _StartBlockParser = new Lazy<StateMachine<FilterState>>(() => CreateStartParser());
-        public static StateMachine<FilterState> StartBlock => _StartBlockParser.Value;
-        public static readonly Lazy<StateMachine<FilterState>> _EndBlockParser = new Lazy<StateMachine<FilterState>>(() => CreateEndParser());
-        public static StateMachine<FilterState> EndBlock => _EndBlockParser.Value;
+        internal static readonly Lazy<StateMachine<FilterState>> _StartBlockParser = new Lazy<StateMachine<FilterState>>(() => CreateStartParser());
+        internal static StateMachine<FilterState> StartBlock => _StartBlockParser.Value;
+        internal static readonly Lazy<StateMachine<FilterState>> _EndBlockParser = new Lazy<StateMachine<FilterState>>(() => CreateEndParser());
+        internal static StateMachine<FilterState> EndBlock => _EndBlockParser.Value;
 
         private static StateMachine<FilterState> CreateStartParser()
         {

@@ -11,7 +11,7 @@ namespace ExpressionParser
     internal static class FunctionDeclarationParser
     {
 
-        public static bool TryParseFunctionDeclaration(ASTNode node, [NotNullWhen(true)]out FunctionDeclaration? declaration)
+        internal static bool TryParseFunctionDeclaration(ASTNode node, [NotNullWhen(true)]out FunctionDeclaration? declaration)
         {
             declaration = null;
             if (!(node is BinaryASTNode binaryNode)) return false;

@@ -16,7 +16,7 @@ namespace Obsidian.AST.Nodes.Statements
 {
     internal class CallNode : ASTNode, IWhiteSpaceControlling
     {
-        public CallNode(ParsingNode? startParsingNode, ExpressionNode callerDefinition, ExpressionNode macroCall, ContainerNode contents, ParsingNode? endParsingNode, WhiteSpaceControlSet? whiteSpace = null)
+        internal CallNode(ParsingNode? startParsingNode, ExpressionNode callerDefinition, ExpressionNode macroCall, ContainerNode contents, ParsingNode? endParsingNode, WhiteSpaceControlSet? whiteSpace = null)
             : base(startParsingNode, contents.ParsingNodes, endParsingNode)
         {
             Contents = contents;
@@ -25,9 +25,9 @@ namespace Obsidian.AST.Nodes.Statements
             CallerDefinition = callerDefinition;
         }
 
-        public ContainerNode Contents { get; }
-        public ExpressionNode MacroCall { get; }
-        public ExpressionNode CallerDefinition { get; }
+        internal ContainerNode Contents { get; }
+        internal ExpressionNode MacroCall { get; }
+        internal ExpressionNode CallerDefinition { get; }
         public WhiteSpaceControlSet WhiteSpaceControl { get; }
 
         public override TOutput Transform<TOutput>(ITransformVisitor<TOutput> visitor)
@@ -45,7 +45,7 @@ namespace Obsidian.AST.Nodes.Statements
             visitor.Transform(this);
         }
 
-        public static bool TryParseCall(Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
+        internal static bool TryParseCall(Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
         {
             parsedNode = default;
 

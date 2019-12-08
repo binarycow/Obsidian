@@ -11,15 +11,15 @@ namespace ExpressionParser.Parsing
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
     internal class UnaryASTNode : ASTNode
     {
-        public UnaryASTNode(Operator @operator, ASTNode right) : base(@operator.Token.YieldOne().Concat(right.Tokens))
+        internal UnaryASTNode(Operator @operator, ASTNode right) : base(@operator.Token.YieldOne().Concat(right.Tokens))
         {
             Operator = @operator;
             Right = right;
         }
-        public Operator Operator { get; }
-        public ASTNode Right { get; }
+        internal Operator Operator { get; }
+        internal ASTNode Right { get; }
 
-        public override string DebuggerDisplay => $"{Operator.DebuggerDisplay} {Right.DebuggerDisplay}";
+        internal override string DebuggerDisplay => $"{Operator.DebuggerDisplay} {Right.DebuggerDisplay}";
 
         public override TOutput Transform<TOutput>(INodeTransformVisitor<TOutput> visitor)
         {

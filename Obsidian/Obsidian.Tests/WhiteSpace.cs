@@ -11,27 +11,27 @@ namespace Obsidian.Tests
     internal class WhiteSpace : TestClass
     {
         [Test]
-        public void Defaults()
+        internal void Defaults()
         {
             AssertWrapper.TestTemplate(TestRunner.TestItems["WhiteSpace"]["Defaults"]);
         }
         [Test]
-        public void TrimBlocks()
+        internal void TrimBlocks()
         {
             AssertWrapper.TestTemplate(TestRunner.TestItems["WhiteSpace"]["TrimBlocks"]);
         }
         [Test]
-        public void LStrip()
+        internal void LStrip()
         {
             AssertWrapper.TestTemplate(TestRunner.TestItems["WhiteSpace"]["LStrip"]);
         }
         [Test]
-        public void LStripAndTrim()
+        internal void LStripAndTrim()
         {
             AssertWrapper.TestTemplate(TestRunner.TestItems["WhiteSpace"]["LStrip And Trim"]);
         }
         [Test]
-        public void ManualStrip()
+        internal void ManualStrip()
         {
             AssertWrapper.TestTemplate(TestRunner.TestItems["WhiteSpace"]["Manual Strip"]);
         }

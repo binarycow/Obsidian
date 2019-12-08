@@ -10,7 +10,7 @@ namespace Obsidian.TestCore
     public class Test : Item
     {
         private string _TestName = string.Empty;
-        public string TestName
+        internal string TestName
         {
             get => _TestName;
             set
@@ -26,19 +26,19 @@ namespace Obsidian.TestCore
             set => SetField(ref _RootPath, value);
         }
         private string _InputFile = string.Empty;
-        public string InputFile
+        internal string InputFile
         {
             get => _InputFile;
             set => SetField(ref _InputFile, value);
         }
         private string _ExpectedFile = string.Empty;
-        public string ExpectedFile
+        internal string ExpectedFile
         {
             get => _ExpectedFile;
             set => SetField(ref _ExpectedFile, value);
         }
         private string _ActualFile = string.Empty;
-        public string ActualFile
+        internal string ActualFile
         {
             get => _ActualFile;
             set => SetField(ref _ActualFile, value);
@@ -51,13 +51,13 @@ namespace Obsidian.TestCore
         }
         private bool _trim_blocks;
 
-        public bool trim_blocks
+        internal bool trim_blocks
         {
             get => _trim_blocks;
             set => SetField(ref _trim_blocks, value);
         }
         private bool _lstrip_blocks;
-        public bool lstrip_blocks
+        internal bool lstrip_blocks
         {
             get => _lstrip_blocks;
             set => SetField(ref _lstrip_blocks, value);

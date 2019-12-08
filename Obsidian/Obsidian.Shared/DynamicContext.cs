@@ -9,7 +9,7 @@ namespace Obsidian
 {
     internal class DynamicContext : DynamicScope
     {
-        public DynamicContext(string name, DynamicContext parent) : base(name, parent)
+        internal DynamicContext(string name, DynamicContext parent) : base(name, parent)
         {
 
         }

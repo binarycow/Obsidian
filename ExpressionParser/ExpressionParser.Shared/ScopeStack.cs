@@ -10,22 +10,22 @@ namespace ExpressionParser
         where TScope : class, IScope
         where TRootScope : class, TScope
     {
-        public ScopeStack(TRootScope rootScope)
+        internal ScopeStack(TRootScope rootScope)
         {
             Root = rootScope;
             _Stack.Push(rootScope);
         }
         private readonly Stack<TScope> _Stack = new Stack<TScope>();
-        public TRootScope Root { get; }
-        public TScope Current => _Stack.Peek();
+        internal TRootScope Root { get; }
+        internal TScope Current => _Stack.Peek();
 
 
-        public void Push(string name)
+        internal void Push(string name)
         {
             if (!(Current.CreateChild(name) is TScope scope)) throw new NotImplementedException();
             _Stack.Push(scope);
         }
-        public void Pop(string name)
+        internal void Pop(string name)
         {
             var scope = _Stack.Pop();
             if (scope.Name != name) throw new NotImplementedException();

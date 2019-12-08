@@ -10,14 +10,14 @@ namespace Obsidian.Parsing
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
     internal class ParsingNode
     {
-        public ParsingNode(ParsingNodeType nodeType, IEnumerable<Token> tokens)
+        internal ParsingNode(ParsingNodeType nodeType, IEnumerable<Token> tokens)
         {
             NodeType = nodeType;
             Tokens = tokens.ToArrayWithoutInstantiation();
         }
 
-        public ParsingNodeType NodeType { get; }
-        public IEnumerable<Token> Tokens { get; }
+        internal ParsingNodeType NodeType { get; }
+        internal IEnumerable<Token> Tokens { get; }
 
         private string DebuggerDisplay => $"\"{this.ToString().Replace("\n", "\\n")}\"";
         public override string ToString()
@@ -26,7 +26,7 @@ namespace Obsidian.Parsing
         }
 
 
-        public virtual void ToOriginalText(StringBuilder stringBuilder)
+        internal virtual void ToOriginalText(StringBuilder stringBuilder)
         {
             foreach (var token in Tokens)
             {

@@ -18,7 +18,7 @@ namespace ExpressionParser.Lexing
     {
         private const int MIN_LOOKAHEAD_COUNT = 1;
 
-        public Lexer(ILanguageDefinition languageDefinition)
+        internal Lexer(ILanguageDefinition languageDefinition)
         {
             LanguageDefinition = languageDefinition;
             _Delegates = new TryReadDelegate[]
@@ -35,7 +35,7 @@ namespace ExpressionParser.Lexing
 
             _LookaheadCount = (byte)Math.Max(_Operators.Keys.Max(arr => arr.Length), MIN_LOOKAHEAD_COUNT);
         }
-        public ILanguageDefinition LanguageDefinition { get; }
+        internal ILanguageDefinition LanguageDefinition { get; }
 
         private readonly TryReadDelegate[] _Delegates;
         protected virtual TryReadDelegate[] Delegates => _Delegates;
@@ -44,10 +44,10 @@ namespace ExpressionParser.Lexing
         private readonly byte _LookaheadCount;
 
 
-        public delegate bool TryReadDelegate(ILookaroundEnumerator<char> enumerator, [NotNullWhen(true)]out Token? token);
+        internal delegate bool TryReadDelegate(ILookaroundEnumerator<char> enumerator, [NotNullWhen(true)]out Token? token);
 
 
-        public IEnumerable<Token> Tokenize(IEnumerable<char> inputText)
+        internal IEnumerable<Token> Tokenize(IEnumerable<char> inputText)
         {
             using var enumerator = LookaroundEnumeratorFactory.CreateLookaroundEnumerator(inputText, _LookaheadCount);
             var DEBUG = enumerator as EnumerableLookaroundEnumerator<char>;
@@ -83,14 +83,14 @@ namespace ExpressionParser.Lexing
                 yield return new Token(TokenType.Unknown, null, currentUnknownChars);
             }
         }
-        public virtual bool TryReadSingleChar(ILookaroundEnumerator<char> enumerator, [NotNullWhen(true)]out Token? token)
+        internal virtual bool TryReadSingleChar(ILookaroundEnumerator<char> enumerator, [NotNullWhen(true)]out Token? token)
         {
             token = LanguageDefinition.SingleCharTokens.TryGetValue(enumerator.Current, out var tokenType) ?
                 new Token(tokenType, null, enumerator.Current) :
                 default;
             return token != default;
         }
-        public virtual bool TryReadWhiteSpace(ILookaroundEnumerator<char> enumerator, [NotNullWhen(true)]out Token? token)
+        internal virtual bool TryReadWhiteSpace(ILookaroundEnumerator<char> enumerator, [NotNullWhen(true)]out Token? token)
         {
             token = default;
             if (enumerator.Current.IsWhiteSpace() == false)
@@ -109,7 +109,7 @@ namespace ExpressionParser.Lexing
             return true;
         }
 
-        public virtual bool TryReadOperator(ILookaroundEnumerator<char> enumerator, [NotNullWhen(true)]out Token? token)
+        internal virtual bool TryReadOperator(ILookaroundEnumerator<char> enumerator, [NotNullWhen(true)]out Token? token)
         {
             token = default;
             var initialPossibleOperators = _Operators.Keys.Where(operatorArr => operatorArr[0] == enumerator.Current).ToArray();
@@ -150,7 +150,7 @@ namespace ExpressionParser.Lexing
             enumerator.MoveNext(possibleOperators[0].Length - 1);
             return true;
         }
-        public virtual bool TryReadIdentifier(ILookaroundEnumerator<char> enumerator, [NotNullWhen(true)]out Token? token)
+        internal virtual bool TryReadIdentifier(ILookaroundEnumerator<char> enumerator, [NotNullWhen(true)]out Token? token)
         {
             token = default;
             if(enumerator.Current.IsLetter() == false && enumerator.Current != '_')
@@ -168,7 +168,7 @@ namespace ExpressionParser.Lexing
             return true;
         }
 
-        public virtual bool TryReadStringLiteral(ILookaroundEnumerator<char> enumerator, [NotNullWhen(true)]out Token? token)
+        internal virtual bool TryReadStringLiteral(ILookaroundEnumerator<char> enumerator, [NotNullWhen(true)]out Token? token)
         {
             token = default;
             if(enumerator.Current != '"')
@@ -177,7 +177,7 @@ namespace ExpressionParser.Lexing
             }
             throw new NotImplementedException();
         }
-        public virtual bool TryReadCharacterLiteral(ILookaroundEnumerator<char> enumerator, [NotNullWhen(true)]out Token? token)
+        internal virtual bool TryReadCharacterLiteral(ILookaroundEnumerator<char> enumerator, [NotNullWhen(true)]out Token? token)
         {
             token = default;
             var escaped = false;
@@ -217,7 +217,7 @@ namespace ExpressionParser.Lexing
         }
 
 
-        public virtual bool TryReadNumericLiteral(ILookaroundEnumerator<char> enumerator, [NotNullWhen(true)]out Token? token)
+        internal virtual bool TryReadNumericLiteral(ILookaroundEnumerator<char> enumerator, [NotNullWhen(true)]out Token? token)
         {
             token = default;
             if(enumerator.Current.IsDigit() == false)
@@ -254,7 +254,7 @@ namespace ExpressionParser.Lexing
         }
 
 
-        public bool? TryReadOnlyOneToken(IEnumerable<char> inputText, [NotNullWhen(true)]out Token? firstToken)
+        internal bool? TryReadOnlyOneToken(IEnumerable<char> inputText, [NotNullWhen(true)]out Token? firstToken)
         {
             firstToken = default;
             bool? result = null;

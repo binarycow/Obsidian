@@ -11,7 +11,7 @@ namespace Obsidian.AST.NodeParsers
 {
     internal class MacroParser
     {
-        public enum MacroState
+        internal enum MacroState
         {
             StartJinja,
             WhiteSpaceOrKeyword,
@@ -22,10 +22,10 @@ namespace Obsidian.AST.NodeParsers
             Done
         }
 
-        public static readonly Lazy<StateMachine<MacroState>> _StartBlockParser = new Lazy<StateMachine<MacroState>>(() => CreateStartParser());
-        public static StateMachine<MacroState> StartBlock => _StartBlockParser.Value;
-        public static readonly Lazy<StateMachine<MacroState>> _EndBlockParser = new Lazy<StateMachine<MacroState>>(() => CreateEndParser());
-        public static StateMachine<MacroState> EndBlock => _EndBlockParser.Value;
+        internal static readonly Lazy<StateMachine<MacroState>> _StartBlockParser = new Lazy<StateMachine<MacroState>>(() => CreateStartParser());
+        internal static StateMachine<MacroState> StartBlock => _StartBlockParser.Value;
+        internal static readonly Lazy<StateMachine<MacroState>> _EndBlockParser = new Lazy<StateMachine<MacroState>>(() => CreateEndParser());
+        internal static StateMachine<MacroState> EndBlock => _EndBlockParser.Value;
 
         private static StateMachine<MacroState> CreateStartParser()
         {

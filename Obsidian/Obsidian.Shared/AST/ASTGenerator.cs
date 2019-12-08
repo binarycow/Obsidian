@@ -12,7 +12,7 @@ namespace Obsidian.AST
 {
     internal class ASTGenerator
     {
-        public static TemplateNode ParseTemplate(Lexer lexer, IEnumerable<ParsingNode> source)
+        internal static TemplateNode ParseTemplate(Lexer lexer, IEnumerable<ParsingNode> source)
         {
             using var enumerator = LookaroundEnumeratorFactory.CreateLookaroundEnumerator(source, 10);
 
@@ -28,7 +28,7 @@ namespace Obsidian.AST
 
             throw new NotImplementedException();
         }
-        public static IEnumerable<ASTNode> ParseUntilFailure(Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator)
+        internal static IEnumerable<ASTNode> ParseUntilFailure(Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator)
         {
             do
             {

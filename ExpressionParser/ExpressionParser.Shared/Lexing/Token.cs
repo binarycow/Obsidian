@@ -29,27 +29,27 @@ namespace ExpressionParser.Lexing
         }
 
 
-        public Token(TokenType tokenType, TokenType? secondaryTokenType, StringBuilder stringBuilder) : this(tokenType, stringBuilder)
+        internal Token(TokenType tokenType, TokenType? secondaryTokenType, StringBuilder stringBuilder) : this(tokenType, stringBuilder)
         {
             SecondaryTokenType = secondaryTokenType;
         }
-        public Token(TokenType tokenType, TokenType? secondaryTokenType, IEnumerable<char> characters) : this(tokenType, characters)
+        internal Token(TokenType tokenType, TokenType? secondaryTokenType, IEnumerable<char> characters) : this(tokenType, characters)
         {
             SecondaryTokenType = secondaryTokenType;
         }
-        public Token(TokenType tokenType, TokenType? secondaryTokenType, char tokenCharacter) : this(tokenType, tokenCharacter)
+        internal Token(TokenType tokenType, TokenType? secondaryTokenType, char tokenCharacter) : this(tokenType, tokenCharacter)
         {
             SecondaryTokenType = secondaryTokenType;
         }
-        public Token(TokenType tokenType, TokenType? secondaryTokenType, string textValue) : this(tokenType, textValue)
+        internal Token(TokenType tokenType, TokenType? secondaryTokenType, string textValue) : this(tokenType, textValue)
         {
             SecondaryTokenType = secondaryTokenType;
         }
 
 
-        public TokenType TokenType { get; }
-        public TokenType? SecondaryTokenType { get; }
-        public string TextValue { get; }
+        internal TokenType TokenType { get; }
+        internal TokenType? SecondaryTokenType { get; }
+        internal string TextValue { get; }
 
 
 

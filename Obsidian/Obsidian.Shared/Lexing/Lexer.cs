@@ -9,7 +9,7 @@ namespace Obsidian.Lexing
 {
     internal class Lexer
     {
-        public Lexer(JinjaEnvironment environment)
+        internal Lexer(JinjaEnvironment environment)
         {
             Environment = environment;
             _Delegates = new TryDelegate[]
@@ -34,7 +34,7 @@ namespace Obsidian.Lexing
                 _KeywordLookups.Add(environment.Settings.LineStatementPrefix.ToCharArray(), TokenType.LineStatement);
             }
         }
-        public JinjaEnvironment Environment { get; }
+        internal JinjaEnvironment Environment { get; }
 
 
         private delegate bool TryDelegate(ILookaroundEnumerator<char> enumerator, out Token? token);
@@ -106,7 +106,7 @@ namespace Obsidian.Lexing
             return false;
         }
 
-        public IEnumerable<Token> Tokenize(IEnumerable<char> source)
+        internal IEnumerable<Token> Tokenize(IEnumerable<char> source)
         {
             var maximumLength = _KeywordLookups.Keys.Max(keyword => keyword.Length);
             using var enumerator = LookaroundEnumeratorFactory.CreateLookaroundEnumerator(source, (byte)maximumLength);

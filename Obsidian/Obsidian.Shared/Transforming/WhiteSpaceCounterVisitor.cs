@@ -10,7 +10,7 @@ namespace Obsidian.Transforming
     {
         private int _Tally = 0;
 
-        public int Test(ASTNode node)
+        internal int Test(ASTNode node)
         {
             _Tally = 0;
             node.Transform(this);

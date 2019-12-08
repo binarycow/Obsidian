@@ -29,12 +29,12 @@ namespace Obsidian
         public BaseLoader? Loader { get; set; }
 
 
-        public static JinjaLanguageDefinition LanguageDefinition => JinjaLanguageDefinition.Instance;
+        internal static JinjaLanguageDefinition LanguageDefinition => JinjaLanguageDefinition.Instance;
         internal ExpressionEval Evaluation => _Evaluation.Value;
         private readonly Lazy<ExpressionEval> _Evaluation;
 
 #if DEBUG
-        public string CheckOriginalText(string templateName)
+        internal string CheckOriginalText(string templateName)
         {
             var templateInfo = GetTemplateInfo(templateName);
             return ASTNode.CheckOriginalText(this, templateInfo.Source);

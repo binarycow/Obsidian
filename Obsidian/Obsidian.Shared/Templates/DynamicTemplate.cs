@@ -23,7 +23,7 @@ namespace Obsidian.Templates
         public string? TemplateName { get; }
 
         public string? TemplatePath { get; }
-        public TemplateNode TemplateNode { get; }
+        internal TemplateNode TemplateNode { get; }
 
         public string Render(IDictionary<string, object?> variables)
         {

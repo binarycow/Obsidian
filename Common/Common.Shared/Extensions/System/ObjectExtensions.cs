@@ -7,12 +7,12 @@ namespace System
 {
     internal static class ObjectExtensions
     {
-        public static IEnumerable<T> YieldOne<T>(this T item)
+        internal static IEnumerable<T> YieldOne<T>(this T item)
         {
             yield return item;
         }
 
-        public static bool TryConvert<T>(this object item, [NotNullWhen(true)]out T converted)
+        internal static bool TryConvert<T>(this object item, [NotNullWhen(true)]out T converted)
         {
             converted = default!;
             if(item is T convertedLocal)
@@ -23,7 +23,7 @@ namespace System
             return false;
         }
 
-        public static bool TryToInt32(this object? obj, out int integerValue)
+        internal static bool TryToInt32(this object? obj, out int integerValue)
         {
             integerValue = default;
             if(obj == null)

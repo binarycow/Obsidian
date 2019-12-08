@@ -15,7 +15,7 @@ namespace Common
         private static readonly Lazy<Dictionary<Type, MethodInfo>> _EnumerableToArray = new Lazy<Dictionary<Type, MethodInfo>>();
 
 
-        public static bool TryGet_Enumerable_ToArray(Type type, [NotNullWhen(true)]out MethodInfo? methodInfo)
+        internal static bool TryGet_Enumerable_ToArray(Type type, [NotNullWhen(true)]out MethodInfo? methodInfo)
         {
             if(_EnumerableToArray.Value.TryGetValue(type, out methodInfo))
             {
@@ -37,13 +37,13 @@ namespace Common
         private static readonly Dictionary<Tuple<Type, Type[], Type[]>, ConstructorInfo> Constructors = new Dictionary<Tuple<Type, Type[], Type[]>, ConstructorInfo>();
         private static readonly HashSet<Tuple<Type, Type[], Type[]>> NoConstructors = new HashSet<Tuple<Type, Type[], Type[]>>();
 
-        public static bool TryGet_Constructor([NotNullWhen(true)]out ConstructorInfo? constructorInfo,
+        internal static bool TryGet_Constructor([NotNullWhen(true)]out ConstructorInfo? constructorInfo,
             Type type, Type[] constructorArguments)
         {
             return TryGet_Constructor_GenericType(out constructorInfo, type, Type.EmptyTypes, constructorArguments);
         }
 
-        public static bool TryGet_Constructor_GenericType([NotNullWhen(true)]out ConstructorInfo? constructorInfo, 
+        internal static bool TryGet_Constructor_GenericType([NotNullWhen(true)]out ConstructorInfo? constructorInfo, 
             Type openGenericType, Type[] typeTypeArguments, Type[] constructorArguments)
         {
             var key = Tuple.Create(openGenericType, typeTypeArguments, constructorArguments);

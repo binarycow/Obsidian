@@ -9,7 +9,7 @@ namespace Common.Collections
     internal static class LookaroundEnumeratorFactory
     {
 
-        public static ILookaroundEnumerator<T> CreateLookaroundEnumerator<T>(IEnumerable<T> source, byte lookaheadCount = 1, byte lookbehindCount = 0)
+        internal static ILookaroundEnumerator<T> CreateLookaroundEnumerator<T>(IEnumerable<T> source, byte lookaheadCount = 1, byte lookbehindCount = 0)
         {
             // TODO: Fix ArrayLookaroundEnumerator and use that
             return new EnumerableLookaroundEnumerator<T>(source, lookaheadCount, lookbehindCount);

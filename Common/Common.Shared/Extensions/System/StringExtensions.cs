@@ -8,11 +8,11 @@ namespace System
     internal static class StringExtensions
     {
 
-        public static string[] Split(this string str, string seperator)
+        internal static string[] Split(this string str, string seperator)
         {
             return str.Split(new string[] { seperator }, StringSplitOptions.None);
         }
-        public static string WhiteSpaceEscape(this string str)
+        internal static string WhiteSpaceEscape(this string str)
         {
             var sb = new StringBuilder();
             foreach (var c in str)
@@ -39,7 +39,7 @@ namespace System
             return sb.ToString();
         }
 
-        public static string HTMLEscape(this string str)
+        internal static string HTMLEscape(this string str)
         {
             return string.Join(string.Empty, str.ToCharArray().Select(CharExtensions.HTMLEscape));
         }

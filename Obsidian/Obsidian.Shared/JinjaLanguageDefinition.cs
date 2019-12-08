@@ -8,7 +8,7 @@ using ExpressionParser.Lexing;
 
 namespace Obsidian
 {
-    public class JinjaLanguageDefinition : ILanguageDefinition
+    internal class JinjaLanguageDefinition : ILanguageDefinition
     {
         private const string STRING_MEMBERACCESS = ".";
         private const string STRING_PIPELINE = "|";
@@ -22,7 +22,7 @@ namespace Obsidian
 
         }
         private static readonly Lazy<JinjaLanguageDefinition> _Instance = new Lazy<JinjaLanguageDefinition>(() => new JinjaLanguageDefinition());
-        public static JinjaLanguageDefinition Instance => _Instance.Value;
+        internal static JinjaLanguageDefinition Instance => _Instance.Value;
 
 
         internal const string OPERATOR_SQUARE_BRACE_OPEN = "[";

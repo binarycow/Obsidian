@@ -6,10 +6,10 @@ namespace ExpressionParser.Configuration
 {
     internal class ValueKeywordDefinition : KeywordDefinition
     {
-        public ValueKeywordDefinition(object? value, params string[] names) : base(names)
+        internal ValueKeywordDefinition(object? value, params string[] names) : base(names)
         {
             Value = value;
         }
-        public object? Value { get; }
+        internal object? Value { get; }
     }
 }

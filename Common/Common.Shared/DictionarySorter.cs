@@ -19,7 +19,7 @@ namespace Common
         }
 
 
-        public static IEnumerable<KeyValuePair<TKey, TValue>> SortDictionaryByKeys<TKey, TValue>(IDictionary<TKey, TValue> dictionary, bool reverse)
+        internal static IEnumerable<KeyValuePair<TKey, TValue>> SortDictionaryByKeys<TKey, TValue>(IDictionary<TKey, TValue> dictionary, bool reverse)
             where TKey : IComparable<TKey>
         {
             if (reverse)
@@ -31,7 +31,7 @@ namespace Common
                 return dictionary.OrderBy(kvp => kvp.Key);
             }
         }
-        public static IEnumerable<KeyValuePair<TKey, TValue>> SortDictionaryByValues<TKey, TValue>(IDictionary<TKey, TValue> dictionary, bool reverse)
+        internal static IEnumerable<KeyValuePair<TKey, TValue>> SortDictionaryByValues<TKey, TValue>(IDictionary<TKey, TValue> dictionary, bool reverse)
             where TValue : IComparable<TValue>
         {
             if (reverse)
@@ -43,7 +43,7 @@ namespace Common
                 return dictionary.OrderBy(kvp => kvp.Value);
             }
         }
-        public static IEnumerable<KeyValuePair<TKey, string>> SortDictionaryByStringValues<TKey>(IDictionary<TKey, string> dictionary, bool reverse, bool caseSensitive)
+        internal static IEnumerable<KeyValuePair<TKey, string>> SortDictionaryByStringValues<TKey>(IDictionary<TKey, string> dictionary, bool reverse, bool caseSensitive)
         {
             if (reverse && caseSensitive)
             {
@@ -62,7 +62,7 @@ namespace Common
                 return dictionary.OrderBy(kvp => kvp.Value, new CaseInsensitiveComparer());
             }
         }
-        public static IEnumerable<KeyValuePair<string, TValue>> SortDictionaryByStringKeys<TValue>(IDictionary<string, TValue> dictionary, bool reverse, bool caseSensitive)
+        internal static IEnumerable<KeyValuePair<string, TValue>> SortDictionaryByStringKeys<TValue>(IDictionary<string, TValue> dictionary, bool reverse, bool caseSensitive)
         {
             if (reverse && caseSensitive)
             {
@@ -92,7 +92,7 @@ namespace Common
             return method.MakeGenericMethod(genericTypes);
         }
 
-        public static IEnumerable<KeyValuePair<TKey, TValue>> SortDictionary<TKey, TValue>(IDictionary<TKey, TValue> dictionary, bool byKey, bool reverse, bool caseSensitive)
+        internal static IEnumerable<KeyValuePair<TKey, TValue>> SortDictionary<TKey, TValue>(IDictionary<TKey, TValue> dictionary, bool byKey, bool reverse, bool caseSensitive)
         {
             var isStringType = false;
             MethodInfo method;
@@ -138,7 +138,7 @@ namespace Common
                 Convert.ChangeType(results, typeof(IEnumerable<KeyValuePair<TKey, TValue>>), CultureInfo.InvariantCulture);
         }
 
-        public static object? SortDictionaryObj(object? dictionary, bool byKey, bool reverse, bool caseSensitive)
+        internal static object? SortDictionaryObj(object? dictionary, bool byKey, bool reverse, bool caseSensitive)
         {
             if (dictionary == null) return null;
             if (dictionary.GetType().IsAssignableToGenericType(typeof(Dictionary<,>), out var genericTypeArguments) == false) return dictionary;

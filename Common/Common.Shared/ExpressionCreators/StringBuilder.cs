@@ -70,11 +70,11 @@ namespace Common.ExpressionCreators
             return GetAppendLineMethod(typeof(object));
         }
 
-        public Expression Append(Expression stringBuilder, Expression item)
+        internal Expression Append(Expression stringBuilder, Expression item)
         {
             return Expression.Call(stringBuilder, GetAppendMethod(item.Type), new[] { item });
         }
-        public Expression AppendLine(Expression stringBuilder, Expression item)
+        internal Expression AppendLine(Expression stringBuilder, Expression item)
         {
             return Expression.Call(stringBuilder, GetAppendLineMethod(item.Type), new[] { item });
         }

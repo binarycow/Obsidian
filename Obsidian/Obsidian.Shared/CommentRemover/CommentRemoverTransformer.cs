@@ -21,9 +21,9 @@
 //        {
 
 //        }
-//        public static Lazy<CommentRemoverTransformer> _Instance = new Lazy<CommentRemoverTransformer>(() => new CommentRemoverTransformer());
-//        public static CommentRemoverTransformer Instance => _Instance.Value;
-//        public ASTNode Transform(ForNode item)
+//        internal static Lazy<CommentRemoverTransformer> _Instance = new Lazy<CommentRemoverTransformer>(() => new CommentRemoverTransformer());
+//        internal static CommentRemoverTransformer Instance => _Instance.Value;
+//        internal ASTNode Transform(ForNode item)
 //        {
 //            ContainerNode? elseBlock = null;
 //            if(item.ElseBlock != null)
@@ -34,62 +34,62 @@
 //            return new ForNode(primaryBlock, elseBlock, item.VariableNames, item.Expression);
 //        }
 
-//        public ASTNode Transform(ContainerNode item)
+//        internal ASTNode Transform(ContainerNode item)
 //        {
 //            return new ContainerNode(TransformAll(item.Children));
 //        }
 
-//        public ASTNode Transform(ExpressionNode item)
+//        internal ASTNode Transform(ExpressionNode item)
 //        {
 //            return item;
 //        }
 
-//        public ASTNode Transform(NewLineNode item)
+//        internal ASTNode Transform(NewLineNode item)
 //        {
 //            return item;
 //        }
 
-//        public ASTNode Transform(OutputNode item)
+//        internal ASTNode Transform(OutputNode item)
 //        {
 //            return item;
 //        }
 
-//        public ASTNode Transform(WhiteSpaceNode item)
+//        internal ASTNode Transform(WhiteSpaceNode item)
 //        {
 //            return item;
 //        }
 
-//        public ASTNode Transform(IfNode item)
+//        internal ASTNode Transform(IfNode item)
 //        {
 //            return item;
 //        }
 
-//        public ASTNode Transform(ConditionalNode item)
+//        internal ASTNode Transform(ConditionalNode item)
 //        {
 //            return new ConditionalNode(item.Expression, TransformAll(item.Children));
 //        }
 
-//        public ASTNode Transform(CommentNode item)
+//        internal ASTNode Transform(CommentNode item)
 //        {
 //            throw new NotImplementedException();
 //        }
 
-//        public ASTNode Transform(BlockNode item)
+//        internal ASTNode Transform(BlockNode item)
 //        {
 //            var contents = new ContainerNode(TransformAll(item.BlockContents.Children));
 //            return new BlockNode(item.Name, contents);
 //        }
-//        public ASTNode Transform(ExtendsNode item)
+//        internal ASTNode Transform(ExtendsNode item)
 //        {
 //            return item;
 //        }
 
-//        public ASTNode Transform(TemplateNode item)
+//        internal ASTNode Transform(TemplateNode item)
 //        {
 //            return item;
 //        }
 
-//        public ASTNode Transform(EmptyNode emptyNode)
+//        internal ASTNode Transform(EmptyNode emptyNode)
 //        {
 //            throw new NotImplementedException();
 //        }

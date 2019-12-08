@@ -12,12 +12,12 @@ namespace Obsidian.Tests
     {
 
         [Test]
-        public void Test1()
+        internal void Test1()
         {
             AssertWrapper.TestTemplate(TestRunner.TestItems["Other Tests"]["Test1"]);
         }
         [Test]
-        public void Test2()
+        internal void Test2()
         {
             AssertWrapper.TestTemplate(TestRunner.TestItems["Other Tests"]["Test2"]);
         }

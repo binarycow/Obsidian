@@ -9,7 +9,7 @@ namespace ExpressionParser.Operators
     internal class OperatorExecution
 #pragma warning restore CA1812 // Avoid uninstantiated internal classes
     {
-        public OperatorExecution()
+        internal OperatorExecution()
         {
 
         }

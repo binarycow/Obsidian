@@ -14,7 +14,7 @@ namespace Obsidian
 {
     internal static class OutputCombiner
     {
-        public static IEnumerable<ParsingNode> CombineOutput(IEnumerable<ParsingNode> source)
+        internal static IEnumerable<ParsingNode> CombineOutput(IEnumerable<ParsingNode> source)
         {
             var array = source.ToArray();
             var nonWhiteSpaceEncounteredOnLine = false;

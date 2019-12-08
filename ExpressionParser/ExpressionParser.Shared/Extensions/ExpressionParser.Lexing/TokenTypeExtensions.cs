@@ -9,7 +9,7 @@ namespace ExpressionParser.Lexing
     internal static class TokenTypeExtensions
     {
 
-        public static bool IsLiteral(this TokenType tokenType)
+        internal static bool IsLiteral(this TokenType tokenType)
         {
             return tokenType switch
             {
@@ -23,7 +23,7 @@ namespace ExpressionParser.Lexing
         }
 
 
-        public static bool IsTerminal(this TokenType tokenType)
+        internal static bool IsTerminal(this TokenType tokenType)
         {
             return tokenType switch
             {
@@ -37,7 +37,7 @@ namespace ExpressionParser.Lexing
             };
         }
 
-        public static bool IsOpenBrace(this TokenType tokenType)
+        internal static bool IsOpenBrace(this TokenType tokenType)
         {
             return tokenType switch
             {
@@ -47,7 +47,7 @@ namespace ExpressionParser.Lexing
                 _ => false,
             };
         }
-        public static bool IsCloseBrace(this TokenType tokenType)
+        internal static bool IsCloseBrace(this TokenType tokenType)
         {
             return tokenType switch
             {
@@ -57,7 +57,7 @@ namespace ExpressionParser.Lexing
                 _ => false,
             };
         }
-        public static bool IsMatchingBrace(this TokenType tokenType, TokenType otherTokenType)
+        internal static bool IsMatchingBrace(this TokenType tokenType, TokenType otherTokenType)
         {
             return tokenType switch
             {
@@ -70,7 +70,7 @@ namespace ExpressionParser.Lexing
                 _ => false,
             };
         }
-        public static bool IsMatchingBrace(this TokenType tokenType, TokenType? otherTokenType)
+        internal static bool IsMatchingBrace(this TokenType tokenType, TokenType? otherTokenType)
         {
             return otherTokenType.HasValue && tokenType.IsMatchingBrace(otherTokenType.Value);
         }

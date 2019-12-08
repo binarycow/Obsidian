@@ -10,7 +10,7 @@ namespace Common.ExpressionCreators
     internal class Object
     {
 #pragma warning disable CA1822 // Mark members as static
-        public Expression ToStringEx(Expression obj)
+        internal Expression ToStringEx(Expression obj)
 #pragma warning restore CA1822 // Mark members as static
         {
             return Expression.Call(obj, "ToString", Type.EmptyTypes);

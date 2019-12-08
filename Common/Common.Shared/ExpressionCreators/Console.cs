@@ -28,7 +28,7 @@ namespace Common.ExpressionCreators
         private readonly Lazy<HashSet<Type>> _NoWriteLineMethods = new Lazy<HashSet<Type>>();
         private HashSet<Type> NoWriteLineMethods => _NoWriteLineMethods.Value;
 
-        public Lazy<Dictionary<Type, MethodInfo>> WriteLineMethods1 => _WriteLineMethods;
+        internal Lazy<Dictionary<Type, MethodInfo>> WriteLineMethods1 => _WriteLineMethods;
 
         private MethodInfo GetWriteLineMethod(Type type)
         {
@@ -73,15 +73,15 @@ namespace Common.ExpressionCreators
             return GetWriteMethod(typeof(object));
         }
 
-        public Expression WriteExpression(Expression item)
+        internal Expression WriteExpression(Expression item)
         {
             return Expression.Call(null, GetWriteMethod(item.Type), new[] { item });
         }
-        public Expression WriteLineExpression(Expression item)
+        internal Expression WriteLineExpression(Expression item)
         {
             return Expression.Call(null, GetWriteLineMethod(item.Type), new[] { item });
         }
-        public Expression Write(object? item)
+        internal Expression Write(object? item)
         {
             if(!(item is Expression expr))
             {
@@ -89,7 +89,7 @@ namespace Common.ExpressionCreators
             }
             return WriteExpression(expr);
         }
-        public Expression WriteLine(object? item)
+        internal Expression WriteLine(object? item)
         {
             if (!(item is Expression expr))
             {

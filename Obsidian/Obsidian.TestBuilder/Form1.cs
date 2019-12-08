@@ -12,10 +12,10 @@ using Obsidian.TestCore;
 
 namespace Obsidian.TestBuilder
 {
-    public partial class Form1 : Form
+    internal partial class Form1 : Form
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2211:Non-constant fields should not be visible", Justification = "<Pending>")]
-        public static string RootPath = Path.GetFullPath(Path.Combine(Application.ExecutablePath, "..", "..", "..", "..", "TestData"));
+        internal static string RootPath = Path.GetFullPath(Path.Combine(Application.ExecutablePath, "..", "..", "..", "..", "TestData"));
         
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Code Quality", "IDE0069:Disposable fields should be disposed", Justification = "<Pending>")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2213:Disposable fields should be disposed", Justification = "<Pending>")]
@@ -23,7 +23,7 @@ namespace Obsidian.TestBuilder
 
         private readonly Dictionary<Item, TreeNode> _Nodes = new Dictionary<Item, TreeNode>();
 
-        public Form1()
+        internal Form1()
         {
             InitializeComponent();
             Reset(false);

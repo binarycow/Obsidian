@@ -13,9 +13,10 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace ExpressionParser
 {
-    public class ExpressionEval
+    [SuppressMessage("Performance", "CA1812:Avoid uninstantiated internal classes", Justification = "<Pending>")]
+    internal class ExpressionEval
     {
-        public ExpressionEval(ILanguageDefinition languageDefinition)
+        internal ExpressionEval(ILanguageDefinition languageDefinition)
         {
             languageDefinition = languageDefinition ?? throw new ArgumentNullException(nameof(languageDefinition));
             LanguageDefinition = languageDefinition;
@@ -29,7 +30,7 @@ namespace ExpressionParser
             Parser = parser ?? new Parser(LanguageDefinition);
         }
 
-        public ILanguageDefinition LanguageDefinition { get; }
+        internal ILanguageDefinition LanguageDefinition { get; }
         internal Lexer Lexer { get; }
         internal Parser Parser { get; }
 
@@ -51,7 +52,7 @@ namespace ExpressionParser
             return astNode.Transform(transformer);
         }
 
-        public bool IsLiteralValue(string expressionText)
+        internal bool IsLiteralValue(string expressionText)
         {
             switch(Lexer.TryReadOnlyOneToken(expressionText, out var firstToken))
             {
@@ -75,14 +76,14 @@ namespace ExpressionParser
             return ExpressionData.CreateDynamic(expression, scope);
         }
 
-        public T EvaluateAs<T>(string expressionText, IDictionary<string, object?> variables)
+        internal T EvaluateAs<T>(string expressionText, IDictionary<string, object?> variables)
         {
             variables = variables ?? throw new ArgumentNullException(nameof(variables));
             var rootScope = CompiledScope.CreateRootScope("root", variables);
             var data = Dynamic(expressionText, rootScope);
             return data.EvaluateAs<T>(variables);
         }
-        public object? Evaluate(string expressionText, IDictionary<string, object?> variables)
+        internal object? Evaluate(string expressionText, IDictionary<string, object?> variables)
         {
             variables = variables ?? throw new ArgumentNullException(nameof(variables));
             var rootScope = CompiledScope.CreateRootScope("root", variables);
@@ -91,16 +92,16 @@ namespace ExpressionParser
         }
 
 
-        public T EvaluateAs<T>(string expressionText)
+        internal T EvaluateAs<T>(string expressionText)
         {
             return EvaluateAs<T>(expressionText, new Dictionary<string, object?>());
         }
-        public object? Evaluate(string expressionText)
+        internal object? Evaluate(string expressionText)
         {
             return Evaluate(expressionText, new Dictionary<string, object?>());
         }
 
-        public bool TryParseFunctionDeclaration(string declarationText, [NotNullWhen(true)]out FunctionDeclaration? functionDeclaration)
+        internal bool TryParseFunctionDeclaration(string declarationText, [NotNullWhen(true)]out FunctionDeclaration? functionDeclaration)
         {
             var tokens = Lexer.Tokenize(declarationText).ToArray();
             var astNode = Parser.Parse(tokens);

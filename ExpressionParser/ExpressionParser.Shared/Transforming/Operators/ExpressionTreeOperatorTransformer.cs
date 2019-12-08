@@ -14,14 +14,14 @@ namespace ExpressionParser.Transforming.Operators
 {
     internal class ExpressionTreeOperatorTransformer : IOperatorTransformVisitor<ASTNode, Expression>
     {
-        public ExpressionTreeOperatorTransformer(INodeTransformVisitor<Expression> nodeTransformVisitor, ILanguageDefinition languageDefinition)
+        internal ExpressionTreeOperatorTransformer(INodeTransformVisitor<Expression> nodeTransformVisitor, ILanguageDefinition languageDefinition)
         {
             NodeTransformVisitor = nodeTransformVisitor;
             LanguageDefinition = languageDefinition;
         }
 
-        public INodeTransformVisitor<Expression> NodeTransformVisitor { get; }
-        public ILanguageDefinition LanguageDefinition { get; }
+        internal INodeTransformVisitor<Expression> NodeTransformVisitor { get; }
+        internal ILanguageDefinition LanguageDefinition { get; }
 
         public Expression Transform(StandardOperator item, ASTNode[] args)
         {

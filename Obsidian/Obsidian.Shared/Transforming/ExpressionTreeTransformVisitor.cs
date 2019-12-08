@@ -11,14 +11,14 @@ namespace Obsidian.Transforming
 {
     internal class ExpressionTreeTransformVisitor : ITransformVisitor<Expression>
     {
-        public ExpressionTreeTransformVisitor(JinjaEnvironment environment, IDictionary<string, object?> variables)
+        internal ExpressionTreeTransformVisitor(JinjaEnvironment environment, IDictionary<string, object?> variables)
         {
             Environment = environment;
             Variables = variables;
         }
 
-        public JinjaEnvironment Environment { get; set; }
-        public IDictionary<string, object?> Variables { get; }
+        internal JinjaEnvironment Environment { get; set; }
+        internal IDictionary<string, object?> Variables { get; }
 
         public Expression Transform(ForNode item)
         {

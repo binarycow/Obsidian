@@ -26,8 +26,8 @@ namespace Obsidian.Transforming
         private const string VARNAME_STRING_SELF = "self";
         private const string SCOPE_NAME_TEMPLATE = "TEMPLATE: {0}";
 
-        public Expression SelfVar => CurrentScope[VARNAME_STRING_SELF];
-        public Expression StringBuilderVar => CurrentScope[VARNAME_STRING_BUILDER];
+        internal Expression SelfVar => CurrentScope[VARNAME_STRING_SELF];
+        internal Expression StringBuilderVar => CurrentScope[VARNAME_STRING_BUILDER];
 
         internal static Expression ToExpression(string templateName, JinjaEnvironment environment, ASTNode node, out NewASTCompiler compiler, CompiledScope rootScope)
         {
@@ -66,19 +66,19 @@ namespace Obsidian.Transforming
             _Scopes.Push(scope);
         }
 
-        public JinjaEnvironment Environment { get; }
+        internal JinjaEnvironment Environment { get; }
         private readonly Stack<CompiledScope> _Scopes = new Stack<CompiledScope>();
-        public CompiledScope CurrentScope => _Scopes.Peek();
+        internal CompiledScope CurrentScope => _Scopes.Peek();
 
-        public void PushScope(string name)
+        internal void PushScope(string name)
         {
             _Scopes.Push(CurrentScope.CreateCompiledChild(name));
         }
-        public BlockExpression PopScope(string name, Expression childOne, params Expression[] children)
+        internal BlockExpression PopScope(string name, Expression childOne, params Expression[] children)
         {
             return PopScope(name, childOne.YieldOne().Concat(children));
         }
-        public BlockExpression PopScope(string name, IEnumerable<Expression> children)
+        internal BlockExpression PopScope(string name, IEnumerable<Expression> children)
         {
             var scope = _Scopes.Pop();
             var block = scope.CloseScope(children.ToArray());

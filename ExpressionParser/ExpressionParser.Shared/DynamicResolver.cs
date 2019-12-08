@@ -13,7 +13,7 @@ namespace ExpressionParser
     internal static class DynamicResolver
     {
         [Flags]
-        public enum MemberTypes
+        internal enum MemberTypes
         {
             None = 0,
             Field,
@@ -67,7 +67,7 @@ namespace ExpressionParser
             }
         }
 
-        public static bool TryIndex(object? @object, object?[] args, out object? result)
+        internal static bool TryIndex(object? @object, object?[] args, out object? result)
         {
             result = default;
             if (@object == null) throw new NotImplementedException();

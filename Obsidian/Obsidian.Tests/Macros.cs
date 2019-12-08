@@ -11,17 +11,17 @@ namespace Obsidian.Tests
     {
 
         [Test]
-        public void BasicMacro()
+        internal void BasicMacro()
         {
             AssertWrapper.TestTemplate(TestRunner.TestItems["Macros"]["Basic Macro"]);
         }
         [Test]
-        public void CallMacro()
+        internal void CallMacro()
         {
             AssertWrapper.TestTemplate(TestRunner.TestItems["Macros"]["Call Macro"]);
         }
         [Test]
-        public void CallMacroWithParams()
+        internal void CallMacroWithParams()
         {
             AssertWrapper.TestTemplate(TestRunner.TestItems["Macros"]["Call Macro With Params"]);
         }

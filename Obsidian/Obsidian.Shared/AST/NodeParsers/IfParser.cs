@@ -11,7 +11,7 @@ namespace Obsidian.AST.NodeParsers
 {
     internal static class IfParser
     {
-        public enum IfState
+        internal enum IfState
         {
             StartJinja,
             WhiteSpaceOrKeyword,
@@ -22,14 +22,14 @@ namespace Obsidian.AST.NodeParsers
             Done,
         }
 
-        public static readonly Lazy<StateMachine<IfState>> _StartBlockParser = new Lazy<StateMachine<IfState>>(() => CreateStartElseIfParser(Keyword_If));
-        public static StateMachine<IfState> StartBlock => _StartBlockParser.Value;
-        public static readonly Lazy<StateMachine<IfState>> _ElseIfBlockParser = new Lazy<StateMachine<IfState>>(() => CreateStartElseIfParser(Keyword_Elif));
-        public static StateMachine<IfState> ElseIfBlock => _ElseIfBlockParser.Value;
-        public static readonly Lazy<StateMachine<IfState>> _ElseBlockParser = new Lazy<StateMachine<IfState>>(() => CreateElseEndForParser(Keyword_Else));
-        public static StateMachine<IfState> ElseBlock => _ElseBlockParser.Value;
-        public static readonly Lazy<StateMachine<IfState>> _EndBlockParser = new Lazy<StateMachine<IfState>>(() => CreateElseEndForParser(Keyword_Endif));
-        public static StateMachine<IfState> EndBlock => _EndBlockParser.Value;
+        internal static readonly Lazy<StateMachine<IfState>> _StartBlockParser = new Lazy<StateMachine<IfState>>(() => CreateStartElseIfParser(Keyword_If));
+        internal static StateMachine<IfState> StartBlock => _StartBlockParser.Value;
+        internal static readonly Lazy<StateMachine<IfState>> _ElseIfBlockParser = new Lazy<StateMachine<IfState>>(() => CreateStartElseIfParser(Keyword_Elif));
+        internal static StateMachine<IfState> ElseIfBlock => _ElseIfBlockParser.Value;
+        internal static readonly Lazy<StateMachine<IfState>> _ElseBlockParser = new Lazy<StateMachine<IfState>>(() => CreateElseEndForParser(Keyword_Else));
+        internal static StateMachine<IfState> ElseBlock => _ElseBlockParser.Value;
+        internal static readonly Lazy<StateMachine<IfState>> _EndBlockParser = new Lazy<StateMachine<IfState>>(() => CreateElseEndForParser(Keyword_Endif));
+        internal static StateMachine<IfState> EndBlock => _EndBlockParser.Value;
 
         private static StateMachine<IfState> CreateStartElseIfParser(TokenType keyword)
         {

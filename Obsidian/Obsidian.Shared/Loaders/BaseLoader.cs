@@ -5,7 +5,7 @@ namespace Obsidian
 {
     public abstract class BaseLoader
     {
-        public abstract TemplateInfo GetSource(JinjaEnvironment environment, string templateName);
+        internal abstract TemplateInfo GetSource(JinjaEnvironment environment, string templateName);
 
         private readonly Dictionary<string, ITemplate> _TemplateCache = new Dictionary<string, ITemplate>();
 

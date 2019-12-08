@@ -8,7 +8,7 @@ namespace ExpressionParser.Scopes
 {
     internal class DynamicScope : IScope
     {
-        public DynamicScope(string name, DynamicScope parent)
+        internal DynamicScope(string name, DynamicScope parent)
         {
             Name = name;
             DynamicParent = parent;
@@ -26,7 +26,7 @@ namespace ExpressionParser.Scopes
         }
 
         public IScope? ParentScope => DynamicParent;
-        public DynamicScope? DynamicParent { get; }
+        internal DynamicScope? DynamicParent { get; }
 
         public string? Name { get; }
 
@@ -67,18 +67,18 @@ namespace ExpressionParser.Scopes
             throw new NotImplementedException();
         }
 
-        public void DefineAndSetVariable(string name, object? valueToSet)
+        internal void DefineAndSetVariable(string name, object? valueToSet)
         {
             _Variables.Add(name, valueToSet);
         }
 
-        public bool TryGetVariable(string name, out object? value)
+        internal bool TryGetVariable(string name, out object? value)
         {
             if (_Variables.TryGetValue(name, out value)) return true;
             if (DynamicParent == null) return false;
             return DynamicParent.TryGetVariable(name, out value);
         }
-        public bool TryGetVariable<T>(string name, out T? value) where T : class
+        internal bool TryGetVariable<T>(string name, out T? value) where T : class
         {
             value = default;
             if(TryGetVariable(name, out var objVariableValue))

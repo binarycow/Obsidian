@@ -10,11 +10,11 @@ namespace ExpressionParser.Parsing
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
     internal class IdentifierNode : ASTNode
     {
-        public IdentifierNode(Token token) : base(token)
+        internal IdentifierNode(Token token) : base(token)
         {
         }
 
-        public override string DebuggerDisplay => TextValue;
+        internal override string DebuggerDisplay => TextValue;
 
         public override TOutput Transform<TOutput>(INodeTransformVisitor<TOutput> visitor)
         {

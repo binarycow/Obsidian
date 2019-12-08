@@ -12,13 +12,13 @@ namespace ExpressionParser.Operators
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
     internal abstract class Operator : ITransformableOperator
     {
-        public Operator(Token token)
+        internal Operator(Token token)
         {
             Token = token;
         }
 
-        public Token Token { get; }
-        public static Operator CreateBinary(OperatorDefinition definition, Token token, AssignmentOperatorBehavior assignmentOperatorBehavior)
+        internal Token Token { get; }
+        internal static Operator CreateBinary(OperatorDefinition definition, Token token, AssignmentOperatorBehavior assignmentOperatorBehavior)
         {
             return definition switch
             {
@@ -27,7 +27,7 @@ namespace ExpressionParser.Operators
                 _ => throw new NotImplementedException(),
             };
         }
-        public static Operator CreateUnary(OperatorDefinition definition, Token token)
+        internal static Operator CreateUnary(OperatorDefinition definition, Token token)
         {
             return definition switch
             {
@@ -42,6 +42,6 @@ namespace ExpressionParser.Operators
 
         public abstract TOutput Transform<TInput, TOutput>(IOperatorTransformVisitor<TInput, TOutput> visitor, TInput[] arguments);
 
-        public virtual string DebuggerDisplay => Token.TextValue;
+        internal virtual string DebuggerDisplay => Token.TextValue;
     }
 }

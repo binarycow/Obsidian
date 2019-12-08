@@ -17,14 +17,14 @@ namespace Obsidian.AST.Nodes.Statements
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
     internal class IfNode : StatementNode, IWhiteSpaceControlling
     {
-        public IfNode(ParsingNode? startParsingNode, IEnumerable<ConditionalNode> conditions, ParsingNode? endParsingNode, WhiteSpaceControlSet? whiteSpace = null)
+        internal IfNode(ParsingNode? startParsingNode, IEnumerable<ConditionalNode> conditions, ParsingNode? endParsingNode, WhiteSpaceControlSet? whiteSpace = null)
             : base(startParsingNode, conditions, endParsingNode)
         {
             Conditions = conditions.ToArrayWithoutInstantiation();
             WhiteSpaceControl = whiteSpace ?? new WhiteSpaceControlSet();
         }
 
-        public ConditionalNode[] Conditions { get; }
+        internal ConditionalNode[] Conditions { get; }
         private static string DebuggerDisplay => $"{nameof(IfNode)}";
 
         public WhiteSpaceControlSet WhiteSpaceControl { get; }
@@ -42,7 +42,7 @@ namespace Obsidian.AST.Nodes.Statements
         {
             return visitor.Transform(this, force);
         }
-        public static bool TryParseIf(Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
+        internal static bool TryParseIf(Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
         {
             WhiteSpaceMode thisConditionEnd;
             WhiteSpaceMode nextConditionStart;

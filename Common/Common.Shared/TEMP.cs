@@ -16,7 +16,7 @@ namespace Common
         /// </summary>
         /// <exception cref="AmbiguousMatchException"/>
         /// <remarks>From: https://stackoverflow.com/a/7182379</remarks>
-        public static MethodInfo? GetMethodExt(this Type thisType,
+        internal static MethodInfo? GetMethodExt(this Type thisType,
                                                 string name,
                                                 params Type[] parameterTypes)
         {
@@ -37,7 +37,7 @@ namespace Common
         /// </summary>
         /// <exception cref="AmbiguousMatchException"/>
         /// <remarks>From: https://stackoverflow.com/a/7182379</remarks>
-        public static MethodInfo? GetMethodExt(this Type thisType,
+        internal static MethodInfo? GetMethodExt(this Type thisType,
                                                 string name,
                                                 BindingFlags bindingFlags,
                                                 params Type[] parameterTypes)

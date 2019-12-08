@@ -14,18 +14,18 @@ namespace ExpressionParser.Transforming.Nodes
         where TScope : DynamicScope
         where TRootScope : TScope
     {
-        public DynamicTransformer(ScopeStack<TScope, TRootScope> scopeStack, ILanguageDefinition languageDefinition)
+        internal DynamicTransformer(ScopeStack<TScope, TRootScope> scopeStack, ILanguageDefinition languageDefinition)
         {
             LanguageDefinition = languageDefinition;
             ScopeStack = scopeStack;
             OperatorTransformer = new DynamicOperatorTransformer<TScope, TRootScope>(scopeStack, languageDefinition, this);
         }
 
-        public ScopeStack<TScope, TRootScope> ScopeStack { get; }
+        internal ScopeStack<TScope, TRootScope> ScopeStack { get; }
 
-        public DynamicOperatorTransformer<TScope, TRootScope> OperatorTransformer { get; }
+        internal DynamicOperatorTransformer<TScope, TRootScope> OperatorTransformer { get; }
 
-        public ILanguageDefinition LanguageDefinition { get; }
+        internal ILanguageDefinition LanguageDefinition { get; }
         public object? Transform(BinaryASTNode item)
         {
             return item.Operator.Transform(OperatorTransformer, new[] { item.Left, item.Right });

@@ -7,7 +7,7 @@ namespace Obsidian.WhiteSpaceControl
 {
     internal static class WhiteSpaceController
     {
-        public static ASTNode ControlWhiteSpace(JinjaEnvironment environment, ASTNode templateNode)
+        internal static ASTNode ControlWhiteSpace(JinjaEnvironment environment, ASTNode templateNode)
         {
             if (environment.Settings.TrimBlocks) templateNode.Transform(TrimBlocksVisitor.Instance);
             if (environment.Settings.LStripBlocks) templateNode.Transform(LStripBlocksVisitor.Instance);

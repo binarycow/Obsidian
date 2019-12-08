@@ -11,12 +11,12 @@ namespace ExpressionParser.Parsing
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
     internal abstract class ASTNode : ITransformableNode
     {
-        public ASTNode(IEnumerable<Token> tokens)
+        internal ASTNode(IEnumerable<Token> tokens)
         {
             TextValue = string.Concat(tokens.Select(token => token.TextValue));
             Tokens = tokens.ToArrayWithoutInstantiation();
         }
-        public ASTNode(Token token)
+        internal ASTNode(Token token)
         {
             TextValue = token.TextValue;
             Tokens = new[] { token };
@@ -28,13 +28,13 @@ namespace ExpressionParser.Parsing
             Parent = parent;
         }
 
-        public ASTNode? Parent { get; set; }
-        public string TextValue { get; }
+        internal ASTNode? Parent { get; set; }
+        internal string TextValue { get; }
         
-        public Token[] Tokens { get; }
+        internal Token[] Tokens { get; }
 
         public abstract TOutput Transform<TOutput>(INodeTransformVisitor<TOutput> visitor);
 
-        public abstract string DebuggerDisplay { get; }
+        internal abstract string DebuggerDisplay { get; }
     }
 }

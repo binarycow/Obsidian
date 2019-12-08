@@ -8,7 +8,7 @@ namespace Obsidian
 {
     internal class LoopInfoClass<T> where T : class
     {
-        public LoopInfoClass(T?[] array, int currentindex)
+        internal LoopInfoClass(T?[] array, int currentindex)
         {
             index0 = currentindex;
             revindex0 = array.Length - 1 - currentindex;
@@ -18,14 +18,14 @@ namespace Obsidian
             previtem = (first ? null : array[currentindex - 1])!;
             nextitem = (last ? null : array[currentindex + 1])!;
         }
-        public int index0 { get; }
-        public int index => index0 + 1;
-        public int revindex0 { get; }
-        public int revindex => revindex0 + 1;
-        public bool first { get; }
-        public bool last { get; }
-        public int length { get; }
-        public T previtem { get; }
-        public T nextitem { get; }
+        internal int index0 { get; }
+        internal int index => index0 + 1;
+        internal int revindex0 { get; }
+        internal int revindex => revindex0 + 1;
+        internal bool first { get; }
+        internal bool last { get; }
+        internal int length { get; }
+        internal T previtem { get; }
+        internal T nextitem { get; }
     }
 }

@@ -12,11 +12,11 @@ namespace Obsidian.AST.Nodes
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
     internal class OutputNode : ASTNode
     {
-        public OutputNode(ParsingNode parsingNode) : base(parsingNode)
+        internal OutputNode(ParsingNode parsingNode) : base(parsingNode)
         {
             Value = string.Join(string.Empty, parsingNode.Tokens.Select(token => token.Value));
         }
-        public string Value { get; }
+        internal string Value { get; }
 
         private string DebuggerDisplay => $"{nameof(OutputNode)} : \"{ToString(debug: true)}\"";
         public override TOutput Transform<TOutput>(ITransformVisitor<TOutput> visitor)

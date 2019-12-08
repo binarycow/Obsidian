@@ -1,0 +1,306 @@
+Common.Collections.EnumeratorState
+Common.Collections.EnumeratorState.Active = 1 -> Common.Collections.EnumeratorState
+Common.Collections.EnumeratorState.Complete = 2 -> Common.Collections.EnumeratorState
+Common.Collections.EnumeratorState.NotStarted = 0 -> Common.Collections.EnumeratorState
+Common.Numerical
+Common.Numerical.CompareTo(Common.Numerical other) -> int
+Common.Numerical.CompareTo(byte other) -> int
+Common.Numerical.CompareTo(decimal other) -> int
+Common.Numerical.CompareTo(double other) -> int
+Common.Numerical.CompareTo(float other) -> int
+Common.Numerical.CompareTo(int other) -> int
+Common.Numerical.CompareTo(long other) -> int
+Common.Numerical.CompareTo(sbyte other) -> int
+Common.Numerical.CompareTo(short other) -> int
+Common.Numerical.CompareTo(uint other) -> int
+Common.Numerical.CompareTo(ulong other) -> int
+Common.Numerical.CompareTo(ushort other) -> int
+Common.Numerical.Equals(Common.Numerical other) -> bool
+Common.Numerical.Equals(byte other) -> bool
+Common.Numerical.Equals(decimal other) -> bool
+Common.Numerical.Equals(double other) -> bool
+Common.Numerical.Equals(float other) -> bool
+Common.Numerical.Equals(int other) -> bool
+Common.Numerical.Equals(long other) -> bool
+Common.Numerical.Equals(sbyte other) -> bool
+Common.Numerical.Equals(short other) -> bool
+Common.Numerical.Equals(uint other) -> bool
+Common.Numerical.Equals(ulong other) -> bool
+Common.Numerical.Equals(ushort other) -> bool
+Common.Numerical.IsTrue.get -> bool
+Common.Numerical.ToByte() -> byte
+Common.Numerical.ToDecimal() -> decimal
+Common.Numerical.ToDouble() -> double
+Common.Numerical.ToInt16() -> short
+Common.Numerical.ToInt32() -> int
+Common.Numerical.ToInt64() -> long
+Common.Numerical.ToSByte() -> sbyte
+Common.Numerical.ToSingle() -> float
+Common.Numerical.ToString(System.IFormatProvider provider) -> string
+Common.Numerical.ToUInt16() -> ushort
+Common.Numerical.ToUInt32() -> uint
+Common.Numerical.ToUInt64() -> ulong
+Common.Numerical.Type.get -> Common.NumericalType
+Common.NumericalType
+Common.NumericalType.DecimalNumber = 11 -> Common.NumericalType
+Common.NumericalType.DoublePrecision = 10 -> Common.NumericalType
+Common.NumericalType.SignedByte = 1 -> Common.NumericalType
+Common.NumericalType.SignedInt = 5 -> Common.NumericalType
+Common.NumericalType.SignedLong = 7 -> Common.NumericalType
+Common.NumericalType.SignedShort = 3 -> Common.NumericalType
+Common.NumericalType.SinglePrecision = 9 -> Common.NumericalType
+Common.NumericalType.Unknown = 0 -> Common.NumericalType
+Common.NumericalType.UnsignedByte = 2 -> Common.NumericalType
+Common.NumericalType.UnsignedInt = 6 -> Common.NumericalType
+Common.NumericalType.UnsignedLong = 8 -> Common.NumericalType
+Common.NumericalType.UnsignedShort = 4 -> Common.NumericalType
+Common.ReflectionHelpers
+ExpressionParser.Configuration.ILanguageDefinition
+ExpressionParser.Configuration.ILanguageDefinition.AllowStringIndexersAsProperties.get -> bool
+ExpressionParser.Configuration.ILanguageDefinition.Functions.get -> System.Collections.Generic.IEnumerable<ExpressionParser.UserDefinedFunction>
+ExpressionParser.Configuration.ILanguageDefinition.Keywords.get -> System.Collections.Generic.IEnumerable<ExpressionParser.Configuration.KeywordDefinition>
+ExpressionParser.Configuration.ILanguageDefinition.Operators.get -> System.Collections.Generic.IEnumerable<ExpressionParser.Configuration.OperatorDefinition>
+ExpressionParser.Configuration.ILanguageDefinition.SingleCharTokens.get -> System.Collections.Generic.IDictionary<char, ExpressionParser.Lexing.TokenType>
+ExpressionParser.Configuration.KeywordDefinition
+ExpressionParser.Configuration.KeywordDefinition.KeywordDefinition(System.Collections.Generic.IEnumerable<string> names) -> void
+ExpressionParser.Configuration.KeywordDefinition.Names.get -> System.Collections.Generic.IEnumerable<string>
+ExpressionParser.Configuration.OperandCount
+ExpressionParser.Configuration.OperandCount.Binary = 1 -> ExpressionParser.Configuration.OperandCount
+ExpressionParser.Configuration.OperandCount.Ternary = 2 -> ExpressionParser.Configuration.OperandCount
+ExpressionParser.Configuration.OperandCount.Unary = 0 -> ExpressionParser.Configuration.OperandCount
+ExpressionParser.Configuration.OperatorDefinition
+ExpressionParser.Configuration.OperatorDefinition.OperandCount.get -> ExpressionParser.Configuration.OperandCount
+ExpressionParser.Configuration.OperatorDefinition.Precedence.get -> int
+ExpressionParser.Configuration.OperatorDefinition.SecondaryTokenType.get -> ExpressionParser.Lexing.TokenType?
+ExpressionParser.Configuration.OperatorDefinition.Text.get -> string
+ExpressionParser.Configuration.OperatorType
+ExpressionParser.Configuration.OperatorType.Add = 1 -> ExpressionParser.Configuration.OperatorType
+ExpressionParser.Configuration.OperatorType.As = 15 -> ExpressionParser.Configuration.OperatorType
+ExpressionParser.Configuration.OperatorType.Assign = 32 -> ExpressionParser.Configuration.OperatorType
+ExpressionParser.Configuration.OperatorType.BitwiseAnd = 18 -> ExpressionParser.Configuration.OperatorType
+ExpressionParser.Configuration.OperatorType.BitwiseOr = 20 -> ExpressionParser.Configuration.OperatorType
+ExpressionParser.Configuration.OperatorType.Divide = 4 -> ExpressionParser.Configuration.OperatorType
+ExpressionParser.Configuration.OperatorType.DivideFloat = 30 -> ExpressionParser.Configuration.OperatorType
+ExpressionParser.Configuration.OperatorType.DivideInteger = 31 -> ExpressionParser.Configuration.OperatorType
+ExpressionParser.Configuration.OperatorType.Equal = 16 -> ExpressionParser.Configuration.OperatorType
+ExpressionParser.Configuration.OperatorType.ExclusiveOr = 19 -> ExpressionParser.Configuration.OperatorType
+ExpressionParser.Configuration.OperatorType.GreaterThan = 11 -> ExpressionParser.Configuration.OperatorType
+ExpressionParser.Configuration.OperatorType.GreaterThanOrEqual = 13 -> ExpressionParser.Configuration.OperatorType
+ExpressionParser.Configuration.OperatorType.In = 25 -> ExpressionParser.Configuration.OperatorType
+ExpressionParser.Configuration.OperatorType.Is = 14 -> ExpressionParser.Configuration.OperatorType
+ExpressionParser.Configuration.OperatorType.IsNot = 27 -> ExpressionParser.Configuration.OperatorType
+ExpressionParser.Configuration.OperatorType.LeftShift = 8 -> ExpressionParser.Configuration.OperatorType
+ExpressionParser.Configuration.OperatorType.LessThan = 10 -> ExpressionParser.Configuration.OperatorType
+ExpressionParser.Configuration.OperatorType.LessThanOrEqual = 12 -> ExpressionParser.Configuration.OperatorType
+ExpressionParser.Configuration.OperatorType.LogicalAnd = 21 -> ExpressionParser.Configuration.OperatorType
+ExpressionParser.Configuration.OperatorType.LogicalNot = 24 -> ExpressionParser.Configuration.OperatorType
+ExpressionParser.Configuration.OperatorType.LogicalOr = 22 -> ExpressionParser.Configuration.OperatorType
+ExpressionParser.Configuration.OperatorType.Modulo = 7 -> ExpressionParser.Configuration.OperatorType
+ExpressionParser.Configuration.OperatorType.Multiply = 3 -> ExpressionParser.Configuration.OperatorType
+ExpressionParser.Configuration.OperatorType.Negate = 29 -> ExpressionParser.Configuration.OperatorType
+ExpressionParser.Configuration.OperatorType.NotEqual = 17 -> ExpressionParser.Configuration.OperatorType
+ExpressionParser.Configuration.OperatorType.NotIn = 26 -> ExpressionParser.Configuration.OperatorType
+ExpressionParser.Configuration.OperatorType.NullCoalesce = 23 -> ExpressionParser.Configuration.OperatorType
+ExpressionParser.Configuration.OperatorType.Power = 28 -> ExpressionParser.Configuration.OperatorType
+ExpressionParser.Configuration.OperatorType.Range = 6 -> ExpressionParser.Configuration.OperatorType
+ExpressionParser.Configuration.OperatorType.RightShift = 9 -> ExpressionParser.Configuration.OperatorType
+ExpressionParser.Configuration.OperatorType.Subtract = 2 -> ExpressionParser.Configuration.OperatorType
+ExpressionParser.Configuration.OperatorType.UnaryPlus = 5 -> ExpressionParser.Configuration.OperatorType
+ExpressionParser.Configuration.OperatorType.Unknown = 0 -> ExpressionParser.Configuration.OperatorType
+ExpressionParser.Exceptions.LexingException
+ExpressionParser.Exceptions.ParseException
+ExpressionParser.Exceptions.ParseException
+ExpressionParser.Exceptions.ParseException.ParseException() -> void
+ExpressionParser.Exceptions.ParseException.ParseException(string message) -> void
+ExpressionParser.Exceptions.ParseException.ParseException(string message, System.Exception innerException) -> void
+ExpressionParser.FunctionDeclaration
+ExpressionParser.FunctionDeclaration.Aliases.get -> System.Collections.Generic.IEnumerable<string>
+ExpressionParser.FunctionDeclaration.Arguments.get -> System.Collections.Generic.IEnumerable<ExpressionParser.ParameterDeclaration>
+ExpressionParser.FunctionDeclaration.FunctionDeclaration(System.Type returnType, string name, ExpressionParser.ParameterDeclaration[] arguments, string[] aliases = null) -> void
+ExpressionParser.FunctionDeclaration.Name.get -> string
+ExpressionParser.FunctionDeclaration.ReturnType.get -> System.Type
+ExpressionParser.Lexing.TokenType
+ExpressionParser.Lexing.TokenType.CharacterLiteral = 4 -> ExpressionParser.Lexing.TokenType
+ExpressionParser.Lexing.TokenType.Colon = 10 -> ExpressionParser.Lexing.TokenType
+ExpressionParser.Lexing.TokenType.Comma = 9 -> ExpressionParser.Lexing.TokenType
+ExpressionParser.Lexing.TokenType.CurlyBraceClose = 16 -> ExpressionParser.Lexing.TokenType
+ExpressionParser.Lexing.TokenType.CurlyBraceOpen = 15 -> ExpressionParser.Lexing.TokenType
+ExpressionParser.Lexing.TokenType.DoubleQuote = 18 -> ExpressionParser.Lexing.TokenType
+ExpressionParser.Lexing.TokenType.FloatingLiteral = 1 -> ExpressionParser.Lexing.TokenType
+ExpressionParser.Lexing.TokenType.Identifier = 5 -> ExpressionParser.Lexing.TokenType
+ExpressionParser.Lexing.TokenType.IntegerLiteral = 2 -> ExpressionParser.Lexing.TokenType
+ExpressionParser.Lexing.TokenType.NullLiteral = 8 -> ExpressionParser.Lexing.TokenType
+ExpressionParser.Lexing.TokenType.Operator = 7 -> ExpressionParser.Lexing.TokenType
+ExpressionParser.Lexing.TokenType.ParenClose = 12 -> ExpressionParser.Lexing.TokenType
+ExpressionParser.Lexing.TokenType.ParenOpen = 11 -> ExpressionParser.Lexing.TokenType
+ExpressionParser.Lexing.TokenType.SingleQuote = 17 -> ExpressionParser.Lexing.TokenType
+ExpressionParser.Lexing.TokenType.SquareBraceClose = 14 -> ExpressionParser.Lexing.TokenType
+ExpressionParser.Lexing.TokenType.SquareBraceOpen = 13 -> ExpressionParser.Lexing.TokenType
+ExpressionParser.Lexing.TokenType.StringLiteral = 3 -> ExpressionParser.Lexing.TokenType
+ExpressionParser.Lexing.TokenType.Unknown = 0 -> ExpressionParser.Lexing.TokenType
+ExpressionParser.Lexing.TokenType.WhiteSpace = 6 -> ExpressionParser.Lexing.TokenType
+ExpressionParser.ParameterDeclaration
+ExpressionParser.ParameterDeclaration.DefaultValue.get -> object
+ExpressionParser.ParameterDeclaration.Name.get -> string
+ExpressionParser.ParameterDeclaration.Optional.get -> bool
+ExpressionParser.ParameterDeclaration.ParameterDeclaration(string name) -> void
+ExpressionParser.ParameterDeclaration.ParameterDeclaration(string name, object defaultValue) -> void
+ExpressionParser.UserDefinedArgument
+ExpressionParser.UserDefinedArgumentData
+ExpressionParser.UserDefinedArgumentData.AdditionalKeywordArguments.get -> System.Collections.Generic.IEnumerable<ExpressionParser.UserDefinedArgument>
+ExpressionParser.UserDefinedArgumentData.AdditionalPositionalArguments.get -> System.Collections.Generic.IEnumerable<ExpressionParser.UserDefinedArgument>
+ExpressionParser.UserDefinedArgumentData.DefinedPositionalArguments.get -> System.Collections.Generic.IEnumerable<ExpressionParser.UserDefinedArgument>
+ExpressionParser.UserDefinedFunction
+ExpressionParser.UserDefinedFunction.Body.get -> ExpressionParser.UserDefinedFunction.UserDefinedFunctionDelegate
+ExpressionParser.UserDefinedFunction.Declaration.get -> ExpressionParser.FunctionDeclaration
+ExpressionParser.UserDefinedFunction.UserDefinedFunction(ExpressionParser.FunctionDeclaration declaration, ExpressionParser.UserDefinedFunction.UserDefinedFunctionDelegate body) -> void
+ExpressionParser.UserDefinedFunction.UserDefinedFunctionDelegate
+Obsidian.BaseLoader
+Obsidian.BaseLoader.BaseLoader() -> void
+Obsidian.EnvironmentSettings
+Obsidian.EnvironmentSettings.BlockEndString.get -> string
+Obsidian.EnvironmentSettings.BlockEndString.set -> void
+Obsidian.EnvironmentSettings.BlockStartString.get -> string
+Obsidian.EnvironmentSettings.BlockStartString.set -> void
+Obsidian.EnvironmentSettings.CommentEndString.get -> string
+Obsidian.EnvironmentSettings.CommentEndString.set -> void
+Obsidian.EnvironmentSettings.CommentStartString.get -> string
+Obsidian.EnvironmentSettings.CommentStartString.set -> void
+Obsidian.EnvironmentSettings.DynamicTemplates.get -> bool
+Obsidian.EnvironmentSettings.DynamicTemplates.set -> void
+Obsidian.EnvironmentSettings.EnvironmentSettings() -> void
+Obsidian.EnvironmentSettings.IsReadOnly.get -> bool
+Obsidian.EnvironmentSettings.IsReadOnly.set -> void
+Obsidian.EnvironmentSettings.LStripBlocks.get -> bool
+Obsidian.EnvironmentSettings.LStripBlocks.set -> void
+Obsidian.EnvironmentSettings.LineCommentPrefix.get -> string
+Obsidian.EnvironmentSettings.LineCommentPrefix.set -> void
+Obsidian.EnvironmentSettings.LineStatementPrefix.get -> string
+Obsidian.EnvironmentSettings.LineStatementPrefix.set -> void
+Obsidian.EnvironmentSettings.TreatNullCollectionsAsEmpty.get -> bool
+Obsidian.EnvironmentSettings.TreatNullCollectionsAsEmpty.set -> void
+Obsidian.EnvironmentSettings.TrimBlocks.get -> bool
+Obsidian.EnvironmentSettings.TrimBlocks.set -> void
+Obsidian.EnvironmentSettings.TrimTrailingNewline.get -> bool
+Obsidian.EnvironmentSettings.TrimTrailingNewline.set -> void
+Obsidian.EnvironmentSettings.VariableEndString.get -> string
+Obsidian.EnvironmentSettings.VariableEndString.set -> void
+Obsidian.EnvironmentSettings.VariableStartString.get -> string
+Obsidian.EnvironmentSettings.VariableStartString.set -> void
+Obsidian.Exceptions.TemplateNotFoundException
+Obsidian.Exceptions.TemplateNotFoundException.TemplateName.get -> string
+Obsidian.Exceptions.TemplateNotFoundException.TemplateNotFoundException() -> void
+Obsidian.Exceptions.TemplateNotFoundException.TemplateNotFoundException(string message) -> void
+Obsidian.Exceptions.TemplateNotFoundException.TemplateNotFoundException(string templateName, System.Exception inner = null) -> void
+Obsidian.FileSystemLoader
+Obsidian.FileSystemLoader.FileSystemLoader(System.Collections.Generic.IEnumerable<string> searchPaths) -> void
+Obsidian.FileSystemLoader.FileSystemLoader(System.Collections.Generic.IEnumerable<string> searchPaths, System.Text.Encoding encoding) -> void
+Obsidian.FileSystemLoader.FileSystemLoader(string searchPath) -> void
+Obsidian.FileSystemLoader.FileSystemLoader(string searchPath, System.Text.Encoding encoding) -> void
+Obsidian.ITemplate
+Obsidian.ITemplate.Environment.get -> Obsidian.JinjaEnvironment
+Obsidian.ITemplate.Render(System.Collections.Generic.IDictionary<string, object> variables) -> string
+Obsidian.ITemplate.TemplateName.get -> string
+Obsidian.ITemplate.TemplatePath.get -> string
+Obsidian.JinjaEnvironment
+Obsidian.JinjaEnvironment.GetTemplate(string templateName, System.Collections.Generic.IDictionary<string, object> variableTemplate) -> Obsidian.ITemplate
+Obsidian.JinjaEnvironment.JinjaEnvironment(Obsidian.BaseLoader loader = null) -> void
+Obsidian.JinjaEnvironment.Loader.get -> Obsidian.BaseLoader
+Obsidian.JinjaEnvironment.Loader.set -> void
+Obsidian.JinjaEnvironment.Settings.get -> Obsidian.EnvironmentSettings
+System.Collections.Generic.EnumerableExtensions
+override Common.Numerical.Equals(object obj) -> bool
+override Common.Numerical.GetHashCode() -> int
+override Common.Numerical.ToString() -> string
+static Common.Numerical.Add(Common.Numerical left, Common.Numerical right) -> Common.Numerical
+static Common.Numerical.BitwiseAnd(Common.Numerical left, Common.Numerical right) -> Common.Numerical
+static Common.Numerical.BitwiseOr(Common.Numerical left, Common.Numerical right) -> Common.Numerical
+static Common.Numerical.Copy(Common.Numerical numerical) -> Common.Numerical
+static Common.Numerical.Decrement(Common.Numerical item) -> Common.Numerical
+static Common.Numerical.Divide(Common.Numerical left, Common.Numerical right) -> Common.Numerical
+static Common.Numerical.FromByte(byte b) -> Common.Numerical
+static Common.Numerical.FromDecimal(decimal b) -> Common.Numerical
+static Common.Numerical.FromDouble(double b) -> Common.Numerical
+static Common.Numerical.FromInt16(short b) -> Common.Numerical
+static Common.Numerical.FromInt32(int b) -> Common.Numerical
+static Common.Numerical.FromInt64(long b) -> Common.Numerical
+static Common.Numerical.FromSByte(sbyte b) -> Common.Numerical
+static Common.Numerical.FromSingle(float b) -> Common.Numerical
+static Common.Numerical.FromUInt16(ushort b) -> Common.Numerical
+static Common.Numerical.FromUInt32(uint b) -> Common.Numerical
+static Common.Numerical.FromUInt64(ulong b) -> Common.Numerical
+static Common.Numerical.Increment(Common.Numerical item) -> Common.Numerical
+static Common.Numerical.LeftShift(Common.Numerical left, int right) -> Common.Numerical
+static Common.Numerical.Mod(Common.Numerical left, Common.Numerical right) -> Common.Numerical
+static Common.Numerical.Multiply(Common.Numerical left, Common.Numerical right) -> Common.Numerical
+static Common.Numerical.Negate(Common.Numerical item) -> Common.Numerical
+static Common.Numerical.OnesComplement(Common.Numerical item) -> Common.Numerical
+static Common.Numerical.Plus(Common.Numerical item) -> Common.Numerical
+static Common.Numerical.RightShift(Common.Numerical left, int right) -> Common.Numerical
+static Common.Numerical.Subtract(Common.Numerical left, Common.Numerical right) -> Common.Numerical
+static Common.Numerical.TryCreate(object item, System.Globalization.NumberStyles style, System.IFormatProvider provider, out Common.Numerical? numerical) -> bool
+static Common.Numerical.TryCreate(object item, out Common.Numerical? numerical) -> bool
+static Common.Numerical.TryParse(string str, System.Globalization.NumberStyles style, System.IFormatProvider provider, out Common.Numerical? numerical) -> bool
+static Common.Numerical.TryParse(string str, out Common.Numerical? numerical) -> bool
+static Common.Numerical.Unknown.get -> Common.Numerical
+static Common.Numerical.Xor(Common.Numerical left, Common.Numerical right) -> Common.Numerical
+static Common.Numerical.implicit operator Common.Numerical(byte d) -> Common.Numerical
+static Common.Numerical.implicit operator Common.Numerical(decimal d) -> Common.Numerical
+static Common.Numerical.implicit operator Common.Numerical(double d) -> Common.Numerical
+static Common.Numerical.implicit operator Common.Numerical(float d) -> Common.Numerical
+static Common.Numerical.implicit operator Common.Numerical(int d) -> Common.Numerical
+static Common.Numerical.implicit operator Common.Numerical(long d) -> Common.Numerical
+static Common.Numerical.implicit operator Common.Numerical(sbyte d) -> Common.Numerical
+static Common.Numerical.implicit operator Common.Numerical(short d) -> Common.Numerical
+static Common.Numerical.implicit operator Common.Numerical(uint d) -> Common.Numerical
+static Common.Numerical.implicit operator Common.Numerical(ulong d) -> Common.Numerical
+static Common.Numerical.implicit operator Common.Numerical(ushort d) -> Common.Numerical
+static Common.Numerical.implicit operator byte(Common.Numerical d) -> byte
+static Common.Numerical.implicit operator decimal(Common.Numerical d) -> decimal
+static Common.Numerical.implicit operator double(Common.Numerical d) -> double
+static Common.Numerical.implicit operator float(Common.Numerical d) -> float
+static Common.Numerical.implicit operator int(Common.Numerical d) -> int
+static Common.Numerical.implicit operator long(Common.Numerical d) -> long
+static Common.Numerical.implicit operator sbyte(Common.Numerical d) -> sbyte
+static Common.Numerical.implicit operator short(Common.Numerical d) -> short
+static Common.Numerical.implicit operator uint(Common.Numerical d) -> uint
+static Common.Numerical.implicit operator ulong(Common.Numerical d) -> ulong
+static Common.Numerical.implicit operator ushort(Common.Numerical d) -> ushort
+static Common.Numerical.operator !=(Common.Numerical obj1, Common.Numerical obj2) -> bool
+static Common.Numerical.operator %(Common.Numerical obj1, Common.Numerical obj2) -> Common.Numerical
+static Common.Numerical.operator &(Common.Numerical obj1, Common.Numerical obj2) -> Common.Numerical
+static Common.Numerical.operator *(Common.Numerical obj1, Common.Numerical obj2) -> Common.Numerical
+static Common.Numerical.operator +(Common.Numerical obj1) -> Common.Numerical
+static Common.Numerical.operator +(Common.Numerical obj1, Common.Numerical obj2) -> Common.Numerical
+static Common.Numerical.operator ++(Common.Numerical obj1) -> Common.Numerical
+static Common.Numerical.operator -(Common.Numerical obj1) -> Common.Numerical
+static Common.Numerical.operator -(Common.Numerical obj1, Common.Numerical obj2) -> Common.Numerical
+static Common.Numerical.operator --(Common.Numerical obj1) -> Common.Numerical
+static Common.Numerical.operator /(Common.Numerical obj1, Common.Numerical obj2) -> Common.Numerical
+static Common.Numerical.operator <(Common.Numerical left, Common.Numerical right) -> bool
+static Common.Numerical.operator <<(Common.Numerical obj1, int obj2) -> Common.Numerical
+static Common.Numerical.operator <=(Common.Numerical left, Common.Numerical right) -> bool
+static Common.Numerical.operator ==(Common.Numerical obj1, Common.Numerical obj2) -> bool
+static Common.Numerical.operator >(Common.Numerical left, Common.Numerical right) -> bool
+static Common.Numerical.operator >=(Common.Numerical left, Common.Numerical right) -> bool
+static Common.Numerical.operator >>(Common.Numerical obj1, int obj2) -> Common.Numerical
+static Common.Numerical.operator ^(Common.Numerical obj1, Common.Numerical obj2) -> Common.Numerical
+static Common.Numerical.operator false(Common.Numerical obj1) -> bool
+static Common.Numerical.operator true(Common.Numerical obj1) -> bool
+static Common.Numerical.operator |(Common.Numerical obj1, Common.Numerical obj2) -> Common.Numerical
+static Common.Numerical.operator ~(Common.Numerical obj1) -> Common.Numerical
+static Common.ReflectionHelpers.GetCommonBaseClass(System.Collections.Generic.IEnumerable<System.Type> types) -> System.Type
+static ExpressionParser.Configuration.OperatorDefinition.CreateBinary(string text, int precedence, ExpressionParser.Configuration.OperatorType operatorType) -> ExpressionParser.Configuration.OperatorDefinition
+static ExpressionParser.Configuration.OperatorDefinition.CreateIndex(string startText, ExpressionParser.Lexing.TokenType argSeperator, ExpressionParser.Lexing.TokenType endText, int precedence) -> ExpressionParser.Configuration.OperatorDefinition
+static ExpressionParser.Configuration.OperatorDefinition.CreateIndex(string startText, ExpressionParser.Lexing.TokenType secondaryTokenType, ExpressionParser.Lexing.TokenType argSeperator, ExpressionParser.Lexing.TokenType endText, int precedence) -> ExpressionParser.Configuration.OperatorDefinition
+static ExpressionParser.Configuration.OperatorDefinition.CreateMemberAccess(string text, int precedence) -> ExpressionParser.Configuration.OperatorDefinition
+static ExpressionParser.Configuration.OperatorDefinition.CreateMethod(string startText, ExpressionParser.Lexing.TokenType argSeperator, ExpressionParser.Lexing.TokenType endText, int precedence) -> ExpressionParser.Configuration.OperatorDefinition
+static ExpressionParser.Configuration.OperatorDefinition.CreateMethod(string startText, ExpressionParser.Lexing.TokenType secondaryTokenType, ExpressionParser.Lexing.TokenType argSeperator, ExpressionParser.Lexing.TokenType endText, int precedence) -> ExpressionParser.Configuration.OperatorDefinition
+static ExpressionParser.Configuration.OperatorDefinition.CreatePipeline(string text, int precedence) -> ExpressionParser.Configuration.OperatorDefinition
+static ExpressionParser.Configuration.OperatorDefinition.CreateUnary(string text, int precedence, ExpressionParser.Configuration.OperatorType operatorType) -> ExpressionParser.Configuration.OperatorDefinition
+static System.Collections.Generic.EnumerableExtensions.Concat<T>(this System.Collections.Generic.IEnumerable<T> source, T item) -> System.Collections.Generic.IEnumerable<T>
+static System.Collections.Generic.EnumerableExtensions.FirstOrDefaultValueType<T>(this System.Collections.Generic.IEnumerable<T> source, System.Func<T, bool> predicate) -> T?
+static System.Collections.Generic.EnumerableExtensions.NonNullItems<T>(this System.Collections.Generic.IEnumerable<T> source) -> System.Collections.Generic.IEnumerable<T>
+static System.Collections.Generic.EnumerableExtensions.ToArrayWithoutInstantiation<T>(this System.Collections.Generic.IEnumerable<T> source) -> T[]
+virtual ExpressionParser.UserDefinedFunction.Invoke(ExpressionParser.UserDefinedArgumentData argumentData) -> object
+virtual Obsidian.BaseLoader.Load(Obsidian.JinjaEnvironment environment, string name, System.Collections.Generic.IDictionary<string, object> variableTemplate) -> Obsidian.ITemplate

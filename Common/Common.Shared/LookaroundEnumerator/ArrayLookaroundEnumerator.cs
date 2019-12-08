@@ -8,9 +8,9 @@
 
 //namespace Common.LookaroundEnumerator
 //{
-//    public sealed class ArrayLookaroundEnumerator<T> : ILookaroundEnumerator<T>
+//    internal sealed class ArrayLookaroundEnumerator<T> : ILookaroundEnumerator<T>
 //    {
-//        public ArrayLookaroundEnumerator(T[] array, byte lookaheadCount, byte lookbehindCount = 0)
+//        internal ArrayLookaroundEnumerator(T[] array, byte lookaheadCount, byte lookbehindCount = 0)
 //        {
 //            Current = default!;
 //            _Array = array;
@@ -21,22 +21,22 @@
 //        private T[] _Array;
 //        private int _CurrentIndex = -1;
 
-//        public T Current { get; private set; }
+//        internal T Current { get; private set; }
 
-//        public int LookaheadCount { get; }
+//        internal int LookaheadCount { get; }
 
-//        public int LookbehindCount { get; }
+//        internal int LookbehindCount { get; }
 
-//        public EnumeratorState State => throw new NotImplementedException();
+//        internal EnumeratorState State => throw new NotImplementedException();
 
 //        object? IEnumerator.Current => Current;
 
-//        public void Dispose()
+//        internal void Dispose()
 //        {
 
 //        }
 
-//        public bool MoveNext()
+//        internal bool MoveNext()
 //        {
 
 //            if (_CurrentIndex < _Array.Length - 1)
@@ -57,12 +57,12 @@
 //            }
 //        }
 
-//        public void Reset()
+//        internal void Reset()
 //        {
 //            _CurrentIndex = -1;
 //        }
 
-//        public bool TryGetNext([NotNullWhen(true)] out T value, int count = 1)
+//        internal bool TryGetNext([NotNullWhen(true)] out T value, int count = 1)
 //        {
 //            if (_CurrentIndex + count < _Array.Length)
 //            {
@@ -73,7 +73,7 @@
 //            return false;
 //        }
 
-//        public bool TryGetPrevious([NotNullWhen(true)] out T value, int count = 1)
+//        internal bool TryGetPrevious([NotNullWhen(true)] out T value, int count = 1)
 //        {
 //            if (_CurrentIndex - count >= 0)
 //            {
@@ -84,20 +84,20 @@
 //            return false;
 //        }
 
-//        public T MoveNextAndGetValue(out bool moveNextReturn)
+//        internal T MoveNextAndGetValue(out bool moveNextReturn)
 //        {
 //            moveNextReturn = MoveNext();
 //            return Current;
 //        }
 
-//        public T[] Read(int count)
+//        internal T[] Read(int count)
 //        {
 //            count = Math.Min(count, _Array.Length - _CurrentIndex);
 //            var returnArray = new T[count];
 //            Array.Copy(_Array, _CurrentIndex, returnArray, 0, count);
 //            return returnArray;
 //        }
-//        public bool MoveNext(int count)
+//        internal bool MoveNext(int count)
 //        {
 //            for (var i = 0; i < count; ++i)
 //            {
@@ -109,7 +109,7 @@
 //            return true;
 //        }
 
-//        public bool TryGetNextArray(int count, out T[] value)
+//        internal bool TryGetNextArray(int count, out T[] value)
 //        {
 //            throw new NotImplementedException();
 //        }

@@ -19,14 +19,14 @@ namespace ExpressionParser.Configuration
             ArgumentSeperator = argumentSeperator;
         }
 
-        public TokenType? ArgumentSeperator { get; }
-        public TokenType? EndingToken { get; }
-        public int MinimumArguments { get; }
-        public int MaximumArguments { get; }
+        internal TokenType? ArgumentSeperator { get; }
+        internal TokenType? EndingToken { get; }
+        internal int MinimumArguments { get; }
+        internal int MaximumArguments { get; }
 
-        public SpecialOperatorType OperatorType { get; }
+        internal SpecialOperatorType OperatorType { get; }
 
-        public static SpecialOperatorDefinition Create(string text, TokenType? secondaryTokenType, int precedence, SpecialOperatorType operatorType, TokenType argumentSeperator,
+        internal static SpecialOperatorDefinition Create(string text, TokenType? secondaryTokenType, int precedence, SpecialOperatorType operatorType, TokenType argumentSeperator,
             TokenType endingText, int minArguments, int maxArguments = int.MaxValue)
         {
             if (minArguments < 0) throw new ArgumentOutOfRangeException(nameof(minArguments), minArguments,
@@ -47,13 +47,13 @@ namespace ExpressionParser.Configuration
             return new SpecialOperatorDefinition(text, secondaryTokenType, precedence, operatorType, argumentSeperator, endingText, minArguments, maxArguments);
         }
 
-        public static SpecialOperatorDefinition Create(string text, int precedence, SpecialOperatorType operatorType, TokenType argumentSeperator,
+        internal static SpecialOperatorDefinition Create(string text, int precedence, SpecialOperatorType operatorType, TokenType argumentSeperator,
             TokenType endingText, int minArguments, int maxArguments = int.MaxValue)
         {
             return Create(text, null, precedence, operatorType, argumentSeperator, endingText, minArguments, maxArguments);
         }
 
-        public static SpecialOperatorDefinition Create(string text, int precedence, SpecialOperatorType operatorType)
+        internal static SpecialOperatorDefinition Create(string text, int precedence, SpecialOperatorType operatorType)
         {
             return new SpecialOperatorDefinition(text, null, precedence, operatorType);
         }

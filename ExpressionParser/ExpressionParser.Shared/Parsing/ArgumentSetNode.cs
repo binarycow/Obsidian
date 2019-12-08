@@ -10,13 +10,13 @@ namespace ExpressionParser.Parsing
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
     internal class ArgumentSetNode : ASTNode
     {
-        public ArgumentSetNode(IEnumerable<ASTNode> arguments) : base(arguments.SelectMany(arg => arg.Tokens))
+        internal ArgumentSetNode(IEnumerable<ASTNode> arguments) : base(arguments.SelectMany(arg => arg.Tokens))
         {
             Arguments = arguments.ToArrayWithoutInstantiation();
         }
-        public ASTNode[] Arguments { get; }
+        internal ASTNode[] Arguments { get; }
 
-        public override string DebuggerDisplay => $"({string.Join(",", Arguments.Select(item => item.DebuggerDisplay))})";
+        internal override string DebuggerDisplay => $"({string.Join(",", Arguments.Select(item => item.DebuggerDisplay))})";
 
         public override TOutput Transform<TOutput>(INodeTransformVisitor<TOutput> visitor)
         {

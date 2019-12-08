@@ -16,19 +16,19 @@ namespace ExpressionParser.Transforming.Operators
         where TScope : DynamicScope
         where TRootScope : TScope
     {
-        public DynamicOperatorTransformer(ScopeStack<TScope, TRootScope> scopeStack, ILanguageDefinition languageDefinition, DynamicTransformer<TScope, TRootScope> nodeTransformer)
+        internal DynamicOperatorTransformer(ScopeStack<TScope, TRootScope> scopeStack, ILanguageDefinition languageDefinition, DynamicTransformer<TScope, TRootScope> nodeTransformer)
         {
             LanguageDefinition = languageDefinition;
             NodeTransformer = nodeTransformer;
             ScopeStack = scopeStack;
         }
 
-        public ScopeStack<TScope, TRootScope> ScopeStack { get; }
+        internal ScopeStack<TScope, TRootScope> ScopeStack { get; }
 
 
-        public DynamicTransformer<TScope, TRootScope> NodeTransformer { get; }
+        internal DynamicTransformer<TScope, TRootScope> NodeTransformer { get; }
 
-        public ILanguageDefinition LanguageDefinition { get; }
+        internal ILanguageDefinition LanguageDefinition { get; }
 
 
         public object? Transform(StandardOperator item, ASTNode[] args)
@@ -77,7 +77,7 @@ namespace ExpressionParser.Transforming.Operators
             }
         }
 
-        public static object? Negate(object? right)
+        internal static object? Negate(object? right)
         {
             switch(right)
             {

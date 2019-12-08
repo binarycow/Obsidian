@@ -1775,7 +1775,7 @@ namespace Common
         }
 
 
-        public Numerical Abs()
+        internal Numerical Abs()
         {
             return Type switch
             {

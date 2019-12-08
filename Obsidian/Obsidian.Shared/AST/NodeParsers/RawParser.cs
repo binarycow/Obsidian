@@ -10,7 +10,7 @@ namespace Obsidian.AST.NodeParsers
 {
     internal class RawParser
     {
-        public enum RawState
+        internal enum RawState
         {
             StartJinja,
             Keyword,
@@ -18,10 +18,10 @@ namespace Obsidian.AST.NodeParsers
             Done
         }
 
-        public static readonly Lazy<StateMachine<RawState>> _StartBlockParser = new Lazy<StateMachine<RawState>>(() => CreateParser(Keyword_Raw));
-        public static StateMachine<RawState> StartBlock => _StartBlockParser.Value;
-        public static readonly Lazy<StateMachine<RawState>> _EndBlockParser = new Lazy<StateMachine<RawState>>(() => CreateParser(Keyword_EndRaw));
-        public static StateMachine<RawState> EndBlock => _EndBlockParser.Value;
+        internal static readonly Lazy<StateMachine<RawState>> _StartBlockParser = new Lazy<StateMachine<RawState>>(() => CreateParser(Keyword_Raw));
+        internal static StateMachine<RawState> StartBlock => _StartBlockParser.Value;
+        internal static readonly Lazy<StateMachine<RawState>> _EndBlockParser = new Lazy<StateMachine<RawState>>(() => CreateParser(Keyword_EndRaw));
+        internal static StateMachine<RawState> EndBlock => _EndBlockParser.Value;
 
         private static StateMachine<RawState> CreateParser(TokenType keyword)
         {

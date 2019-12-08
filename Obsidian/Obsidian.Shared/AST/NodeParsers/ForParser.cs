@@ -11,7 +11,7 @@ namespace Obsidian.AST.NodeParsers
 {
     internal static class ForParser
     {
-        public enum ForState
+        internal enum ForState
         {
             StartJinja,
             WhiteSpaceOrKeyword,
@@ -23,12 +23,12 @@ namespace Obsidian.AST.NodeParsers
             Done,
         }
 
-        public static readonly Lazy<StateMachine<ForState>> _StartBlockParser = new Lazy<StateMachine<ForState>>(() => CreateStartParser());
-        public static StateMachine<ForState> StartBlock => _StartBlockParser.Value;
-        public static readonly Lazy<StateMachine<ForState>> _ElseBlockParser = new Lazy<StateMachine<ForState>>(() => CreateElseEndForParser(TokenType.Keyword_Else));
-        public static StateMachine<ForState> ElseBlock => _ElseBlockParser.Value;
-        public static readonly Lazy<StateMachine<ForState>> _EndBlockParser = new Lazy<StateMachine<ForState>>(() => CreateElseEndForParser(TokenType.Keyword_EndFor));
-        public static StateMachine<ForState> EndBlock => _EndBlockParser.Value;
+        internal static readonly Lazy<StateMachine<ForState>> _StartBlockParser = new Lazy<StateMachine<ForState>>(() => CreateStartParser());
+        internal static StateMachine<ForState> StartBlock => _StartBlockParser.Value;
+        internal static readonly Lazy<StateMachine<ForState>> _ElseBlockParser = new Lazy<StateMachine<ForState>>(() => CreateElseEndForParser(TokenType.Keyword_Else));
+        internal static StateMachine<ForState> ElseBlock => _ElseBlockParser.Value;
+        internal static readonly Lazy<StateMachine<ForState>> _EndBlockParser = new Lazy<StateMachine<ForState>>(() => CreateElseEndForParser(TokenType.Keyword_EndFor));
+        internal static StateMachine<ForState> EndBlock => _EndBlockParser.Value;
 
         private static StateMachine<ForState> CreateStartParser()
         {

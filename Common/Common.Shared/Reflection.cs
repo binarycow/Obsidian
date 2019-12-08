@@ -7,9 +7,9 @@ using System.Text;
 
 namespace Common
 {
-    public static class Reflection
+    internal static class Reflection
     {
-        public static Type GetCommonBaseClass(IEnumerable<Type> types)
+        internal static Type GetCommonBaseClass(IEnumerable<Type> types)
         {
             return GetCommonBaseClassArr(types.ToArray());
         }

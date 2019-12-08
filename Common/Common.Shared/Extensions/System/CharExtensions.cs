@@ -8,28 +8,28 @@ namespace System
 {
     internal static class CharExtensions
     {
-        public static bool IsDigit(this char c)
+        internal static bool IsDigit(this char c)
         {
             return char.IsDigit(c);
         }
-        public static bool IsLetter(this char c)
+        internal static bool IsLetter(this char c)
         {
             return char.IsLetter(c);
         }
-        public static bool IsWhiteSpace(this char c)
+        internal static bool IsWhiteSpace(this char c)
         {
             return char.IsWhiteSpace(c);
         }
-        public static char ToUpper(this char c)
+        internal static char ToUpper(this char c)
         {
             return char.ToUpper(c, CultureInfo.InvariantCulture);
         }
-        public static string Concat(this char c, string strValue)
+        internal static string Concat(this char c, string strValue)
         {
             return new string(c, 1) + strValue;
         }
 
-        public static bool IsValidEscapedChar(this char c)
+        internal static bool IsValidEscapedChar(this char c)
         {
             return c switch
             {
@@ -47,7 +47,7 @@ namespace System
                 _ => false,
             };
         }
-        public static char Escape(this char c)
+        internal static char Escape(this char c)
         {
             return c switch
             {
@@ -65,7 +65,7 @@ namespace System
                 _ => c,
             };
         }
-        public static string HTMLEscape(this char c)
+        internal static string HTMLEscape(this char c)
         {
             return c switch
             {

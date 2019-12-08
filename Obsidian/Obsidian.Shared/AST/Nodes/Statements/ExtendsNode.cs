@@ -14,14 +14,14 @@ namespace Obsidian.AST.Nodes.MiscNodes
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
     internal class ExtendsNode : ASTNode
     {
-        public ExtendsNode(string templateName, ExpressionNode template, ParsingNode parsingNode) : base(parsingNode)
+        internal ExtendsNode(string templateName, ExpressionNode template, ParsingNode parsingNode) : base(parsingNode)
         {
             TemplateName = templateName;
             Template = template;
         }
 
-        public string TemplateName { get; }
-        public ExpressionNode Template { get; }
+        internal string TemplateName { get; }
+        internal ExpressionNode Template { get; }
 
         private string DebuggerDisplay => $"{nameof(ExtendsNode)} : {TemplateName}";
 
@@ -40,14 +40,14 @@ namespace Obsidian.AST.Nodes.MiscNodes
         }
 
         [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>")]
-        public static bool TryParseExtends(Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
+        internal static bool TryParseExtends(Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
         {
             _ = ExtendsParser.TryParse(enumerator.Current, out parsedNode);
             return parsedNode != default;
         }
         private static class ExtendsParser
         {
-            public enum States
+            internal enum States
             {
                 StartJinja,
                 Keyword,
@@ -55,7 +55,7 @@ namespace Obsidian.AST.Nodes.MiscNodes
                 Done,
             }
 
-            public static bool TryParse(ParsingNode currentNode, [NotNullWhen(true)]out ASTNode? parsedNode)
+            internal static bool TryParse(ParsingNode currentNode, [NotNullWhen(true)]out ASTNode? parsedNode)
             {
                 using var enumerator = LookaroundEnumeratorFactory.CreateLookaroundEnumerator(currentNode.Tokens);
                 parsedNode = default;

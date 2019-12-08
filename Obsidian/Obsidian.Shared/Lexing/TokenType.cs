@@ -6,7 +6,7 @@ using System.Text;
 namespace Obsidian.Lexing
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores", Justification = "<Pending>")]
-    public enum TokenType
+    internal enum TokenType
     {
         Unknown = 0,
         StatementStart,

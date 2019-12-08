@@ -12,10 +12,10 @@ namespace Obsidian.WhiteSpaceControl
     internal class TrimBlocksVisitor : ITransformVisitor
     {
         private static readonly Lazy<TrimBlocksVisitor> _Instance = new Lazy<TrimBlocksVisitor>();
-        public static TrimBlocksVisitor Instance => _Instance.Value;
+        internal static TrimBlocksVisitor Instance => _Instance.Value;
 
 
-        public bool TrimNewLine { get; private set; } = false;
+        internal bool TrimNewLine { get; private set; } = false;
 
         public void Transform(TemplateNode item)
         {

@@ -6,15 +6,15 @@ namespace ExpressionParser.Configuration
 {
     internal class FunctionDefinition
     {
-        public FunctionDefinition(string name, params OverloadDefinition[] overloads)
+        internal FunctionDefinition(string name, params OverloadDefinition[] overloads)
         {
             Name = name;
             OverloadDefinitions = overloads;
         }
-        public string Name { get; }
-        public OverloadDefinition[] OverloadDefinitions { get; }
+        internal string Name { get; }
+        internal OverloadDefinition[] OverloadDefinitions { get; }
 
-        public static FunctionDefinition Create(string name, params OverloadDefinition[] overloads)
+        internal static FunctionDefinition Create(string name, params OverloadDefinition[] overloads)
         {
             return new FunctionDefinition(name, overloads);
         }

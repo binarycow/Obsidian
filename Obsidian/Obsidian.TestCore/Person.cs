@@ -6,9 +6,9 @@ namespace Obsidian.TestCore
 {
     internal class Person
     {
-        public static string name => "John Smith";
+        internal static string name => "John Smith";
 
-        public string getName()
+        internal string getName()
         {
             return "Jacob Smith";
         }

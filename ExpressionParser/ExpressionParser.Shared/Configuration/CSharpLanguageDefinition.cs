@@ -10,9 +10,9 @@ namespace ExpressionParser.Configuration
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1812:Avoid uninstantiated internal classes", Justification = "<Pending>")]
     internal class CSharpLanguageDefinition : ILanguageDefinition
     {
-        public const string STRING_TRUE = "true";
-        public const string STRING_FALSE = "false";
-        public const string STRING_NULL = "null";
+        internal const string STRING_TRUE = "true";
+        internal const string STRING_FALSE = "false";
+        internal const string STRING_NULL = "null";
 
 
         public IEnumerable<KeywordDefinition> Keywords => new[]

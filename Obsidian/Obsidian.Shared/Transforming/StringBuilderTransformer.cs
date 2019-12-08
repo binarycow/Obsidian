@@ -14,17 +14,17 @@ namespace Obsidian.Transforming
 {
     internal class StringBuilderTransformer : ITransformVisitor
     {
-        public StringBuilderTransformer(JinjaEnvironment environment, IDictionary<string, object?> variables)
+        internal StringBuilderTransformer(JinjaEnvironment environment, IDictionary<string, object?> variables)
         {
             Scopes = new ScopeStack<DynamicContext, DynamicRootContext>(DynamicRootContext.CreateNew("root", this, variables));
             Environment = environment;
             StringRenderTransformer = new StringRenderTransformer(environment, Scopes);
         }
 
-        public StringBuilder StringBuilder { get; } = new StringBuilder();
+        internal StringBuilder StringBuilder { get; } = new StringBuilder();
         private ScopeStack<DynamicContext, DynamicRootContext> Scopes { get; }
-        public JinjaEnvironment Environment { get; }
-        public StringRenderTransformer StringRenderTransformer { get; }
+        internal JinjaEnvironment Environment { get; }
+        internal StringRenderTransformer StringRenderTransformer { get; }
 
 
 
@@ -130,7 +130,7 @@ namespace Obsidian.Transforming
         }
 
 
-        public void TransformAll(IEnumerable<ASTNode> items)
+        internal void TransformAll(IEnumerable<ASTNode> items)
         {
             foreach (var item in items)
             {

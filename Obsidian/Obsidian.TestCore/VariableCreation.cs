@@ -13,7 +13,7 @@ namespace Obsidian.TestCore
 {
     internal static class VariableCreation
     {
-        public static Dictionary<string, object?> GetVariables(string filename)
+        internal static Dictionary<string, object?> GetVariables(string filename)
         {
             var fileText = File.ReadAllText(filename);
             if (!(JsonConvert.DeserializeObject(fileText) is JObject x))
@@ -84,7 +84,7 @@ namespace Obsidian.TestCore
 
 
 
-        public static object? ToObject(JToken token)
+        internal static object? ToObject(JToken token)
         {
             return token switch
             {
@@ -95,7 +95,7 @@ namespace Obsidian.TestCore
             };
         }
 
-        public static object ToObject(JArray array)
+        internal static object ToObject(JArray array)
         {
             array = array ?? throw new ArgumentNullException(nameof(array));
             var childrenObjects = array.Children().Select(child => ToObject(child)).ToArray();
@@ -123,7 +123,7 @@ namespace Obsidian.TestCore
             return retVal;
         }
 
-        public static object? ToObject(JValue value)
+        internal static object? ToObject(JValue value)
         {
             if (value == null) return null;
             return value.Type switch

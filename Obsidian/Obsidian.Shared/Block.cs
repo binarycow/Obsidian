@@ -8,17 +8,17 @@ namespace Obsidian
 {
     internal class Block
     {
-        public Block(string name, int index, Expression expression)
+        internal Block(string name, int index, Expression expression)
         {
             Name = name;
             Index = index;
             Expression = expression;
         }
-        public Expression Expression { get; }
-        public string Name { get; }
-        public int Index { get; }
+        internal Expression Expression { get; }
+        internal string Name { get; }
+        internal int Index { get; }
 
-        //public string Render(Dictionary<string, object?> parameters)
+        //internal string Render(Dictionary<string, object?> parameters)
         //{
         //    return Expression.Evaluate(parameters)?.ToString() ?? string.Empty;
         //}

@@ -14,18 +14,18 @@ namespace Obsidian.ExpressionParserExt
 {
     internal class JinjaLexer : Lexer
     {
-        public JinjaLexer(JinjaLanguageDefinition languageDefinition) : base(languageDefinition)
+        internal JinjaLexer(JinjaLanguageDefinition languageDefinition) : base(languageDefinition)
         {
 
         }
 
-        public override bool TryReadCharacterLiteral(ILookaroundEnumerator<char> enumerator, [NotNullWhen(true)] out Token? token)
+        internal override bool TryReadCharacterLiteral(ILookaroundEnumerator<char> enumerator, [NotNullWhen(true)] out Token? token)
         {
             token = default;
             return false;
         }
 
-        public override bool TryReadStringLiteral(ILookaroundEnumerator<char> enumerator, [NotNullWhen(true)] out Token? token)
+        internal override bool TryReadStringLiteral(ILookaroundEnumerator<char> enumerator, [NotNullWhen(true)] out Token? token)
         {
             token = default;
             if(enumerator.Current != '"' && enumerator.Current != '\'')

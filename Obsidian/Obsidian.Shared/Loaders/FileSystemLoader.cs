@@ -20,8 +20,8 @@ namespace Obsidian
         public FileSystemLoader(string searchPath, Encoding encoding) : this(Enumerable.Repeat(searchPath, 1), encoding) { }
         public FileSystemLoader(string searchPath) : this(Enumerable.Repeat(searchPath, 1), Encoding.UTF8) { }
 
-        public List<string> SearchPaths { get; }
-        public Encoding Encoding { get; set; }
+        internal List<string> SearchPaths { get; }
+        internal Encoding Encoding { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         private FileInfo? FindFile(string filename)
@@ -60,7 +60,7 @@ namespace Obsidian
             return null;
         }
 
-        public override TemplateInfo GetSource(JinjaEnvironment environment, string templateName)
+        internal override TemplateInfo GetSource(JinjaEnvironment environment, string templateName)
         {
             var upToDate = false;
             var path = FindFile(templateName);

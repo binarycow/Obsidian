@@ -17,12 +17,12 @@ namespace Obsidian.ExpressionParserExt
 {
     internal class JinjaParser : Parser
     {
-        public JinjaParser(JinjaLanguageDefinition languageDefinition) : base(languageDefinition, 1, 1)
+        internal JinjaParser(JinjaLanguageDefinition languageDefinition) : base(languageDefinition, 1, 1)
         {
 
         }
 
-        public override TryParseDelegate[] CustomParseDelegates => new TryParseDelegate[]
+        internal override TryParseDelegate[] CustomParseDelegates => new TryParseDelegate[]
         {
             TryParseList,
             TryParseTuple,
@@ -76,7 +76,7 @@ namespace Obsidian.ExpressionParserExt
         }
 
 
-        public bool TryParseList(ILookaroundEnumerator<Token> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode, AssignmentOperatorBehavior assignmentOperatorBehavior)
+        internal bool TryParseList(ILookaroundEnumerator<Token> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode, AssignmentOperatorBehavior assignmentOperatorBehavior)
         {
             if (TryParseCommaSeperatedSet(enumerator, TokenType.Operator, OPERATOR_SQUARE_BRACE_OPEN, SquareBraceClose, out var parsedListItems, minimumItems: 1, assignmentOperatorBehavior))
             {
@@ -89,7 +89,7 @@ namespace Obsidian.ExpressionParserExt
 
 
 
-        public bool TryParseTuple(ILookaroundEnumerator<Token> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode, AssignmentOperatorBehavior assignmentOperatorBehavior)
+        internal bool TryParseTuple(ILookaroundEnumerator<Token> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode, AssignmentOperatorBehavior assignmentOperatorBehavior)
         {
             if (TryParseCommaSeperatedSet(enumerator, TokenType.Operator, OPERATOR_PAREN_OPEN, ParenClose, out var parsedListItems, minimumItems: 2, assignmentOperatorBehavior))
             {
@@ -102,7 +102,7 @@ namespace Obsidian.ExpressionParserExt
 
 
 
-        public bool TryParseDictionary(ILookaroundEnumerator<Token> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode, AssignmentOperatorBehavior assignmentOperatorBehavior)
+        internal bool TryParseDictionary(ILookaroundEnumerator<Token> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode, AssignmentOperatorBehavior assignmentOperatorBehavior)
         {
             parsedNode = default;
             if (enumerator.Current.TokenType != TokenType.CurlyBraceOpen)

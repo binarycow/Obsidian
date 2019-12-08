@@ -31,22 +31,22 @@ namespace Obsidian
             TemplatePath = templatePath;
         }
 
-        public ExpressionData TemplateNode { get; }
-        public JinjaEnvironment Environment { get; }
-        public string? TemplateName { get; }
-        public string? TemplatePath { get; }
+        internal ExpressionData TemplateNode { get; }
+        internal JinjaEnvironment Environment { get; }
+        internal string? TemplateName { get; }
+        internal string? TemplatePath { get; }
 
-        public string Render()
+        internal string Render()
         {
             return Render(new Dictionary<string, object?>());
         }
 
-        public bool Compiled { get; private set; }
-        public void Compile()
+        internal bool Compiled { get; private set; }
+        internal void Compile()
         {
             Compile(new Dictionary<string, object?>());
         }
-        public void Compile(IDictionary<string, object?> variables)
+        internal void Compile(IDictionary<string, object?> variables)
         {
             //var compiler = new ExpressionTreeTransformVisitor(Environment, variables);
             //var compiled = TemplateNode.Transform(compiler);
@@ -122,7 +122,7 @@ namespace Obsidian
             return new Template(environment, ExpressionData.CreateCompiled(expr, rootScope), blockNode.Name, null);
         }
 
-        public string Render(IDictionary<string, object?> variables)
+        internal string Render(IDictionary<string, object?> variables)
         {
             return TemplateNode.Evaluate(variables)?.ToString() ?? string.Empty;
         }

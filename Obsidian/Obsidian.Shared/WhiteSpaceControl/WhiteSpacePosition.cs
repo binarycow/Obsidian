@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Obsidian.WhiteSpaceControl
 {
-    public enum WhiteSpacePosition
+    internal enum WhiteSpacePosition
     {
         Unknown,
         Start,

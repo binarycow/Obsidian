@@ -102,9 +102,9 @@ namespace ExpressionParser.SampleProject
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1812:Avoid uninstantiated internal classes", Justification = "<Pending>")]
     internal class TestData
     {
-        public string Name { get; set; }
-        public long CompileTime { get; set; }
-        public long[] Trials { get; set; }
+        internal string Name { get; set; }
+        internal long CompileTime { get; set; }
+        internal long[] Trials { get; set; }
     }
 
 }

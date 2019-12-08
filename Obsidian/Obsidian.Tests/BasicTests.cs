@@ -12,17 +12,17 @@ namespace Obsidian.Tests
     {
 
         [Test]
-        public void BasicTemplate()
+        internal void BasicTemplate()
         {
             AssertWrapper.TestTemplate(TestRunner.TestItems["Basic Tests"]["Basic Template"]);
         }
         [Test]
-        public void Inheritance()
+        internal void Inheritance()
         {
             AssertWrapper.TestTemplate(TestRunner.TestItems["Basic Tests"]["Inheritance"]);
         }
         [Test]
-        public void Raw()
+        internal void Raw()
         {
             AssertWrapper.TestTemplate(TestRunner.TestItems["Basic Tests"]["Raw"]);
         }

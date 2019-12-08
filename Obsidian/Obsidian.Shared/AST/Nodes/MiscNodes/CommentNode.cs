@@ -11,7 +11,7 @@ namespace Obsidian.AST.Nodes.MiscNodes
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
     internal class CommentNode : ASTNode
     {
-        public CommentNode(ParsingNode parsingNode) : base(parsingNode)
+        internal CommentNode(ParsingNode parsingNode) : base(parsingNode)
         {
         }
 

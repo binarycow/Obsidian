@@ -10,7 +10,7 @@ namespace Obsidian.Parsing
 {
     internal static class Parser
     {
-        public static IEnumerable<ParsingNode> Parse(IEnumerable<Token> source)
+        internal static IEnumerable<ParsingNode> Parse(IEnumerable<Token> source)
         {
             using var enumerator = LookaroundEnumeratorFactory.CreateLookaroundEnumerator(source, 10);
             var pendingOutput = new Queue<Token>();
@@ -103,7 +103,7 @@ namespace Obsidian.Parsing
             }
         }
 
-        public static bool TryParseLineStatement(ILookaroundEnumerator<Token> enumerator, [NotNullWhen(true)]out ParsingNode? parsedNode)
+        internal static bool TryParseLineStatement(ILookaroundEnumerator<Token> enumerator, [NotNullWhen(true)]out ParsingNode? parsedNode)
         {
             parsedNode = default;
             if (enumerator.Current.TokenType != TokenType.LineStatement)

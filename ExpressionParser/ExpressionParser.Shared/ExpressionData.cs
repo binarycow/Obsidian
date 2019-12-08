@@ -13,13 +13,13 @@ namespace ExpressionParser
     {
         internal class ParameterInfo
         {
-            public ParameterInfo(string name, Type type)
+            internal ParameterInfo(string name, Type type)
             {
                 Name = name;
                 Type = type;
             }
-            public string Name { get; }
-            public Type Type { get; }
+            internal string Name { get; }
+            internal Type Type { get; }
         }
 
         private ExpressionData(Type returnType, ParameterInfo[] parameters, Expression expressionTree, Delegate @delegate, bool compiled)
@@ -30,15 +30,15 @@ namespace ExpressionParser
             Delegate = @delegate;
             Compiled = compiled;
         }
-        public Type ReturnType { get; }
-        public ParameterInfo[] Parameters { get; }
-        public Expression ExpressionTree { get; }
-        public Delegate Delegate { get; }
-        public bool Compiled { get; }
+        internal Type ReturnType { get; }
+        internal ParameterInfo[] Parameters { get; }
+        internal Expression ExpressionTree { get; }
+        internal Delegate Delegate { get; }
+        internal bool Compiled { get; }
 
-        public Type[] ParameterTypes => Parameters.Select(param => param.Type).ToArray();
+        internal Type[] ParameterTypes => Parameters.Select(param => param.Type).ToArray();
 
-        public object? Evaluate(IDictionary<string, object?> variables)
+        internal object? Evaluate(IDictionary<string, object?> variables)
         {
             var typedArguments = Parameters.Select(param =>
             {
@@ -57,17 +57,17 @@ namespace ExpressionParser
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>")]
-        public T EvaluateAs<T>(IDictionary<string, object?> variables)
+        internal T EvaluateAs<T>(IDictionary<string, object?> variables)
         {
             throw new NotImplementedException();
         }
 
-        public static ExpressionData CreateCompiled(Expression expression, CompiledScope scope)
+        internal static ExpressionData CreateCompiled(Expression expression, CompiledScope scope)
         {
             return CreateDynamic(expression, scope);
         }
 
-        public static ExpressionData CreateDynamic(Expression expression, CompiledScope scope)
+        internal static ExpressionData CreateDynamic(Expression expression, CompiledScope scope)
         {
             var parameterExpressions = scope.Variables.ToArray();
             var parameterInfo = parameterExpressions.Select(param => new ParameterInfo(param.Name, param.Type)).ToArray();

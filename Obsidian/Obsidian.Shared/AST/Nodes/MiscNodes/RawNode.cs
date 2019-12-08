@@ -13,13 +13,13 @@ namespace Obsidian.AST.Nodes.MiscNodes
 {
     internal class RawNode : ASTNode
     {
-        public RawNode(ParsingNode? startParsingNode, IEnumerable<ParsingNode> contents, ParsingNode? endParsingNode)
+        internal RawNode(ParsingNode? startParsingNode, IEnumerable<ParsingNode> contents, ParsingNode? endParsingNode)
             : base(startParsingNode, contents, endParsingNode)
         {
             Children = contents.ToArrayWithoutInstantiation();
         }
 
-        public ParsingNode[] Children { get; }
+        internal ParsingNode[] Children { get; }
 
         public override TOutput Transform<TOutput>(ITransformVisitor<TOutput> visitor)
         {
@@ -37,7 +37,7 @@ namespace Obsidian.AST.Nodes.MiscNodes
         }
 
         [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>")]
-        public static bool TryParseRaw(Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
+        internal static bool TryParseRaw(Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
         {
             parsedNode = default;
             

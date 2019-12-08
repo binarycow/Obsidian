@@ -7,7 +7,7 @@ namespace Obsidian.Lexing
 {
     internal static class TokenTypesExtensions
     {
-        public static bool IsOpeningBrace(this TokenType tokenType)
+        internal static bool IsOpeningBrace(this TokenType tokenType)
         {
             return tokenType switch
             {
@@ -17,7 +17,7 @@ namespace Obsidian.Lexing
                 _ => false,
             };
         }
-        public static bool IsClosingBrace(this TokenType tokenType)
+        internal static bool IsClosingBrace(this TokenType tokenType)
         {
             return tokenType switch
             {
@@ -27,7 +27,7 @@ namespace Obsidian.Lexing
                 _ => false,
             };
         }
-        public static bool IsMatchingBrace(this TokenType firstTokenType, TokenType secondTokenType)
+        internal static bool IsMatchingBrace(this TokenType firstTokenType, TokenType secondTokenType)
         {
             return firstTokenType switch
             {

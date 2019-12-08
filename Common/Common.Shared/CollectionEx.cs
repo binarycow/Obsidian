@@ -10,7 +10,7 @@ namespace Common
     {
 
 
-        public static object?[]? ToArray(object? arrayObject)
+        internal static object?[]? ToArray(object? arrayObject)
         {
             if (arrayObject == null) return null;
             if (arrayObject is Array arr) return (object?[])arr;

@@ -14,17 +14,17 @@ namespace ExpressionParser.Transforming.Nodes
 {
     internal class ExpressionTreeTransformer : INodeTransformVisitor<Expression>
     {
-        public ExpressionTreeTransformer(ILanguageDefinition languageDefinition, CompiledScope scope)
+        internal ExpressionTreeTransformer(ILanguageDefinition languageDefinition, CompiledScope scope)
         {
             LanguageDefinition = languageDefinition;
             OperatorTransformer = new ExpressionTreeOperatorTransformer(this, languageDefinition);
             Scopes.Push(scope);
         }
-        public IOperatorTransformVisitor<ASTNode, Expression> OperatorTransformer { get; }
-        public ILanguageDefinition LanguageDefinition { get; }
+        internal IOperatorTransformVisitor<ASTNode, Expression> OperatorTransformer { get; }
+        internal ILanguageDefinition LanguageDefinition { get; }
 
         private Stack<CompiledScope> Scopes { get; } = new Stack<CompiledScope>();
-        public CompiledScope CurrentScope => Scopes.Peek();
+        internal CompiledScope CurrentScope => Scopes.Peek();
 
         public Expression Transform(BinaryASTNode item)
         {

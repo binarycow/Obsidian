@@ -17,7 +17,7 @@ namespace Obsidian
 
 
 
-        public static DynamicRootContext CreateNew(string? name, StringBuilderTransformer transformer, IDictionary<string, object?> variables)
+        internal static DynamicRootContext CreateNew(string? name, StringBuilderTransformer transformer, IDictionary<string, object?> variables)
         {
             var scope = new DynamicRootContext(transformer, name);
             foreach (var key in variables.Keys)
@@ -27,13 +27,13 @@ namespace Obsidian
             return scope;
         }
 
-        public StringBuilderTransformer Transformer { get; }
-        public string? CurrentBlockName { get; set; }
-        public int? CurrentBlockIndex { get; set; }
+        internal StringBuilderTransformer Transformer { get; }
+        internal string? CurrentBlockName { get; set; }
+        internal int? CurrentBlockIndex { get; set; }
 
 
         private readonly Dictionary<string, List<ContainerNode>> _Blocks = new Dictionary<string, List<ContainerNode>>();
-        public void AddBlock(string name, ContainerNode containerNode)
+        internal void AddBlock(string name, ContainerNode containerNode)
         {
             if (_Blocks.TryGetValue(name, out var blockList) == false)
             {
@@ -49,7 +49,7 @@ namespace Obsidian
                 ;
             }
         }
-        public ContainerNode? GetBlock(string name, int index = 0)
+        internal ContainerNode? GetBlock(string name, int index = 0)
         {
             if (_Blocks.TryGetValue(name, out var blockList) == false)
             {

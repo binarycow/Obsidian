@@ -10,7 +10,7 @@ namespace Obsidian.AST.NodeParsers
 {
     internal static class SetParser
     {
-        public enum SetState
+        internal enum SetState
         {
             StartJinja,
             WhiteSpaceOrKeyword,
@@ -23,10 +23,10 @@ namespace Obsidian.AST.NodeParsers
         }
 
 
-        public static readonly Lazy<StateMachine<SetState>> _StartBlockParser = new Lazy<StateMachine<SetState>>(() => CreateStartParser());
-        public static StateMachine<SetState> StartBlock => _StartBlockParser.Value;
-        public static readonly Lazy<StateMachine<SetState>> _EndBlockParser = new Lazy<StateMachine<SetState>>(() => CreateEndParser());
-        public static StateMachine<SetState> EndBlock => _EndBlockParser.Value;
+        internal static readonly Lazy<StateMachine<SetState>> _StartBlockParser = new Lazy<StateMachine<SetState>>(() => CreateStartParser());
+        internal static StateMachine<SetState> StartBlock => _StartBlockParser.Value;
+        internal static readonly Lazy<StateMachine<SetState>> _EndBlockParser = new Lazy<StateMachine<SetState>>(() => CreateEndParser());
+        internal static StateMachine<SetState> EndBlock => _EndBlockParser.Value;
 
         private static StateMachine<SetState> CreateStartParser()
         {

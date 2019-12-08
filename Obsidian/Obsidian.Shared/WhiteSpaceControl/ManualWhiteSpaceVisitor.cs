@@ -12,7 +12,7 @@ namespace Obsidian.WhiteSpaceControl
     internal class ManualWhiteSpaceVisitor : ITransformVisitor
     {
         private static readonly Lazy<ManualWhiteSpaceVisitor> _Instance = new Lazy<ManualWhiteSpaceVisitor>(() => new ManualWhiteSpaceVisitor());
-        public static ManualWhiteSpaceVisitor Instance => _Instance.Value;
+        internal static ManualWhiteSpaceVisitor Instance => _Instance.Value;
 
         readonly List<IWhiteSpace> _PendingWhiteSpace = new List<IWhiteSpace>();
 

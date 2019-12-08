@@ -12,7 +12,7 @@ namespace Obsidian.Tests
     internal abstract class TestClass
     {
         [SetUp]
-        public void Init()
+        internal void Init()
         {
             TestRunner.Init(TestRunner.TestFileName);
         }

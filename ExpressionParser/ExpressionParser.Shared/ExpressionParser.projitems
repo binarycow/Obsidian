@@ -93,8 +93,4 @@
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Localization\" />
   </ItemGroup>
-  <ItemGroup>
-    <AdditionalFiles Include="$(MSBuildThisFileDirectory)PublicAPI.Shipped.txt" />
-    <AdditionalFiles Include="$(MSBuildThisFileDirectory)PublicAPI.Unshipped.txt" />
-  </ItemGroup>
 </Project>

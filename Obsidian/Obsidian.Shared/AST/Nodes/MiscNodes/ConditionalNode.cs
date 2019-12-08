@@ -12,7 +12,7 @@ namespace Obsidian.AST.Nodes.MiscNodes
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
     internal class ConditionalNode : AbstractContainerNode, IWhiteSpaceControlling
     {
-        public ConditionalNode(ParsingNode? startParsingNode, ExpressionNode expression, IEnumerable<ASTNode> children, ParsingNode? endParsingNode, WhiteSpaceControlSet? whiteSpace = null) :
+        internal ConditionalNode(ParsingNode? startParsingNode, ExpressionNode expression, IEnumerable<ASTNode> children, ParsingNode? endParsingNode, WhiteSpaceControlSet? whiteSpace = null) :
             base(startParsingNode, children, endParsingNode)
         {
             Expression = expression;
@@ -21,7 +21,7 @@ namespace Obsidian.AST.Nodes.MiscNodes
 
         private string DebuggerDisplay => $"{nameof(ConditionalNode)} ({Expression})";
 
-        public ExpressionNode Expression { get; }
+        internal ExpressionNode Expression { get; }
 
         public WhiteSpaceControlSet WhiteSpaceControl { get; }
 

@@ -10,8 +10,8 @@ namespace Common
         {
 
         }
-        public static readonly Lazy<CharArrayEqualityComparer> _Instance = new Lazy<CharArrayEqualityComparer>(() => new CharArrayEqualityComparer());
-        public static CharArrayEqualityComparer Instance => _Instance.Value;
+        internal static readonly Lazy<CharArrayEqualityComparer> _Instance = new Lazy<CharArrayEqualityComparer>(() => new CharArrayEqualityComparer());
+        internal static CharArrayEqualityComparer Instance => _Instance.Value;
 
         public bool Equals(char[] x, char[] y)
         {

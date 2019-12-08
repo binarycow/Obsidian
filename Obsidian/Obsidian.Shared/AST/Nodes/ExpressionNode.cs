@@ -14,7 +14,7 @@ namespace Obsidian.AST.Nodes
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
     internal class ExpressionNode : ASTNode
     {
-        public ExpressionNode(ParsingNode parsingNode, string expression) : base(parsingNode)
+        internal ExpressionNode(ParsingNode parsingNode, string expression) : base(parsingNode)
         {
             Expression = expression;
         }
@@ -25,8 +25,8 @@ namespace Obsidian.AST.Nodes
             Output = false;
         }
 
-        public string Expression { get; }
-        public bool Output { get; } = true;
+        internal string Expression { get; }
+        internal bool Output { get; } = true;
 
         private string DebuggerDisplay => $"{nameof(ExpressionNode)} : \"{ToString(debug: true)}\"";
 
@@ -43,12 +43,12 @@ namespace Obsidian.AST.Nodes
         {
             visitor.Transform(this);
         }
-        public static bool TryParse(ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
+        internal static bool TryParse(ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
         {
             return ExpressionNodeParser.TryParse(enumerator, out parsedNode);
         }
 
-        public static ExpressionNode FromString(string expression)
+        internal static ExpressionNode FromString(string expression)
         {
             return new ExpressionNode(expression);
         }
@@ -65,11 +65,11 @@ namespace Obsidian.AST.Nodes
             }
 
 
-            public static bool TryParse(ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
+            internal static bool TryParse(ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
             {
                 return TryParse(enumerator.Current, out parsedNode);
             }
-            public static bool TryParse(ParsingNode node, [NotNullWhen(true)]out ASTNode? parsedNode)
+            internal static bool TryParse(ParsingNode node, [NotNullWhen(true)]out ASTNode? parsedNode)
             {
                 parsedNode = default;
                 using var enumerator = LookaroundEnumeratorFactory.CreateLookaroundEnumerator(node.Tokens, 1);

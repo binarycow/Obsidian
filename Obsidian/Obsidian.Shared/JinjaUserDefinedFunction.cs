@@ -14,17 +14,17 @@ namespace Obsidian
             name = declaration.Name;
             arguments = new ReadOnlyCollection<string>(declaration.Arguments.Select(arg => arg.Name).ToArray());
         }
-        public string name { get; }
-        public ReadOnlyCollection<string> arguments { get; }
+        internal string name { get; }
+        internal ReadOnlyCollection<string> arguments { get; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
-        public static bool catch_kwargs => true; // TODO: Implement this!
+        internal static bool catch_kwargs => true; // TODO: Implement this!
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
-        public static bool catch_varargs => true; // TODO: Implement this!
+        internal static bool catch_varargs => true; // TODO: Implement this!
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
-        public static bool caller => true; // TODO: Implement this!
+        internal static bool caller => true; // TODO: Implement this!
 
         protected override object? Invoke(UserDefinedArgumentData argumentData)
         {

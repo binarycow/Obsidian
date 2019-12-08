@@ -11,17 +11,17 @@ namespace ExpressionParser.Parsing
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
     internal class BinaryASTNode : ASTNode
     {
-        public BinaryASTNode(ASTNode left, Operator @operator, ASTNode right) : base(left.Tokens.Concat(@operator.Token).Concat(right.Tokens))
+        internal BinaryASTNode(ASTNode left, Operator @operator, ASTNode right) : base(left.Tokens.Concat(@operator.Token).Concat(right.Tokens))
         {
             Left = left;
             Operator = @operator;
             Right = right;
         }
-        public ASTNode Left { get; }
-        public Operator Operator { get;  }
-        public ASTNode Right { get; }
+        internal ASTNode Left { get; }
+        internal Operator Operator { get;  }
+        internal ASTNode Right { get; }
 
-        public override string DebuggerDisplay => $"{Left.DebuggerDisplay} {Operator.DebuggerDisplay} {Right.DebuggerDisplay}";
+        internal override string DebuggerDisplay => $"{Left.DebuggerDisplay} {Operator.DebuggerDisplay} {Right.DebuggerDisplay}";
 
         public override TOutput Transform<TOutput>(INodeTransformVisitor<TOutput> visitor)
         {

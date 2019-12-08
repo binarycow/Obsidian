@@ -16,16 +16,16 @@ namespace ExpressionParser.Parsing
         {
             Value = value;
         }
-        public object? Value { get; }
+        internal object? Value { get; }
 
-        public override string DebuggerDisplay => $"{Value}";
+        internal override string DebuggerDisplay => $"{Value}";
 
         public override TOutput Transform<TOutput>(INodeTransformVisitor<TOutput> visitor)
         {
             return visitor.Transform(this);
         }
 
-        public static LiteralNode CreateIntegerLiteral(Token token)
+        internal static LiteralNode CreateIntegerLiteral(Token token)
         {
             if (int.TryParse(token.TextValue, out var intValue))
             {
@@ -33,7 +33,7 @@ namespace ExpressionParser.Parsing
             }
             throw new NotImplementedException();
         }
-        public static LiteralNode CreateFloatLiteral(Token token)
+        internal static LiteralNode CreateFloatLiteral(Token token)
         {
             if (float.TryParse(token.TextValue, out var floatValue))
             {
@@ -41,15 +41,15 @@ namespace ExpressionParser.Parsing
             }
             throw new NotImplementedException();
         }
-        public static LiteralNode CreateCharacterLiteral(Token token)
+        internal static LiteralNode CreateCharacterLiteral(Token token)
         {
             return new LiteralNode(token, token.TextValue[0]);
         }
-        public static LiteralNode CreateStringLiteral(Token token)
+        internal static LiteralNode CreateStringLiteral(Token token)
         {
             return new LiteralNode(token, token.TextValue);
         }
-        public static LiteralNode CreateNull()
+        internal static LiteralNode CreateNull()
         {
             return new LiteralNode(new Token(TokenType.NullLiteral, null, "null"), null);
         }

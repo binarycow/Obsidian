@@ -11,7 +11,7 @@ namespace Obsidian.Transforming
     internal class TemplateContainerAssembler : BaseASTTransformer
     {
         private readonly static Lazy<TemplateContainerAssembler> _Instance = new Lazy<TemplateContainerAssembler>();
-        public static TemplateContainerAssembler Instance => _Instance.Value;
+        internal static TemplateContainerAssembler Instance => _Instance.Value;
 
         public override ASTNode Transform(ExtendsNode item)
         {

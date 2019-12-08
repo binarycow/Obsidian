@@ -13,18 +13,18 @@ namespace Obsidian.Transforming
 {
     internal class StringRenderTransformer : ITransformVisitor<IEnumerable<string>>
     {
-        public StringRenderTransformer(JinjaEnvironment environment, ScopeStack<DynamicContext, DynamicRootContext> scopes)
+        internal StringRenderTransformer(JinjaEnvironment environment, ScopeStack<DynamicContext, DynamicRootContext> scopes)
         {
             Scopes = scopes;
             Environment = environment;
         }
 
-        public JinjaEnvironment Environment { get; }
+        internal JinjaEnvironment Environment { get; }
         private ScopeStack<DynamicContext, DynamicRootContext> Scopes { get; }
 
         private ExpressionNode? _NextTemplate = null;
-        private bool _EncounteredOutputStyleBlock { get; set; }
-        public bool ShouldRender => _NextTemplate == null;
+        private bool _EncounteredOutputStyleBlock;
+        internal bool ShouldRender => _NextTemplate == null;
 
 
         public IEnumerable<string> Transform(TemplateNode item)
@@ -229,6 +229,7 @@ namespace Obsidian.Transforming
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0039:Use local function", Justification = "<Pending>")]
         public IEnumerable<string> Transform(MacroNode item)
         {
             _EncounteredOutputStyleBlock = true;
@@ -265,6 +266,7 @@ namespace Obsidian.Transforming
             yield break;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0039:Use local function", Justification = "<Pending>")]
         public IEnumerable<string> Transform(CallNode item)
         {
             _EncounteredOutputStyleBlock = true;
@@ -342,7 +344,7 @@ namespace Obsidian.Transforming
         }
 
 
-        public IEnumerable<string> TransformAll(IEnumerable<ASTNode> items)
+        internal IEnumerable<string> TransformAll(IEnumerable<ASTNode> items)
         {
             foreach (var item in items)
             {
