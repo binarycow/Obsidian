@@ -7,17 +7,17 @@ using NUnit.Framework;
 
 namespace Obsidian.Tests
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1812:Avoid uninstantiated internal classes", Justification = "<Pending>")]
-    internal class OtherTests : TestClass
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1812:Avoid uninstantiated public classes", Justification = "<Pending>")]
+    public class OtherTests : TestClass
     {
 
         [Test]
-        internal void Test1()
+        public void Test1()
         {
             AssertWrapper.TestTemplate(TestRunner.TestItems["Other Tests"]["Test1"]);
         }
         [Test]
-        internal void Test2()
+        public void Test2()
         {
             AssertWrapper.TestTemplate(TestRunner.TestItems["Other Tests"]["Test2"]);
         }

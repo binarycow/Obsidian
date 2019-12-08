@@ -8,7 +8,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Obsidian.TestCore
 {
-    internal class Converter : JsonConverter
+    public class Converter : JsonConverter
     {
         public override bool CanConvert(Type objectType)
         {

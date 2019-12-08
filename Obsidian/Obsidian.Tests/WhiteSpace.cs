@@ -7,31 +7,31 @@ using NUnit.Framework;
 
 namespace Obsidian.Tests
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1812:Avoid uninstantiated internal classes", Justification = "<Pending>")]
-    internal class WhiteSpace : TestClass
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1812:Avoid uninstantiated public classes", Justification = "<Pending>")]
+    public class WhiteSpace : TestClass
     {
         [Test]
-        internal void Defaults()
+        public void Defaults()
         {
             AssertWrapper.TestTemplate(TestRunner.TestItems["WhiteSpace"]["Defaults"]);
         }
         [Test]
-        internal void TrimBlocks()
+        public void TrimBlocks()
         {
             AssertWrapper.TestTemplate(TestRunner.TestItems["WhiteSpace"]["TrimBlocks"]);
         }
         [Test]
-        internal void LStrip()
+        public void LStrip()
         {
             AssertWrapper.TestTemplate(TestRunner.TestItems["WhiteSpace"]["LStrip"]);
         }
         [Test]
-        internal void LStripAndTrim()
+        public void LStripAndTrim()
         {
             AssertWrapper.TestTemplate(TestRunner.TestItems["WhiteSpace"]["LStrip And Trim"]);
         }
         [Test]
-        internal void ManualStrip()
+        public void ManualStrip()
         {
             AssertWrapper.TestTemplate(TestRunner.TestItems["WhiteSpace"]["Manual Strip"]);
         }

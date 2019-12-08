@@ -11,43 +11,43 @@ using Obsidian.TestCore;
 
 namespace Obsidian.Tests
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1812:Avoid uninstantiated internal classes", Justification = "<Pending>")]
-    internal class PublicAPITests
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1812:Avoid uninstantiated public classes", Justification = "<Pending>")]
+    public class PublicAPITests
     {
         private class MyParameterInfo
         {
-            internal string? Name { get; set; }
-            internal Type? Type { get; set; }
+            public string? Name { get; set; }
+            public Type? Type { get; set; }
         }
         private class MyOverloadInfo
         {
-            internal Type? ReturnType { get; set; }
-            internal MyParameterInfo[]? Parameters { get; set; }
+            public Type? ReturnType { get; set; }
+            public MyParameterInfo[]? Parameters { get; set; }
         }
 
         private class MyMethodInfo
         {
-            internal string? Name { get; set; }
-            internal MyOverloadInfo[]? Overloads { get; set; }
+            public string? Name { get; set; }
+            public MyOverloadInfo[]? Overloads { get; set; }
         }
 
         private class MyTypeInfo
         {
-            internal string? FullName { get; set; }
-            internal MyMethodInfo[]? Methods { get; set; }
-            internal MyPropertyInfo[]? Properties { get; set; }
-            internal MyFieldInfo[]? Fields { get; set; }
+            public string? FullName { get; set; }
+            public MyMethodInfo[]? Methods { get; set; }
+            public MyPropertyInfo[]? Properties { get; set; }
+            public MyFieldInfo[]? Fields { get; set; }
         }
 
         private class MyPropertyInfo
         {
-            internal string? Name { get; set; }
-            internal Type? Type { get; set; }
+            public string? Name { get; set; }
+            public Type? Type { get; set; }
         }
         private class MyFieldInfo
         {
-            internal string? Name { get; set; }
-            internal Type? Type { get; set; }
+            public string? Name { get; set; }
+            public Type? Type { get; set; }
         }
 
         private MyParameterInfo GetParameterInfo(ParameterInfo parameter)
@@ -127,7 +127,7 @@ namespace Obsidian.Tests
         }
 
         [Test]
-        internal void TestAPI()
+        public void TestAPI()
         {
             var actualPath = TestRunner.APIInfoActual;
             var results = typeof(CompiledTemplate).Assembly.GetTypes().Where(type => type.IsPublic || type.IsNestedPublic).Select(GetTypeInfo).ToArray();

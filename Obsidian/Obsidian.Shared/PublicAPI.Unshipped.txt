@@ -109,7 +109,6 @@ ExpressionParser.Configuration.OperatorType.UnaryPlus = 5 -> ExpressionParser.Co
 ExpressionParser.Configuration.OperatorType.Unknown = 0 -> ExpressionParser.Configuration.OperatorType
 ExpressionParser.Exceptions.LexingException
 ExpressionParser.Exceptions.ParseException
-ExpressionParser.Exceptions.ParseException
 ExpressionParser.Exceptions.ParseException.ParseException() -> void
 ExpressionParser.Exceptions.ParseException.ParseException(string message) -> void
 ExpressionParser.Exceptions.ParseException.ParseException(string message, System.Exception innerException) -> void
@@ -187,6 +186,7 @@ Obsidian.EnvironmentSettings.VariableEndString.get -> string
 Obsidian.EnvironmentSettings.VariableEndString.set -> void
 Obsidian.EnvironmentSettings.VariableStartString.get -> string
 Obsidian.EnvironmentSettings.VariableStartString.set -> void
+Obsidian.Exceptions.LoaderNotDefinedException
 Obsidian.Exceptions.TemplateNotFoundException
 Obsidian.Exceptions.TemplateNotFoundException.TemplateName.get -> string
 Obsidian.Exceptions.TemplateNotFoundException.TemplateNotFoundException() -> void

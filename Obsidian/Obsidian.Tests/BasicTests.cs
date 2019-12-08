@@ -7,22 +7,22 @@ using System;
 
 namespace Obsidian.Tests
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1812:Avoid uninstantiated internal classes", Justification = "<Pending>")]
-    internal class BasicTests : TestClass
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1812:Avoid uninstantiated public classes", Justification = "<Pending>")]
+    public class BasicTests : TestClass
     {
 
         [Test]
-        internal void BasicTemplate()
+        public void BasicTemplate()
         {
             AssertWrapper.TestTemplate(TestRunner.TestItems["Basic Tests"]["Basic Template"]);
         }
         [Test]
-        internal void Inheritance()
+        public void Inheritance()
         {
             AssertWrapper.TestTemplate(TestRunner.TestItems["Basic Tests"]["Inheritance"]);
         }
         [Test]
-        internal void Raw()
+        public void Raw()
         {
             AssertWrapper.TestTemplate(TestRunner.TestItems["Basic Tests"]["Raw"]);
         }

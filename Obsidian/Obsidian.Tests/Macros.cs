@@ -6,22 +6,22 @@ using System.Text;
 
 namespace Obsidian.Tests
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1812:Avoid uninstantiated internal classes", Justification = "<Pending>")]
-    internal class Macros : TestClass
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1812:Avoid uninstantiated public classes", Justification = "<Pending>")]
+    public class Macros : TestClass
     {
 
         [Test]
-        internal void BasicMacro()
+        public void BasicMacro()
         {
             AssertWrapper.TestTemplate(TestRunner.TestItems["Macros"]["Basic Macro"]);
         }
         [Test]
-        internal void CallMacro()
+        public void CallMacro()
         {
             AssertWrapper.TestTemplate(TestRunner.TestItems["Macros"]["Call Macro"]);
         }
         [Test]
-        internal void CallMacroWithParams()
+        public void CallMacroWithParams()
         {
             AssertWrapper.TestTemplate(TestRunner.TestItems["Macros"]["Call Macro With Params"]);
         }
