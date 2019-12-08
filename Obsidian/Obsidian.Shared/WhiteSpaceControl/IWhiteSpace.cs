@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Obsidian.WhiteSpaceControl
 {
-    public interface IWhiteSpace
+    internal interface IWhiteSpace
     {
         public WhiteSpaceMode WhiteSpaceMode { get; set;  }
     }

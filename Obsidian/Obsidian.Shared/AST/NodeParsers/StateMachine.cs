@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -36,26 +36,26 @@ namespace Obsidian.AST.NodeParsers
 
 
 
-        public StateMachine(TState initialState, TState doneState)
+        internal StateMachine(TState initialState, TState doneState)
         {
             InitialState = initialState;
             CurrentState = InitialState;
             DoneState = doneState;
         }
 
-        public TState InitialState { get; }
-        public TState DoneState { get; }
-        public TState CurrentState { get; private set; }
+        internal TState InitialState { get; }
+        internal TState DoneState { get; }
+        internal TState CurrentState { get; private set; }
 
-        private Dictionary<TState, State<TState>> _States = new Dictionary<TState, State<TState>>();
+        private readonly Dictionary<TState, State<TState>> _States = new Dictionary<TState, State<TState>>();
         private State<TState>? _ElseState = default;
 
-        private Lazy<Dictionary<State<TState>, Queue<Queue<Token>>>> _Accumulations = new Lazy<Dictionary<State<TState>, Queue<Queue<Token>>>>();
+        private readonly Lazy<Dictionary<State<TState>, Queue<Queue<Token>>>> _Accumulations = new Lazy<Dictionary<State<TState>, Queue<Queue<Token>>>>();
         private Dictionary<State<TState>, Queue<Queue<Token>>> Accumulations => _Accumulations.Value;
 
-        public Queue<(WhiteSpacePosition position, WhiteSpaceMode mode)> WhiteSpace { get; } = new Queue<(WhiteSpacePosition position, WhiteSpaceMode mode)>();
+        internal Queue<(WhiteSpacePosition position, WhiteSpaceMode mode)> WhiteSpace { get; } = new Queue<(WhiteSpacePosition position, WhiteSpaceMode mode)>();
 
-        public bool TryGetAccumulation(TState? state, int index, out string accumulation)
+        internal bool TryGetAccumulation(TState? state, int index, out string accumulation)
         {
             accumulation = string.Empty;
             if (TryGetAccumulations(state, out var allAccumulations) == false) return false;
@@ -63,7 +63,7 @@ namespace Obsidian.AST.NodeParsers
             accumulation = allAccumulations[index];
             return true;
         }
-        public bool TryGetAccumulations(TState? state, out string[] accumulations)
+        internal bool TryGetAccumulations(TState? state, out string[] accumulations)
         {
             accumulations = Array.Empty<string>();
             foreach (var stateKey in Accumulations.Keys)
@@ -81,30 +81,30 @@ namespace Obsidian.AST.NodeParsers
             return false;
         }
 
-        public State<TState> State(TState currentState)
+        internal State<TState> State(TState currentState)
         {
             var newState = new State<TState>(this, currentState);
             _States.Add(currentState, newState);
             return newState;
         }
-        public State<TState> Else()
+        internal State<TState> Else()
         {
             if (_ElseState != default) throw new NotImplementedException();
             _ElseState = new State<TState>(this, null);
             return _ElseState;
         }
 
-        public bool TryParse(ParsingNode node)
+        internal bool TryParse(ParsingNode node)
         {
             return TryParse(node, out _, out _);
         }
 
-        public bool TryParse(ParsingNode node, out WhiteSpaceMode startingWhiteSpace, out WhiteSpaceMode endingWhiteSpace)
+        internal bool TryParse(ParsingNode node, out WhiteSpaceMode startingWhiteSpace, out WhiteSpaceMode endingWhiteSpace)
         {
             using var enumerator = LookaroundEnumeratorFactory.CreateLookaroundEnumerator(node.Tokens);
             return TryParse(enumerator, out startingWhiteSpace, out endingWhiteSpace);
         }
-        public bool TryParse(ILookaroundEnumerator<Token> enumerator, out WhiteSpaceMode startingWhiteSpace, out WhiteSpaceMode endingWhiteSpace)
+        internal bool TryParse(ILookaroundEnumerator<Token> enumerator, out WhiteSpaceMode startingWhiteSpace, out WhiteSpaceMode endingWhiteSpace)
         {
             startingWhiteSpace = WhiteSpaceMode.Default;
             endingWhiteSpace = WhiteSpaceMode.Default;
@@ -154,7 +154,7 @@ namespace Obsidian.AST.NodeParsers
             return state != default;
         }
 
-        private bool TryGetAction(ILookaroundEnumerator<Token> enumerator, State<TState> state, [NotNullWhen(true)]out StateAction<TState>? action)
+        private static bool TryGetAction(ILookaroundEnumerator<Token> enumerator, State<TState> state, [NotNullWhen(true)]out StateAction<TState>? action)
         {
             _ = state.TryParse(enumerator, out action);
             return action != default;

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -11,14 +11,14 @@ using Obsidian.TestCore;
 
 namespace Obsidian.TestBuilder
 {
-    public partial class ctrlTestTabs : UserControl
+    internal partial class ctrlTestTabs : UserControl
     {
-        public ctrlTestTabs()
+        internal ctrlTestTabs()
         {
             InitializeComponent();
         }
 
-        public void SetTest(Test test)
+        internal void SetTest(Test test)
         {
             ctrlProperties.Test = test;
         }

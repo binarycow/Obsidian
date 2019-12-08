@@ -10,9 +10,9 @@ using Obsidian.WhiteSpaceControl;
 namespace Obsidian.AST.Nodes.MiscNodes
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public class NewLineNode : ASTNode, IWhiteSpace
+    internal class NewLineNode : ASTNode, IWhiteSpace
     {
-        public NewLineNode(ParsingNode parsingNode) : base(parsingNode)
+        internal NewLineNode(ParsingNode parsingNode) : base(parsingNode)
         {
         }
         public WhiteSpaceMode WhiteSpaceMode { get; set; }

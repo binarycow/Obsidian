@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Common;
@@ -11,21 +11,20 @@ using Obsidian.Templates;
 
 namespace Obsidian.Transforming
 {
-    public class StringRenderTransformer : ITransformVisitor<IEnumerable<string>>
+    internal class StringRenderTransformer : ITransformVisitor<IEnumerable<string>>
     {
-        public StringRenderTransformer(JinjaEnvironment environment, ScopeStack<DynamicContext, DynamicRootContext> scopes)
+        internal StringRenderTransformer(JinjaEnvironment environment, ScopeStack<DynamicContext, DynamicRootContext> scopes)
         {
             Scopes = scopes;
             Environment = environment;
         }
 
-        public JinjaEnvironment Environment { get; }
+        internal JinjaEnvironment Environment { get; }
         private ScopeStack<DynamicContext, DynamicRootContext> Scopes { get; }
 
         private ExpressionNode? _NextTemplate = null;
-        private bool _EncounteredOutputStyleBlock { get; set; }
-        public bool ShouldRender => _NextTemplate == null;
-        private DynamicSelf _Self = new DynamicSelf();
+        private bool _EncounteredOutputStyleBlock;
+        internal bool ShouldRender => _NextTemplate == null;
 
 
         public IEnumerable<string> Transform(TemplateNode item)
@@ -49,7 +48,7 @@ namespace Obsidian.Transforming
                         toRender = d.TemplateNode;
                         break;
                     case string templateName:
-                        var temp = Environment.GetTemplate(templateName, Scopes.Current);
+                        var temp = Environment.GetDynamicTemplate(templateName);
                         if (!(temp is DynamicTemplate dt)) throw new NotImplementedException();
                         toRender = dt.TemplateNode;
                         break;
@@ -70,8 +69,7 @@ namespace Obsidian.Transforming
             if (!(ShouldRender && _EncounteredOutputStyleBlock)) yield break;
             if (item.VariableNames.Length != 1) throw new NotImplementedException();
             var evalObj = Environment.Evaluation.EvaluateDynamic(item.Expression.Expression, Scopes);
-            var arr = CollectionEx.ToArray(evalObj);
-            arr = arr ?? Array.Empty<object>();
+            var arr = CollectionEx.ToArray(evalObj) ?? Array.Empty<object>();
 
             if (arr.Length == 0 && item.ElseBlock != null)
             {
@@ -231,6 +229,7 @@ namespace Obsidian.Transforming
             }
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0039:Use local function", Justification = "<Pending>")]
         public IEnumerable<string> Transform(MacroNode item)
         {
             _EncounteredOutputStyleBlock = true;
@@ -267,6 +266,7 @@ namespace Obsidian.Transforming
             yield break;
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0039:Use local function", Justification = "<Pending>")]
         public IEnumerable<string> Transform(CallNode item)
         {
             _EncounteredOutputStyleBlock = true;
@@ -344,7 +344,7 @@ namespace Obsidian.Transforming
         }
 
 
-        public IEnumerable<string> TransformAll(IEnumerable<ASTNode> items)
+        internal IEnumerable<string> TransformAll(IEnumerable<ASTNode> items)
         {
             foreach (var item in items)
             {

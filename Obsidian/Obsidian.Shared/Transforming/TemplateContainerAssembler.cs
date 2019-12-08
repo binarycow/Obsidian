@@ -1,4 +1,4 @@
-﻿using Obsidian.AST;
+using Obsidian.AST;
 using Obsidian.AST.Nodes;
 using Obsidian.AST.Nodes.MiscNodes;
 using Obsidian.AST.Nodes.Statements;
@@ -8,10 +8,10 @@ using System.Text;
 
 namespace Obsidian.Transforming
 {
-    public class TemplateContainerAssembler : BaseASTTransformer
+    internal class TemplateContainerAssembler : BaseASTTransformer
     {
         private readonly static Lazy<TemplateContainerAssembler> _Instance = new Lazy<TemplateContainerAssembler>();
-        public static TemplateContainerAssembler Instance => _Instance.Value;
+        internal static TemplateContainerAssembler Instance => _Instance.Value;
 
         public override ASTNode Transform(ExtendsNode item)
         {

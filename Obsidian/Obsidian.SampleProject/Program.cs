@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using ExpressionParser;
@@ -9,19 +9,19 @@ namespace Obsidian.SampleProject
 {
     class Program
     {
-        static Dictionary<string, object> _Variables = new Dictionary<string, object>
+        static readonly Dictionary<string, object> _Variables = new Dictionary<string, object>
         {
             { "standalone", false },
         };
 
-        static void Main(string[] args)
+        static void Main()
         {
             TestRunner.Init(TestRunner.TestFileName);
             //AutomaticTest(TestRunner.TestItems["Basic Tests"]["Basic Template"]);
             //AutomaticTest(TestRunner.TestItems["Basic Tests"]["Raw"]);
             //AutomaticTest(TestRunner.TestItems["Basic Tests"]["Inheritance"]);
             //AutomaticTest(TestRunner.TestItems["Macros"]["Basic Macro"]);
-            AutomaticTest(TestRunner.TestItems["Macros"]["Call Macro"]);
+            //AutomaticTest(TestRunner.TestItems["Macros"]["Call Macro"]);
             //AutomaticTest(TestRunner.TestItems["Macros"]["Call Macro With Params"]);
             //AutomaticTest(TestRunner.TestItems["Feature Tests"]["Null Master Fallback"]["Standalone"]);
             //AutomaticTest(TestRunner.TestItems["Feature Tests"]["Null Master Fallback"]["Master"]);
@@ -38,7 +38,7 @@ namespace Obsidian.SampleProject
             //AutomaticTest(TestRunner.TestItems["Filters"]["Filters - Basic"]);
             //AutomaticTest(TestRunner.TestItems["Filters"]["Filters - Batch"]);
 
-            //ManualTest(false, false);
+            ManualTest(false, false);
 
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("Done.");
@@ -46,7 +46,8 @@ namespace Obsidian.SampleProject
             Console.ReadKey();
         }
 
-
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0059:Unnecessary assignment of a value", Justification = "<Pending>")]
         static void AutomaticTest(Item test, bool outputStartEndMarkers = true)
         {
             TestRunner.TestTemplate(test, out var actualOutput, out var expectedOutput);
@@ -54,8 +55,8 @@ namespace Obsidian.SampleProject
 
             var rootPath = Path.GetFullPath(Path.Combine("..","..",".."));
 
-            File.WriteAllText(Path.Combine(rootPath,"actual.txt"), actualOutput);
-            File.WriteAllText(Path.Combine(rootPath, "expected.txt"), expectedOutput);
+            //File.WriteAllText(Path.Combine(rootPath,"actual.txt"), actualOutput);
+            //File.WriteAllText(Path.Combine(rootPath, "expected.txt"), expectedOutput);
 
             Console.WriteLine("==================================== ACTUAL =====================================");
             WriteLines(actualOutput);
@@ -79,12 +80,12 @@ namespace Obsidian.SampleProject
                 }
             }
 
-            int LineCount(string str)
+            static int LineCount(string str)
             {
                 return str.Split('\n').Length;
             }
 
-            void WriteMatchResultOverall(string actual, string expected)
+            static void WriteMatchResultOverall(string actual, string expected)
             {
                 if(actual == expected)
                 {
@@ -98,7 +99,8 @@ namespace Obsidian.SampleProject
                 }
                 Console.ForegroundColor = ConsoleColor.Gray;
             }
-            void WriteMatchResultInteger(string description, int actual, int expected)
+
+            static void WriteMatchResultInteger(string description, int actual, int expected)
             {
                 if(actual == expected)
                 {

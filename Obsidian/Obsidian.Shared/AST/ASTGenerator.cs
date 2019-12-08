@@ -10,11 +10,11 @@ using Obsidian.Parsing;
 
 namespace Obsidian.AST
 {
-    public class ASTGenerator
+    internal class ASTGenerator
     {
-        public static TemplateNode ParseTemplate(Lexer lexer, IEnumerable<ParsingNode> source)
+        internal static TemplateNode ParseTemplate(Lexer lexer, IEnumerable<ParsingNode> source)
         {
-            var enumerator = LookaroundEnumeratorFactory.CreateLookaroundEnumerator(source, 10);
+            using var enumerator = LookaroundEnumeratorFactory.CreateLookaroundEnumerator(source, 10);
 
             while (enumerator.MoveNext())
             {
@@ -28,7 +28,7 @@ namespace Obsidian.AST
 
             throw new NotImplementedException();
         }
-        public static IEnumerable<ASTNode> ParseUntilFailure(Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator)
+        internal static IEnumerable<ASTNode> ParseUntilFailure(Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator)
         {
             do
             {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,7 +14,7 @@ namespace Obsidian
 {
     internal static class OutputCombiner
     {
-        public static IEnumerable<ParsingNode> CombineOutput(IEnumerable<ParsingNode> source)
+        internal static IEnumerable<ParsingNode> CombineOutput(IEnumerable<ParsingNode> source)
         {
             var array = source.ToArray();
             var nonWhiteSpaceEncounteredOnLine = false;
@@ -55,7 +55,7 @@ namespace Obsidian
             if (pendingOutput.Count > 0) output.Enqueue(MakeNode(pendingOutput, ParsingNodeType.Output));
             return output;
 
-            ParsingNode MakeNode(Queue<ParsingNode> queue, ParsingNodeType nodeType)
+            static ParsingNode MakeNode(Queue<ParsingNode> queue, ParsingNodeType nodeType)
             {
                 var allTokens = queue.SelectMany(node => node.Tokens);
                 var node = new ParsingNode(nodeType, allTokens);

@@ -1,15 +1,19 @@
+using System;
 using System.Collections.Generic;
 
 namespace Obsidian
 {
     public abstract class BaseLoader
     {
-        public abstract TemplateInfo GetSource(JinjaEnvironment environment, string templateName);
+        internal abstract TemplateInfo GetSource(JinjaEnvironment environment, string templateName);
 
-        private Dictionary<string, ITemplate> _TemplateCache = new Dictionary<string, ITemplate>();
+        private readonly Dictionary<string, ITemplate> _TemplateCache = new Dictionary<string, ITemplate>();
 
-        public ITemplate Load(JinjaEnvironment environment, string name, IDictionary<string, object?> variableTemplate)
+        public virtual ITemplate Load(JinjaEnvironment environment, string name, IDictionary<string, object?> variableTemplate)
         {
+            environment = environment ?? throw new ArgumentNullException(nameof(environment));
+            name = name ?? throw new ArgumentNullException(nameof(name));
+            variableTemplate = variableTemplate ?? throw new ArgumentNullException(nameof(variableTemplate));
             var templateInfo = GetSource(environment, name);
             if(_TemplateCache.ContainsKey(name) == false || templateInfo.UpToDate == false)
             {

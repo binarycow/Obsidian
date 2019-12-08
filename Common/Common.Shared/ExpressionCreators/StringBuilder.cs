@@ -4,25 +4,26 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
-using ExpressionToString;
 
 namespace Common.ExpressionCreators
 {
-    public class StringBuilder
+#pragma warning disable CA1812 // Avoid uninstantiated internal classes
+    internal class StringBuilder
+#pragma warning restore CA1812 // Avoid uninstantiated internal classes
     {
-        private static Type _StringBuilderType = typeof(System.Text.StringBuilder);
-        private static Lazy<Dictionary<Type, MethodInfo>> _AppendMethods = new Lazy<Dictionary<Type, MethodInfo>>();
+        private static readonly Type _StringBuilderType = typeof(System.Text.StringBuilder);
+        private static readonly Lazy<Dictionary<Type, MethodInfo>> _AppendMethods = new Lazy<Dictionary<Type, MethodInfo>>();
         private static Dictionary<Type, MethodInfo> AppendMethods => _AppendMethods.Value;
         private static HashSet<Type> NoAppendMethods => _NoAppendMethods.Value;
 
-        private static Lazy<HashSet<Type>> _NoAppendMethods = new Lazy<HashSet<Type>>();
+        private static readonly Lazy<HashSet<Type>> _NoAppendMethods = new Lazy<HashSet<Type>>();
 
 
-        private static Lazy<Dictionary<Type, MethodInfo>> _AppendLineMethods = new Lazy<Dictionary<Type, MethodInfo>>();
+        private static readonly Lazy<Dictionary<Type, MethodInfo>> _AppendLineMethods = new Lazy<Dictionary<Type, MethodInfo>>();
         private static Dictionary<Type, MethodInfo> AppendLineMethods => _AppendLineMethods.Value;
         private static HashSet<Type> NoAppendLineMethods => _NoAppendLineMethods.Value;
 
-        private static Lazy<HashSet<Type>> _NoAppendLineMethods = new Lazy<HashSet<Type>>();
+        private static readonly Lazy<HashSet<Type>> _NoAppendLineMethods = new Lazy<HashSet<Type>>();
 
         private MethodInfo GetAppendMethod(Type type)
         {
@@ -69,12 +70,11 @@ namespace Common.ExpressionCreators
             return GetAppendLineMethod(typeof(object));
         }
 
-        public Expression Append(Expression stringBuilder, Expression item)
+        internal Expression Append(Expression stringBuilder, Expression item)
         {
-            var debug = item.ToString("C#");
             return Expression.Call(stringBuilder, GetAppendMethod(item.Type), new[] { item });
         }
-        public Expression AppendLine(Expression stringBuilder, Expression item)
+        internal Expression AppendLine(Expression stringBuilder, Expression item)
         {
             return Expression.Call(stringBuilder, GetAppendLineMethod(item.Type), new[] { item });
         }

@@ -11,9 +11,9 @@ using Obsidian.Parsing;
 
 namespace Obsidian.AST.Nodes
 {
-    public abstract class StatementNode : ASTNode, IWithChildren
+    internal abstract class StatementNode : ASTNode, IWithChildren
     {
-        public StatementNode(ParsingNode? startParsingNode, IEnumerable<ASTNode> children, ParsingNode? endParsingNode) 
+        internal StatementNode(ParsingNode? startParsingNode, IEnumerable<ASTNode> children, ParsingNode? endParsingNode) 
             : base(startParsingNode, children.SelectMany(x => x.ParsingNodes), endParsingNode)
         {
             Children = children.ToArrayWithoutInstantiation();
@@ -21,9 +21,9 @@ namespace Obsidian.AST.Nodes
 
         public ASTNode[] Children { get; }
 
-        public delegate bool TryParseDelegate(Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode);
+        internal delegate bool TryParseDelegate(Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode);
 
-        private static TryParseDelegate[] _Delegates = new TryParseDelegate[]
+        private static readonly TryParseDelegate[] _Delegates = new TryParseDelegate[]
         {
             ForNode.TryParseFor,
             IfNode.TryParseIf,
@@ -36,7 +36,7 @@ namespace Obsidian.AST.Nodes
             SetNode.TryParseSet
         };
 
-        public static bool TryParse(Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
+        internal static bool TryParse(Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
         {
             parsedNode = _Delegates.Select(del =>
             {

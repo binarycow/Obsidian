@@ -8,15 +8,11 @@ using Obsidian.Lexing;
 
 namespace Obsidian.Parsing
 {
-    public static class Parser
+    internal static class Parser
     {
-        public static IEnumerable<ParsingNode> Parse(IEnumerable<Token> source)
+        internal static IEnumerable<ParsingNode> Parse(IEnumerable<Token> source)
         {
-            var enumerator = LookaroundEnumeratorFactory.CreateLookaroundEnumerator(source, 10);
-            return Parse(enumerator);
-        }
-        private static IEnumerable<ParsingNode> Parse(ILookaroundEnumerator<Token> enumerator)
-        {
+            using var enumerator = LookaroundEnumeratorFactory.CreateLookaroundEnumerator(source, 10);
             var pendingOutput = new Queue<Token>();
             var canBeLineStatement = true; // Line statements must have only whitespace prior to it.
             while (enumerator.MoveNext())
@@ -24,32 +20,32 @@ namespace Obsidian.Parsing
                 ParsingNode pendingNode;
                 switch (enumerator.Current.TokenType)
                 {
-                    case TokenTypes.LineStatement:
+                    case TokenType.LineStatement:
                         pendingNode = LineStatementOrUnknown(canBeLineStatement, enumerator);
                         canBeLineStatement = false;
                         break;
-                    case TokenTypes.LineComment:
-                        pendingNode = new ParsingNode(ParsingNodeType.Comment, ReadWhile(enumerator, tokenType => tokenType != TokenTypes.NewLine));
+                    case TokenType.LineComment:
+                        pendingNode = new ParsingNode(ParsingNodeType.Comment, ReadWhile(enumerator, tokenType => tokenType != TokenType.NewLine));
                         break;
-                    case TokenTypes.StatementStart:
+                    case TokenType.StatementStart:
                         canBeLineStatement = false;
-                        pendingNode = new ParsingNode(ParsingNodeType.Statement, ReadUntil(enumerator, TokenTypes.StatementEnd));
+                        pendingNode = new ParsingNode(ParsingNodeType.Statement, ReadUntil(enumerator, TokenType.StatementEnd));
                         break;
-                    case TokenTypes.CommentStart:
+                    case TokenType.CommentStart:
                         canBeLineStatement = false;
-                        pendingNode = new ParsingNode(ParsingNodeType.Comment, ReadUntil(enumerator, TokenTypes.CommentEnd));
+                        pendingNode = new ParsingNode(ParsingNodeType.Comment, ReadUntil(enumerator, TokenType.CommentEnd));
                         break;
-                    case TokenTypes.ExpressionStart:
+                    case TokenType.ExpressionStart:
                         canBeLineStatement = false;
-                        pendingNode = new ParsingNode(ParsingNodeType.Expression, ReadUntil(enumerator, TokenTypes.ExpressionEnd));
+                        pendingNode = new ParsingNode(ParsingNodeType.Expression, ReadUntil(enumerator, TokenType.ExpressionEnd));
                         break;
-                    case TokenTypes.NewLine:
+                    case TokenType.NewLine:
                         pendingNode = new ParsingNode(ParsingNodeType.NewLine, ReadOne(enumerator));
                         canBeLineStatement = true;
                         break;
-                    case TokenTypes.WhiteSpace:
-                        var whiteSpaceNode = new ParsingNode(ParsingNodeType.WhiteSpace, ReadWhile(enumerator, tokenType => tokenType == TokenTypes.WhiteSpace));
-                        if (!(canBeLineStatement && enumerator.TryGetNext(out var nextToken) && (nextToken.TokenType == TokenTypes.LineStatement || nextToken.TokenType == TokenTypes.LineComment)))
+                    case TokenType.WhiteSpace:
+                        var whiteSpaceNode = new ParsingNode(ParsingNodeType.WhiteSpace, ReadWhile(enumerator, tokenType => tokenType == TokenType.WhiteSpace));
+                        if (!(canBeLineStatement && enumerator.TryGetNext(out var nextToken) && (nextToken.TokenType == TokenType.LineStatement || nextToken.TokenType == TokenType.LineComment)))
                         {
                             pendingNode = whiteSpaceNode;
                             break;
@@ -82,7 +78,7 @@ namespace Obsidian.Parsing
         {
             yield return enumerator.Current;
         }
-        private static IEnumerable<Token> ReadUntil(ILookaroundEnumerator<Token> enumerator, params TokenTypes[] stopTokens)
+        private static IEnumerable<Token> ReadUntil(ILookaroundEnumerator<Token> enumerator, params TokenType[] stopTokens)
         {
             do
             {
@@ -93,7 +89,7 @@ namespace Obsidian.Parsing
                 }
             } while (enumerator.MoveNext());
         }
-        private static IEnumerable<Token> ReadWhile(ILookaroundEnumerator<Token> enumerator, Func<TokenTypes, bool> predicate)
+        private static IEnumerable<Token> ReadWhile(ILookaroundEnumerator<Token> enumerator, Func<TokenType, bool> predicate)
         {
             yield return enumerator.Current;
             while (enumerator.TryGetNext(out var nextToken) && predicate(nextToken.TokenType))
@@ -107,19 +103,19 @@ namespace Obsidian.Parsing
             }
         }
 
-        public static bool TryParseLineStatement(ILookaroundEnumerator<Token> enumerator, [NotNullWhen(true)]out ParsingNode? parsedNode)
+        internal static bool TryParseLineStatement(ILookaroundEnumerator<Token> enumerator, [NotNullWhen(true)]out ParsingNode? parsedNode)
         {
             parsedNode = default;
-            if (enumerator.Current.TokenType != TokenTypes.LineStatement)
+            if (enumerator.Current.TokenType != TokenType.LineStatement)
             {
                 return false;
             }
             var continueLoop = true;
             var queue = new Queue<Token>();
-            var nestingStack = new Stack<TokenTypes>();
+            var nestingStack = new Stack<TokenType>();
             while (continueLoop)
             {
-                if (enumerator.Current.TokenType == TokenTypes.NewLine && nestingStack.Count > 0)
+                if (enumerator.Current.TokenType == TokenType.NewLine && nestingStack.Count > 0)
                 {
                     enumerator.MoveNext();
                     continue;
@@ -144,7 +140,7 @@ namespace Obsidian.Parsing
                 {
                     continueLoop = false;
                 }
-                else if (nextToken.TokenType == TokenTypes.NewLine && nestingStack.Count == 0)
+                else if (nextToken.TokenType == TokenType.NewLine && nestingStack.Count == 0)
                 {
                     continueLoop = false;
                 }

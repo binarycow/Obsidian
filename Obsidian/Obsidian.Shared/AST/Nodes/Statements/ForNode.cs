@@ -14,10 +14,10 @@ using Obsidian.WhiteSpaceControl;
 namespace Obsidian.AST.Nodes.Statements
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public class ForNode : StatementNode, IWhiteSpaceControlling
+    internal class ForNode : StatementNode, IWhiteSpaceControlling
     {
-        public ForNode(ContainerNode primaryBlock, ContainerNode? elseBlock,
-            string[] variableNames, ExpressionNode expression, ParsingNode endParsingNode, WhiteSpaceControlSet? whiteSpace = null)
+        internal ForNode(ContainerNode primaryBlock, ContainerNode? elseBlock,
+            string[] variableNames, ExpressionNode expression, ParsingNode? endParsingNode, WhiteSpaceControlSet? whiteSpace = null)
             : base(
                   startParsingNode: null,
                   children: primaryBlock.YieldOne().Concat(elseBlock?.YieldOne() ?? Enumerable.Empty<ContainerNode>()),
@@ -31,10 +31,10 @@ namespace Obsidian.AST.Nodes.Statements
             WhiteSpaceControl = whiteSpace ?? new WhiteSpaceControlSet();
         }
 
-        public ContainerNode PrimaryBlock { get; }
-        public ContainerNode? ElseBlock { get; }
-        public string[] VariableNames { get; }
-        public ExpressionNode Expression { get; }
+        internal ContainerNode PrimaryBlock { get; }
+        internal ContainerNode? ElseBlock { get; }
+        internal string[] VariableNames { get; }
+        internal ExpressionNode Expression { get; }
 
         public WhiteSpaceControlSet WhiteSpaceControl { get; }
 
@@ -101,8 +101,6 @@ namespace Obsidian.AST.Nodes.Statements
         {
             return visitor.Transform(this);
         }
-
-
         public override TOutput Transform<TOutput>(IForceTransformVisitor<TOutput> visitor, bool force)
         {
             return visitor.Transform(this, force);

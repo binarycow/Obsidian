@@ -1,20 +1,29 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using ExpressionParser.Lexing;
 
 namespace ExpressionParser.Configuration
 {
-    public class CSharpLanguageDefinition : ILanguageDefinition
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores", Justification = "<Pending>")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1812:Avoid uninstantiated internal classes", Justification = "<Pending>")]
+    internal class CSharpLanguageDefinition : ILanguageDefinition
     {
-        public KeywordDefinition[] Keywords => new[]
+        internal const string STRING_TRUE = "true";
+        internal const string STRING_FALSE = "false";
+        internal const string STRING_NULL = "null";
+
+
+        public IEnumerable<KeywordDefinition> Keywords => new[]
         {
-            new ValueKeywordDefinition("true", true),
-            new ValueKeywordDefinition("false", false),
-            new ValueKeywordDefinition("null", null),
+            new ValueKeywordDefinition(true, STRING_TRUE),
+            new ValueKeywordDefinition(false, STRING_FALSE),
+            new ValueKeywordDefinition(null, STRING_NULL),
         };
 
-        public OperatorDefinition[] Operators => new[]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "<Pending>")]
+        public IEnumerable<OperatorDefinition> Operators => new[]
         {
                 //MemberAccessOperatorDefinition.Create(".", 160),
                 //FunctionCallOperatorDefinition.Create("(", ")", 160, FunctionCallOperatorDefinition.FunctionCallType.Method),
@@ -61,6 +70,6 @@ namespace ExpressionParser.Configuration
 
         public bool AllowStringIndexersAsProperties => false;
 
-        public UserDefinedFunction[] Functions => Array.Empty<UserDefinedFunction>();
+        public IEnumerable<UserDefinedFunction> Functions => Enumerable.Empty<UserDefinedFunction>();
     }
 }

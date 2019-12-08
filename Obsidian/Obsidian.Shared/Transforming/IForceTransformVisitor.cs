@@ -8,7 +8,7 @@ using Obsidian.AST.Nodes.Statements;
 
 namespace Obsidian.Transforming
 {
-    public interface IForceTransformVisitor<TOutput>
+    internal interface IForceTransformVisitor<TOutput>
     {
         TOutput Transform(TemplateNode item, bool force);
         TOutput Transform(ForNode item, bool force);

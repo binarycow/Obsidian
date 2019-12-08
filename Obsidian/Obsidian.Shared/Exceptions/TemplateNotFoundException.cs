@@ -5,8 +5,16 @@ using System.Text;
 
 namespace Obsidian.Exceptions
 {
-    internal class TemplateNotFoundException : Exception
+    public class TemplateNotFoundException : Exception
     {
+        public TemplateNotFoundException() : base()
+        {
+            TemplateName = string.Empty;
+        }
+        public TemplateNotFoundException(string message) : base(message)
+        {
+            TemplateName = string.Empty;
+        }
         public TemplateNotFoundException(string templateName, Exception? inner = null) : base($"Template {templateName} could not be found.", inner)
         {
             TemplateName = templateName;

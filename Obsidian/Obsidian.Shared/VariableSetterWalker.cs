@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
 
 namespace Obsidian
 {
-    public class VariableSetterWalker : ExpressionVisitor
+    internal class VariableSetterWalker : ExpressionVisitor
     {
         protected Dictionary<string, HashSet<ParameterExpression>> Variables { get; } = new Dictionary<string, HashSet<ParameterExpression>>();
         protected HashSet<ParameterExpression> NullVariables { get; } = new HashSet<ParameterExpression>();

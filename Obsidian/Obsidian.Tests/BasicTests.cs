@@ -7,13 +7,16 @@ using System;
 
 namespace Obsidian.Tests
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1812:Avoid uninstantiated public classes", Justification = "<Pending>")]
     public class BasicTests : TestClass
     {
 
         [Test]
         public void BasicTemplate()
         {
-            AssertWrapper.TestTemplate(TestRunner.TestItems["Basic Tests"]["Basic Template"]);
+            var x = TestRunner.TestItems["Basic Tests"];
+            var y = x["Basic Template"];
+            AssertWrapper.TestTemplate(y);
         }
         [Test]
         public void Inheritance()

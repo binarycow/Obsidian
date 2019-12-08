@@ -1,21 +1,21 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace System
 {
-    public static class ObjectExtensions
+    internal static class ObjectExtensions
     {
-        public static IEnumerable<T> YieldOne<T>(this T obj)
+        internal static IEnumerable<T> YieldOne<T>(this T item)
         {
-            yield return obj;
+            yield return item;
         }
 
-        public static bool TryConvert<T>(this object obj, [NotNullWhen(true)]out T converted)
+        internal static bool TryConvert<T>(this object item, [NotNullWhen(true)]out T converted)
         {
             converted = default!;
-            if(obj is T convertedLocal)
+            if(item is T convertedLocal)
             {
                 converted = convertedLocal;
                 return true;
@@ -23,7 +23,7 @@ namespace System
             return false;
         }
 
-        public static bool TryToInt32(this object? obj, out int integerValue)
+        internal static bool TryToInt32(this object? obj, out int integerValue)
         {
             integerValue = default;
             if(obj == null)

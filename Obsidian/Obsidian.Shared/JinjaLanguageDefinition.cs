@@ -8,40 +8,44 @@ using ExpressionParser.Lexing;
 
 namespace Obsidian
 {
-    public class JinjaLanguageDefinition : ILanguageDefinition
+    internal class JinjaLanguageDefinition : ILanguageDefinition
     {
+        private const string STRING_MEMBERACCESS = ".";
+        private const string STRING_PIPELINE = "|";
+        private const string STRING_EXPONENT = "**";
+        private const string STRING_PLUS = "+";
+        private const string STRING_MINUS = "-";
+
+
         private JinjaLanguageDefinition()
         {
 
         }
-        private static Lazy<JinjaLanguageDefinition> _Instance = new Lazy<JinjaLanguageDefinition>(() => new JinjaLanguageDefinition());
-        public static JinjaLanguageDefinition Instance => _Instance.Value;
+        private static readonly Lazy<JinjaLanguageDefinition> _Instance = new Lazy<JinjaLanguageDefinition>(() => new JinjaLanguageDefinition());
+        internal static JinjaLanguageDefinition Instance => _Instance.Value;
 
 
         internal const string OPERATOR_SQUARE_BRACE_OPEN = "[";
         internal const string OPERATOR_PAREN_OPEN = "(";
 
-        public KeywordDefinition[] Keywords => new KeywordDefinition[]
+        public IEnumerable<KeywordDefinition> Keywords => new KeywordDefinition[]
         {
-            new ValueKeywordDefinition("True", true),
-            new ValueKeywordDefinition("true", true),
-            new ValueKeywordDefinition("false", false),
-            new ValueKeywordDefinition("False", false),
-            new ValueKeywordDefinition("none", null),
-            new ValueKeywordDefinition("None", null),
+            new ValueKeywordDefinition(true, "True", "true"),
+            new ValueKeywordDefinition(false, "False", "false"),
+            new ValueKeywordDefinition(null, "None", "none"),
         };
 
-        public OperatorDefinition[] Operators => new OperatorDefinition[]
+        public IEnumerable<OperatorDefinition> Operators => new OperatorDefinition[]
         {
-            OperatorDefinition.CreateMemberAccess(".", 160),
-            OperatorDefinition.CreatePipeline("|", 160),
-            OperatorDefinition.CreateMethod(OPERATOR_PAREN_OPEN, TokenType.Paren_Open, TokenType.Comma, TokenType.Paren_Close, 160),
-            OperatorDefinition.CreateIndex(OPERATOR_SQUARE_BRACE_OPEN, TokenType.Paren_Close, TokenType.Comma, TokenType.SquareBrace_Close, 160),
+            OperatorDefinition.CreateMemberAccess(STRING_MEMBERACCESS, 160),
+            OperatorDefinition.CreatePipeline(STRING_PIPELINE, 160),
+            OperatorDefinition.CreateMethod(OPERATOR_PAREN_OPEN, TokenType.ParenOpen, TokenType.Comma, TokenType.ParenClose, 160),
+            OperatorDefinition.CreateIndex(OPERATOR_SQUARE_BRACE_OPEN, TokenType.ParenClose, TokenType.Comma, TokenType.SquareBraceClose, 160),
 
-            OperatorDefinition.CreateUnary("**", 80, OperatorType.Power),
+            OperatorDefinition.CreateUnary(STRING_EXPONENT, 80, OperatorType.Power),
 
-            OperatorDefinition.CreateUnary("+", 70, OperatorType.UnaryPlus),
-            OperatorDefinition.CreateUnary("-", 70, OperatorType.Negate),
+            OperatorDefinition.CreateUnary(STRING_PLUS, 70, OperatorType.UnaryPlus),
+            OperatorDefinition.CreateUnary(STRING_MINUS, 70, OperatorType.Negate),
 
             OperatorDefinition.CreateBinary("*", 60, OperatorType.Multiply),
             OperatorDefinition.CreateBinary("/", 60, OperatorType.DivideFloat),
@@ -76,7 +80,7 @@ namespace Obsidian
 
         public bool AllowStringIndexersAsProperties => true;
 
-        public UserDefinedFunction[] Functions => new UserDefinedFunction[]
+        public IEnumerable<UserDefinedFunction> Functions => new UserDefinedFunction[]
         {
             new UserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(string), "super", Array.Empty<ParameterDeclaration>()), JinjaFunctions.Super),
 

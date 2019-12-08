@@ -1,16 +1,17 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using static Obsidian.AST.NodeParsers.MacroParser.MacroState;
-using static Obsidian.Lexing.TokenTypes;
+using static Obsidian.Lexing.TokenType;
 using Obsidian.Lexing;
 using Obsidian.WhiteSpaceControl;
+using System.Globalization;
 
 namespace Obsidian.AST.NodeParsers
 {
     internal class MacroParser
     {
-        public enum MacroState
+        internal enum MacroState
         {
             StartJinja,
             WhiteSpaceOrKeyword,
@@ -21,10 +22,10 @@ namespace Obsidian.AST.NodeParsers
             Done
         }
 
-        public static readonly Lazy<StateMachine<MacroState>> _StartBlockParser = new Lazy<StateMachine<MacroState>>(() => CreateStartParser());
-        public static StateMachine<MacroState> StartBlock => _StartBlockParser.Value;
-        public static readonly Lazy<StateMachine<MacroState>> _EndBlockParser = new Lazy<StateMachine<MacroState>>(() => CreateEndParser());
-        public static StateMachine<MacroState> EndBlock => _EndBlockParser.Value;
+        internal static readonly Lazy<StateMachine<MacroState>> _StartBlockParser = new Lazy<StateMachine<MacroState>>(() => CreateStartParser());
+        internal static StateMachine<MacroState> StartBlock => _StartBlockParser.Value;
+        internal static readonly Lazy<StateMachine<MacroState>> _EndBlockParser = new Lazy<StateMachine<MacroState>>(() => CreateEndParser());
+        internal static StateMachine<MacroState> EndBlock => _EndBlockParser.Value;
 
         private static StateMachine<MacroState> CreateStartParser()
         {
@@ -65,7 +66,10 @@ namespace Obsidian.AST.NodeParsers
                 .Else()
                     .Accumulate();
             parser.Else()
-                .Throw(new Exception("Unhandled State?"));
+                .Throw(new Exception(
+                    ObsidianStrings.ResourceManager.GetString("ASTStateMachineError_UnhandledState",
+                    CultureInfo.InvariantCulture)
+                ));
             return parser;
         }
         private static StateMachine<MacroState> CreateEndParser()
@@ -108,7 +112,10 @@ namespace Obsidian.AST.NodeParsers
                 .Else()
                     .Accumulate();
             parser.Else()
-                .Throw(new Exception("Unhandled State?"));
+                .Throw(new Exception(
+                    ObsidianStrings.ResourceManager.GetString("ASTStateMachineError_UnhandledState",
+                    CultureInfo.InvariantCulture)
+                ));
             return parser;
         }
 

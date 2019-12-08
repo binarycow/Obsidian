@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Obsidian.AST.Nodes
 {
-    public interface IWithChildren
+    internal interface IWithChildren
     {
         public ASTNode[] Children { get; }
     }

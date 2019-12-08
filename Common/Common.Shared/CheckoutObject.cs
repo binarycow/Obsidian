@@ -5,15 +5,15 @@ using System.Text;
 
 namespace Common
 {
-    public sealed class CheckoutObject<T> : IDisposable
+    internal sealed class CheckoutObject<T> : IDisposable
     {
-        public CheckoutObject(T checkedOutObject)
+        internal CheckoutObject(T checkedOutObject)
         {
             CheckedOutObject = checkedOutObject;
         }
-        public T CheckedOutObject { get; }
+        internal T CheckedOutObject { get; }
         private bool disposed = false;
-        public event EventHandler? Disposing;
+        internal event EventHandler? Disposing;
         private void Dispose(bool disposing)
         {
             if (disposed) return;
@@ -37,9 +37,9 @@ namespace Common
             Dispose(false);
         }
     }
-    public static class CheckoutObject
+    internal static class CheckoutObject
     {
-        public static CheckoutObject<T> Create<T>(T obj)
+        internal static CheckoutObject<T> Create<T>(T obj)
         {
             return new CheckoutObject<T>(obj);
         }

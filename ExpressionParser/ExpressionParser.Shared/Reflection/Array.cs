@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
@@ -7,14 +7,14 @@ using System.Text;
 
 namespace ExpressionParser.Reflection
 {
-    public static class Array
+    internal static class Array
     {
-        private static Lazy<Dictionary<Type, PropertyInfo>> _Length = new Lazy<Dictionary<Type, PropertyInfo>>();
+        private static readonly Lazy<Dictionary<Type, PropertyInfo>> _Length = new Lazy<Dictionary<Type, PropertyInfo>>();
         private static Dictionary<Type, PropertyInfo> Length => _Length.Value;
 
 
 
-        public static bool TryLength(Expression array, [NotNullWhen(true)]out Expression? arrayLengthProperty)
+        internal static bool TryLength(Expression array, [NotNullWhen(true)]out Expression? arrayLengthProperty)
         {
             arrayLengthProperty = default;
             if (array.Type.IsArray == false) return false;

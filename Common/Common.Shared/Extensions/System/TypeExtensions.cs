@@ -7,9 +7,9 @@ using System.Text;
 
 namespace System
 {
-    public static class TypeExtensions
+    internal static class TypeExtensions
     {
-        public static bool TryGetEnumerableBaseType(this Type type, [NotNullWhen(true)]out Type? baseType)
+        internal static bool TryGetEnumerableBaseType(this Type type, [NotNullWhen(true)]out Type? baseType)
         {
             if(type.IsArray)
             {
@@ -19,11 +19,11 @@ namespace System
             throw new NotImplementedException();
         }
 
-        public static bool IsAssignableToGenericType(this Type givenType, Type genericType)
+        internal static bool IsAssignableToGenericType(this Type givenType, Type genericType)
         {
             return IsAssignableToGenericType(givenType, genericType, out _);
         }
-        public static bool IsAssignableToGenericType(this Type givenType, Type genericType, [NotNullWhen(true)]out Type[]? genericTypeArguments)
+        internal static bool IsAssignableToGenericType(this Type givenType, Type genericType, [NotNullWhen(true)]out Type[]? genericTypeArguments)
         {
             if (givenType.IsGenericType && givenType.GetGenericTypeDefinition() == genericType)
             {
@@ -52,7 +52,7 @@ namespace System
             return IsAssignableToGenericType(baseType, genericType, out genericTypeArguments);
         }
 
-        public static MethodInfo GetMethod(this Type type, string name, int genericArity, Type[] parameterTypes)
+        internal static MethodInfo GetMethod(this Type type, string name, int genericArity, Type[] parameterTypes)
         {
             return type.GetMethods()
                 .FirstOrDefault(method =>
@@ -69,7 +69,7 @@ namespace System
                 });
         }
 
-        public static bool IsComparable(this Type type)
+        internal static bool IsComparable(this Type type)
         {
             return typeof(IComparable<>).MakeGenericType(type).IsAssignableFrom(type);
         }

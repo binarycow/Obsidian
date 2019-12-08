@@ -5,13 +5,13 @@ using System.Text;
 
 namespace ExpressionParser.Configuration
 {
-    public class StandardOperatorDefinition : OperatorDefinition
+    internal class StandardOperatorDefinition : OperatorDefinition
     {
-        public StandardOperatorDefinition(string text, int precedence, OperatorType operatorType, OperandCount operandCount) : base(text, precedence, operandCount)
+        internal StandardOperatorDefinition(string text, int precedence, OperatorType operatorType, OperandCount operandCount) : base(text, precedence, operandCount)
         {
             OperatorType = operatorType;
         }
 
-        public OperatorType OperatorType { get; }
+        internal OperatorType OperatorType { get; }
     }
 }

@@ -5,14 +5,14 @@ using System.Text;
 
 namespace System
 {
-    public static class ArrayExtensions
+    internal static class ArrayExtensions
     {
-        public static void ShiftLeft<T>(this T[] array, int count, out T[] poppedObjects)
+        internal static void ShiftLeft<T>(this T[] array, int count, out T[] poppedObjects)
         {
             ShiftLeft(array, count, out var nullablePoppedObjects, true);
             poppedObjects = nullablePoppedObjects ?? Array.Empty<T>();
         }
-        public static void ShiftLeft<T>(this T[] array, int count)
+        internal static void ShiftLeft<T>(this T[] array, int count)
         {
             ShiftLeft(array, count, out _, false);
         }
@@ -42,12 +42,12 @@ namespace System
                 array[idx] = default!;
             }
         }
-        public static void ShiftRight<T>(this T[] array, int count, out T[] poppedObjects)
+        internal static void ShiftRight<T>(this T[] array, int count, out T[] poppedObjects)
         {
             ShiftRight(array, count, out var nullablePoppedObjects, true);
             poppedObjects = nullablePoppedObjects ?? Array.Empty<T>();
         }
-        public static void ShiftRight<T>(this T[] array, int count)
+        internal static void ShiftRight<T>(this T[] array, int count)
         {
             ShiftRight(array, count, out _, false);
         }

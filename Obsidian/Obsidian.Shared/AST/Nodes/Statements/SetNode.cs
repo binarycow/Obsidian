@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -13,17 +13,17 @@ using Obsidian.Transforming;
 namespace Obsidian.AST.Nodes.Statements
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public class SetNode : AbstractContainerNode
+    internal class SetNode : AbstractContainerNode
     {
 
-        public SetNode(ParsingNode? startParsingNode, string[] variableNames, ContainerNode assignmentBlock, ParsingNode? endParsingNode)
+        internal SetNode(ParsingNode? startParsingNode, string[] variableNames, ContainerNode assignmentBlock, ParsingNode? endParsingNode)
             : base(startParsingNode, assignmentBlock.YieldOne(), endParsingNode)
         {
             VariableNames = variableNames;
             AssignmentBlock = assignmentBlock;
             AssignmentExpression = null;
         }
-        public SetNode(ParsingNode? startParsingNode, string[] variableNames, string assignmentExpression, ParsingNode? endParsingNode)
+        internal SetNode(ParsingNode? startParsingNode, string[] variableNames, string assignmentExpression, ParsingNode? endParsingNode)
             : base(startParsingNode, Enumerable.Empty<ASTNode>(), endParsingNode)
         {
             VariableNames = variableNames;
@@ -33,9 +33,9 @@ namespace Obsidian.AST.Nodes.Statements
 
         private string DebuggerDisplay => $"{nameof(FilterNode)} : {VariableNames}";
 
-        public string[] VariableNames { get; }
-        public ContainerNode? AssignmentBlock { get; set; }
-        public string? AssignmentExpression { get; set; }
+        internal string[] VariableNames { get; }
+        internal ContainerNode? AssignmentBlock { get; set; }
+        internal string? AssignmentExpression { get; set; }
 
         public override TOutput Transform<TOutput>(ITransformVisitor<TOutput> visitor)
         {
@@ -51,7 +51,7 @@ namespace Obsidian.AST.Nodes.Statements
             return visitor.Transform(this, force);
         }
 
-        public static bool TryParseSet(Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
+        internal static bool TryParseSet(Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
         {
             parsedNode = default;
             if (SetParser.StartBlock.TryParse(enumerator.Current) == false)

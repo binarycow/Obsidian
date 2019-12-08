@@ -1,31 +1,31 @@
-﻿using ExpressionParser.Scopes;
+using ExpressionParser.Scopes;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace ExpressionParser
 {
-    public class ScopeStack<TScope, TRootScope> 
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1812:Avoid uninstantiated internal classes", Justification = "<Pending>")]
+    internal class ScopeStack<TScope, TRootScope> 
         where TScope : class, IScope
         where TRootScope : class, TScope
     {
-        public ScopeStack(TRootScope rootScope)
+        internal ScopeStack(TRootScope rootScope)
         {
             Root = rootScope;
             _Stack.Push(rootScope);
         }
-        private Stack<TScope> _Stack = new Stack<TScope>();
-        public TRootScope Root { get; }
-        public TScope Current => _Stack.Peek();
+        private readonly Stack<TScope> _Stack = new Stack<TScope>();
+        internal TRootScope Root { get; }
+        internal TScope Current => _Stack.Peek();
 
 
-        public void Push(string name)
+        internal void Push(string name)
         {
-            var scope = Current.CreateChild(name) as TScope;
-            if (scope == null) throw new NotImplementedException();
+            if (!(Current.CreateChild(name) is TScope scope)) throw new NotImplementedException();
             _Stack.Push(scope);
         }
-        public void Pop(string name)
+        internal void Pop(string name)
         {
             var scope = _Stack.Pop();
             if (scope.Name != name) throw new NotImplementedException();

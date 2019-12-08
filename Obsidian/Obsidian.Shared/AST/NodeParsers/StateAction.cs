@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -20,59 +20,59 @@ namespace Obsidian.AST.NodeParsers
             }
         }
 
-        public StateAction(State<TState> parent)
+        internal StateAction(State<TState> parent)
         {
             Parent = parent;
         }
 
-        public State<TState> Parent { get; }
+        internal State<TState> Parent { get; }
         private List<AbstractAction<TState>> _Actions { get; } = new List<AbstractAction<TState>>();
 
-        public IEnumerable<AbstractAction<TState>> Actions => _Actions.ToArray();
+        internal IEnumerable<AbstractAction<TState>> Actions => _Actions.ToArray();
 
-        public StateAction<TState> MoveTo(TState nextState)
+        internal StateAction<TState> MoveTo(TState nextState)
         {
             _Actions.Add(new MoveToStateAction<TState>(this, nextState));
             return this;
         }
-        public StateAction<TState> SetWhiteSpaceMode(WhiteSpacePosition position, WhiteSpaceMode mode)
+        internal StateAction<TState> SetWhiteSpaceMode(WhiteSpacePosition position, WhiteSpaceMode mode)
         {
             _Actions.Add(new SetWhiteSpaceAction<TState>(this, position, mode));
             return this;
         }
-        public StateAction<TState> AndNext(TokenTypes tokenType)
+        internal StateAction<TState> AndNext(TokenType tokenType)
         {
             Parent.SetPredicate(this, enumerator => enumerator.TryGetNext(out var token) && token.TokenType == tokenType, $".AndNext({tokenType})");
             return this;
         }
-        public StateAction<TState> Return(bool result)
+        internal StateAction<TState> Return(bool result)
         {
             _Actions.Add(new ReturnStateAction<TState>(this, result));
             return this;
         }
-        public StateAction<TState> Throw(Exception? exception = null)
+        internal StateAction<TState> Throw(Exception? exception = null)
         {
             _Actions.Add(new ThrowAction<TState>(this, exception));
             return this;
         }
 
-        public StateAction<TState> Ignore()
+        internal StateAction<TState> Ignore()
         {
             _Actions.Add(new IgnoreAction<TState>(this));
             return this;
         }
 
-        public StateAction<TState> Accumulate(TokenTypes? seperator = default)
+        internal StateAction<TState> Accumulate(TokenType? seperator = default)
         {
-            _Actions.Add(new AccumulateAction<TState>(this));
+            _Actions.Add(new AccumulateAction<TState>(this, seperator));
             return this;
         }
 
-        public StateAction<TState> Expect(TokenTypes tokenType)
+        internal StateAction<TState> Expect(TokenType tokenType)
         {
             return Parent.Expect(tokenType);
         }
-        public StateAction<TState> Else()
+        internal StateAction<TState> Else()
         {
             return Parent.Else();
         }
@@ -81,71 +81,71 @@ namespace Obsidian.AST.NodeParsers
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
     internal abstract class AbstractAction<TState> where TState : struct, Enum
     {
-        public virtual string DebuggerDisplay => ToString();
-        public AbstractAction(StateAction<TState> parent)
+        internal virtual string DebuggerDisplay => ToString();
+        internal AbstractAction(StateAction<TState> parent)
         {
             Parent = parent;
         }
-        public StateAction<TState> Parent { get; }
+        internal StateAction<TState> Parent { get; }
     }
 
     internal class MoveToStateAction<TState> : AbstractAction<TState> where TState : struct, Enum
     {
-        public override string DebuggerDisplay => $".MoveTo({NextState})";
-        public MoveToStateAction(StateAction<TState> parent, TState nextState) : base(parent)
+        internal override string DebuggerDisplay => $".MoveTo({NextState})";
+        internal MoveToStateAction(StateAction<TState> parent, TState nextState) : base(parent)
         {
             NextState = nextState;
         }
 
-        public TState NextState { get; }
+        internal TState NextState { get; }
     }
     internal class ReturnStateAction<TState> : AbstractAction<TState> where TState : struct, Enum
     {
-        public override string DebuggerDisplay => $".Return({Result})";
-        public ReturnStateAction(StateAction<TState> parent, bool result) : base(parent)
+        internal override string DebuggerDisplay => $".Return({Result})";
+        internal ReturnStateAction(StateAction<TState> parent, bool result) : base(parent)
         {
             Result = result;
         }
 
-        public bool Result { get; }
+        internal bool Result { get; }
     }
     internal class ThrowAction<TState> : AbstractAction<TState> where TState : struct, Enum
     {
-        public override string DebuggerDisplay => $".Throw({Exception})";
-        public ThrowAction(StateAction<TState> parent, Exception? exception = null) : base(parent)
+        internal override string DebuggerDisplay => $".Throw({Exception})";
+        internal ThrowAction(StateAction<TState> parent, Exception? exception = null) : base(parent)
         {
             Exception = exception ?? new NotImplementedException();
         }
-        public Exception Exception { get; }
+        internal Exception Exception { get; }
     }
     internal class IgnoreAction<TState> : AbstractAction<TState> where TState : struct, Enum
     {
-        public override string DebuggerDisplay => $".Ignore()";
-        public IgnoreAction(StateAction<TState> parent) : base(parent)
+        internal override string DebuggerDisplay => $".Ignore()";
+        internal IgnoreAction(StateAction<TState> parent) : base(parent)
         {
         }
     }
     internal class AccumulateAction<TState> : AbstractAction<TState> where TState : struct, Enum
     {
-        public override string DebuggerDisplay => $".Accumulate({Seperator})";
-        public AccumulateAction(StateAction<TState> parent, TokenTypes? seperator = default) : base(parent)
+        internal override string DebuggerDisplay => $".Accumulate({Seperator})";
+        internal AccumulateAction(StateAction<TState> parent, TokenType? seperator = default) : base(parent)
         {
             Seperator = seperator;
         }
 
-        public TokenTypes? Seperator { get; }
+        internal TokenType? Seperator { get; }
     }
     internal class SetWhiteSpaceAction<TState> : AbstractAction<TState> where TState : struct, Enum
     {
-        public override string DebuggerDisplay => $".SetWhiteSpaceMode({nameof(WhiteSpacePosition)}.{Position}, {nameof(WhiteSpaceMode)}.{Mode})";
-        public SetWhiteSpaceAction(StateAction<TState> parent, WhiteSpacePosition position, WhiteSpaceMode mode) : base(parent)
+        internal override string DebuggerDisplay => $".SetWhiteSpaceMode({nameof(WhiteSpacePosition)}.{Position}, {nameof(WhiteSpaceMode)}.{Mode})";
+        internal SetWhiteSpaceAction(StateAction<TState> parent, WhiteSpacePosition position, WhiteSpaceMode mode) : base(parent)
         {
             Position = position;
             Mode = mode;
         }
 
-        public WhiteSpacePosition Position { get;  }
-        public WhiteSpaceMode Mode { get; }
+        internal WhiteSpacePosition Position { get;  }
+        internal WhiteSpaceMode Mode { get; }
     }
 
 }

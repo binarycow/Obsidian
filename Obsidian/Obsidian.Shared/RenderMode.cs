@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Obsidian
 {
-    public enum RenderMode
+    internal enum RenderMode
     {
         Direct,
         ParentAtCompletion,

@@ -9,23 +9,22 @@ using ExpressionParser.Parsing;
 using ExpressionParser.References;
 using ExpressionParser.Scopes;
 using ExpressionParser.Transforming.Operators;
-using ExpressionParser.VariableManagement;
 
 namespace ExpressionParser.Transforming.Nodes
 {
-    public class ExpressionTreeTransformer : INodeTransformVisitor<Expression>
+    internal class ExpressionTreeTransformer : INodeTransformVisitor<Expression>
     {
-        public ExpressionTreeTransformer(ILanguageDefinition languageDefinition, CompiledScope scope)
+        internal ExpressionTreeTransformer(ILanguageDefinition languageDefinition, CompiledScope scope)
         {
             LanguageDefinition = languageDefinition;
             OperatorTransformer = new ExpressionTreeOperatorTransformer(this, languageDefinition);
             Scopes.Push(scope);
         }
-        public IOperatorTransformVisitor<ASTNode, Expression> OperatorTransformer { get; }
-        public ILanguageDefinition LanguageDefinition { get; }
+        internal IOperatorTransformVisitor<ASTNode, Expression> OperatorTransformer { get; }
+        internal ILanguageDefinition LanguageDefinition { get; }
 
         private Stack<CompiledScope> Scopes { get; } = new Stack<CompiledScope>();
-        public CompiledScope CurrentScope => Scopes.Peek();
+        internal CompiledScope CurrentScope => Scopes.Peek();
 
         public Expression Transform(BinaryASTNode item)
         {
@@ -44,7 +43,7 @@ namespace ExpressionParser.Transforming.Nodes
 
         public Expression Transform(IdentifierNode item)
         {
-            var valueKeyword = LanguageDefinition.Keywords.OfType<ValueKeywordDefinition>().FirstOrDefault(keyword => keyword.Text == item.TextValue);
+            var valueKeyword = LanguageDefinition.Keywords.OfType<ValueKeywordDefinition>().FirstOrDefault(keyword => keyword.Names.Contains(item.TextValue));
             if(valueKeyword != null)
             {
                 return Expression.Constant(valueKeyword.Value);
@@ -100,7 +99,7 @@ namespace ExpressionParser.Transforming.Nodes
             var constructor = genericType.GetConstructor(types);
             return Expression.New(constructor, tupleItems);
 
-            Type GetTupleType(int count)
+            static Type GetTupleType(int count)
             {
                 return count switch
                 {

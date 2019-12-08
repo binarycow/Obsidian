@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -66,7 +66,7 @@ namespace ExpressionParser.SampleProject
 
 
 
-        static void Main(string[] args)
+        static void Main()
         {
             //var testResults = new[] { TestCompiled(), TestDynamic() };
             //foreach(var testResult in testResults)
@@ -92,17 +92,19 @@ namespace ExpressionParser.SampleProject
             Console.ReadKey();
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
         static string FormatTicks(long ticks)
         {
             return new TimeSpan(ticks).ToString();
             //return ToPrettyFormat(new TimeSpan(ticks));
         }
     }
-    public class TestData
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1812:Avoid uninstantiated internal classes", Justification = "<Pending>")]
+    internal class TestData
     {
-        public string Name { get; set; }
-        public long CompileTime { get; set; }
-        public long[] Trials { get; set; }
+        internal string Name { get; set; }
+        internal long CompileTime { get; set; }
+        internal long[] Trials { get; set; }
     }
 
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -12,9 +12,9 @@ using System.IO;
 
 namespace Obsidian.TestBuilder
 {
-    public partial class ctrlTestProperties : UserControl
+    internal partial class ctrlTestProperties : UserControl
     {
-        public ctrlTestProperties()
+        internal ctrlTestProperties()
         {
             InitializeComponent();
         }
@@ -22,7 +22,7 @@ namespace Obsidian.TestBuilder
 
         private Test _Test;
 
-        public Test Test
+        internal Test Test
         {
             get => _Test; 
             set 
@@ -32,22 +32,27 @@ namespace Obsidian.TestBuilder
             }
         }
 
-        private void btnBrowseRootPath_Click(object sender, EventArgs e)
+        private void BtnBrowseRootPath_Click(object sender, EventArgs e)
         {
-            using var fbd = new FolderBrowserDialog();
-            fbd.SelectedPath = Path.Combine(Form1.RootPath, Test.RootPath);
-            if(fbd.ShowDialog() == DialogResult.OK)
+            using var fbd = new FolderBrowserDialog
+            {
+                SelectedPath = Path.Combine(Form1.RootPath, Test.RootPath)
+            };
+            if (fbd.ShowDialog() == DialogResult.OK)
             {
                 Test.RootPath = fbd.SelectedPath.Replace(Form1.RootPath, "").TrimStart('\\');
             }
         }
 
-        private void btnBrowseVariables_Click(object sender, EventArgs e)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "<Pending>")]
+        private void BtnBrowseVariables_Click(object sender, EventArgs e)
         {
-            using var sfd = new SaveFileDialog();
-            sfd.InitialDirectory = Path.Combine(Form1.RootPath, Test.RootPath);
-            sfd.FileName = Test.VariablesFile;
-            sfd.Filter = "json files (*.json)|*.json|All files (*.*)|*.*";
+            using var sfd = new SaveFileDialog
+            {
+                InitialDirectory = Path.Combine(Form1.RootPath, Test.RootPath),
+                FileName = Test.VariablesFile,
+                Filter = "json files (*.json)|*.json|All files (*.*)|*.*"
+            };
             if (sfd.ShowDialog() == DialogResult.OK)
             {
                 Test.VariablesFile = sfd.FileName.Replace(Form1.RootPath, "").Replace(Test.RootPath, "").TrimStart('\\');

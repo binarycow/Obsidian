@@ -1,13 +1,17 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
 
 namespace Common.ExpressionCreators
 {
-    public class Object
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1812:Avoid uninstantiated internal classes", Justification = "<Pending>")]
+
+    internal class Object
     {
-        public Expression ToStringEx(Expression obj)
+#pragma warning disable CA1822 // Mark members as static
+        internal Expression ToStringEx(Expression obj)
+#pragma warning restore CA1822 // Mark members as static
         {
             return Expression.Call(obj, "ToString", Type.EmptyTypes);
         }

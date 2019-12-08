@@ -9,9 +9,9 @@ using Obsidian.Transforming;
 namespace Obsidian.AST.Nodes.MiscNodes
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public class CommentNode : ASTNode
+    internal class CommentNode : ASTNode
     {
-        public CommentNode(ParsingNode parsingNode) : base(parsingNode)
+        internal CommentNode(ParsingNode parsingNode) : base(parsingNode)
         {
         }
 

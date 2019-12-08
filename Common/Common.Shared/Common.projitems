@@ -9,8 +9,14 @@
     <Import_RootNamespace>Common</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)CommonStrings.Designer.cs">
+      <DependentUpon>CommonStrings.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)DictionarySorter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\Common\NumericalTypeExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\System\IntExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Numerical.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NumericalType.cs" />
     <Compile Include="..\..\Common\Common.Shared\CharArrayEqualityComparer.cs" />
@@ -41,9 +47,15 @@
     <Compile Include="$(MSBuildThisFileDirectory)Collections\EnumeratorState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MethodLookups.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ObjectPool.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Reflection.cs" />
+    <Compile Include="..\..\Common\Common.Shared\ReflectionHelpers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StringBuilderPool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TEMP.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TypeCoercion.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)CommonStrings.resx">
+      <LastGenOutput>CommonStrings.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>

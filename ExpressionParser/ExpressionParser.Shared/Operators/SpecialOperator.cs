@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using ExpressionParser.Configuration;
@@ -9,14 +9,14 @@ using System.Diagnostics;
 namespace ExpressionParser.Operators
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public class SpecialOperator : Operator
+    internal class SpecialOperator : Operator
     {
-        public SpecialOperator(Token token, SpecialOperatorType operatorType) : base(token)
+        internal SpecialOperator(Token token, SpecialOperatorType operatorType) : base(token)
         {
             OperatorType = operatorType;
         }
 
-        public SpecialOperatorType OperatorType { get; }
+        internal SpecialOperatorType OperatorType { get; }
 
         public override TOutput Transform<TInput, TOutput>(IOperatorTransformVisitor<TInput, TOutput> visitor, TInput[] arguments)
         {

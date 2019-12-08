@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -29,6 +29,17 @@ namespace System.Collections.Generic
                 }
             }
             return null;
+        }
+
+        public static IEnumerable<T> NonNullItems<T>(this IEnumerable<T?> source)
+            where T : class
+        {
+            source = source ?? throw new ArgumentNullException(nameof(source));
+            foreach (var item in source)
+            {
+                if (item != null)
+                    yield return item;
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using Obsidian.AST;
+using Obsidian.AST;
 using Obsidian.AST.Nodes;
 using Obsidian.AST.Nodes.MiscNodes;
 using Obsidian.AST.Nodes.Statements;
@@ -9,7 +9,7 @@ using System.Text;
 
 namespace Obsidian.Transforming
 {
-    public class BaseASTTransformer : ITransformVisitor<ASTNode>
+    internal class BaseASTTransformer : ITransformVisitor<ASTNode>
     {
         protected virtual IEnumerable<ASTNode> TransformAll(IEnumerable<ASTNode> nodes)
         {

@@ -13,7 +13,7 @@ namespace Obsidian.TestCore
 {
     public static class TestRunner
     {
-        public static void Init(string jsonFilename, string rootPath = null)
+        public static void Init(string jsonFilename, string? rootPath = null)
         {
             if (rootPath != null) TestDataRoot = rootPath;
 
@@ -22,6 +22,7 @@ namespace Obsidian.TestCore
             {
                 Converters = { new Converter() }
             });
+            if (items == null) return;
             foreach(var item in items)
             {
                 TestItems.Add(item.Name, item);
@@ -41,11 +42,15 @@ namespace Obsidian.TestCore
         }
 
 
-        public static Dictionary<string, Item> TestItems = new Dictionary<string, Item>();
+        public static Dictionary<string, Item> TestItems { get; } = new Dictionary<string, Item>();
 
         public static void TestTemplate(Item test, out string actualOutput, out string expectedOutput)
         {
-            var testInfo = test as Test;
+            test = test ?? throw new ArgumentNullException(nameof(test));
+            if(!(test is Test testInfo))
+            {
+                throw new ArgumentException($"Item provided is of type {test.GetType().Name}, which is not {nameof(Test)}", nameof(test));
+            }
             var inputFile = Path.Combine(TestDataRoot, testInfo.RootPath, testInfo.InputFile);
             var actualFile = Path.Combine(TestDataRoot, testInfo.RootPath, testInfo.ActualFile);
             expectedOutput = File.ReadAllText(Path.Combine(TestDataRoot, testInfo.RootPath, testInfo.ExpectedFile));
@@ -77,24 +82,8 @@ namespace Obsidian.TestCore
             File.WriteAllText(actualFile, actualOutput);
         }
 
-        public static void CheckOriginalText(Item test, out string actualOutput, out string expectedOutput)
-        {
-            var testInfo = test as Test;
-            var inputFile = Path.Combine(TestDataRoot, testInfo.RootPath, testInfo.InputFile);
-            var actualFile = Path.Combine(TestDataRoot, testInfo.RootPath, testInfo.ActualFile);
-            expectedOutput = File.ReadAllText(inputFile);
-            var environment = new JinjaEnvironment
-            {
-                Loader = new FileSystemLoader(searchPath: Path.GetDirectoryName(inputFile)!)
-            };
-            actualOutput = environment.CheckOriginalText(Path.GetFileName(inputFile));
-        }
-
-
         public static string TestDataRoot { get; set; } = Path.Combine(AssemblyLocation, "..", "..", "..", "..", "TestData");
         public static string TestFileName => "Tests.json";
-        public static string APIInfo_Expected => Path.Combine(TestDataRoot, "APIInfo_Expected.json");
-        public static string APIInfo_Actual => Path.Combine(TestDataRoot, "APIInfo_Actual.json");
         public static string AssemblyLocation => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty;
 
     }

@@ -12,16 +12,16 @@ using Obsidian.Transforming;
 namespace Obsidian.AST.Nodes.MiscNodes
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public class ExtendsNode : ASTNode
+    internal class ExtendsNode : ASTNode
     {
-        public ExtendsNode(string templateName, ExpressionNode template, ParsingNode parsingNode) : base(parsingNode)
+        internal ExtendsNode(string templateName, ExpressionNode template, ParsingNode parsingNode) : base(parsingNode)
         {
             TemplateName = templateName;
             Template = template;
         }
 
-        public string TemplateName { get; }
-        public ExpressionNode Template { get; }
+        internal string TemplateName { get; }
+        internal ExpressionNode Template { get; }
 
         private string DebuggerDisplay => $"{nameof(ExtendsNode)} : {TemplateName}";
 
@@ -39,14 +39,15 @@ namespace Obsidian.AST.Nodes.MiscNodes
             visitor.Transform(this);
         }
 
-        public static bool TryParseExtends(Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
+        [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>")]
+        internal static bool TryParseExtends(Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
         {
-            ExtendsParser.TryParse(enumerator.Current, out parsedNode);
+            _ = ExtendsParser.TryParse(enumerator.Current, out parsedNode);
             return parsedNode != default;
         }
         private static class ExtendsParser
         {
-            public enum States
+            internal enum States
             {
                 StartJinja,
                 Keyword,
@@ -54,7 +55,7 @@ namespace Obsidian.AST.Nodes.MiscNodes
                 Done,
             }
 
-            public static bool TryParse(ParsingNode currentNode, [NotNullWhen(true)]out ASTNode? parsedNode)
+            internal static bool TryParse(ParsingNode currentNode, [NotNullWhen(true)]out ASTNode? parsedNode)
             {
                 using var enumerator = LookaroundEnumeratorFactory.CreateLookaroundEnumerator(currentNode.Tokens);
                 parsedNode = default;
@@ -68,7 +69,7 @@ namespace Obsidian.AST.Nodes.MiscNodes
                         case States.StartJinja:
                             switch(token.TokenType)
                             {
-                                case TokenTypes.StatementStart:
+                                case TokenType.StatementStart:
                                     state = States.Keyword;
                                     continue;
                                 default:
@@ -77,9 +78,9 @@ namespace Obsidian.AST.Nodes.MiscNodes
                         case States.Keyword:
                             switch(token.TokenType)
                             {
-                                case TokenTypes.WhiteSpace:
+                                case TokenType.WhiteSpace:
                                     continue;
-                                case TokenTypes.Keyword_Extends:
+                                case TokenType.Keyword_Extends:
                                     state = States.Template;
                                     continue;
                                 default:
@@ -88,7 +89,7 @@ namespace Obsidian.AST.Nodes.MiscNodes
                         case States.Template:
                             switch(token.TokenType)
                             {
-                                case TokenTypes.StatementEnd:
+                                case TokenType.StatementEnd:
                                     state = States.Done;
                                     continue;
                                 default:

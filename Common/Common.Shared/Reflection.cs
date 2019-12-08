@@ -7,9 +7,9 @@ using System.Text;
 
 namespace Common
 {
-    public static class Reflection
+    internal static class Reflection
     {
-        public static Type GetCommonBaseClass(IEnumerable<Type> types)
+        internal static Type GetCommonBaseClass(IEnumerable<Type> types)
         {
             return GetCommonBaseClassArr(types.ToArray());
         }
@@ -30,7 +30,7 @@ namespace Common
 
             bool checkPass = false;
 
-            Type tested = null;
+            Type tested = temp[0];
 
             while (!checkPass)
             {
@@ -88,17 +88,17 @@ namespace Common
         }
 
 
-        public static bool TryGetIEnumerable(object? obj, [NotNullWhen(true)]out IEnumerable<object?>? items)
+        internal static bool TryGetIEnumerable(object? enumerableObject, [NotNullWhen(true)]out IEnumerable<object?>? items)
         {
             items = default;
-            var type = obj?.GetType() ?? typeof(object);
+            var type = enumerableObject?.GetType() ?? typeof(object);
 
             if (type.IsAssignableToGenericType(typeof(IEnumerable<>), out var genericTypeArguments) == false) return false;
             
             throw new NotImplementedException();
         }
 
-        public static bool IsTuple(object? obj, out PropertyInfo[] tupleProperties)
+        internal static bool IsTuple(object? obj, out PropertyInfo[] tupleProperties)
         {
             tupleProperties = Array.Empty<PropertyInfo>();
             var type = obj?.GetType() ?? typeof(object);
@@ -116,7 +116,7 @@ namespace Common
         }
 
 
-        public static object MakeGenericList(IEnumerable<object?> listItems)
+        internal static object MakeGenericList(IEnumerable<object?> listItems)
         {
             listItems = listItems ?? throw new ArgumentNullException(nameof(listItems));
 
@@ -136,7 +136,7 @@ namespace Common
             }
             return list;
         }
-        public static object MakeGenericTuple(IEnumerable<object?> tupleItems)
+        internal static object MakeGenericTuple(IEnumerable<object?> tupleItems)
         {
 
             tupleItems = tupleItems ?? throw new ArgumentNullException(nameof(tupleItems));

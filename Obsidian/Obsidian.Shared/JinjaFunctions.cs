@@ -1,4 +1,4 @@
-﻿using Common;
+using Common;
 using Common.Collections;
 using ExpressionParser;
 using ExpressionParser.Scopes;
@@ -10,10 +10,10 @@ using System.Text;
 
 namespace Obsidian
 {
-    public static class JinjaFunctions
+    internal static class JinjaFunctions
     {
-
-        public static object? Super(UserDefinedArgumentData args)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>")]
+        internal static object? Super(UserDefinedArgumentData args)
         {
             throw new NotImplementedException();
 
@@ -41,24 +41,26 @@ namespace Obsidian
 
             //}
         }
-        public static object? Escape(UserDefinedArgumentData args)
+        internal static object? Escape(UserDefinedArgumentData args)
         {
             if (args.TryGetArgumentValue<string>("s", out var obj) == false) throw new NotImplementedException();
             if (obj == null) throw new NullReferenceException();
-            return obj.ToString().HTMLEscape();
+            return obj.ToString(CultureInfo.InvariantCulture).HTMLEscape();
         }
-        public static object? Upper(UserDefinedArgumentData args)
+        internal static object? Upper(UserDefinedArgumentData args)
         {
             if (args.TryGetArgumentValue<string>("s", out var obj) == false) throw new NotImplementedException();
             if (obj == null) throw new NullReferenceException();
-            return obj.ToString().ToUpper(CultureInfo.InvariantCulture);
+            return obj.ToString(CultureInfo.InvariantCulture).ToUpper(CultureInfo.InvariantCulture);
         }
-        public static object? Abs(UserDefinedArgumentData args)
+        internal static object? Abs(UserDefinedArgumentData args)
         {
             if (args.TryGetArgumentValue<Numerical>("x", out var obj) == false) throw new NotImplementedException();
             return obj.Abs();
         }
-        public static object? Attr(UserDefinedArgumentData args)
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "<Pending>")]
+        internal static object? Attr(UserDefinedArgumentData args)
         {
 
             if (args.TryGetArgumentValue("obj", out var obj) == false) throw new NotImplementedException();
@@ -66,11 +68,11 @@ namespace Obsidian
             if (obj == null) throw new NullReferenceException();
             if (name == null) throw new NullReferenceException();
 
-            if (!(name is string propertyName)) throw new ArgumentException();
+            if (!(name is string propertyName)) throw new ArgumentException("name");
             return obj.GetType().GetProperty(propertyName)?.GetValue(obj);
         }
 
-        public static object? Batch(UserDefinedArgumentData args)
+        internal static object? Batch(UserDefinedArgumentData args)
         {
 
             if (args.TryGetArgumentValue("value", out var value) == false) throw new NotImplementedException();
@@ -109,15 +111,15 @@ namespace Obsidian
             return toReturn;
         }
 
-        public static object? Capitalize(UserDefinedArgumentData args)
+        internal static object? Capitalize(UserDefinedArgumentData args)
         {
             if (args.TryGetArgumentValue<string>("s", out var obj) == false) throw new NotImplementedException();
-            var originalString = obj.ToString();
+            var originalString = obj.ToString(CultureInfo.InvariantCulture);
             if (originalString.Length == 0) return originalString;
             if (originalString.Length == 1) return originalString.ToUpper(CultureInfo.InvariantCulture);
             return originalString[0].ToUpper().Concat(originalString.Substring(1));
         }
-        public static object? Center(UserDefinedArgumentData args)
+        internal static object? Center(UserDefinedArgumentData args)
         {
             if (args.TryGetArgumentValue<string>("s", out var value) == false) throw new NotImplementedException();
             if (args.TryGetArgumentValue<Numerical>("width", out var width) == false) throw new NotImplementedException();
@@ -131,7 +133,7 @@ namespace Obsidian
             var leftPaddingWidth = totalPaddingWidth / 2;
             return $"{new string(' ', leftPaddingWidth)}{value}{new string(' ', totalPaddingWidth - leftPaddingWidth)}";
         }
-        public static object? Default(UserDefinedArgumentData args)
+        internal static object? Default(UserDefinedArgumentData args)
         {
             if (args.TryGetArgumentValue<string>("value", out var value) == false) throw new NotImplementedException();
             var defaultValue = args.GetArgumentValue<object?>("default_value", "");
@@ -139,26 +141,26 @@ namespace Obsidian
 
             if (boolean)
             {
-                switch (value)
+                return value switch
                 {
-                    case string strVal:
-                        return string.IsNullOrEmpty(strVal);
-                }
-                throw new NotImplementedException();
+                    string strVal => string.IsNullOrEmpty(strVal),
+                    _ => throw new NotImplementedException(),
+                };
             }
             return value ?? defaultValue;
         }
 
 
-        public static object? DictSort(UserDefinedArgumentData args)
+        internal static object? DictSort(UserDefinedArgumentData args)
         {
             if (args.TryGetArgumentValue("value", out var dictionary) == false) throw new NotImplementedException();
             if (args.TryGetArgumentValue<bool>("case_sensitive", out var caseSensitive) == false) throw new NotImplementedException();
             if (args.TryGetArgumentValue<string>("by", out var by) == false) throw new NotImplementedException();
             if (args.TryGetArgumentValue<bool>("reverse", out var reverse) == false) throw new NotImplementedException();
 
+            dictionary = dictionary ?? throw new NotImplementedException();
             var dictionaryType = dictionary.GetType();
-            if (dictionaryType.IsAssignableToGenericType(typeof(Dictionary<,>), out var typeArgs) == false) throw new NotImplementedException();
+            if (dictionaryType.IsAssignableToGenericType(typeof(Dictionary<,>), out var _) == false) throw new NotImplementedException();
             return DictionarySorter.SortDictionaryObj(dictionary, by == "key", reverse, caseSensitive);
         }
 

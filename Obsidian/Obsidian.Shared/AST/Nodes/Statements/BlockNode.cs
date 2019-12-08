@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -13,10 +13,10 @@ using Obsidian.Transforming;
 namespace Obsidian.AST.Nodes.Statements
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public class BlockNode : AbstractContainerNode
+    internal class BlockNode : AbstractContainerNode
     {
 
-        public BlockNode(ParsingNode? startParsingNode, string name, ContainerNode blockContents, ParsingNode? endParsingNode)
+        internal BlockNode(ParsingNode? startParsingNode, string name, ContainerNode blockContents, ParsingNode? endParsingNode)
             : base(startParsingNode, blockContents.YieldOne(), endParsingNode)
         {
             Name = name;
@@ -25,8 +25,8 @@ namespace Obsidian.AST.Nodes.Statements
 
         private string DebuggerDisplay => $"{nameof(BlockNode)} : {Name}";
 
-        public string Name { get; }
-        public ContainerNode BlockContents { get; set; }
+        internal string Name { get; }
+        internal ContainerNode BlockContents { get; set; }
 
         public override TOutput Transform<TOutput>(ITransformVisitor<TOutput> visitor)
         {
@@ -42,7 +42,7 @@ namespace Obsidian.AST.Nodes.Statements
             return visitor.Transform(this, force);
         }
 
-        public static bool TryParseBlock(Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
+        internal static bool TryParseBlock(Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
         {
             parsedNode = default;
             if(BlockParser.StartBlock.TryParse(enumerator.Current) == false)

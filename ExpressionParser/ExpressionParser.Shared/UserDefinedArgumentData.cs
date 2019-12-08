@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -16,12 +16,12 @@ namespace ExpressionParser
             AdditionalKeywordArguments = additionalKeywordArguments.ToArrayWithoutInstantiation();
         }
 
-        public UserDefinedArgument[] DefinedPositionalArguments { get; }
-        public UserDefinedArgument[] AdditionalPositionalArguments { get; }
-        public UserDefinedArgument[] AdditionalKeywordArguments { get; }
+        public IEnumerable<UserDefinedArgument> DefinedPositionalArguments { get; }
+        public IEnumerable<UserDefinedArgument> AdditionalPositionalArguments { get; }
+        public IEnumerable<UserDefinedArgument> AdditionalKeywordArguments { get; }
 
 
-        public bool TryGetArgumentValue(string argumentName, out object? value)
+        internal bool TryGetArgumentValue(string argumentName, out object? value)
         {
             value = default;
             var argument = DefinedPositionalArguments.FirstOrDefault(arg => arg.Name == argumentName);
@@ -39,7 +39,7 @@ namespace ExpressionParser
             return false;
         }
 
-        public T GetArgumentValue<T>(string argumentName, T defaultValue = default)
+        internal T GetArgumentValue<T>(string argumentName, T defaultValue = default)
         {
             if(TryGetArgumentValue<T>(argumentName, out var value))
             {
@@ -47,7 +47,7 @@ namespace ExpressionParser
             }
             return defaultValue;
         }
-        public bool TryGetArgumentValue<T>(string argumentName, out T value)
+        internal bool TryGetArgumentValue<T>(string argumentName, out T value)
         {
             value = default!;
             if (TryGetArgumentValue(argumentName, out var valueObj) == false) return false;
@@ -79,7 +79,7 @@ namespace ExpressionParser
             return false;
         }
 
-        public IEnumerable<UserDefinedArgument> AllArguments => DefinedPositionalArguments.Concat(AdditionalPositionalArguments).Concat(AdditionalKeywordArguments);
+        internal IEnumerable<UserDefinedArgument> AllArguments => DefinedPositionalArguments.Concat(AdditionalPositionalArguments).Concat(AdditionalKeywordArguments);
 
 
         internal static UserDefinedArgumentData Create(ParameterDeclaration[] declaration, object?[] passedValues)

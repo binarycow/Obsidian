@@ -11,19 +11,19 @@ using Obsidian.WhiteSpaceControl;
 namespace Obsidian.AST.Nodes.MiscNodes
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public class WhiteSpaceNode : ASTNode, IWhiteSpace
+    internal class WhiteSpaceNode : ASTNode, IWhiteSpace
     {
-        public WhiteSpaceNode(IEnumerable<ParsingNode> parsingNodes) : base(null, parsingNodes, null)
+        internal WhiteSpaceNode(IEnumerable<ParsingNode> parsingNodes) : base(null, parsingNodes, null)
         {
         }
-        public WhiteSpaceNode(ParsingNode parsingNode) : base(parsingNode)
+        internal WhiteSpaceNode(ParsingNode parsingNode) : base(parsingNode)
         {
         }
 
         public WhiteSpaceMode WhiteSpaceMode { get; set; }
 
         private string DebuggerDisplay => $"{nameof(WhiteSpaceNode)} : \"{ToString(debug: true)}\" Mode: {WhiteSpaceMode}";
-        public static WhiteSpaceNode Parse(ILookaroundEnumerator<ParsingNode> enumerator)
+        internal static WhiteSpaceNode Parse(ILookaroundEnumerator<ParsingNode> enumerator)
         {
             var nodes = new Queue<ParsingNode>();
 

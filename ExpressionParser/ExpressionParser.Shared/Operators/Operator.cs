@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
@@ -10,35 +10,30 @@ using ExpressionParser.Transforming.Operators;
 namespace ExpressionParser.Operators
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public abstract class Operator : ITransformableOperator
+    internal abstract class Operator : ITransformableOperator
     {
-        public Operator(Token token)
+        internal Operator(Token token)
         {
             Token = token;
         }
 
-        public Token Token { get; }
-        public static Operator CreateBinary(OperatorDefinition definition, Token token, AssignmentOperatorBehavior assignmentOperatorBehavior)
+        internal Token Token { get; }
+        internal static Operator CreateBinary(OperatorDefinition definition, Token token, AssignmentOperatorBehavior assignmentOperatorBehavior)
         {
-            switch(definition)
+            return definition switch
             {
-                case StandardOperatorDefinition standardOperator:
-                    return new StandardOperator(token, standardOperator.OperatorType, assignmentOperatorBehavior);
-                case SpecialOperatorDefinition specialOperator:
-                    return new SpecialOperator(token, specialOperator.OperatorType);
-                default:
-                    throw new NotImplementedException();
-            }
+                StandardOperatorDefinition standardOperator => new StandardOperator(token, standardOperator.OperatorType, assignmentOperatorBehavior),
+                SpecialOperatorDefinition specialOperator => new SpecialOperator(token, specialOperator.OperatorType),
+                _ => throw new NotImplementedException(),
+            };
         }
-        public static Operator CreateUnary(OperatorDefinition definition, Token token)
+        internal static Operator CreateUnary(OperatorDefinition definition, Token token)
         {
-            switch (definition)
+            return definition switch
             {
-                case StandardOperatorDefinition standardOperator:
-                    return new StandardOperator(token, standardOperator.OperatorType, assignmentOperatorBehavior: default);
-                default:
-                    throw new NotImplementedException();
-            }
+                StandardOperatorDefinition standardOperator => new StandardOperator(token, standardOperator.OperatorType, assignmentOperatorBehavior: default),
+                _ => throw new NotImplementedException(),
+            };
         }
         internal static Operator CreateSpecial(SpecialOperatorDefinition specialOperator, Token operatorToken)
         {
@@ -47,6 +42,6 @@ namespace ExpressionParser.Operators
 
         public abstract TOutput Transform<TInput, TOutput>(IOperatorTransformVisitor<TInput, TOutput> visitor, TInput[] arguments);
 
-        public virtual string DebuggerDisplay => Token.TextValue;
+        internal virtual string DebuggerDisplay => Token.TextValue;
     }
 }

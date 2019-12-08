@@ -10,13 +10,13 @@ using Obsidian.Transforming;
 namespace Obsidian.AST.Nodes
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public class OutputNode : ASTNode
+    internal class OutputNode : ASTNode
     {
-        public OutputNode(ParsingNode parsingNode) : base(parsingNode)
+        internal OutputNode(ParsingNode parsingNode) : base(parsingNode)
         {
             Value = string.Join(string.Empty, parsingNode.Tokens.Select(token => token.Value));
         }
-        public string Value { get; }
+        internal string Value { get; }
 
         private string DebuggerDisplay => $"{nameof(OutputNode)} : \"{ToString(debug: true)}\"";
         public override TOutput Transform<TOutput>(ITransformVisitor<TOutput> visitor)
@@ -35,7 +35,7 @@ namespace Obsidian.AST.Nodes
 
         internal static OutputNode FromString(string @string)
         {
-            return new OutputNode(new ParsingNode(ParsingNodeType.Output, new[] { new Token(TokenTypes.Unknown, @string) }));
+            return new OutputNode(new ParsingNode(ParsingNodeType.Output, new[] { new Token(TokenType.Unknown, @string) }));
         }
     }
 }

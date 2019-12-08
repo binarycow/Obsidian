@@ -1,11 +1,11 @@
-﻿//using System;
+//using System;
 //using System.Collections.Generic;
 //using System.Linq.Expressions;
 //using System.Text;
 
 //namespace ExpressionParser.Scopes
 //{
-//    public class RootScope : Scope
+//    internal class RootScope : Scope
 //    {
 //        private RootScope(string name) : base(null, name) { }
 //        private RootScope() : base(null, null) { }
@@ -13,11 +13,11 @@
 
 //        private List<BinaryExpression> _AssignExpressions = new List<BinaryExpression>();
 
-//        public virtual ParameterExpression AddLocalVariable(string name, Expression assignValue)
+//        internal virtual ParameterExpression AddLocalVariable(string name, Expression assignValue)
 //        {
 //            return AddLocalVariable(name, assignValue, out _);
 //        }
-//        public override ParameterExpression AddLocalVariable(string name, Expression assignValue, out BinaryExpression assignExpression)
+//        internal override ParameterExpression AddLocalVariable(string name, Expression assignValue, out BinaryExpression assignExpression)
 //        {
 //            var variable = Expression.Variable(assignValue.Type, name);
 //            base.AddLocalVariable(name, assignValue, out assignExpression);
@@ -26,7 +26,7 @@
 //        }
 
 
-//        public static RootScope CreateRootScope(IDictionary<string, object?> variables)
+//        internal static RootScope CreateRootScope(IDictionary<string, object?> variables)
 //        {
 //            var ret = new RootScope();
 //            foreach (var varName in variables.Keys)

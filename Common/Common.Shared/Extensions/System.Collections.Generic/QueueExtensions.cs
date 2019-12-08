@@ -5,9 +5,9 @@ using System.Text;
 
 namespace System.Collections.Generic
 {
-    public static class QueueExtensions
+    internal static class QueueExtensions
     {
-        public static void Enqueue<T>(this Queue<T> queue, IEnumerable<T> items)
+        internal static void Enqueue<T>(this Queue<T> queue, IEnumerable<T> items)
         {
             foreach(var item in items)
             {

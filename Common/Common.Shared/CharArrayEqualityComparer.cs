@@ -1,17 +1,17 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Common
 {
-    public class CharArrayEqualityComparer : IEqualityComparer<char[]>
+    internal class CharArrayEqualityComparer : IEqualityComparer<char[]>
     {
         private CharArrayEqualityComparer()
         {
 
         }
-        public static readonly Lazy<CharArrayEqualityComparer> _Instance = new Lazy<CharArrayEqualityComparer>(() => new CharArrayEqualityComparer());
-        public static CharArrayEqualityComparer Instance => _Instance.Value;
+        internal static readonly Lazy<CharArrayEqualityComparer> _Instance = new Lazy<CharArrayEqualityComparer>(() => new CharArrayEqualityComparer());
+        internal static CharArrayEqualityComparer Instance => _Instance.Value;
 
         public bool Equals(char[] x, char[] y)
         {

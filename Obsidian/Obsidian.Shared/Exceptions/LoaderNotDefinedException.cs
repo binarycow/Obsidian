@@ -5,7 +5,18 @@ using System.Text;
 
 namespace Obsidian.Exceptions
 {
-    internal class LoaderNotDefinedException : Exception
+    public class LoaderNotDefinedException : Exception
     {
+        internal LoaderNotDefinedException() : base()
+        {
+
+        }
+        internal LoaderNotDefinedException(string message) : base(message)
+        {
+        }
+
+        internal LoaderNotDefinedException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
     }
 }

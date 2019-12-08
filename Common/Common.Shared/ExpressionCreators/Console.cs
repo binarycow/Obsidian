@@ -8,23 +8,27 @@ using System.Text;
 namespace Common.ExpressionCreators
 {
 #if DEBUG
-    public class Console
+#pragma warning disable CA1812 // Avoid uninstantiated internal classes
+    internal class Console
+#pragma warning restore CA1812 // Avoid uninstantiated internal classes
     {
-        private Type _StringBuilderType = typeof(System.Console);
+        private readonly Type _StringBuilderType = typeof(System.Console);
 
-        private Lazy<Dictionary<Type, MethodInfo>> _WriteMethods = new Lazy<Dictionary<Type, MethodInfo>>();
+        private readonly Lazy<Dictionary<Type, MethodInfo>> _WriteMethods = new Lazy<Dictionary<Type, MethodInfo>>();
         private Dictionary<Type, MethodInfo> WriteMethods => _WriteMethods.Value;
 
 
-        private Lazy<HashSet<Type>> _NoWriteMethods = new Lazy<HashSet<Type>>();
+        private readonly Lazy<HashSet<Type>> _NoWriteMethods = new Lazy<HashSet<Type>>();
         private HashSet<Type> NoWriteMethods => _NoWriteMethods.Value;
 
 
-        private Lazy<Dictionary<Type, MethodInfo>> _WriteLineMethods = new Lazy<Dictionary<Type, MethodInfo>>();
-        private Dictionary<Type, MethodInfo> WriteLineMethods => _WriteLineMethods.Value;
+        private readonly Lazy<Dictionary<Type, MethodInfo>> _WriteLineMethods = new Lazy<Dictionary<Type, MethodInfo>>();
+        private Dictionary<Type, MethodInfo> WriteLineMethods => WriteLineMethods1.Value;
 
-        private Lazy<HashSet<Type>> _NoWriteLineMethods = new Lazy<HashSet<Type>>();
+        private readonly Lazy<HashSet<Type>> _NoWriteLineMethods = new Lazy<HashSet<Type>>();
         private HashSet<Type> NoWriteLineMethods => _NoWriteLineMethods.Value;
+
+        internal Lazy<Dictionary<Type, MethodInfo>> WriteLineMethods1 => _WriteLineMethods;
 
         private MethodInfo GetWriteLineMethod(Type type)
         {
@@ -69,15 +73,15 @@ namespace Common.ExpressionCreators
             return GetWriteMethod(typeof(object));
         }
 
-        public Expression WriteExpression(Expression item)
+        internal Expression WriteExpression(Expression item)
         {
             return Expression.Call(null, GetWriteMethod(item.Type), new[] { item });
         }
-        public Expression WriteLineExpression(Expression item)
+        internal Expression WriteLineExpression(Expression item)
         {
             return Expression.Call(null, GetWriteLineMethod(item.Type), new[] { item });
         }
-        public Expression Write(object? item)
+        internal Expression Write(object? item)
         {
             if(!(item is Expression expr))
             {
@@ -85,7 +89,7 @@ namespace Common.ExpressionCreators
             }
             return WriteExpression(expr);
         }
-        public Expression WriteLine(object? item)
+        internal Expression WriteLine(object? item)
         {
             if (!(item is Expression expr))
             {

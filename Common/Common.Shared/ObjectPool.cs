@@ -3,9 +3,9 @@ using System.Collections.Concurrent;
 
 namespace Common
 {
-    public class ObjectPool<T>
+    internal class ObjectPool<T>
     {
-        public ObjectPool(Func<T> creationFunction, Action<T> clearAction)
+        internal ObjectPool(Func<T> creationFunction, Action<T> clearAction)
         {
             _Available = new Lazy<ConcurrentQueue<CheckoutObject<T>>>(); 
             _CheckedOut = new Lazy<ConcurrentDictionary<CheckoutObject<T>, byte>>();
@@ -19,13 +19,12 @@ namespace Common
 
         private readonly Lazy<ConcurrentDictionary<CheckoutObject<T>, byte>> _CheckedOut;
         private ConcurrentDictionary<CheckoutObject<T>, byte> CheckedOut => _CheckedOut.Value;
-        private Func<T> _CreationFunction;
-        private Action<T> _ClearAction;
+        private readonly Func<T> _CreationFunction;
+        private readonly Action<T> _ClearAction;
 
-        public CheckoutObject<T> Checkout()
+        internal CheckoutObject<T> Checkout()
         {
-            CheckoutObject<T> checkoutRecord;
-            if (Available.Count > 0 && Available.TryDequeue(out checkoutRecord) == false)
+            if (Available.Count > 0 && Available.TryDequeue(out CheckoutObject<T> checkoutRecord) == false)
             {
                 CheckedOut.TryAdd(checkoutRecord, 0);
                 return checkoutRecord;
@@ -44,7 +43,7 @@ namespace Common
             }
         }
 
-        public void Return(CheckoutObject<T> checkoutRecord)
+        internal void Return(CheckoutObject<T> checkoutRecord)
         {
             CheckedOut.TryRemove(checkoutRecord, out _);
             _ClearAction(checkoutRecord.CheckedOutObject);

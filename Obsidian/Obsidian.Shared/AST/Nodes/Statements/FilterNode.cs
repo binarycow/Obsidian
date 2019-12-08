@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
@@ -13,10 +13,10 @@ using Obsidian.Transforming;
 namespace Obsidian.AST.Nodes.Statements
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public class FilterNode : AbstractContainerNode
+    internal class FilterNode : AbstractContainerNode
     {
 
-        public FilterNode(ParsingNode? startParsingNode, string filter, ContainerNode filterContents, ParsingNode? endParsingNode)
+        internal FilterNode(ParsingNode? startParsingNode, string filter, ContainerNode filterContents, ParsingNode? endParsingNode)
             : base(startParsingNode, filterContents.YieldOne(), endParsingNode)
         {
             Filter = filter;
@@ -25,8 +25,8 @@ namespace Obsidian.AST.Nodes.Statements
 
         private string DebuggerDisplay => $"{nameof(FilterNode)} : {Filter}";
 
-        public string Filter { get; }
-        public ContainerNode FilterContents { get; set; }
+        internal string Filter { get; }
+        internal ContainerNode FilterContents { get; set; }
 
         public override TOutput Transform<TOutput>(ITransformVisitor<TOutput> visitor)
         {
@@ -42,7 +42,7 @@ namespace Obsidian.AST.Nodes.Statements
             return visitor.Transform(this, force);
         }
 
-        public static bool TryParseFilter(Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
+        internal static bool TryParseFilter(Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
         {
             parsedNode = default;
             if (FilterParser.StartBlock.TryParse(enumerator.Current) == false)

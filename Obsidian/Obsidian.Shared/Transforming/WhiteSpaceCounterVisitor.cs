@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Obsidian.AST;
@@ -6,11 +6,11 @@ using Obsidian.AST.Nodes.MiscNodes;
 
 namespace Obsidian.Transforming
 {
-    public class WhiteSpaceCounterVisitor : BaseASTTransformer
+    internal class WhiteSpaceCounterVisitor : BaseASTTransformer
     {
         private int _Tally = 0;
 
-        public int Test(ASTNode node)
+        internal int Test(ASTNode node)
         {
             _Tally = 0;
             node.Transform(this);

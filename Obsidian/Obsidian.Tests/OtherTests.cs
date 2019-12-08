@@ -7,6 +7,7 @@ using NUnit.Framework;
 
 namespace Obsidian.Tests
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1812:Avoid uninstantiated public classes", Justification = "<Pending>")]
     public class OtherTests : TestClass
     {
 

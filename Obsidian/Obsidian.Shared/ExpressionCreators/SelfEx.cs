@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -10,15 +10,15 @@ using Obsidian.AST.Nodes.Statements;
 
 namespace Obsidian.ExpressionCreators
 {
-    public static class SelfEx
+    internal static class SelfEx
     {
-        private static Lazy<MethodInfo> _EnqueueTemplate = new Lazy<MethodInfo>(() =>
+        private static readonly Lazy<MethodInfo> _EnqueueTemplate = new Lazy<MethodInfo>(() =>
             MethodLookups.GetMethod(typeof(Obsidian.CompiledSelf), nameof(Obsidian.CompiledSelf.EnqueueTemplate), new[] { typeof(Expression) }));
-        private static Lazy<MethodInfo> _DequeueTemplate = new Lazy<MethodInfo>(() =>
+        private static readonly Lazy<MethodInfo> _DequeueTemplate = new Lazy<MethodInfo>(() =>
             MethodLookups.GetMethod(typeof(Obsidian.CompiledSelf), nameof(Obsidian.CompiledSelf.DequeueTemplate), Type.EmptyTypes));
-        private static Lazy<MethodInfo> _AddBlock = new Lazy<MethodInfo>(() =>
+        private static readonly Lazy<MethodInfo> _AddBlock = new Lazy<MethodInfo>(() =>
             MethodLookups.GetMethod(typeof(Obsidian.CompiledSelf), nameof(Obsidian.CompiledSelf.AddBlock), new[] { typeof(string), typeof(Expression) }));
-        private static Lazy<MethodInfo> _GetBlock = new Lazy<MethodInfo>(() =>
+        private static readonly Lazy<MethodInfo> _GetBlock = new Lazy<MethodInfo>(() =>
             MethodLookups.GetMethod(typeof(Obsidian.CompiledSelf), nameof(Obsidian.CompiledSelf.GetBlock), new[] { typeof(string) }));
 
         internal static Expression SetRenderMode(Expression self, RenderMode renderMode)

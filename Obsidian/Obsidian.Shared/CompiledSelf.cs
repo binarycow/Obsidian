@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -8,13 +8,13 @@ using Obsidian.AST.Nodes.Statements;
 
 namespace Obsidian
 {
-    public class CompiledSelf
+    internal class CompiledSelf
     {
-        public RenderMode RenderMode { get; set; } = RenderMode.Direct;
+        internal RenderMode RenderMode { get; set; } = RenderMode.Direct;
         private Dictionary<string, List<Block>> Blocks { get; } = new Dictionary<string, List<Block>>();
-        public Queue<Expression> TemplateQueue { get; } = new Queue<Expression>();
+        internal Queue<Expression> TemplateQueue { get; } = new Queue<Expression>();
 
-        public Block this[string name]
+        internal Block this[string name]
         {
             get
             {
@@ -22,16 +22,16 @@ namespace Obsidian
             }
         }
 
-        public void EnqueueTemplate(Expression template)
+        internal void EnqueueTemplate(Expression template)
         {
             TemplateQueue.Enqueue(template);
         }
-        public Expression DequeueTemplate()
+        internal Expression DequeueTemplate()
         {
             return TemplateQueue.Dequeue();
         }
-        public bool HasQueuedTemplates => TemplateQueue.Count > 0;
-        public void AddBlock(string blockName, Expression blockExpression)
+        internal bool HasQueuedTemplates => TemplateQueue.Count > 0;
+        internal void AddBlock(string blockName, Expression blockExpression)
         {
             if (Blocks.TryGetValue(blockName, out var blockList) == false)
             {
@@ -41,12 +41,12 @@ namespace Obsidian
             var block = new Block(blockName, blockList.Count, blockExpression);
             blockList.Add(block);
         }
-        public Block? GetBlock(string blockName)
+        internal Block? GetBlock(string blockName)
         {
             if (Blocks.TryGetValue(blockName, out var blockList) == false) return default;
             return blockList.Last();
         }
 
-        public int TemplateQueueCount => TemplateQueue.Count;
+        internal int TemplateQueueCount => TemplateQueue.Count;
     }
 }

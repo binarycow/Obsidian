@@ -1,4 +1,4 @@
-﻿using Common;
+using Common;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -8,7 +8,7 @@ using System.Text;
 
 namespace ExpressionParser.Scopes
 {
-    public class CompiledScope : IScope
+    internal class CompiledScope : IScope
     {
         private CompiledScope(string? name, CompiledScope? parentScope)
         {
@@ -16,71 +16,71 @@ namespace ExpressionParser.Scopes
             ParentScopeCompiled = parentScope;
         }
         public IScope? ParentScope => ParentScopeCompiled;
-        public CompiledScope? ParentScopeCompiled { get; }
+        internal CompiledScope? ParentScopeCompiled { get; }
         public string? Name { get; }
 
         private readonly Dictionary<string, ParameterExpression> _Variables = new Dictionary<string, ParameterExpression>();
 
-        public IEnumerable<ParameterExpression> Variables => _Variables.Values.ToArrayWithoutInstantiation();
+        internal IEnumerable<ParameterExpression> Variables => _Variables.Values.ToArrayWithoutInstantiation();
 
-        public IEnumerable<ParameterExpression> VariableWalk()
+        internal IEnumerable<ParameterExpression> VariableWalk()
         {
             return Variables.Concat(ParentScopeCompiled?.VariableWalk() ?? Enumerable.Empty<ParameterExpression>());
         }
 
         public bool IsRootScope => ParentScope == default;
 
-        public ParameterExpression this[string name]
+        internal ParameterExpression this[string name]
         {
             get
             {
                 if (TryGetVariable(name, out var parameter)) return parameter;
-                throw new NotImplementedException();
+                throw new KeyNotFoundException($"Variable of name {name} not defined.");
             }
         }
 
 
-        public void DefineVariable(ParameterExpression variable)
+        internal void DefineVariable(ParameterExpression variable)
         {
             _Variables.Add(variable.Name, variable);
         }
-        public ParameterExpression DefineVariable(string name, Type type)
+        internal ParameterExpression DefineVariable(string name, Type type)
         {
             var variable = Expression.Variable(type, name);
             _Variables.Add(name, variable);
             return variable;
         }
-        public ParameterExpression DefineAndSetVariable(string name, Expression valueToSet, out BinaryExpression assignmentExpression)
+        internal ParameterExpression DefineAndSetVariable(string name, Expression valueToSet, out BinaryExpression assignmentExpression)
         {
             var variable = DefineVariable(name, valueToSet.Type);
             assignmentExpression = Expression.Assign(variable, valueToSet);
             return variable;
         }
-        public ParameterExpression DefineAndSetVariable(string name, object? valueToSet, out BinaryExpression assignmentExpression)
+        internal ParameterExpression DefineAndSetVariable(string name, object? valueToSet, out BinaryExpression assignmentExpression)
         {
             return DefineAndSetVariable(name, Expression.Constant(valueToSet), out assignmentExpression);
         }
 
-        public BinaryExpression DefineAndSetVariable(string name, Expression valueToSet)
+        internal BinaryExpression DefineAndSetVariable(string name, Expression valueToSet)
         {
             DefineAndSetVariable(name, valueToSet, out var assignmentExpression);
             return assignmentExpression;
         }
 
-        public BinaryExpression DefineAndSetVariable(string name, object? valueToSet)
+        internal BinaryExpression DefineAndSetVariable(string name, object? valueToSet)
         {
             DefineAndSetVariable(name, valueToSet, out var assignmentExpression);
             return assignmentExpression;
         }
 
-        public bool TryGetVariable(string name, [NotNullWhen(true)] out ParameterExpression? variable)
+        internal bool TryGetVariable(string name, [NotNullWhen(true)] out ParameterExpression? variable)
         {
             if (_Variables.TryGetValue(name, out variable)) return true;
             if (ParentScopeCompiled?.TryGetVariable(name, out variable) == true) return true;
             return false;
         }
 
-        public BlockExpression CloseScope(IEnumerable<Expression> body)
+        internal BlockExpression CloseScope(IEnumerable<Expression> body)
         {
             if(IsRootScope)
             {
@@ -91,7 +91,7 @@ namespace ExpressionParser.Scopes
         }
 
         public IScope CreateChild(string name) => CreateCompiledChild(name);
-        public CompiledScope CreateCompiledChild(string name)
+        internal CompiledScope CreateCompiledChild(string name)
         {
             return new CompiledScope(name, this);
         }
@@ -113,7 +113,7 @@ namespace ExpressionParser.Scopes
         }
 
 
-        public Expression ToDictionary()
+        internal Expression ToDictionary()
         {
             return ExpressionEx.CreateDictionary<string, object?>(VariableWalk().ToArray());
         }

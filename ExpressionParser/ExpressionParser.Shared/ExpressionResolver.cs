@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
@@ -12,17 +12,17 @@ using ExpressionParser.Scopes;
 
 namespace ExpressionParser
 {
-    public static class ExpressionResolver
+    internal static class ExpressionResolver
     {
 
 
-        public static bool TryGetPropertyInfo(Expression @object, string memberName, [NotNullWhen(true)]out PropertyInfo? propertyInfo)
+        internal static bool TryGetPropertyInfo(Expression @object, string memberName, [NotNullWhen(true)]out PropertyInfo? propertyInfo)
         {
             var type = @object.Type;
             propertyInfo = type.GetProperty(memberName);
             return propertyInfo != null;
         }
-        public static bool TryGetFieldInfo(Expression @object, string memberName, [NotNullWhen(true)]out FieldInfo? fieldInfo)
+        internal static bool TryGetFieldInfo(Expression @object, string memberName, [NotNullWhen(true)]out FieldInfo? fieldInfo)
         {
             var type = @object.Type;
             fieldInfo = type.GetField(memberName);
@@ -32,7 +32,7 @@ namespace ExpressionParser
 
 
 
-        public static bool TryGetPropertyOrFieldInfo(Expression @object, string memberName, [NotNullWhen(true)]out MemberInfo? memberInfo)
+        internal static bool TryGetPropertyOrFieldInfo(Expression @object, string memberName, [NotNullWhen(true)]out MemberInfo? memberInfo)
         {
             if (TryGetPropertyInfo(@object, memberName, out var propInfo))
             {
@@ -48,7 +48,7 @@ namespace ExpressionParser
             return false;
         }
 
-        public static bool TryGetIndexer(Expression @object, [NotNullWhen(true)]out PropertyInfo? propertyInfo, params Type[] indexArguments)
+        internal static bool TryGetIndexer(Expression @object, [NotNullWhen(true)]out PropertyInfo? propertyInfo, params Type[] indexArguments)
         {
             var type = @object.Type;
             propertyInfo = type.GetProperty("Item", indexArguments);

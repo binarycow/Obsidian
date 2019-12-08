@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using ExpressionParser.Scopes;
@@ -8,7 +8,7 @@ using Obsidian.Transforming;
 
 namespace Obsidian.Templates
 {
-    public class DynamicTemplate : ITemplate
+    internal class DynamicTemplate : ITemplate
     {
 
         private DynamicTemplate(JinjaEnvironment environment, TemplateNode templateNode, string? templateName, string? templatePath)
@@ -23,7 +23,7 @@ namespace Obsidian.Templates
         public string? TemplateName { get; }
 
         public string? TemplatePath { get; }
-        public TemplateNode TemplateNode { get; }
+        internal TemplateNode TemplateNode { get; }
 
         public string Render(IDictionary<string, object?> variables)
         {
@@ -32,20 +32,10 @@ namespace Obsidian.Templates
             return renderer.StringBuilder.ToString();
         }
 
-        internal static DynamicTemplate LoadTemplate(JinjaEnvironment environment, string templateText, IDictionary<string, object?> variableTemplate, string? templateName, string? templatePath)
+        internal static DynamicTemplate LoadTemplate(JinjaEnvironment environment, string templateText, string? templateName, string? templatePath)
         {
             var node = ASTNode.GetTemplateNode(environment, templateText);
             if(node is TemplateNode templateNode)
-            {
-                return new DynamicTemplate(environment, templateNode, templateName, templatePath);
-            }
-            throw new NotImplementedException();
-        }
-
-        internal static DynamicTemplate LoadTemplate(JinjaEnvironment environment, string templateText, DynamicContext scope, string? templateName, string? templatePath)
-        {
-            var node = ASTNode.GetTemplateNode(environment, templateText);
-            if (node is TemplateNode templateNode)
             {
                 return new DynamicTemplate(environment, templateNode, templateName, templatePath);
             }

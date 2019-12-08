@@ -1,4 +1,6 @@
-﻿using System;
+#if DEBUG
+
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -8,7 +10,6 @@ using Common;
 using Common.ExpressionCreators;
 using ExpressionParser;
 using ExpressionParser.Scopes;
-using ExpressionToString;
 using Obsidian.AST;
 using Obsidian.AST.Nodes;
 using Obsidian.AST.Nodes.MiscNodes;
@@ -18,16 +19,15 @@ using StringBuilder = System.Text.StringBuilder;
 
 namespace Obsidian.Transforming
 {
-    public class NewASTCompiler : ITransformVisitor<Expression>
+    internal class NewASTCompiler : ITransformVisitor<Expression>
     {
-        private static string SCOPE_NAME_INTERNAL = "Internal";
-        private static string VARNAME_STRING_BUILDER = "stringBuilder";
-        private static string VARNAME_STRING_SELF = "self";
-        private static string SCOPE_NAME_TEMPLATE = "TEMPLATE: {0}";
-        private static string SCOPE_NAME_BLOCK = "BLOCK: {0}";
+        private const string SCOPE_NAME_INTERNAL = "Internal";
+        private const string VARNAME_STRING_BUILDER = "stringBuilder";
+        private const string VARNAME_STRING_SELF = "self";
+        private const string SCOPE_NAME_TEMPLATE = "TEMPLATE: {0}";
 
-        public Expression SelfVar => CurrentScope[VARNAME_STRING_SELF];
-        public Expression StringBuilderVar => CurrentScope[VARNAME_STRING_BUILDER];
+        internal Expression SelfVar => CurrentScope[VARNAME_STRING_SELF];
+        internal Expression StringBuilderVar => CurrentScope[VARNAME_STRING_BUILDER];
 
         internal static Expression ToExpression(string templateName, JinjaEnvironment environment, ASTNode node, out NewASTCompiler compiler, CompiledScope rootScope)
         {
@@ -52,7 +52,7 @@ namespace Obsidian.Transforming
 
             return internalBlock;
 
-            BinaryExpression CreateVariable(NewASTCompiler localCompiler, string name, Expression createExpression)
+            static BinaryExpression CreateVariable(NewASTCompiler localCompiler, string name, Expression createExpression)
             {
                 localCompiler.CurrentScope.DefineAndSetVariable(name, createExpression, out var assignExpression);
                 return assignExpression;
@@ -66,19 +66,19 @@ namespace Obsidian.Transforming
             _Scopes.Push(scope);
         }
 
-        public JinjaEnvironment Environment { get; }
-        private Stack<CompiledScope> _Scopes = new Stack<CompiledScope>();
-        public CompiledScope CurrentScope => _Scopes.Peek();
+        internal JinjaEnvironment Environment { get; }
+        private readonly Stack<CompiledScope> _Scopes = new Stack<CompiledScope>();
+        internal CompiledScope CurrentScope => _Scopes.Peek();
 
-        public void PushScope(string name)
+        internal void PushScope(string name)
         {
             _Scopes.Push(CurrentScope.CreateCompiledChild(name));
         }
-        public BlockExpression PopScope(string name, Expression childOne, params Expression[] children)
+        internal BlockExpression PopScope(string name, Expression childOne, params Expression[] children)
         {
             return PopScope(name, childOne.YieldOne().Concat(children));
         }
-        public BlockExpression PopScope(string name, IEnumerable<Expression> children)
+        internal BlockExpression PopScope(string name, IEnumerable<Expression> children)
         {
             var scope = _Scopes.Pop();
             var block = scope.CloseScope(children.ToArray());
@@ -111,7 +111,9 @@ namespace Obsidian.Transforming
             var expression = Environment.Evaluation.ToExpression(item.Expression, CurrentScope);
             if (item.Output)
             {
+#if DEBUG
                 return IfRenderMode(ExpressionEx.Console.Write(expression), Expression.Empty());
+#endif
             }
             return expression;
         }
@@ -124,6 +126,7 @@ namespace Obsidian.Transforming
 
         public Expression Transform(OutputNode item)
         {
+
             var direct = ExpressionEx.Console.Write(item.Value);
             var renderAtCompletion = ExpressionEx.Console.Write($"Render at completion: {item.GetType().Name} {item.Value}");
             return IfRenderMode(direct, renderAtCompletion);
@@ -131,7 +134,6 @@ namespace Obsidian.Transforming
 
         public Expression Transform(WhiteSpaceNode item)
         {
-            return Expression.Empty();
             return ExpressionEx.Console.Write(item.ToString());
         }
 
@@ -232,14 +234,18 @@ namespace Obsidian.Transforming
                 Expression.IfThen(
                     Expression.Equal(SelfEx.TemplateQueueCount(SelfVar), Expression.Constant(0)),
                     Expression.Break(breakLabel)
-                ),
-                ExpressionEx.Console.Write("Queue Count: "),
+                )
+#if DEBUG
+                ,ExpressionEx.Console.Write("Queue Count: "),
                 ExpressionEx.Console.WriteLine(SelfEx.TemplateQueueCount(SelfVar)),
+#endif
                 //Expression.Constant(SelfEx.DequeueTemplate(SelfVar)),
 
                 //ExpressionEx.Console.WriteLine(SelfEx.DequeueTemplate(SelfVar)),
+#if DEBUG
                 ExpressionEx.Console.Write("Queue Count: "),
                 ExpressionEx.Console.WriteLine(SelfEx.TemplateQueueCount(SelfVar))
+#endif
             );
 
             var loop = Expression.Loop(loopBody, breakLabel);
@@ -341,3 +347,6 @@ namespace Obsidian.Transforming
         }
     }
 }
+
+
+#endif

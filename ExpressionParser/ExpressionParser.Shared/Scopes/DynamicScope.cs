@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
@@ -6,9 +6,9 @@ using System.Text;
 
 namespace ExpressionParser.Scopes
 {
-    public class DynamicScope : IScope
+    internal class DynamicScope : IScope
     {
-        public DynamicScope(string name, DynamicScope parent)
+        internal DynamicScope(string name, DynamicScope parent)
         {
             Name = name;
             DynamicParent = parent;
@@ -26,20 +26,20 @@ namespace ExpressionParser.Scopes
         }
 
         public IScope? ParentScope => DynamicParent;
-        public DynamicScope? DynamicParent { get; }
+        internal DynamicScope? DynamicParent { get; }
 
         public string? Name { get; }
 
         public bool IsRootScope => ParentScope == null;
 
 
-        private Dictionary<string, object?> _Variables = new Dictionary<string, object?>();
+        private readonly Dictionary<string, object?> _Variables = new Dictionary<string, object?>();
 
 
 
-        public static DynamicScope CreateRootScope(string? name, IDictionary<string, object?> variables)
+        internal static DynamicScope CreateRootScope(string? name, IDictionary<string, object?> variables)
         {
-            var scope = new DynamicScope(name, null);
+            var scope = new DynamicScope(name);
             foreach(var key in variables.Keys)
             {
                 scope.DefineAndSetVariable(key, variables[key]);
@@ -67,18 +67,18 @@ namespace ExpressionParser.Scopes
             throw new NotImplementedException();
         }
 
-        public void DefineAndSetVariable(string name, object? valueToSet)
+        internal void DefineAndSetVariable(string name, object? valueToSet)
         {
             _Variables.Add(name, valueToSet);
         }
 
-        public bool TryGetVariable(string name, out object? value)
+        internal bool TryGetVariable(string name, out object? value)
         {
             if (_Variables.TryGetValue(name, out value)) return true;
             if (DynamicParent == null) return false;
             return DynamicParent.TryGetVariable(name, out value);
         }
-        public bool TryGetVariable<T>(string name, out T? value) where T : class
+        internal bool TryGetVariable<T>(string name, out T? value) where T : class
         {
             value = default;
             if(TryGetVariable(name, out var objVariableValue))

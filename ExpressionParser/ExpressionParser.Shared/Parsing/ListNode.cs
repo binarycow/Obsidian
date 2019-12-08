@@ -8,16 +8,18 @@ using System.Diagnostics;
 namespace ExpressionParser.Parsing
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public class ListNode : ASTNode
+#pragma warning disable CA1812 // Avoid uninstantiated internal classes
+    internal class ListNode : ASTNode
+#pragma warning restore CA1812 // Avoid uninstantiated internal classes
     {
-        public ListNode(IEnumerable<ASTNode> listItems) : base(listItems.SelectMany(child => child.Tokens))
+        internal ListNode(IEnumerable<ASTNode> listItems) : base(listItems.SelectMany(child => child.Tokens))
         {
             ListItems = listItems.ToArrayWithoutInstantiation();
         }
 
-        public ASTNode[] ListItems { get; }
+        internal ASTNode[] ListItems { get; }
 
-        public override string DebuggerDisplay => $"[{string.Join(",", ListItems.Select(item => item.DebuggerDisplay))}]";
+        internal override string DebuggerDisplay => $"[{string.Join(",", ListItems.Select(item => item.DebuggerDisplay))}]";
 
         public override TOutput Transform<TOutput>(INodeTransformVisitor<TOutput> visitor)
         {
