@@ -208,6 +208,10 @@ Obsidian.JinjaEnvironment.JinjaEnvironment(Obsidian.BaseLoader loader = null) ->
 Obsidian.JinjaEnvironment.Loader.get -> Obsidian.BaseLoader
 Obsidian.JinjaEnvironment.Loader.set -> void
 Obsidian.JinjaEnvironment.Settings.get -> Obsidian.EnvironmentSettings
+Obsidian.JinjaUserDefinedFunction
+Obsidian.JinjaUserDefinedFunction.arguments.get -> System.Collections.ObjectModel.ReadOnlyCollection<string>
+Obsidian.JinjaUserDefinedFunction.caller.get -> bool
+Obsidian.JinjaUserDefinedFunction.name.get -> string
 System.Collections.Generic.EnumerableExtensions
 override Common.Numerical.Equals(object obj) -> bool
 override Common.Numerical.GetHashCode() -> int
@@ -298,6 +302,8 @@ static ExpressionParser.Configuration.OperatorDefinition.CreateMethod(string sta
 static ExpressionParser.Configuration.OperatorDefinition.CreateMethod(string startText, ExpressionParser.Lexing.TokenType secondaryTokenType, ExpressionParser.Lexing.TokenType argSeperator, ExpressionParser.Lexing.TokenType endText, int precedence) -> ExpressionParser.Configuration.OperatorDefinition
 static ExpressionParser.Configuration.OperatorDefinition.CreatePipeline(string text, int precedence) -> ExpressionParser.Configuration.OperatorDefinition
 static ExpressionParser.Configuration.OperatorDefinition.CreateUnary(string text, int precedence, ExpressionParser.Configuration.OperatorType operatorType) -> ExpressionParser.Configuration.OperatorDefinition
+static Obsidian.JinjaUserDefinedFunction.catch_kwargs.get -> bool
+static Obsidian.JinjaUserDefinedFunction.catch_varargs.get -> bool
 static System.Collections.Generic.EnumerableExtensions.Concat<T>(this System.Collections.Generic.IEnumerable<T> source, T item) -> System.Collections.Generic.IEnumerable<T>
 static System.Collections.Generic.EnumerableExtensions.FirstOrDefaultValueType<T>(this System.Collections.Generic.IEnumerable<T> source, System.Func<T, bool> predicate) -> T?
 static System.Collections.Generic.EnumerableExtensions.NonNullItems<T>(this System.Collections.Generic.IEnumerable<T> source) -> System.Collections.Generic.IEnumerable<T>

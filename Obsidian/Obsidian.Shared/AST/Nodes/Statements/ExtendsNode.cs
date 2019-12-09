@@ -40,9 +40,9 @@ namespace Obsidian.AST.Nodes.MiscNodes
         }
 
         [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>")]
-        internal static bool TryParseExtends(Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
+        internal static bool TryParseExtends(JinjaEnvironment environment, Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
         {
-            _ = ExtendsParser.TryParse(enumerator.Current, out parsedNode);
+            _ = ExtendsParser.TryParse(environment, enumerator.Current, out parsedNode);
             return parsedNode != default;
         }
         private static class ExtendsParser
@@ -55,7 +55,7 @@ namespace Obsidian.AST.Nodes.MiscNodes
                 Done,
             }
 
-            internal static bool TryParse(ParsingNode currentNode, [NotNullWhen(true)]out ASTNode? parsedNode)
+            internal static bool TryParse(JinjaEnvironment environment, ParsingNode currentNode, [NotNullWhen(true)]out ASTNode? parsedNode)
             {
                 using var enumerator = LookaroundEnumeratorFactory.CreateLookaroundEnumerator(currentNode.Tokens);
                 parsedNode = default;
@@ -103,7 +103,7 @@ namespace Obsidian.AST.Nodes.MiscNodes
                     }
                 }
                 var templateName = string.Join(string.Empty, templateQueue.Select(token => token.Value)).Trim();
-                parsedNode = new ExtendsNode(templateName, ExpressionNode.FromString(templateName), currentNode);
+                parsedNode = new ExtendsNode(templateName, ExpressionNode.FromString(environment, templateName), currentNode);
                 return true;
             }
         }

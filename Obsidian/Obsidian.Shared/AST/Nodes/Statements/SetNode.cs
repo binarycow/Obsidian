@@ -51,7 +51,7 @@ namespace Obsidian.AST.Nodes.Statements
             return visitor.Transform(this, force);
         }
 
-        internal static bool TryParseSet(Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
+        internal static bool TryParseSet(JinjaEnvironment environment, Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
         {
             parsedNode = default;
             if (SetParser.StartBlock.TryParse(enumerator.Current) == false)
@@ -73,7 +73,7 @@ namespace Obsidian.AST.Nodes.Statements
             }
 
             enumerator.MoveNext();
-            var contents = ASTGenerator.ParseUntilFailure(lexer, enumerator).ToArray();
+            var contents = ASTGenerator.ParseUntilFailure(environment, lexer, enumerator).ToArray();
 
 
             if (SetParser.EndBlock.TryParse(enumerator.Current) == false)

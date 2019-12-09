@@ -128,5 +128,10 @@ namespace ExpressionParser.Transforming.Nodes
             var initExpressions = listItems.Select(item => Expression.ElementInit(addMethod, item));
             return Expression.ListInit(newExpression, initExpressions);
         }
+
+        public Expression Transform(PipelineMethodGroup item)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

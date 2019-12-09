@@ -7,24 +7,27 @@ using System.Text;
 
 namespace Obsidian
 {
-    internal class JinjaUserDefinedFunction : UserDefinedFunction
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores", Justification = "<Pending>")]
+    public class JinjaUserDefinedFunction : UserDefinedFunction
     {
-        internal JinjaUserDefinedFunction(FunctionDeclaration declaration, UserDefinedFunctionDelegate body) : base(declaration, body)
+        internal JinjaUserDefinedFunction(FunctionDeclaration declaration, UserDefinedFunctionDelegate body, 
+            bool usesCaller = false) : base(declaration, body)
         {
             name = declaration.Name;
             arguments = new ReadOnlyCollection<string>(declaration.Arguments.Select(arg => arg.Name).ToArray());
+            caller = usesCaller;
         }
-        internal string name { get; }
-        internal ReadOnlyCollection<string> arguments { get; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
-        internal static bool catch_kwargs => true; // TODO: Implement this!
+        public string name { get; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
-        internal static bool catch_varargs => true; // TODO: Implement this!
+        public ReadOnlyCollection<string> arguments { get; }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
-        internal static bool caller => true; // TODO: Implement this!
+        public static bool catch_kwargs => true; // TODO: Implement this!
+
+        public static bool catch_varargs => true; // TODO: Implement this!
+
+        public bool caller { get; }
 
         protected override object? Invoke(UserDefinedArgumentData argumentData)
         {

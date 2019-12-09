@@ -45,6 +45,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\TemplateNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\StateMachine.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Block.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CallerFinderVisitor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CommentRemover\CommentRemoverTransformer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DynamicContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DynamicRootContext.cs" />

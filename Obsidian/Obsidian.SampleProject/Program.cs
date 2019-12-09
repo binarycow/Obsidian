@@ -20,7 +20,7 @@ namespace Obsidian.SampleProject
             //AutomaticTest(TestRunner.TestItems["Basic Tests"]["Basic Template"]);
             //AutomaticTest(TestRunner.TestItems["Basic Tests"]["Raw"]);
             //AutomaticTest(TestRunner.TestItems["Basic Tests"]["Inheritance"]);
-            //AutomaticTest(TestRunner.TestItems["Macros"]["Basic Macro"]);
+            AutomaticTest(TestRunner.TestItems["Macros"]["Basic Macro"]);
             //AutomaticTest(TestRunner.TestItems["Macros"]["Call Macro"]);
             //AutomaticTest(TestRunner.TestItems["Macros"]["Call Macro With Params"]);
             //AutomaticTest(TestRunner.TestItems["Feature Tests"]["Null Master Fallback"]["Standalone"]);
@@ -38,7 +38,7 @@ namespace Obsidian.SampleProject
             //AutomaticTest(TestRunner.TestItems["Filters"]["Filters - Basic"]);
             //AutomaticTest(TestRunner.TestItems["Filters"]["Filters - Batch"]);
 
-            ManualTest(false, false);
+            //ManualTest(false, false);
 
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("Done.");
@@ -50,13 +50,17 @@ namespace Obsidian.SampleProject
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0059:Unnecessary assignment of a value", Justification = "<Pending>")]
         static void AutomaticTest(Item test, bool outputStartEndMarkers = true)
         {
-            TestRunner.TestTemplate(test, out var actualOutput, out var expectedOutput);
+            TestRunner.TestTemplate(test, out var actualOutput, out var expectedOutput, out var templateText);
             //TestRunner.CheckOriginalText(test, out var actualOutput, out var expectedOutput);
 
             var rootPath = Path.GetFullPath(Path.Combine("..","..",".."));
 
-            //File.WriteAllText(Path.Combine(rootPath,"actual.txt"), actualOutput);
-            //File.WriteAllText(Path.Combine(rootPath, "expected.txt"), expectedOutput);
+            File.WriteAllText(Path.Combine(rootPath, "actual.txt"), actualOutput);
+            File.WriteAllText(Path.Combine(rootPath, "expected.txt"), expectedOutput);
+            if(templateText != null)
+            {
+                File.WriteAllText(Path.Combine(rootPath, "originalTemplateText.txt"), templateText);
+            }
 
             Console.WriteLine("==================================== ACTUAL =====================================");
             WriteLines(actualOutput);
@@ -116,10 +120,8 @@ namespace Obsidian.SampleProject
             }
         }
 
-
-
-
-        static void ManualTest(bool lstripBlocks, bool trimBlocks)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
+        public static void ManualTest(bool lstripBlocks, bool trimBlocks)
         {
             Console.WriteLine($"LStripBlocks : {lstripBlocks}");
             Console.WriteLine($"TrimBlocks : {trimBlocks}");

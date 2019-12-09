@@ -73,5 +73,10 @@ namespace ExpressionParser.Transforming.Nodes
             var listItems = item.ListItems.Select(listItem => listItem.Transform(this));
             return Common.ReflectionHelpers.MakeGenericList(listItems);
         }
+
+        public object? Transform(PipelineMethodGroup item)
+        {
+            return item.FunctionDefinition.Invoke(new object?[] { item.ReferredObject });
+        }
     }
 }

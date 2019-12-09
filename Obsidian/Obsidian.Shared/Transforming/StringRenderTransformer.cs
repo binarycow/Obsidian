@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Common;
 using ExpressionParser;
@@ -239,6 +240,9 @@ namespace Obsidian.Transforming
                 throw new NotImplementedException();
             }
 
+            var usesCaller = item.Contents.Transform(CallerFinderVisitor.Instance).Any(x => x);
+
+
             Func<UserDefinedArgumentData, object?> func = arguments =>
             {
                 using var checkout = StringBuilderPool.Instance.Checkout();
@@ -261,7 +265,9 @@ namespace Obsidian.Transforming
                 return stringBuilder.ToString();
             };
             UserDefinedFunction.UserDefinedFunctionDelegate del = args => func(args);
-            Scopes.Current.DefineAndSetVariable(functionDeclaration.Name, new JinjaUserDefinedFunction(functionDeclaration, del));
+
+
+            Scopes.Current.DefineAndSetVariable(functionDeclaration.Name, new JinjaUserDefinedFunction(functionDeclaration, del, usesCaller));
 
             yield break;
         }

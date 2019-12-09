@@ -38,11 +38,23 @@ namespace ExpressionParser
             where TScope : DynamicScope
             where TRootScope : TScope
         {
-            var tokens = Lexer.Tokenize(expressionText).ToArray();
-            var astNode = Parser.Parse(tokens);
+            var astNode = Parse(expressionText);
             var transformer = new DynamicTransformer<TScope, TRootScope>(scopeStack, LanguageDefinition);
-            return astNode.Transform(transformer);
+
+            var result = astNode.Transform(transformer);
+            while(result is IEvaluatable evaluatable)
+            {
+                result = evaluatable.Transform(transformer);
+            }
+            return result;
         }
+
+        internal ASTNode Parse(string expressionText)
+        {
+            var tokens = Lexer.Tokenize(expressionText).ToArray();
+            return Parser.Parse(tokens);
+        }
+
 
         internal Expression ToExpression(string expressionText, CompiledScope scope)
         {

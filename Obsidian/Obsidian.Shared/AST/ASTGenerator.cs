@@ -12,13 +12,13 @@ namespace Obsidian.AST
 {
     internal class ASTGenerator
     {
-        internal static TemplateNode ParseTemplate(Lexer lexer, IEnumerable<ParsingNode> source)
+        internal static TemplateNode ParseTemplate(JinjaEnvironment environment, Lexer lexer, IEnumerable<ParsingNode> source)
         {
             using var enumerator = LookaroundEnumeratorFactory.CreateLookaroundEnumerator(source, 10);
 
             while (enumerator.MoveNext())
             {
-                var nodes = ParseUntilFailure(lexer, enumerator).ToArray();
+                var nodes = ParseUntilFailure(environment, lexer, enumerator).ToArray();
                 if (enumerator.TryGetNext(out var nextNode))
                 {
                     throw new NotImplementedException();
@@ -28,7 +28,7 @@ namespace Obsidian.AST
 
             throw new NotImplementedException();
         }
-        internal static IEnumerable<ASTNode> ParseUntilFailure(Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator)
+        internal static IEnumerable<ASTNode> ParseUntilFailure(JinjaEnvironment environment, Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator)
         {
             do
             {
@@ -36,7 +36,7 @@ namespace Obsidian.AST
                 switch (enumerator.Current.NodeType)
                 {
                     case ParsingNodeType.Statement:
-                        StatementNode.TryParse(lexer, enumerator, out astNode);
+                        StatementNode.TryParse(environment, lexer, enumerator, out astNode);
                         break;
                     case ParsingNodeType.NewLine:
                         astNode = new NewLineNode(enumerator.Current);
@@ -48,7 +48,7 @@ namespace Obsidian.AST
                         astNode = WhiteSpaceNode.Parse(enumerator);
                         break;
                     case ParsingNodeType.Expression:
-                        if (ExpressionNode.TryParse(enumerator, out astNode) == false)
+                        if (ExpressionNode.TryParse(environment, enumerator, out astNode) == false)
                         {
                             throw new NotImplementedException();
                         }

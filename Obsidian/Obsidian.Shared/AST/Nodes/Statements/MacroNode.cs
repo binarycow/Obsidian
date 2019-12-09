@@ -42,7 +42,7 @@ namespace Obsidian.AST.Nodes.Statements
             visitor.Transform(this);
         }
 
-        internal static bool TryParseMacro(Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
+        internal static bool TryParseMacro(JinjaEnvironment environment, Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
         {
             parsedNode = default;
 
@@ -57,7 +57,7 @@ namespace Obsidian.AST.Nodes.Statements
             }
             var startParsingNode = enumerator.Current;
             enumerator.MoveNext();
-            var contents = ASTGenerator.ParseUntilFailure(lexer, enumerator).ToArray();
+            var contents = ASTGenerator.ParseUntilFailure(environment, lexer, enumerator).ToArray();
             if (MacroParser.EndBlock.TryParse(enumerator.Current, out var insideEnd, out var outsideEnd) == false)
             {
                 throw new NotImplementedException();

@@ -16,9 +16,9 @@ namespace ExpressionParser
         internal enum MemberTypes
         {
             None = 0,
-            Field,
-            Property,
-            StringIndexer
+            Field = 1,
+            Property = 2,
+            StringIndexer = 4,
         }
 
         private static bool FastHasFlag(MemberTypes left, MemberTypes right)

@@ -14,16 +14,21 @@ namespace Obsidian.AST.Nodes
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
     internal class ExpressionNode : ASTNode
     {
-        internal ExpressionNode(ParsingNode parsingNode, string expression) : base(parsingNode)
+        internal ExpressionNode(JinjaEnvironment environment, ParsingNode parsingNode, string expression) : base(parsingNode)
         {
             Expression = expression;
+            ExpressionParserNode = environment.Evaluation.Parse(expression);
         }
 
-        private ExpressionNode(string expression) : base(new ParsingNode(ParsingNodeType.Expression, new[] { new Token(TokenType.Unknown, expression) }))
+        private ExpressionNode(JinjaEnvironment environment, string expression) : base(new ParsingNode(ParsingNodeType.Expression, new[] { new Token(TokenType.Unknown, expression) }))
         {
             Expression = expression;
             Output = false;
+            ExpressionParserNode = environment.Evaluation.Parse(expression);
         }
+
+
+        public ExpressionParser.Parsing.ASTNode ExpressionParserNode { get; }
 
         internal string Expression { get; }
         internal bool Output { get; } = true;
@@ -43,14 +48,14 @@ namespace Obsidian.AST.Nodes
         {
             visitor.Transform(this);
         }
-        internal static bool TryParse(ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
+        internal static bool TryParse(JinjaEnvironment environment, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
         {
-            return ExpressionNodeParser.TryParse(enumerator, out parsedNode);
+            return ExpressionNodeParser.TryParse(environment, enumerator, out parsedNode);
         }
 
-        internal static ExpressionNode FromString(string expression)
+        internal static ExpressionNode FromString(JinjaEnvironment environment, string expression)
         {
-            return new ExpressionNode(expression);
+            return new ExpressionNode(environment, expression);
         }
 
         private static class ExpressionNodeParser
@@ -65,11 +70,11 @@ namespace Obsidian.AST.Nodes
             }
 
 
-            internal static bool TryParse(ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
+            internal static bool TryParse(JinjaEnvironment environment, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
             {
-                return TryParse(enumerator.Current, out parsedNode);
+                return TryParse(environment, enumerator.Current, out parsedNode);
             }
-            internal static bool TryParse(ParsingNode node, [NotNullWhen(true)]out ASTNode? parsedNode)
+            internal static bool TryParse(JinjaEnvironment environment, ParsingNode node, [NotNullWhen(true)]out ASTNode? parsedNode)
             {
                 parsedNode = default;
                 using var enumerator = LookaroundEnumeratorFactory.CreateLookaroundEnumerator(node.Tokens, 1);
@@ -139,7 +144,7 @@ namespace Obsidian.AST.Nodes
                     }
                 }
                 var expression = string.Join(string.Empty, expressionQueue.Select(token => token.Value)).Trim();
-                parsedNode = new ExpressionNode(node, expression);
+                parsedNode = new ExpressionNode(environment, node, expression);
                 return true;
             }
         }

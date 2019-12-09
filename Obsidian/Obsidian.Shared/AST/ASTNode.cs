@@ -74,7 +74,7 @@ namespace Obsidian.AST
             var tokens = lexer.Tokenize(templateText).ToArray();
             var parsed = Parser.Parse(tokens).ToArray();
             var outputCombined = OutputCombiner.CombineOutput(parsed);
-            ASTNode templateNode = ASTGenerator.ParseTemplate(lexer, outputCombined);
+            ASTNode templateNode = ASTGenerator.ParseTemplate(environment, lexer, outputCombined);
             //templateNode = templateNode.Transform(CommentRemoverTransformer.Instance);
             templateNode = WhiteSpaceController.ControlWhiteSpace(environment, templateNode);
 
@@ -88,7 +88,7 @@ namespace Obsidian.AST
             var tokens = lexer.Tokenize(templateText).ToArray();
             var parsed = Parser.Parse(tokens).ToArray();
             var outputCombined = OutputCombiner.CombineOutput(parsed);
-            ASTNode templateNode = ASTGenerator.ParseTemplate(lexer, outputCombined);
+            ASTNode templateNode = ASTGenerator.ParseTemplate(environment, lexer, outputCombined);
 
             var stringBuilder = new StringBuilder();
             templateNode.ToOriginalText(stringBuilder);

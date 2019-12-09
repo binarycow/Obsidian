@@ -45,7 +45,7 @@ namespace Obsidian.AST.Nodes.Statements
             visitor.Transform(this);
         }
 
-        internal static bool TryParseCall(Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
+        internal static bool TryParseCall(JinjaEnvironment environment, Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
         {
             parsedNode = default;
 
@@ -60,7 +60,7 @@ namespace Obsidian.AST.Nodes.Statements
             }
             var startParsingNode = enumerator.Current;
             enumerator.MoveNext();
-            var contents = ASTGenerator.ParseUntilFailure(lexer, enumerator).ToArray();
+            var contents = ASTGenerator.ParseUntilFailure(environment, lexer, enumerator).ToArray();
             if (CallParser.EndBlock.TryParse(enumerator.Current, out var insideEnd, out var outsideEnd) == false)
             {
                 return false;
@@ -73,7 +73,9 @@ namespace Obsidian.AST.Nodes.Statements
             if (TryParseCallDefinition(lexer, callDefinition, out var callArgumentList, out var macroCall) == false) throw new NotImplementedException();
 
 
-            parsedNode = new CallNode(startParsingNode, ExpressionNode.FromString(callArgumentList), ExpressionNode.FromString(macroCall), contentsNode, endParsingNode,
+            parsedNode = new CallNode(startParsingNode, 
+                ExpressionNode.FromString(environment, callArgumentList), 
+                ExpressionNode.FromString(environment, macroCall), contentsNode, endParsingNode,
                 new WhiteSpaceControlSet(outsideStart, outsideEnd)
             );
             return true;

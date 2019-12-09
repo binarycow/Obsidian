@@ -31,6 +31,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\LexingException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\ParseException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionEval.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IEvaluatable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Localization\ExpressionParserStrings.Designer.cs">
       <DependentUpon>ExpressionParserStrings.resx</DependentUpon>
       <DesignTime>True</DesignTime>
