@@ -9,6 +9,7 @@
     <Import_RootNamespace>Obsidian</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)ArgumentNameCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\ASTGenerator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\ASTNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\CallParser.cs" />

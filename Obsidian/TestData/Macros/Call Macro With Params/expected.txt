@@ -1,7 +1,5 @@
 
 
-dump_users.caller: True
-
 <ul>
         <li><p>donald.duck</p>
     <dl>

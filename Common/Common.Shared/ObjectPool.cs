@@ -11,6 +11,7 @@ namespace Common
             _CheckedOut = new Lazy<ConcurrentDictionary<CheckoutObject<T>, byte>>();
             _CreationFunction = creationFunction;
             _ClearAction = clearAction;
+
         }
 
 

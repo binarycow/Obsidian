@@ -154,6 +154,9 @@ ExpressionParser.UserDefinedFunction.Body.get -> ExpressionParser.UserDefinedFun
 ExpressionParser.UserDefinedFunction.Declaration.get -> ExpressionParser.FunctionDeclaration
 ExpressionParser.UserDefinedFunction.UserDefinedFunction(ExpressionParser.FunctionDeclaration declaration, ExpressionParser.UserDefinedFunction.UserDefinedFunctionDelegate body) -> void
 ExpressionParser.UserDefinedFunction.UserDefinedFunctionDelegate
+Obsidian.ArgumentNameCollection
+Obsidian.ArgumentNameCollection.ArgumentNameCollection(System.Collections.Generic.IEnumerable<string> source) -> void
+Obsidian.ArgumentNameCollection.GetEnumerator() -> System.Collections.Generic.IEnumerator<string>
 Obsidian.BaseLoader
 Obsidian.BaseLoader.BaseLoader() -> void
 Obsidian.EnvironmentSettings
@@ -209,7 +212,7 @@ Obsidian.JinjaEnvironment.Loader.get -> Obsidian.BaseLoader
 Obsidian.JinjaEnvironment.Loader.set -> void
 Obsidian.JinjaEnvironment.Settings.get -> Obsidian.EnvironmentSettings
 Obsidian.JinjaUserDefinedFunction
-Obsidian.JinjaUserDefinedFunction.arguments.get -> System.Collections.ObjectModel.ReadOnlyCollection<string>
+Obsidian.JinjaUserDefinedFunction.arguments.get -> Obsidian.ArgumentNameCollection
 Obsidian.JinjaUserDefinedFunction.caller.get -> bool
 Obsidian.JinjaUserDefinedFunction.name.get -> string
 System.Collections.Generic.EnumerableExtensions

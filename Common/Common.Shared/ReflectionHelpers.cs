@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -87,15 +88,46 @@ namespace Common
             return tested;
         }
 
-
-        internal static bool TryGetIEnumerable(object? enumerableObject, [NotNullWhen(true)]out IEnumerable<object?>? items)
+        internal static bool TryGetIDictionary(object item, out IEnumerable<KeyValuePair<object, object?>> dictionary)
         {
-            items = default;
-            var type = enumerableObject?.GetType() ?? typeof(object);
+            dictionary = Enumerable.Empty<KeyValuePair<object, object?>>();
+            var type = item?.GetType() ?? typeof(object);
 
+            if (type.IsAssignableToGenericType(typeof(IDictionary<,>), out var _) == false) return false;
+
+            var keys = type.GetProperty("Keys").GetValue(item);
+            var indexer = type.GetProperty("Item");
+            if (TryGetIEnumerable(keys, out var keyObjects) == false || keyObjects == null) return false;
+
+            var list = new List<KeyValuePair<object, object?>>();
+
+            foreach(var key in keyObjects)
+            {
+                if (key == null) continue;
+                list.Add(new KeyValuePair<object, object?>(key, indexer.GetValue(item, new[] { key })));
+            }
+            dictionary = list;
+            return true;
+        }
+
+        internal static bool TryGetIEnumerable(object? enumerableObject, out IEnumerable<object?> items)
+        {
+            items = Enumerable.Empty<object?>();
+            var type = enumerableObject?.GetType() ?? typeof(object);
             if (type.IsAssignableToGenericType(typeof(IEnumerable<>), out var _) == false) return false;
-            
-            throw new NotImplementedException();
+            var list = new List<object?>();
+
+            var enumerator = type.GetMethod("GetEnumerator").Invoke(enumerableObject, Array.Empty<object>());
+            var moveNextMethod = enumerator.GetType().GetMethod("MoveNext");
+            var currentProperty = enumerator.GetType().GetProperty("Current");
+
+            while(Convert.ToBoolean(moveNextMethod.Invoke(enumerator, Array.Empty<object>()), CultureInfo.InvariantCulture))
+            {
+                list.Add(currentProperty.GetValue(enumerator));
+            }
+
+            items = list;
+            return true;
         }
 
         internal static bool IsTuple(object? obj, out PropertyInfo[] tupleProperties)

@@ -19,6 +19,11 @@ namespace Common
         private readonly Dictionary<Type, Func<object, string>> _Dictionary = new Dictionary<Type, Func<object, string>>();
 
 
+        internal virtual string FormatIDictionary(IEnumerable<KeyValuePair<object, object?>> dictionary)
+        {
+            return dictionary?.ToString() ?? DefaultValue;
+        }
+
         internal virtual string FormatTuple(object? tuple, PropertyInfo[] tupleProperties)
         {
             return tuple?.ToString() ?? DefaultValue;
@@ -54,7 +59,12 @@ namespace Common
             {
                 return str;
             }
-            // Check if its "IEnumerable" or "IEnumerable<T>"
+
+
+            if(ReflectionHelpers.TryGetIDictionary(item, out var idictionaryT))
+            {
+                return FormatIDictionary(idictionaryT);
+            }
 
             if (item is IEnumerable enumerable)
             {

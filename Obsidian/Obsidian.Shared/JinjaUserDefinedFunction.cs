@@ -15,13 +15,13 @@ namespace Obsidian
             bool usesCaller = false) : base(declaration, body)
         {
             name = declaration.Name;
-            arguments = new ReadOnlyCollection<string>(declaration.Arguments.Select(arg => arg.Name).ToArray());
+            arguments = new ArgumentNameCollection(declaration.Arguments.Select(arg => arg.Name).ToArray());
             caller = usesCaller;
         }
 
         public string name { get; }
 
-        public ReadOnlyCollection<string> arguments { get; }
+        public ArgumentNameCollection arguments { get; }
 
         public static bool catch_kwargs => true; // TODO: Implement this!
 

@@ -1,5 +1,6 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using ExpressionParser;
 using Obsidian.ExpressionParserExt;
@@ -14,8 +15,42 @@ namespace Obsidian.SampleProject
             { "standalone", false },
         };
 
+        private static void UpdateExpected()
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("Updating 'Expected' files with Python script");
+            Console.ForegroundColor = ConsoleColor.Gray;
+            var workingDirectory = Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "..", "..", "..", "Python", "Python"));
+
+            using var process = new Process()
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = @"C:\Program Files (x86)\Microsoft Visual Studio\Shared\Python37_64\python",
+                    WorkingDirectory = workingDirectory,
+                    Arguments = Path.Combine(workingDirectory, "Python.py"),
+                    RedirectStandardInput = true,
+                    RedirectStandardError = true,
+                    RedirectStandardOutput = true,
+                }
+            };
+            process.Start();
+            Console.WriteLine(process.StandardOutput.ReadToEnd() + process.StandardError.ReadToEnd());
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("Finished.");
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+            Console.WriteLine();
+        }
+
         static void Main()
         {
+            UpdateExpected();
+
             TestRunner.Init(TestRunner.TestFileName);
             //AutomaticTest(TestRunner.TestItems["Basic Tests"]["Basic Template"]);
             //AutomaticTest(TestRunner.TestItems["Basic Tests"]["Raw"]);
@@ -80,7 +115,7 @@ namespace Obsidian.SampleProject
             {
                 foreach(var line in text.Split('\n'))
                 {
-                    Console.WriteLine($"{(outputStartEndMarkers ? "|" : "")}{line}{(outputStartEndMarkers ? "|" : "")}");
+                    Console.WriteLine($"{(outputStartEndMarkers ? "►" : "")}{line}{(outputStartEndMarkers ? "◄" : "")}");
                 }
             }
 
