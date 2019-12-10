@@ -53,7 +53,33 @@ namespace Obsidian.AST.NodeParsers
         private readonly Lazy<Dictionary<State<TState>, Queue<Queue<Token>>>> _Accumulations = new Lazy<Dictionary<State<TState>, Queue<Queue<Token>>>>();
         private Dictionary<State<TState>, Queue<Queue<Token>>> Accumulations => _Accumulations.Value;
 
+        private readonly Lazy<Dictionary<string, (Type Type, object? Value)>> _Variables = new Lazy<Dictionary<string, (Type Type, object? Value)>>();
+
+
+        private Dictionary<string, (Type Type, object? Value)> Variables => _Variables.Value;
+
+
         internal Queue<(WhiteSpacePosition position, WhiteSpaceMode mode)> WhiteSpace { get; } = new Queue<(WhiteSpacePosition position, WhiteSpaceMode mode)>();
+
+        internal bool TryGetVariable<TType>(string name, out TType returnedObject)
+        {
+            returnedObject = default!;
+            if (Variables.TryGetValue(name, out var tuple) == false)
+            {
+                return false;
+            }
+            if (tuple.Type != typeof(TType)) throw new NotImplementedException();
+            returnedObject = (TType)tuple.Value!;
+            return true;
+        }
+        internal TType GetVariable<TType>(string name, TType defaultValue)
+        {
+            if(TryGetVariable<TType>(name, out var returnedValue) == false)
+            {
+                return defaultValue;
+            }
+            return returnedValue;
+        }
 
         internal bool TryGetAccumulation(TState? state, int index, out string accumulation)
         {
@@ -178,6 +204,9 @@ namespace Obsidian.AST.NodeParsers
                     return PerformAction(whiteSpaceAction);
                 case ReturnStateAction<TState> returnAction:
                     returnResult = returnAction.Result;
+                    return true;
+                case SetAction<TState> setAction:
+                    Variables.Upsert(setAction.Name, (setAction.Type, setAction.Value));
                     return true;
                 default:
                     throw new NotImplementedException();

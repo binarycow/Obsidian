@@ -34,15 +34,28 @@ namespace ExpressionParser
         internal Lexer Lexer { get; }
         internal Parser Parser { get; }
 
+        internal DynamicTransformer<TScope, TRootScope> CreateDynamicTransformer<TScope, TRootScope>(ScopeStack<TScope, TRootScope> scopeStack)
+            where TScope : DynamicScope
+            where TRootScope : TScope
+        {
+            return new DynamicTransformer<TScope, TRootScope>(scopeStack, LanguageDefinition);
+        }
+
+
         internal object? EvaluateDynamic<TScope, TRootScope>(string expressionText, ScopeStack<TScope, TRootScope> scopeStack) 
             where TScope : DynamicScope
             where TRootScope : TScope
         {
             var astNode = Parse(expressionText);
-            var transformer = new DynamicTransformer<TScope, TRootScope>(scopeStack, LanguageDefinition);
-
+            var transformer = CreateDynamicTransformer(scopeStack);
+            return EvaluateDynamic(astNode, transformer);
+        }
+        internal object? EvaluateDynamic<TScope, TRootScope>(ASTNode astNode, DynamicTransformer<TScope, TRootScope> transformer)
+            where TScope : DynamicScope
+            where TRootScope : TScope
+        {
             var result = astNode.Transform(transformer);
-            while(result is IEvaluatable evaluatable)
+            while (result is IEvaluatable evaluatable)
             {
                 result = evaluatable.Transform(transformer);
             }

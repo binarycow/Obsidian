@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Threading;
 using ExpressionParser;
 using Obsidian.ExpressionParserExt;
 using Obsidian.TestCore;
@@ -53,7 +54,7 @@ namespace Obsidian.SampleProject
 
         static void Main()
         {
-            UpdateExpected();
+            //UpdateExpected();
 
             TestRunner.Init(TestRunner.TestFileName);
             //AutomaticTest(TestRunner.TestItems["Basic Tests"]["Basic Template"]);
@@ -73,29 +74,39 @@ namespace Obsidian.SampleProject
             //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["LStrip"]);
             //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["LStrip And Trim"]);
             //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["Manual Strip"]);
-            //AutomaticTest(TestRunner.TestItems["Filters"]["Filters - A-E"]);
+            //AutomaticTest(TestRunner.TestItems["Filters"]["Filters - A-F"]);
             //AutomaticTest(TestRunner.TestItems["Filters"]["Filters - Basic"]);
             //AutomaticTest(TestRunner.TestItems["Filters"]["Filters - Batch"]);
-
-            ManualTest(false, false);
+            //AutomaticTest(TestRunner.TestItems["Filters"]["Filters - DictSort"]);
+            //AutomaticTest(TestRunner.TestItems["Filters"]["Filters - Abs"]);
+            //AutomaticTest(TestRunner.TestItems["Filters"]["Filters - Format"]);
+            //AutomaticTest(TestRunner.TestItems["Include"]["Basic"]);
+            AutomaticTest(TestRunner.TestItems["Include"]["Ignore Missing"]["Actually Missing"]);
+            //AutomaticTest(TestRunner.TestItems["Include"]["Ignore Missing"]["Actually Present"]);
+            //AutomaticTest(TestRunner.TestItems["Include"]["Multiple Templates"]["First Missing"]);
+            //AutomaticTest(TestRunner.TestItems["Include"]["Multiple Templates"]["First Present"]);
+            //AutomaticTest(TestRunner.TestItems["Include"]["Context"]["With Context"]);
+            //AutomaticTest(TestRunner.TestItems["Include"]["Context"]["Without Context"]);
+            //ManualTest(false, false);
 
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("Done.");
-            Console.ForegroundColor = ConsoleColor.Gray;
-            Console.ReadKey();
+                Console.WriteLine("Done.");
+                Console.ForegroundColor = ConsoleColor.Gray;
+                Console.ReadKey();
         }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0059:Unnecessary assignment of a value", Justification = "<Pending>")]
         static void AutomaticTest(Item test, bool outputStartEndMarkers = true)
         {
+            var dateTime = DateTime.Now;
             TestRunner.TestTemplate(test, out var actualOutput, out var expectedOutput, out var templateText);
             //TestRunner.CheckOriginalText(test, out var actualOutput, out var expectedOutput);
 
             var rootPath = Path.GetFullPath(Path.Combine("..","..",".."));
 
-            File.WriteAllText(Path.Combine(rootPath, "actual.txt"), actualOutput);
-            File.WriteAllText(Path.Combine(rootPath, "expected.txt"), expectedOutput);
+            FileEx.WriteAllText(Path.Combine(rootPath, "actual.txt"), $"{dateTime:O}{Environment.NewLine}{actualOutput}");
+            FileEx.WriteAllText(Path.Combine(rootPath, "expected.txt"), $"{dateTime:O}{Environment.NewLine}{expectedOutput}");
             if(templateText != null)
             {
                 File.WriteAllText(Path.Combine(rootPath, "originalTemplateText.txt"), templateText);

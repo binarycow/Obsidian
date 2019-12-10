@@ -215,6 +215,8 @@ Obsidian.JinjaUserDefinedFunction
 Obsidian.JinjaUserDefinedFunction.arguments.get -> Obsidian.ArgumentNameCollection
 Obsidian.JinjaUserDefinedFunction.caller.get -> bool
 Obsidian.JinjaUserDefinedFunction.name.get -> string
+Obsidian.Loaders.DictLoader
+Obsidian.Loaders.DictLoader.DictLoader(System.Collections.Generic.IDictionary<string, string> templates) -> void
 Obsidian.LoopInfoClass<T>
 Obsidian.LoopInfoClass<T>.LoopInfoClass(T[] array, int currentindex) -> void
 Obsidian.LoopInfoClass<T>.first.get -> bool

@@ -1,11 +1,21 @@
+using Obsidian.Exceptions;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Obsidian
 {
     public abstract class BaseLoader
     {
-        internal abstract TemplateInfo GetSource(JinjaEnvironment environment, string templateName);
+        internal abstract bool TryGetSource(JinjaEnvironment environment, string templateName, [NotNullWhen(true)]out TemplateInfo? templateInfo);
+        internal TemplateInfo GetSource(JinjaEnvironment environment, string templateName)
+        {
+            if(TryGetSource(environment, templateName, out var templateInfo) == false || templateInfo == null)
+            {
+                throw new TemplateNotFoundException(templateName);
+            }
+            return templateInfo.Value;
+        }
 
         private readonly Dictionary<string, ITemplate> _TemplateCache = new Dictionary<string, ITemplate>();
 

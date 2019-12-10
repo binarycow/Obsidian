@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 
@@ -7,6 +8,17 @@ namespace System
 {
     internal static class StringExtensions
     {
+
+        internal static string CapitalizeFirstLetter(this string str)
+        {
+            if (str.Length == 0) return str;
+            if (str.Length == 1) return str.ToUpper(CultureInfo.InvariantCulture);
+            return str[0].ToUpper().Concat(str.Substring(1));
+        }
+        internal static string CapitalizeFirstLetterOfEachWord(this string str)
+        {
+            return string.Join(" ", str.Split(' ').Select(part => part.CapitalizeFirstLetter()));
+        }
 
         internal static string[] Split(this string str, string seperator)
         {

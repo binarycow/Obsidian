@@ -109,9 +109,7 @@ namespace Obsidian
         {
             if (args.TryGetArgumentValue<string>("s", out var obj) == false) throw new NotImplementedException();
             var originalString = obj.ToString(CultureInfo.InvariantCulture);
-            if (originalString.Length == 0) return originalString;
-            if (originalString.Length == 1) return originalString.ToUpper(CultureInfo.InvariantCulture);
-            return originalString[0].ToUpper().Concat(originalString.Substring(1));
+            return originalString.CapitalizeFirstLetter();
         }
         internal static object? Center(UserDefinedArgumentData args)
         {
@@ -129,19 +127,28 @@ namespace Obsidian
         }
         internal static object? Default(UserDefinedArgumentData args)
         {
-            if (args.TryGetArgumentValue<string>("value", out var value) == false) throw new NotImplementedException();
-            var defaultValue = args.GetArgumentValue<object?>("default_value", "");
-            var boolean = args.GetArgumentValue<bool>("boolean", false);
+            if (args.TryGetArgumentValue("value", out var value) == false) throw new NotImplementedException();
+            var defaultValue = args.GetArgumentValue("default_value", "");
+            var boolean = args.GetArgumentValue("boolean", false);
+
+            object? result = null;
 
             if (boolean)
             {
-                return value switch
+                switch(value)
                 {
-                    string strVal => string.IsNullOrEmpty(strVal),
-                    _ => throw new NotImplementedException(),
-                };
+                    case string strVal:
+                        result = string.IsNullOrEmpty(strVal) ? defaultValue : strVal;
+                        break;
+                    default:
+                        throw new NotImplementedException();
+                }
             }
-            return value ?? defaultValue;
+            else
+            {
+                result = value ?? defaultValue;
+            }
+            return result;
         }
 
 
@@ -161,7 +168,7 @@ namespace Obsidian
 
         internal static object? FilesizeFormat(UserDefinedArgumentData args)
         {
-            if (args.TryGetArgumentValue<Numerical>("value", out var i) == false) throw new NotImplementedException();
+            if (args.TryGetArgumentValue<long>("value", out var i) == false) throw new NotImplementedException();
             if (args.TryGetArgumentValue<bool>("binary", out var binary) == false) throw new NotImplementedException();
 
             if (binary)
@@ -179,32 +186,32 @@ namespace Obsidian
                 // Determine the suffix and readable value
                 string suffix;
                 double readable;
-                if (absolute_i >= 0x1000000000000000) // Exabyte
+                if (absolute_i >= 1_000_000_000_000_000_000) // Exabyte
                 {
                     suffix = "EB";
-                    readable = (i >> 50);
+                    readable = (i / 1_000_000_000_000_000);
                 }
-                else if (absolute_i >= 0x4000000000000) // Petabyte
+                else if (absolute_i >= 1_000_000_000_000_000) // Petabyte
                 {
                     suffix = "PB";
-                    readable = (i >> 40);
+                    readable = (i / 1_000_000_000_000);
                 }
-                else if (absolute_i >= 0x10000000000) // Terabyte
+                else if (absolute_i >= 1_000_000_000_000) // Terabyte
                 {
                     suffix = "TB";
-                    readable = (i >> 30);
+                    readable = (i / 1_000_000_000);
                 }
-                else if (absolute_i >= 0x40000000) // Gigabyte
+                else if (absolute_i >= 1_000_000_000) // Gigabyte
                 {
                     suffix = "GB";
-                    readable = (i >> 20);
+                    readable = (i / 1_000_000);
                 }
-                else if (absolute_i >= 0x100000) // Megabyte
+                else if (absolute_i >= 1_000_000) // Megabyte
                 {
                     suffix = "MB";
-                    readable = (i >> 10);
+                    readable = (i / 1_000);
                 }
-                else if (absolute_i >= 0x400) // Kilobyte
+                else if (absolute_i >= 1_000) // Kilobyte
                 {
                     suffix = "KB";
                     readable = i;
@@ -214,9 +221,9 @@ namespace Obsidian
                     return $"{i:0} B";
                 }
                 // Divide by 1024 to get fractional value
-                readable = (readable / 1024);
+                readable = (readable / 1000);
                 // Return formatted number with suffix
-                return $"{readable:0.###} {suffix}";
+                return $"{readable:0.#} {suffix}";
             }
 
             string Binary()
@@ -229,32 +236,32 @@ namespace Obsidian
                 double readable;
                 if (absolute_i >= 0x1000000000000000) // Exabyte
                 {
-                    suffix = "EB";
+                    suffix = "EiB";
                     readable = (i >> 50);
                 }
                 else if (absolute_i >= 0x4000000000000) // Petabyte
                 {
-                    suffix = "PB";
+                    suffix = "PiB";
                     readable = (i >> 40);
                 }
                 else if (absolute_i >= 0x10000000000) // Terabyte
                 {
-                    suffix = "TB";
+                    suffix = "TiB";
                     readable = (i >> 30);
                 }
                 else if (absolute_i >= 0x40000000) // Gigabyte
                 {
-                    suffix = "GB";
+                    suffix = "GiB";
                     readable = (i >> 20);
                 }
                 else if (absolute_i >= 0x100000) // Megabyte
                 {
-                    suffix = "MB";
+                    suffix = "MiB";
                     readable = (i >> 10);
                 }
                 else if (absolute_i >= 0x400) // Kilobyte
                 {
-                    suffix = "KB";
+                    suffix = "KiB";
                     readable = i;
                 }
                 else
@@ -264,7 +271,7 @@ namespace Obsidian
                 // Divide by 1024 to get fractional value
                 readable = (readable / 1024);
                 // Return formatted number with suffix
-                return $"{readable:0.###} {suffix}";
+                return $"{readable:0.#} {suffix}";
             }
         }
 
@@ -278,11 +285,18 @@ namespace Obsidian
         internal static object? Float(UserDefinedArgumentData args)
         {
             if (args.TryGetArgumentValue("value", out var value) == false) throw new NotImplementedException();
-            if (args.TryGetArgumentValue<Numerical>("default", out var def) == false) throw new NotImplementedException();
+            if (args.TryGetArgumentValue<double>("default", out var def) == false) throw new NotImplementedException();
+
+            if(value is string stringValue)
+            {
+                return double.TryParse(stringValue, out var doubleValue) ? doubleValue : def;
+            }
+
 
             if (Numerical.TryCreate(value, out var numerical))
             {
-                return numerical.Value.ToDouble();
+                var result = numerical.Value.ToDouble();
+                return result;
             }
             return def;
         }
@@ -292,7 +306,7 @@ namespace Obsidian
         }
         internal static object? Format(UserDefinedArgumentData args)
         {
-            return string.Empty;
+            throw new NotImplementedException();
         }
 
 

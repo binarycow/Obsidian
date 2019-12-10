@@ -2,6 +2,7 @@ using Common;
 using Obsidian.AST.Nodes;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -14,6 +15,7 @@ namespace Obsidian
         {
             Register<ContainerNode>(containerNode => $"{nameof(ContainerNode)}");
             Register<ArgumentNameCollection>(argCollection => $"({string.Join(", ", argCollection.Select(arg => $"'{arg}'"))})");
+            RegisterValueType<double>(doubleVal => doubleVal.ToString("0.0###########", CultureInfo.InvariantCulture));
         }
 
         private static readonly Lazy<JinjaCustomStringProvider> _Instance = new Lazy<JinjaCustomStringProvider>(() => new JinjaCustomStringProvider());

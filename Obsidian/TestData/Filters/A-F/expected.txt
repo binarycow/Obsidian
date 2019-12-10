@@ -1,5 +1,3 @@
-  
-
   person|attr("name"): John Smith
 
   seq|batch(3, 'XXX'):
@@ -88,7 +86,7 @@
   
 </table>
 
-  "Hello World!"|capitalize: Hello world!
+  "hello world!"|capitalize: Hello world!
 
   "Hello World!"|center:                                   Hello World!                                  
 
@@ -103,8 +101,6 @@
   'Test'|default('the string was empty', True): Test
 
   'Test'|d('the string was empty', True): Test
-
-  
 
   "&<>'\""|escape: &amp;&lt;&gt;&#39;&#34;
 
@@ -127,5 +123,3 @@
   "&amp;&lt;&gt;&#39;&#34;"|forceescape: &amp;amp;&amp;lt;&amp;gt;&amp;#39;&amp;#34;
 
   "&<>'\""|forceescape: &amp;&lt;&gt;&#39;&#34;
-
-  "%s - %s"|format("Hello?", "Foo!"): Hello? - Foo!

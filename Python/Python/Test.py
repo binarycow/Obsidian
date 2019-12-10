@@ -12,7 +12,7 @@ class Person:
         return "Jacob Smith"
 
 envArgs = { 
-    'trim_blocks': True
+    #'trim_blocks': True
 }
 variables = {
     'seq': [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ],
@@ -31,7 +31,7 @@ env = Environment(
     loader=FileSystemLoader("C:\Source\Obsidian\Python\Python"), **envArgs #,
     #autoescape=select_autoescape(['html', 'xml'])
 )
-template = env.get_template("Test.txt")
+template = env.get_template("template.html")
 output = template.render(**variables)
 lines = output.splitlines()
 

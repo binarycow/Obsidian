@@ -73,9 +73,11 @@ namespace System
         {
             return c switch
             {
-                '>' => "&lt;",
-                '<' => "&gt;",
+                '>' => "&gt;",
+                '<' => "&lt;",
                 '&' => "&amp;",
+                '\'' => "&#39;",
+                '"' => "&#34;",
                 _ => c.ToString(CultureInfo.InvariantCulture)
             };
         }

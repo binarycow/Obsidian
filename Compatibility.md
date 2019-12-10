@@ -38,9 +38,9 @@ Tests are not currently implemented.
 
 Comments are fully supported.
 
-#### ❌ WhiteSpace Control 
+#### ℹ️ WhiteSpace Control 
 
-WhiteSpace Control is not currently implemented.
+WhiteSpace Control works for the most part, but there may be some control structures or cases where I did not properly account for it.
 
 #### ✅ Escaping 
 
@@ -70,7 +70,7 @@ Inheritence works... but extra output is displayed...  This is the feature I'm c
 
 #### ✅ Super Blocks 
 
-#### ❌ Named Block End-Tags 
+#### ✅ Named Block End-Tags 
 
 #### ❌ Block Scope 
 
@@ -102,17 +102,15 @@ Inheritence works... but extra output is displayed...  This is the feature I'm c
 
 ### ✅ If
 
-### ❌ Macros
+### ✅ Macros
 
-### ❌ Call
+### ✅ Call
 
-### ℹ️ Assignments
+### ✅ Assignments
 
-I have only performed limited testing on this feature
+### ✅ Block Assignments
 
-### ❌ Block Assignments
-
-### ❌ Include
+### ✅ Include
 
 ### ❌ Import
 
@@ -124,9 +122,9 @@ I have only performed limited testing on this feature
 
 - ℹ️ **String Literals** - Use the C# syntax for string or character literals.
 - ✅ **Numeric Literals** - Numeric literals follow the C# syntax
-- ❌ **List Literals** - Not supported
-- ❌ **Tuple Literals** - Not supported
-- ❌ **Dict Literals** - Not supported
+- ✅ **List Literals** - Not supported
+- ✅ **Tuple Literals** - Not supported
+- ✅ **Dict Literals** - Not supported
 - ✅ **Boolean Literals** - the values `true` and `True` can be used for a true value, and `false` and `False` can be used for a false value
 - ✅ **Null/None Literals** - The values `none` and `None` can be used to represent a null/none value.
 

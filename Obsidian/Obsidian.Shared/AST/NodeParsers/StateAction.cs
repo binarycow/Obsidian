@@ -35,6 +35,11 @@ namespace Obsidian.AST.NodeParsers
             _Actions.Add(new MoveToStateAction<TState>(this, nextState));
             return this;
         }
+        internal StateAction<TState> Set<TType>(string name, TType value)
+        {
+            _Actions.Add(new SetAction<TState>(this, name, typeof(TType), value));
+            return this;
+        }
         internal StateAction<TState> SetWhiteSpaceMode(WhiteSpacePosition position, WhiteSpaceMode mode)
         {
             _Actions.Add(new SetWhiteSpaceAction<TState>(this, position, mode));
@@ -144,8 +149,22 @@ namespace Obsidian.AST.NodeParsers
             Mode = mode;
         }
 
-        internal WhiteSpacePosition Position { get;  }
+        internal WhiteSpacePosition Position { get; }
         internal WhiteSpaceMode Mode { get; }
+    }
+    internal class SetAction<TState> : AbstractAction<TState> where TState : struct, Enum
+    {
+        internal override string DebuggerDisplay => $".Set<{Type.Name}>({Name}, {Value})";
+        internal SetAction(StateAction<TState> parent, string name, Type type, object? value) : base(parent)
+        {
+            Name = name;
+            Type = type;
+            Value = value;
+        }
+
+        internal string Name { get; }
+        internal Type Type { get; }
+        internal object? Value { get; }
     }
 
 }

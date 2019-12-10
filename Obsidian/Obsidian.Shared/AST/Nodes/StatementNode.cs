@@ -33,7 +33,8 @@ namespace Obsidian.AST.Nodes
             MacroNode.TryParseMacro,
             CallNode.TryParseCall,
             FilterNode.TryParseFilter,
-            SetNode.TryParseSet
+            SetNode.TryParseSet,
+            IncludeNode.TryParseInclude,
         };
 
         internal static bool TryParse(JinjaEnvironment environment, Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)

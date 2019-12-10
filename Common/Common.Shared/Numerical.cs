@@ -1544,7 +1544,7 @@ namespace Common
         {
             return this.Type switch
             {
-                NumericalType.SignedByte => this._Sbyte,
+                NumericalType.SignedByte => _Sbyte,
                 NumericalType.UnsignedByte => this._Byte,
                 NumericalType.SignedShort => this._Short,
                 NumericalType.UnsignedShort => this._Ushort,

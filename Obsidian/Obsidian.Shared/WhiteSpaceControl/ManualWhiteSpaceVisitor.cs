@@ -155,5 +155,10 @@ namespace Obsidian.WhiteSpaceControl
         {
             SetTrim();
         }
+
+        public void Transform(IncludeNode item, bool inner = false)
+        {
+            SetTrim();
+        }
     }
 }

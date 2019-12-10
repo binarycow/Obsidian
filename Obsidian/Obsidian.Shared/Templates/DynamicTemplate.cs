@@ -25,6 +25,10 @@ namespace Obsidian.Templates
         public string? TemplatePath { get; }
         internal TemplateNode TemplateNode { get; }
 
+        public string Render()
+        {
+            return Render(new Dictionary<string, object?>());
+        }
         public string Render(IDictionary<string, object?> variables)
         {
             var renderer = new StringBuilderTransformer(Environment, variables);

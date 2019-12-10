@@ -44,6 +44,14 @@ namespace Common
                 return typed != null ? toStringFunction(typed) : DefaultValue;
             });
         }
+        internal void RegisterValueType<T>(Func<T, string> toStringFunction)
+            where T : struct
+        {
+            _Dictionary.Upsert(typeof(T), obj => {
+                var typed = (T)obj;
+                return toStringFunction(typed);
+            });
+        }
 
         internal string ToString(object? item)
         {

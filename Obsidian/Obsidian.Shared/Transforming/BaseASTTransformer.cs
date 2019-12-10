@@ -118,5 +118,10 @@ namespace Obsidian.Transforming
         {
             throw new NotImplementedException();
         }
+
+        public ASTNode Transform(IncludeNode item)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

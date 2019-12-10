@@ -169,5 +169,10 @@ namespace Obsidian
         {
             throw new NotImplementedException();
         }
+
+        public IEnumerable<bool> Transform(IncludeNode item)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
