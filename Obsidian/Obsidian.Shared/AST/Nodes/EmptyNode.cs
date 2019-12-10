@@ -18,6 +18,10 @@ namespace Obsidian.AST.Nodes
         }
 
 
+        public override void Transform(IManualWhiteSpaceTransformVisitor visitor, bool inner = false)
+        {
+            visitor.Transform(this, inner);
+        }
         public override TOutput Transform<TOutput>(ITransformVisitor<TOutput> visitor)
         {
             return visitor.Transform(this);

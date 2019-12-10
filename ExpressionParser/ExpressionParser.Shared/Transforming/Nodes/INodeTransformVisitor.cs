@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using ExpressionParser.Operators;
 using ExpressionParser.Parsing;
+using ExpressionParser.References;
 
 namespace ExpressionParser.Transforming.Nodes
 {
@@ -16,5 +17,8 @@ namespace ExpressionParser.Transforming.Nodes
         TOutput Transform(DictionaryNode item);
         TOutput Transform(TupleNode item);
         TOutput Transform(ListNode item);
+
+        TOutput Transform(PipelineMethodGroup item);
+
     }
 }

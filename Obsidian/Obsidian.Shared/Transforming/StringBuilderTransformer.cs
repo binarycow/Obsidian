@@ -28,114 +28,113 @@ namespace Obsidian.Transforming
 
 
 
-
-
-
-        public void Transform(TemplateNode item)
+        private void TransformASTNode(ASTNode astNode)
         {
-            foreach(var output in item.Transform(StringRenderTransformer))
+            foreach (var output in astNode.Transform(StringRenderTransformer))
             {
                 StringBuilder.Append(output);
             }
         }
 
+
+        public void Transform(TemplateNode item)
+        {
+            TransformASTNode(item);
+        }
+
         public void Transform(ForNode item)
         {
-            throw new NotImplementedException();
+            TransformASTNode(item);
         }
 
         public void Transform(ContainerNode item)
         {
-            throw new NotImplementedException();
+            TransformASTNode(item);
         }
 
         public void Transform(RawNode item)
         {
-            throw new NotImplementedException();
+            TransformASTNode(item);
         }
 
 
 
         public void Transform(CallNode item)
         {
-            throw new NotImplementedException();
+            TransformASTNode(item);
         }
 
 
         public void Transform(MacroNode item)
         {
-            throw new NotImplementedException();
+            TransformASTNode(item);
         }
         public void Transform(ExpressionNode item)
         {
-            throw new NotImplementedException();
+            TransformASTNode(item);
         }
 
         public void Transform(SetNode item)
         {
-            throw new NotImplementedException();
+            TransformASTNode(item);
         }
 
 
 
         public void Transform(NewLineNode item)
         {
-            throw new NotImplementedException();
+            TransformASTNode(item);
         }
 
         public void Transform(OutputNode item)
         {
-            throw new NotImplementedException();
+            TransformASTNode(item);
         }
 
         public void Transform(WhiteSpaceNode item)
         {
-            throw new NotImplementedException();
+            TransformASTNode(item);
         }
 
         public void Transform(IfNode item)
         {
-            throw new NotImplementedException();
+            TransformASTNode(item);
         }
 
         public void Transform(ConditionalNode item)
         {
-            throw new NotImplementedException();
+            TransformASTNode(item);
         }
 
         public void Transform(CommentNode item)
         {
-            throw new NotImplementedException();
+            TransformASTNode(item);
         }
 
 
         public void Transform(FilterNode item)
         {
-            throw new NotImplementedException();
+            TransformASTNode(item);
         }
         public void Transform(BlockNode item)
         {
-            throw new NotImplementedException();
+            TransformASTNode(item);
         }
 
         public void Transform(ExtendsNode item)
         {
-            throw new NotImplementedException();
+            TransformASTNode(item);
         }
 
 
-        public void Transform(EmptyNode emptyNode)
+        public void Transform(EmptyNode item)
         {
-            throw new NotImplementedException();
+            TransformASTNode(item);
         }
 
-
-        internal void TransformAll(IEnumerable<ASTNode> items)
+        public void Transform(IncludeNode item)
         {
-            foreach (var item in items)
-            {
-                item.Transform(this);
-            }
+            throw new NotImplementedException();
         }
     }
 }

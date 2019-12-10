@@ -21,6 +21,10 @@ namespace Obsidian.AST.Nodes.MiscNodes
 
         internal ParsingNode[] Children { get; }
 
+        public override void Transform(IManualWhiteSpaceTransformVisitor visitor, bool inner = false)
+        {
+            visitor.Transform(this, inner);
+        }
         public override TOutput Transform<TOutput>(ITransformVisitor<TOutput> visitor)
         {
             return visitor.Transform(this);
@@ -37,7 +41,7 @@ namespace Obsidian.AST.Nodes.MiscNodes
         }
 
         [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>")]
-        internal static bool TryParseRaw(Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
+        internal static bool TryParseRaw(JinjaEnvironment environment, Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
         {
             parsedNode = default;
             

@@ -17,6 +17,10 @@ namespace Obsidian.WhiteSpaceControl
 
         private readonly Queue<WhiteSpaceNode> pendingWhiteSpace = new Queue<WhiteSpaceNode>();
 
+        public LStripBlocksVisitor()
+        {
+        }
+
         public void Transform(TemplateNode item)
         {
             foreach (var child in item.Children)
@@ -126,6 +130,11 @@ namespace Obsidian.WhiteSpaceControl
         }
 
         public void Transform(SetNode item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Transform(IncludeNode item)
         {
             throw new NotImplementedException();
         }

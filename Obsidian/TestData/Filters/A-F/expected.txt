@@ -1,0 +1,125 @@
+  person|attr("name"): John Smith
+
+  seq|batch(3, 'XXX'):
+  <table>
+  
+  <tr>
+    
+    <td>1</td>
+    
+    <td>2</td>
+    
+    <td>3</td>
+    
+  </tr>
+  
+  <tr>
+    
+    <td>4</td>
+    
+    <td>5</td>
+    
+    <td>6</td>
+    
+  </tr>
+  
+  <tr>
+    
+    <td>7</td>
+    
+    <td>8</td>
+    
+    <td>9</td>
+    
+  </tr>
+  
+  <tr>
+    
+    <td>10</td>
+    
+    <td>XXX</td>
+    
+    <td>XXX</td>
+    
+  </tr>
+  
+</table>
+
+  seq|batch(3):
+  <table>
+  
+  <tr>
+    
+    <td>1</td>
+    
+    <td>2</td>
+    
+    <td>3</td>
+    
+  </tr>
+  
+  <tr>
+    
+    <td>4</td>
+    
+    <td>5</td>
+    
+    <td>6</td>
+    
+  </tr>
+  
+  <tr>
+    
+    <td>7</td>
+    
+    <td>8</td>
+    
+    <td>9</td>
+    
+  </tr>
+  
+  <tr>
+    
+    <td>10</td>
+    
+  </tr>
+  
+</table>
+
+  "hello world!"|capitalize: Hello world!
+
+  "Hello World!"|center:                                   Hello World!                                  
+
+  "Hello World!"|center(40):               Hello World!              
+
+  my_variable|default('my_variable is not defined'): my_variable is not defined
+
+  seq|default('my_variable is not defined'): [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+  ''|default('the string was empty', True): the string was empty
+
+  'Test'|default('the string was empty', True): Test
+
+  'Test'|d('the string was empty', True): Test
+
+  "&<>'\""|escape: &amp;&lt;&gt;&#39;&#34;
+
+  "&<>'\""|e: &amp;&lt;&gt;&#39;&#34;
+
+  123456789|filesizeformat: 123.5 MB
+
+  123456789|filesizeformat(true): 117.7 MiB
+
+  seq|first: 1
+  
+  "12.24"|float: 12.24
+
+  "12.24"|float(-1.0): 12.24
+
+  "12.24A"|float: 0.0
+
+  "12.24A"|float(-1.0): -1.0
+
+  "&amp;&lt;&gt;&#39;&#34;"|forceescape: &amp;amp;&amp;lt;&amp;gt;&amp;#39;&amp;#34;
+
+  "&<>'\""|forceescape: &amp;&lt;&gt;&#39;&#34;

@@ -154,6 +154,9 @@ ExpressionParser.UserDefinedFunction.Body.get -> ExpressionParser.UserDefinedFun
 ExpressionParser.UserDefinedFunction.Declaration.get -> ExpressionParser.FunctionDeclaration
 ExpressionParser.UserDefinedFunction.UserDefinedFunction(ExpressionParser.FunctionDeclaration declaration, ExpressionParser.UserDefinedFunction.UserDefinedFunctionDelegate body) -> void
 ExpressionParser.UserDefinedFunction.UserDefinedFunctionDelegate
+Obsidian.ArgumentNameCollection
+Obsidian.ArgumentNameCollection.ArgumentNameCollection(System.Collections.Generic.IEnumerable<string> source) -> void
+Obsidian.ArgumentNameCollection.GetEnumerator() -> System.Collections.Generic.IEnumerator<string>
 Obsidian.BaseLoader
 Obsidian.BaseLoader.BaseLoader() -> void
 Obsidian.EnvironmentSettings
@@ -208,6 +211,23 @@ Obsidian.JinjaEnvironment.JinjaEnvironment(Obsidian.BaseLoader loader = null) ->
 Obsidian.JinjaEnvironment.Loader.get -> Obsidian.BaseLoader
 Obsidian.JinjaEnvironment.Loader.set -> void
 Obsidian.JinjaEnvironment.Settings.get -> Obsidian.EnvironmentSettings
+Obsidian.JinjaUserDefinedFunction
+Obsidian.JinjaUserDefinedFunction.arguments.get -> Obsidian.ArgumentNameCollection
+Obsidian.JinjaUserDefinedFunction.caller.get -> bool
+Obsidian.JinjaUserDefinedFunction.name.get -> string
+Obsidian.Loaders.DictLoader
+Obsidian.Loaders.DictLoader.DictLoader(System.Collections.Generic.IDictionary<string, string> templates) -> void
+Obsidian.LoopInfoClass<T>
+Obsidian.LoopInfoClass<T>.LoopInfoClass(T[] array, int currentindex) -> void
+Obsidian.LoopInfoClass<T>.first.get -> bool
+Obsidian.LoopInfoClass<T>.index.get -> int
+Obsidian.LoopInfoClass<T>.index0.get -> int
+Obsidian.LoopInfoClass<T>.last.get -> bool
+Obsidian.LoopInfoClass<T>.length.get -> int
+Obsidian.LoopInfoClass<T>.nextitem.get -> T
+Obsidian.LoopInfoClass<T>.previtem.get -> T
+Obsidian.LoopInfoClass<T>.revindex.get -> int
+Obsidian.LoopInfoClass<T>.revindex0.get -> int
 System.Collections.Generic.EnumerableExtensions
 override Common.Numerical.Equals(object obj) -> bool
 override Common.Numerical.GetHashCode() -> int
@@ -298,6 +318,8 @@ static ExpressionParser.Configuration.OperatorDefinition.CreateMethod(string sta
 static ExpressionParser.Configuration.OperatorDefinition.CreateMethod(string startText, ExpressionParser.Lexing.TokenType secondaryTokenType, ExpressionParser.Lexing.TokenType argSeperator, ExpressionParser.Lexing.TokenType endText, int precedence) -> ExpressionParser.Configuration.OperatorDefinition
 static ExpressionParser.Configuration.OperatorDefinition.CreatePipeline(string text, int precedence) -> ExpressionParser.Configuration.OperatorDefinition
 static ExpressionParser.Configuration.OperatorDefinition.CreateUnary(string text, int precedence, ExpressionParser.Configuration.OperatorType operatorType) -> ExpressionParser.Configuration.OperatorDefinition
+static Obsidian.JinjaUserDefinedFunction.catch_kwargs.get -> bool
+static Obsidian.JinjaUserDefinedFunction.catch_varargs.get -> bool
 static System.Collections.Generic.EnumerableExtensions.Concat<T>(this System.Collections.Generic.IEnumerable<T> source, T item) -> System.Collections.Generic.IEnumerable<T>
 static System.Collections.Generic.EnumerableExtensions.FirstOrDefaultValueType<T>(this System.Collections.Generic.IEnumerable<T> source, System.Func<T, bool> predicate) -> T?
 static System.Collections.Generic.EnumerableExtensions.NonNullItems<T>(this System.Collections.Generic.IEnumerable<T> source) -> System.Collections.Generic.IEnumerable<T>

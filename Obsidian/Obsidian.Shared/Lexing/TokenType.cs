@@ -50,5 +50,11 @@ namespace Obsidian.Lexing
         Keyword_Set,
         Keyword_EndSet,
         Equal,
+        Keyword_Include,
+        Keyword_Ignore,
+        Keyword_Missing,
+        Keyword_With,
+        Keyword_Without,
+        Keyword_Context,
     }
 }

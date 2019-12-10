@@ -9,6 +9,7 @@
     <Import_RootNamespace>Obsidian</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)ArgumentNameCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\ASTGenerator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\ASTNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\CallParser.cs" />
@@ -16,6 +17,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\FilterParser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\ForParser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\IfParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\IncludeParser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\MacroParser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\RawParser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\SetParser.cs" />
@@ -40,11 +42,13 @@
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\Statements\FilterNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\Statements\ForNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\Statements\IfNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\Statements\IncludeNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\Statements\MacroNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\Statements\SetNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\TemplateNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\StateMachine.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Block.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CallerFinderVisitor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CommentRemover\CommentRemoverTransformer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DynamicContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DynamicRootContext.cs" />
@@ -52,6 +56,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)DynamicSelf.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)JinjaCustomStringProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)JinjaUserDefinedFunction.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Loaders\DictLoader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ObsidianStrings.Designer.cs">
       <DependentUpon>ObsidianStrings.resx</DependentUpon>
       <DesignTime>True</DesignTime>
@@ -73,6 +78,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)JinjaLanguageDefinition.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Lexing\Lexer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Lexing\Token.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\IManualWhiteSpaceTransformVisitor.cs" />
     <Compile Include="..\Obsidian.Shared\Lexing\TokenType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Loaders\BaseLoader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Loaders\FileSystemLoader.cs" />

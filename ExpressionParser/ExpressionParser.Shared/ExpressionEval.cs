@@ -34,15 +34,40 @@ namespace ExpressionParser
         internal Lexer Lexer { get; }
         internal Parser Parser { get; }
 
+        internal DynamicTransformer<TScope, TRootScope> CreateDynamicTransformer<TScope, TRootScope>(ScopeStack<TScope, TRootScope> scopeStack)
+            where TScope : DynamicScope
+            where TRootScope : TScope
+        {
+            return new DynamicTransformer<TScope, TRootScope>(scopeStack, LanguageDefinition);
+        }
+
+
         internal object? EvaluateDynamic<TScope, TRootScope>(string expressionText, ScopeStack<TScope, TRootScope> scopeStack) 
             where TScope : DynamicScope
             where TRootScope : TScope
         {
-            var tokens = Lexer.Tokenize(expressionText).ToArray();
-            var astNode = Parser.Parse(tokens);
-            var transformer = new DynamicTransformer<TScope, TRootScope>(scopeStack, LanguageDefinition);
-            return astNode.Transform(transformer);
+            var astNode = Parse(expressionText);
+            var transformer = CreateDynamicTransformer(scopeStack);
+            return EvaluateDynamic(astNode, transformer);
         }
+        internal object? EvaluateDynamic<TScope, TRootScope>(ASTNode astNode, DynamicTransformer<TScope, TRootScope> transformer)
+            where TScope : DynamicScope
+            where TRootScope : TScope
+        {
+            var result = astNode.Transform(transformer);
+            while (result is IEvaluatable evaluatable)
+            {
+                result = evaluatable.Transform(transformer);
+            }
+            return result;
+        }
+
+        internal ASTNode Parse(string expressionText)
+        {
+            var tokens = Lexer.Tokenize(expressionText).ToArray();
+            return Parser.Parse(tokens);
+        }
+
 
         internal Expression ToExpression(string expressionText, CompiledScope scope)
         {

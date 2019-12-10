@@ -45,6 +45,10 @@ namespace Obsidian.AST.Nodes.MiscNodes
             visitor.Transform(this);
         }
 
+        public override void Transform(IManualWhiteSpaceTransformVisitor visitor, bool inner = false)
+        {
+            visitor.Transform(this, inner);
+        }
         public override TOutput Transform<TOutput>(IForceTransformVisitor<TOutput> visitor, bool force)
         {
             return visitor.Transform(this, force);

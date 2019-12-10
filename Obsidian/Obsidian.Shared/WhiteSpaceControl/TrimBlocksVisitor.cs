@@ -121,5 +121,10 @@ namespace Obsidian.WhiteSpaceControl
         {
             throw new NotImplementedException();
         }
+
+        public void Transform(IncludeNode item)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -31,6 +31,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\LexingException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\ParseException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionEval.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IEvaluatable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Localization\ExpressionParserStrings.Designer.cs">
       <DependentUpon>ExpressionParserStrings.resx</DependentUpon>
       <DesignTime>True</DesignTime>
@@ -62,8 +63,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Parsing\TupleNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Parsing\UnaryASTNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)References\PipelineMethodGroup.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)References\ScopedFunctionMethodGroup.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Reflection\Array.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionResolver.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ScopedUserDefinedFunction.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ScopeStack.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Scopes\CompiledScope.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Scopes\DynamicScope.cs" />

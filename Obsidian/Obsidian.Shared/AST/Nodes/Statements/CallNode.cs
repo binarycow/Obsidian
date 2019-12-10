@@ -30,6 +30,10 @@ namespace Obsidian.AST.Nodes.Statements
         internal ExpressionNode CallerDefinition { get; }
         public WhiteSpaceControlSet WhiteSpaceControl { get; }
 
+        public override void Transform(IManualWhiteSpaceTransformVisitor visitor, bool inner = false)
+        {
+            visitor.Transform(this, inner);
+        }
         public override TOutput Transform<TOutput>(ITransformVisitor<TOutput> visitor)
         {
             return visitor.Transform(this);
@@ -45,7 +49,7 @@ namespace Obsidian.AST.Nodes.Statements
             visitor.Transform(this);
         }
 
-        internal static bool TryParseCall(Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
+        internal static bool TryParseCall(JinjaEnvironment environment, Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
         {
             parsedNode = default;
 
@@ -60,7 +64,7 @@ namespace Obsidian.AST.Nodes.Statements
             }
             var startParsingNode = enumerator.Current;
             enumerator.MoveNext();
-            var contents = ASTGenerator.ParseUntilFailure(lexer, enumerator).ToArray();
+            var contents = ASTGenerator.ParseUntilFailure(environment, lexer, enumerator).ToArray();
             if (CallParser.EndBlock.TryParse(enumerator.Current, out var insideEnd, out var outsideEnd) == false)
             {
                 return false;
@@ -73,7 +77,9 @@ namespace Obsidian.AST.Nodes.Statements
             if (TryParseCallDefinition(lexer, callDefinition, out var callArgumentList, out var macroCall) == false) throw new NotImplementedException();
 
 
-            parsedNode = new CallNode(startParsingNode, ExpressionNode.FromString(callArgumentList), ExpressionNode.FromString(macroCall), contentsNode, endParsingNode,
+            parsedNode = new CallNode(startParsingNode, 
+                ExpressionNode.FromString(environment, callArgumentList), 
+                ExpressionNode.FromString(environment, macroCall), contentsNode, endParsingNode,
                 new WhiteSpaceControlSet(outsideStart, outsideEnd)
             );
             return true;
@@ -96,7 +102,7 @@ namespace Obsidian.AST.Nodes.Statements
 
             using var enumerator = lexer.Tokenize(callDefinition).GetEnumerator();
             if (enumerator.MoveNext() == false) throw new NotImplementedException();
-            if (enumerator.Current.TokenType != Paren_Open) throw new NotImplementedException();
+            if (enumerator.Current.TokenType != Paren_Open) activeStringBuilder = macroCallStringBuilder;
 
             do
             {
@@ -128,7 +134,9 @@ namespace Obsidian.AST.Nodes.Statements
 
             if (nestingStack.Count != 0) throw new NotImplementedException();
 
-            argumentList = $"caller{argumentListstringBuilder.ToString().Trim()}";
+
+
+            argumentList = argumentListstringBuilder.Length > 0 ? $"caller{argumentListstringBuilder.ToString().Trim()}" : "caller()";
             macroCall = macroCallStringBuilder.ToString().Trim();
             return true;
         }

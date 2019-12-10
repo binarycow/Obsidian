@@ -2,6 +2,8 @@ import json
 from pathlib import Path
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
+
+
 class Person:
     name = "John Smith"
 
@@ -30,6 +32,7 @@ def ProcessCategory(rootPath, category, parentCategories=[]):
     parentCategories.append(category['categoryName'])
     for child in category['children']:
         ProcessTestDictionary(rootPath, child, parentCategories)
+    del parentCategories[-1]
 
 def ProcessTest(rootPath, testCase, parentCategories=[]):
     variables = {}

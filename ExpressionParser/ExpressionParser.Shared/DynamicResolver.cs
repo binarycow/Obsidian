@@ -16,9 +16,9 @@ namespace ExpressionParser
         internal enum MemberTypes
         {
             None = 0,
-            Field,
-            Property,
-            StringIndexer
+            Field = 1,
+            Property = 2,
+            StringIndexer = 4,
         }
 
         private static bool FastHasFlag(MemberTypes left, MemberTypes right)
@@ -37,6 +37,7 @@ namespace ExpressionParser
                 FunctionMethodGroup methodGroup => methodGroup.FunctionDefinition.Invoke(args),
                 UserDefinedFunction userDefinedFunction => userDefinedFunction.Invoke(args),
                 PipelineMethodGroup pipelineGroup => pipelineGroup.FunctionDefinition.Invoke(pipelineGroup.ReferredObject, args),
+                ScopedFunctionMethodGroup scopedMethodGroup => scopedMethodGroup.FunctionDefinition.Invoke(scopeStack.Current, args),
                 _ => throw new NotImplementedException(),
             };
 

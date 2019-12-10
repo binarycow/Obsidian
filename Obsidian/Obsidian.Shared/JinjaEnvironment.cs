@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -78,12 +79,20 @@ namespace Obsidian
 
         private TemplateInfo GetTemplateInfo(string templateName)
         {
+            if(TryGetTemplateInfo(templateName, out var templateInfo) == false || templateInfo == null)
+            {
+                throw new NotImplementedException();
+            }
+            return templateInfo.Value;
+        }
+        private bool TryGetTemplateInfo(string templateName, [NotNullWhen(true)]out TemplateInfo? templateInfo)
+        {
             if (Loader == null)
             {
                 throw new LoaderNotDefinedException();
             }
             Settings.IsReadOnly = true;
-            return Loader.GetSource(this, templateName);
+            return Loader.TryGetSource(this, templateName, out templateInfo);
         }
 
         internal Expression GetTemplateExpression(string templateName, CompiledScope scope)
@@ -95,6 +104,13 @@ namespace Obsidian
         {
             var templateInfo = GetTemplateInfo(templateName);
             return GetDynamicTemplate(templateInfo.Source, templateName, null);
+        }
+        internal bool TryGetDynamicTemplate(string templateName, [NotNullWhen(true)]out DynamicTemplate? template)
+        {
+            template = default;
+            if (TryGetTemplateInfo(templateName, out var templateInfo) == false || templateInfo == null) return false;
+            template = GetDynamicTemplate(templateInfo.Value.Source, templateName, null);
+            return true;
         }
 
     }

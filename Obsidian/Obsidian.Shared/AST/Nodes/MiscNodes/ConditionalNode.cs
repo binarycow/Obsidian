@@ -25,6 +25,10 @@ namespace Obsidian.AST.Nodes.MiscNodes
 
         public WhiteSpaceControlSet WhiteSpaceControl { get; }
 
+        public override void Transform(IManualWhiteSpaceTransformVisitor visitor, bool inner = false)
+        {
+            visitor.Transform(this, inner);
+        }
         public override TOutput Transform<TOutput>(ITransformVisitor<TOutput> visitor)
         {
             return visitor.Transform(this);

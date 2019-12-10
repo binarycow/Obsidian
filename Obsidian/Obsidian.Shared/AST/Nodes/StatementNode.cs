@@ -21,7 +21,7 @@ namespace Obsidian.AST.Nodes
 
         public ASTNode[] Children { get; }
 
-        internal delegate bool TryParseDelegate(Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode);
+        internal delegate bool TryParseDelegate(JinjaEnvironment environment, Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode);
 
         private static readonly TryParseDelegate[] _Delegates = new TryParseDelegate[]
         {
@@ -33,14 +33,15 @@ namespace Obsidian.AST.Nodes
             MacroNode.TryParseMacro,
             CallNode.TryParseCall,
             FilterNode.TryParseFilter,
-            SetNode.TryParseSet
+            SetNode.TryParseSet,
+            IncludeNode.TryParseInclude,
         };
 
-        internal static bool TryParse(Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
+        internal static bool TryParse(JinjaEnvironment environment, Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
         {
             parsedNode = _Delegates.Select(del =>
             {
-                var Result = del(lexer, enumerator, out var ParsedNode);
+                var Result = del(environment, lexer, enumerator, out var ParsedNode);
                 return new
                 {
                     Result,

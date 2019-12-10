@@ -12,34 +12,28 @@ namespace Obsidian
 {
     internal static class JinjaFunctions
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>")]
-        internal static object? Super(UserDefinedArgumentData args)
+        internal static object? Super(IScope scope, UserDefinedArgumentData args)
         {
-            throw new NotImplementedException();
-
-            // TODO: This only works with string render tranformer
-
-            //var rootContext = GetRootContext(scope);
-            //if (rootContext.CurrentBlockName == null) throw new NotImplementedException();
-            //var nextBlock = rootContext.GetBlock(rootContext.CurrentBlockName, (rootContext.CurrentBlockIndex ?? 0) + 1);
-            //if (nextBlock == null) return null;
-            //nextBlock.Transform(rootContext.Transformer);
-            //return string.Empty;
-            //DynamicRootContext GetRootContext(IScope scope)
-            //{
-            //    switch (scope)
-            //    {
-            //        case DynamicRootContext rootContext:
-            //            return rootContext;
-            //        case DynamicContext dynamicContext:
-            //            var root = dynamicContext.FindRootScope();
-            //            if (root is DynamicRootContext dynRoot) return dynRoot;
-            //            throw new NotImplementedException();
-            //        default:
-            //            throw new NotImplementedException();
-            //    }
-
-            //}
+            var rootContext = GetRootContext(scope);
+            if (rootContext.CurrentBlockName == null) throw new NotImplementedException();
+            var nextBlock = rootContext.GetBlock(rootContext.CurrentBlockName, (rootContext.CurrentBlockIndex ?? 0) + 1);
+            if (nextBlock == null) return null;
+            nextBlock.Transform(rootContext.Transformer);
+            return string.Empty;
+            DynamicRootContext GetRootContext(IScope scope)
+            {
+                switch (scope)
+                {
+                    case DynamicRootContext rootContext:
+                        return rootContext;
+                    case DynamicContext dynamicContext:
+                        var root = dynamicContext.FindRootScope();
+                        if (root is DynamicRootContext dynRoot) return dynRoot;
+                        throw new NotImplementedException();
+                    default:
+                        throw new NotImplementedException();
+                }
+            }
         }
         internal static object? Escape(UserDefinedArgumentData args)
         {
@@ -115,9 +109,7 @@ namespace Obsidian
         {
             if (args.TryGetArgumentValue<string>("s", out var obj) == false) throw new NotImplementedException();
             var originalString = obj.ToString(CultureInfo.InvariantCulture);
-            if (originalString.Length == 0) return originalString;
-            if (originalString.Length == 1) return originalString.ToUpper(CultureInfo.InvariantCulture);
-            return originalString[0].ToUpper().Concat(originalString.Substring(1));
+            return originalString.CapitalizeFirstLetter();
         }
         internal static object? Center(UserDefinedArgumentData args)
         {
@@ -135,19 +127,28 @@ namespace Obsidian
         }
         internal static object? Default(UserDefinedArgumentData args)
         {
-            if (args.TryGetArgumentValue<string>("value", out var value) == false) throw new NotImplementedException();
-            var defaultValue = args.GetArgumentValue<object?>("default_value", "");
-            var boolean = args.GetArgumentValue<bool>("boolean", false);
+            if (args.TryGetArgumentValue("value", out var value) == false) throw new NotImplementedException();
+            var defaultValue = args.GetArgumentValue("default_value", "");
+            var boolean = args.GetArgumentValue("boolean", false);
+
+            object? result = null;
 
             if (boolean)
             {
-                return value switch
+                switch(value)
                 {
-                    string strVal => string.IsNullOrEmpty(strVal),
-                    _ => throw new NotImplementedException(),
-                };
+                    case string strVal:
+                        result = string.IsNullOrEmpty(strVal) ? defaultValue : strVal;
+                        break;
+                    default:
+                        throw new NotImplementedException();
+                }
             }
-            return value ?? defaultValue;
+            else
+            {
+                result = value ?? defaultValue;
+            }
+            return result;
         }
 
 
@@ -164,8 +165,149 @@ namespace Obsidian
             return DictionarySorter.SortDictionaryObj(dictionary, by == "key", reverse, caseSensitive);
         }
 
-        
 
+        internal static object? FilesizeFormat(UserDefinedArgumentData args)
+        {
+            if (args.TryGetArgumentValue<long>("value", out var i) == false) throw new NotImplementedException();
+            if (args.TryGetArgumentValue<bool>("binary", out var binary) == false) throw new NotImplementedException();
+
+            if (binary)
+            {
+                return Binary();
+            }
+            return Decimal();
+
+
+            string Decimal()
+            {
+
+                // Get absolute value
+                long absolute_i = (i < 0 ? -i : i);
+                // Determine the suffix and readable value
+                string suffix;
+                double readable;
+                if (absolute_i >= 1_000_000_000_000_000_000) // Exabyte
+                {
+                    suffix = "EB";
+                    readable = (i / 1_000_000_000_000_000);
+                }
+                else if (absolute_i >= 1_000_000_000_000_000) // Petabyte
+                {
+                    suffix = "PB";
+                    readable = (i / 1_000_000_000_000);
+                }
+                else if (absolute_i >= 1_000_000_000_000) // Terabyte
+                {
+                    suffix = "TB";
+                    readable = (i / 1_000_000_000);
+                }
+                else if (absolute_i >= 1_000_000_000) // Gigabyte
+                {
+                    suffix = "GB";
+                    readable = (i / 1_000_000);
+                }
+                else if (absolute_i >= 1_000_000) // Megabyte
+                {
+                    suffix = "MB";
+                    readable = (i / 1_000);
+                }
+                else if (absolute_i >= 1_000) // Kilobyte
+                {
+                    suffix = "KB";
+                    readable = i;
+                }
+                else
+                {
+                    return $"{i:0} B";
+                }
+                // Divide by 1024 to get fractional value
+                readable = (readable / 1000);
+                // Return formatted number with suffix
+                return $"{readable:0.#} {suffix}";
+            }
+
+            string Binary()
+            {
+
+                // Get absolute value
+                long absolute_i = (i < 0 ? -i : i);
+                // Determine the suffix and readable value
+                string suffix;
+                double readable;
+                if (absolute_i >= 0x1000000000000000) // Exabyte
+                {
+                    suffix = "EiB";
+                    readable = (i >> 50);
+                }
+                else if (absolute_i >= 0x4000000000000) // Petabyte
+                {
+                    suffix = "PiB";
+                    readable = (i >> 40);
+                }
+                else if (absolute_i >= 0x10000000000) // Terabyte
+                {
+                    suffix = "TiB";
+                    readable = (i >> 30);
+                }
+                else if (absolute_i >= 0x40000000) // Gigabyte
+                {
+                    suffix = "GiB";
+                    readable = (i >> 20);
+                }
+                else if (absolute_i >= 0x100000) // Megabyte
+                {
+                    suffix = "MiB";
+                    readable = (i >> 10);
+                }
+                else if (absolute_i >= 0x400) // Kilobyte
+                {
+                    suffix = "KiB";
+                    readable = i;
+                }
+                else
+                {
+                    return $"{i:0} B";
+                }
+                // Divide by 1024 to get fractional value
+                readable = (readable / 1024);
+                // Return formatted number with suffix
+                return $"{readable:0.#} {suffix}";
+            }
+        }
+
+
+        internal static object? First(UserDefinedArgumentData args)
+        {
+            if (args.TryGetArgumentValue("seq", out var seq) == false) throw new NotImplementedException();
+            if (ReflectionHelpers.TryGetIEnumerable(seq, out var enumerable) == false) throw new NotImplementedException();
+            return enumerable.First();
+        }
+        internal static object? Float(UserDefinedArgumentData args)
+        {
+            if (args.TryGetArgumentValue("value", out var value) == false) throw new NotImplementedException();
+            if (args.TryGetArgumentValue<double>("default", out var def) == false) throw new NotImplementedException();
+
+            if(value is string stringValue)
+            {
+                return double.TryParse(stringValue, out var doubleValue) ? doubleValue : def;
+            }
+
+
+            if (Numerical.TryCreate(value, out var numerical))
+            {
+                var result = numerical.Value.ToDouble();
+                return result;
+            }
+            return def;
+        }
+        internal static object? ForceEscape(UserDefinedArgumentData args)
+        {
+            return Escape(args);
+        }
+        internal static object? Format(UserDefinedArgumentData args)
+        {
+            throw new NotImplementedException();
+        }
 
 
 

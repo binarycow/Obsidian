@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>b25fc2df-d3de-488c-bbc4-e5062d5e0b12</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>Test.py</StartupFile>
+    <StartupFile>Test2.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -26,8 +26,15 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Python.py" />
+    <Compile Include="Test2.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="footer.html" />
+    <Content Include="header.html" />
+    <Content Include="sidebar.html" />
+    <Content Include="template.html" />
     <Content Include="Test.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />

@@ -10,16 +10,16 @@ namespace ExpressionParser.Configuration
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1812:Avoid uninstantiated internal classes", Justification = "<Pending>")]
     internal class CSharpLanguageDefinition : ILanguageDefinition
     {
-        internal const string STRING_TRUE = "true";
-        internal const string STRING_FALSE = "false";
-        internal const string STRING_NULL = "null";
+        internal const string _STRING_TRUE = "true";
+        internal const string _STRING_FALSE = "false";
+        internal const string _STRING_NULL = "null";
 
 
         public IEnumerable<KeywordDefinition> Keywords => new[]
         {
-            new ValueKeywordDefinition(true, STRING_TRUE),
-            new ValueKeywordDefinition(false, STRING_FALSE),
-            new ValueKeywordDefinition(null, STRING_NULL),
+            new ValueKeywordDefinition(true, _STRING_TRUE),
+            new ValueKeywordDefinition(false, _STRING_FALSE),
+            new ValueKeywordDefinition(null, _STRING_NULL),
         };
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "<Pending>")]
@@ -71,5 +71,7 @@ namespace ExpressionParser.Configuration
         public bool AllowStringIndexersAsProperties => false;
 
         public IEnumerable<UserDefinedFunction> Functions => Enumerable.Empty<UserDefinedFunction>();
+
+        IEnumerable<ScopedUserDefinedFunction> ILanguageDefinition.ScopedFunctions => throw new NotImplementedException();
     }
 }

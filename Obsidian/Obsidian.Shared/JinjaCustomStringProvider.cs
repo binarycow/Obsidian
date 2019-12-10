@@ -2,6 +2,8 @@ using Common;
 using Obsidian.AST.Nodes;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 
@@ -12,10 +14,18 @@ namespace Obsidian
         private JinjaCustomStringProvider()
         {
             Register<ContainerNode>(containerNode => $"{nameof(ContainerNode)}");
+            Register<ArgumentNameCollection>(argCollection => $"({string.Join(", ", argCollection.Select(arg => $"'{arg}'"))})");
+            RegisterValueType<double>(doubleVal => doubleVal.ToString("0.0###########", CultureInfo.InvariantCulture));
         }
 
         private static readonly Lazy<JinjaCustomStringProvider> _Instance = new Lazy<JinjaCustomStringProvider>(() => new JinjaCustomStringProvider());
         internal static JinjaCustomStringProvider Instance => _Instance.Value;
+
+        internal override string FormatIDictionary(IEnumerable<KeyValuePair<object, object?>> dictionary)
+        {
+            if (dictionary.Any()) throw new NotImplementedException();
+            return "{}";
+        }
 
         internal override string FormatIEnumerable(IEnumerable<object?> enumerable)
         {

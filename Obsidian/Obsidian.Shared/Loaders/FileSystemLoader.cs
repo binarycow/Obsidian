@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -60,18 +61,19 @@ namespace Obsidian
             return null;
         }
 
-        internal override TemplateInfo GetSource(JinjaEnvironment environment, string templateName)
+        internal override bool TryGetSource(JinjaEnvironment environment, string templateName, [NotNullWhen(true)] out TemplateInfo? templateInfo)
         {
+            templateInfo = default;
             var upToDate = false;
             var path = FindFile(templateName);
             if (path == null)
             {
-                throw new TemplateNotFoundException(templateName);
+                return false;
             }
             var templateContents = File.ReadAllText(path.FullName, Encoding);
-            if(_TemplateContentsCache.ContainsKey(templateName))
+            if (_TemplateContentsCache.ContainsKey(templateName))
             {
-                if(_TemplateContentsCache[templateName] == templateContents)
+                if (_TemplateContentsCache[templateName] == templateContents)
                 {
                     upToDate = true;
                 }
@@ -84,7 +86,8 @@ namespace Obsidian
             {
                 _TemplateContentsCache.Add(templateName, templateContents);
             }
-            return new TemplateInfo(templateContents, path.FullName, upToDate);
+            templateInfo = new TemplateInfo(templateContents, path.FullName, upToDate);
+            return true;
         }
     }
 }

@@ -11,11 +11,14 @@ namespace Obsidian.AST
 {
     internal abstract class ASTNode : ITransformable, IForceTransformable
     {
+        private static int _NodeID = 0;
+
         internal ASTNode(ParsingNode parsingNode)
         {
             ParsingNodes = new ParsingNode[] { parsingNode };
             StartParsingNode = default;
             EndParsingNode = default;
+            NodeID = _NodeID++;
         }
         internal ASTNode(ParsingNode? startingParsingNode, IEnumerable<ParsingNode> contentParsingNodes, ParsingNode? endingParsingNode)
         {
@@ -26,11 +29,13 @@ namespace Obsidian.AST
                 .ToArray();
             StartParsingNode = startingParsingNode;
             EndParsingNode = endingParsingNode;
+            NodeID = _NodeID++;
         }
 
         internal ParsingNode[] ParsingNodes { get; }
         internal ParsingNode? StartParsingNode { get; }
         internal ParsingNode? EndParsingNode { get; }
+        internal int NodeID { get; }
 
 
         public override string ToString()
@@ -66,6 +71,7 @@ namespace Obsidian.AST
 
         public abstract void Transform(ITransformVisitor visitor);
 
+        public abstract void Transform(IManualWhiteSpaceTransformVisitor visitor, bool inner = false);
 
 
         internal static ASTNode GetTemplateNode(JinjaEnvironment environment, string templateText)
@@ -74,7 +80,7 @@ namespace Obsidian.AST
             var tokens = lexer.Tokenize(templateText).ToArray();
             var parsed = Parser.Parse(tokens).ToArray();
             var outputCombined = OutputCombiner.CombineOutput(parsed);
-            ASTNode templateNode = ASTGenerator.ParseTemplate(lexer, outputCombined);
+            ASTNode templateNode = ASTGenerator.ParseTemplate(environment, lexer, outputCombined);
             //templateNode = templateNode.Transform(CommentRemoverTransformer.Instance);
             templateNode = WhiteSpaceController.ControlWhiteSpace(environment, templateNode);
 
@@ -88,7 +94,7 @@ namespace Obsidian.AST
             var tokens = lexer.Tokenize(templateText).ToArray();
             var parsed = Parser.Parse(tokens).ToArray();
             var outputCombined = OutputCombiner.CombineOutput(parsed);
-            ASTNode templateNode = ASTGenerator.ParseTemplate(lexer, outputCombined);
+            ASTNode templateNode = ASTGenerator.ParseTemplate(environment, lexer, outputCombined);
 
             var stringBuilder = new StringBuilder();
             templateNode.ToOriginalText(stringBuilder);

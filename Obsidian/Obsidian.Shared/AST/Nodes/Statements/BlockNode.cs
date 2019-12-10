@@ -33,6 +33,10 @@ namespace Obsidian.AST.Nodes.Statements
             return visitor.Transform(this);
         }
 
+        public override void Transform(IManualWhiteSpaceTransformVisitor visitor, bool inner = false)
+        {
+            visitor.Transform(this, inner);
+        }
         public override void Transform(ITransformVisitor visitor)
         {
             visitor.Transform(this);
@@ -42,7 +46,7 @@ namespace Obsidian.AST.Nodes.Statements
             return visitor.Transform(this, force);
         }
 
-        internal static bool TryParseBlock(Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
+        internal static bool TryParseBlock(JinjaEnvironment environment, Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
         {
             parsedNode = default;
             if(BlockParser.StartBlock.TryParse(enumerator.Current) == false)
@@ -57,7 +61,7 @@ namespace Obsidian.AST.Nodes.Statements
             if (string.IsNullOrEmpty(startingBlockName)) throw new NotImplementedException();
             enumerator.MoveNext();
 
-            var contents = ASTGenerator.ParseUntilFailure(lexer, enumerator).ToArray();
+            var contents = ASTGenerator.ParseUntilFailure(environment, lexer, enumerator).ToArray();
 
 
             if (BlockParser.EndBlock.TryParse(enumerator.Current) == false)

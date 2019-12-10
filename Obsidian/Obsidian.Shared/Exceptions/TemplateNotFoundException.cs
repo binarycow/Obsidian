@@ -5,13 +5,10 @@ using System.Text;
 
 namespace Obsidian.Exceptions
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1032:Implement standard exception constructors", Justification = "<Pending>")]
     public class TemplateNotFoundException : Exception
     {
         public TemplateNotFoundException() : base()
-        {
-            TemplateName = string.Empty;
-        }
-        public TemplateNotFoundException(string message) : base(message)
         {
             TemplateName = string.Empty;
         }

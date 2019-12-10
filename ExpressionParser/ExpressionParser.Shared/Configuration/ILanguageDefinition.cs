@@ -12,5 +12,6 @@ namespace ExpressionParser.Configuration
         IDictionary<char,TokenType> SingleCharTokens { get; }
         bool AllowStringIndexersAsProperties { get; }
         IEnumerable<UserDefinedFunction> Functions { get; }
+        internal IEnumerable<ScopedUserDefinedFunction> ScopedFunctions { get; }
     }
 }

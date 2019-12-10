@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Common;
 using ExpressionParser;
+using ExpressionParser.Transforming.Nodes;
 using Obsidian.AST;
 using Obsidian.AST.Nodes;
 using Obsidian.AST.Nodes.MiscNodes;
 using Obsidian.AST.Nodes.Statements;
+using Obsidian.Exceptions;
 using Obsidian.Templates;
 
 namespace Obsidian.Transforming
@@ -17,10 +20,13 @@ namespace Obsidian.Transforming
         {
             Scopes = scopes;
             Environment = environment;
+            ExpressionParserTransformer = Environment.Evaluation.CreateDynamicTransformer(Scopes);
         }
 
         internal JinjaEnvironment Environment { get; }
         private ScopeStack<DynamicContext, DynamicRootContext> Scopes { get; }
+        private DynamicTransformer<DynamicContext, DynamicRootContext> ExpressionParserTransformer { get; }
+        
 
         private ExpressionNode? _NextTemplate = null;
         private bool _EncounteredOutputStyleBlock;
@@ -40,7 +46,7 @@ namespace Obsidian.Transforming
 
                 if (_NextTemplate == null) break;
 
-                var nextTemplateObj = Environment.Evaluation.EvaluateDynamic(_NextTemplate.Expression, Scopes);
+                var nextTemplateObj = Environment.Evaluation.EvaluateDynamic(_NextTemplate.ExpressionParserNode, ExpressionParserTransformer);
                 _NextTemplate = null;
                 switch (nextTemplateObj)
                 {
@@ -107,9 +113,9 @@ namespace Obsidian.Transforming
             _EncounteredOutputStyleBlock = true;
             if (!(ShouldRender && _EncounteredOutputStyleBlock)) yield break;
 
-            var result = Environment.Evaluation.EvaluateDynamic(item.Expression, Scopes);
-
-            switch(result)
+            
+            var result = Environment.Evaluation.EvaluateDynamic(item.ExpressionParserNode, ExpressionParserTransformer);
+            switch (result)
             {
                 case ExpressionParser.Void _:
                     yield break;
@@ -159,7 +165,7 @@ namespace Obsidian.Transforming
             if (ShouldRender == false) yield break;
             foreach (var condition in item.Conditions)
             {
-                var result = Environment.Evaluation.EvaluateDynamic(condition.Expression.Expression, Scopes);
+                var result = Environment.Evaluation.EvaluateDynamic(condition.Expression.ExpressionParserNode, ExpressionParserTransformer);
                 if (result == null) throw new NotImplementedException();
                 if (TypeCoercion.CanCast(result.GetType(), typeof(bool)) == false) throw new NotImplementedException();
                 var boolResult = (bool)result;
@@ -239,6 +245,9 @@ namespace Obsidian.Transforming
                 throw new NotImplementedException();
             }
 
+            var usesCaller = item.Contents.Transform(CallerFinderVisitor.Instance).Any(x => x);
+
+
             Func<UserDefinedArgumentData, object?> func = arguments =>
             {
                 using var checkout = StringBuilderPool.Instance.Checkout();
@@ -249,7 +258,7 @@ namespace Obsidian.Transforming
                 {
                     Scopes.Current.DefineAndSetVariable(arg.Name, arg.Value);
                 }
-                Scopes.Current.DefineAndSetVariable("varargs", Array.Empty<string>());
+                Scopes.Current.DefineAndSetVariable("varargs", new ArgumentNameCollection(Enumerable.Empty<string>()));
                 Scopes.Current.DefineAndSetVariable("kwargs", new Dictionary<string, object?>());
                 
                 foreach(var output in item.Contents.Transform(this))
@@ -261,7 +270,9 @@ namespace Obsidian.Transforming
                 return stringBuilder.ToString();
             };
             UserDefinedFunction.UserDefinedFunctionDelegate del = args => func(args);
-            Scopes.Current.DefineAndSetVariable(functionDeclaration.Name, new JinjaUserDefinedFunction(functionDeclaration, del));
+
+
+            Scopes.Current.DefineAndSetVariable(functionDeclaration.Name, new JinjaUserDefinedFunction(functionDeclaration, del, usesCaller));
 
             yield break;
         }
@@ -293,7 +304,8 @@ namespace Obsidian.Transforming
             Scopes.Push($"Call: {item.CallerDefinition.Expression}");
             UserDefinedFunction.UserDefinedFunctionDelegate del = args => func(args);
             Scopes.Current.DefineAndSetVariable("caller", new JinjaUserDefinedFunction(functionDeclaration, del));
-            var evalObj = Environment.Evaluation.EvaluateDynamic(item.MacroCall.Expression, Scopes);
+
+            var evalObj = Environment.Evaluation.EvaluateDynamic(item.MacroCall.ExpressionParserNode, ExpressionParserTransformer);
             if (!(evalObj is ExpressionParser.Void))
             {
                 yield return JinjaCustomStringProvider.Instance.ToString(evalObj);
@@ -352,6 +364,55 @@ namespace Obsidian.Transforming
                 {
                     yield return output;
                 }
+            }
+        }
+
+        public IEnumerable<string> Transform(IncludeNode item)
+        {
+            var evaluatedTemplateList = Environment.Evaluation.EvaluateDynamic(item.Templates.ExpressionParserNode, ExpressionParserTransformer);
+            IEnumerable<string> templateList;
+            switch(evaluatedTemplateList)
+            {
+                case string str:
+                    templateList = Enumerable.Repeat(str, 1);
+                    break;
+                case IEnumerable<string> strList:
+                    templateList = strList;
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
+
+            var template = templateList.Select(templateName =>
+                {
+                    var result = Environment.TryGetDynamicTemplate(templateName, out var template);
+                    return new
+                    {
+                        Result = result,
+                        Template = template
+                    };
+                }
+            ).FirstOrDefault(res => res.Result)?.Template;
+
+            if(template == null)
+            {
+                if(item.IgnoreMissing)
+                {
+                    yield break;
+                }
+                throw new TemplateNotFoundException();
+            }
+
+            if(item.WithContext != false)
+            {
+                foreach (var output in template.TemplateNode.Transform(this))
+                {
+                    yield return output;
+                }
+            }
+            else
+            {
+                yield return template.Render();
             }
         }
     }

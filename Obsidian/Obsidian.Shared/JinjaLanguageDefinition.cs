@@ -10,11 +10,11 @@ namespace Obsidian
 {
     internal class JinjaLanguageDefinition : ILanguageDefinition
     {
-        private const string STRING_MEMBERACCESS = ".";
-        private const string STRING_PIPELINE = "|";
-        private const string STRING_EXPONENT = "**";
-        private const string STRING_PLUS = "+";
-        private const string STRING_MINUS = "-";
+        private const string _STRING_MEMBERACCESS = ".";
+        private const string _STRING_PIPELINE = "|";
+        private const string _STRING_EXPONENT = "**";
+        private const string _STRING_PLUS = "+";
+        private const string _STRING_MINUS = "-";
 
 
         private JinjaLanguageDefinition()
@@ -25,8 +25,8 @@ namespace Obsidian
         internal static JinjaLanguageDefinition Instance => _Instance.Value;
 
 
-        internal const string OPERATOR_SQUARE_BRACE_OPEN = "[";
-        internal const string OPERATOR_PAREN_OPEN = "(";
+        internal const string _OPERATOR_SQUARE_BRACE_OPEN = "[";
+        internal const string _OPERATOR_PAREN_OPEN = "(";
 
         public IEnumerable<KeywordDefinition> Keywords => new KeywordDefinition[]
         {
@@ -37,15 +37,15 @@ namespace Obsidian
 
         public IEnumerable<OperatorDefinition> Operators => new OperatorDefinition[]
         {
-            OperatorDefinition.CreateMemberAccess(STRING_MEMBERACCESS, 160),
-            OperatorDefinition.CreatePipeline(STRING_PIPELINE, 160),
-            OperatorDefinition.CreateMethod(OPERATOR_PAREN_OPEN, TokenType.ParenOpen, TokenType.Comma, TokenType.ParenClose, 160),
-            OperatorDefinition.CreateIndex(OPERATOR_SQUARE_BRACE_OPEN, TokenType.ParenClose, TokenType.Comma, TokenType.SquareBraceClose, 160),
+            OperatorDefinition.CreateMemberAccess(_STRING_MEMBERACCESS, 160),
+            OperatorDefinition.CreatePipeline(_STRING_PIPELINE, 160),
+            OperatorDefinition.CreateMethod(_OPERATOR_PAREN_OPEN, TokenType.ParenOpen, TokenType.Comma, TokenType.ParenClose, 160),
+            OperatorDefinition.CreateIndex(_OPERATOR_SQUARE_BRACE_OPEN, TokenType.ParenClose, TokenType.Comma, TokenType.SquareBraceClose, 160),
 
-            OperatorDefinition.CreateUnary(STRING_EXPONENT, 80, OperatorType.Power),
+            OperatorDefinition.CreateUnary(_STRING_EXPONENT, 80, OperatorType.Power),
 
-            OperatorDefinition.CreateUnary(STRING_PLUS, 70, OperatorType.UnaryPlus),
-            OperatorDefinition.CreateUnary(STRING_MINUS, 70, OperatorType.Negate),
+            OperatorDefinition.CreateUnary(_STRING_PLUS, 70, OperatorType.UnaryPlus),
+            OperatorDefinition.CreateUnary(_STRING_MINUS, 70, OperatorType.Negate),
 
             OperatorDefinition.CreateBinary("*", 60, OperatorType.Multiply),
             OperatorDefinition.CreateBinary("/", 60, OperatorType.DivideFloat),
@@ -82,9 +82,6 @@ namespace Obsidian
 
         public IEnumerable<UserDefinedFunction> Functions => new UserDefinedFunction[]
         {
-            new UserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(string), "super", Array.Empty<ParameterDeclaration>()), JinjaFunctions.Super),
-
-
             #region Filters
             new UserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(int), "abs", new ParameterDeclaration[] {
                 new ParameterDeclaration("x")
@@ -116,9 +113,29 @@ namespace Obsidian
                 new ParameterDeclaration("by", "key"),
                 new ParameterDeclaration("reverse", false)
             }), JinjaFunctions.DictSort),
-            new UserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(string), "e", new ParameterDeclaration[] {
+            new UserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(string), "escape", new ParameterDeclaration[] {
                 new ParameterDeclaration("s")
             }, aliases: new []{ "e" }), JinjaFunctions.Escape),
+
+            new UserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(string), "filesizeformat", new ParameterDeclaration[] {
+                new ParameterDeclaration("value"),
+                new ParameterDeclaration("binary", false),
+            }), JinjaFunctions.FilesizeFormat),
+            new UserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(string), "first", new ParameterDeclaration[] {
+                new ParameterDeclaration("seq"),
+            }), JinjaFunctions.First),
+            new UserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(string), "float", new ParameterDeclaration[] {
+                new ParameterDeclaration("value"),
+                new ParameterDeclaration("default", 0.0),
+            }), JinjaFunctions.Float),
+            new UserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(string), "forceescape", new ParameterDeclaration[] {
+                new ParameterDeclaration("s"),
+            }), JinjaFunctions.ForceEscape),
+            new UserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(string), "format", new ParameterDeclaration[] {
+                new ParameterDeclaration("value"),
+                new ParameterDeclaration("args", null),
+                new ParameterDeclaration("kwargs", null),
+            }), JinjaFunctions.Format),
 
 
 
@@ -126,6 +143,11 @@ namespace Obsidian
                 new ParameterDeclaration("s")
             }), JinjaFunctions.Upper),
             #endregion Filters
+        };
+
+        IEnumerable<ScopedUserDefinedFunction> ILanguageDefinition.ScopedFunctions => new ScopedUserDefinedFunction[]
+        {
+            new ScopedUserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(string), "super", Array.Empty<ParameterDeclaration>()), JinjaFunctions.Super),
         };
     }
 }

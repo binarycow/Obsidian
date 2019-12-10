@@ -47,6 +47,9 @@ namespace ExpressionParser.Transforming.Nodes
             if (valueKeyword != default) return valueKeyword.Value;
 
             if (ScopeStack.Current.TryGetVariable(item.TextValue, out var value)) return value;
+            var scopedFunction = LanguageDefinition.ScopedFunctions.FirstOrDefault(func => func.Declaration.Name == item.TextValue);
+            if (scopedFunction != null) return MethodGroup.Create(scopedFunction);
+
             var function = LanguageDefinition.Functions.FirstOrDefault(func => func.Declaration.Name == item.TextValue);
             if (function != null) return MethodGroup.Create(function);
             return null;
@@ -72,6 +75,11 @@ namespace ExpressionParser.Transforming.Nodes
         {
             var listItems = item.ListItems.Select(listItem => listItem.Transform(this));
             return Common.ReflectionHelpers.MakeGenericList(listItems);
+        }
+
+        public object? Transform(PipelineMethodGroup item)
+        {
+            return item.FunctionDefinition.Invoke(new object?[] { item.ReferredObject });
         }
     }
 }

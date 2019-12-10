@@ -66,6 +66,12 @@ namespace Obsidian.Lexing
             { "block".ToCharArray(), TokenType.Keyword_Block },
             { "endblock".ToCharArray(), TokenType.Keyword_EndBlock },
             { "extends".ToCharArray(), TokenType.Keyword_Extends },
+            { "include".ToCharArray(), TokenType.Keyword_Include },
+            { "ignore".ToCharArray(), TokenType.Keyword_Ignore },
+            { "missing".ToCharArray(), TokenType.Keyword_Missing },
+            { "with".ToCharArray(), TokenType.Keyword_With },
+            { "without".ToCharArray(), TokenType.Keyword_Without },
+            { "context".ToCharArray(), TokenType.Keyword_Context },
             { "raw".ToCharArray(), TokenType.Keyword_Raw },
             { "endraw".ToCharArray(), TokenType.Keyword_EndRaw },
             { "macro".ToCharArray(), TokenType.Keyword_Macro },
@@ -178,7 +184,7 @@ namespace Obsidian.Lexing
             var queue = new Queue<char>();
             queue.Enqueue(enumerator.Current);
 
-            while(enumerator.TryGetNext(out var nextChar) && nextChar.IsWhiteSpace())
+            while(enumerator.TryGetNext(out var nextChar) && nextChar.IsWhiteSpace() && nextChar.IsNotNewLine())
             {
                 var result = enumerator.MoveNext();
                 queue.Enqueue(enumerator.Current);

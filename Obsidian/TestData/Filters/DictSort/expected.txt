@@ -1,0 +1,17 @@
+  dict: {'D': 68, 'c': 67, 'F': 70, 'b': 66, 'A': 65, 'e': 69}
+
+  dict|dictsort: [('A', 65), ('b', 66), ('c', 67), ('D', 68), ('e', 69), ('F', 70)]
+
+  dict|dictsort(reverse=true): [('F', 70), ('e', 69), ('D', 68), ('c', 67), ('b', 66), ('A', 65)]
+
+  dict|dictsort(true): [('A', 65), ('D', 68), ('F', 70), ('b', 66), ('c', 67), ('e', 69)]
+
+  dict|dictsort(true, reverse=true): [('e', 69), ('c', 67), ('b', 66), ('F', 70), ('D', 68), ('A', 65)]
+
+  dict|dictsort(by='value'): [('A', 65), ('b', 66), ('c', 67), ('D', 68), ('e', 69), ('F', 70)]
+
+  dict|dictsort(reverse=true, by='value'): [('F', 70), ('e', 69), ('D', 68), ('c', 67), ('b', 66), ('A', 65)]
+
+  dict|dictsort(true, by='value'): [('A', 65), ('b', 66), ('c', 67), ('D', 68), ('e', 69), ('F', 70)]
+
+  dict|dictsort(true, reverse=true, by='value'): [('F', 70), ('e', 69), ('D', 68), ('c', 67), ('b', 66), ('A', 65)]

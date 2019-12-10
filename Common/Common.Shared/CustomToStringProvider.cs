@@ -19,6 +19,11 @@ namespace Common
         private readonly Dictionary<Type, Func<object, string>> _Dictionary = new Dictionary<Type, Func<object, string>>();
 
 
+        internal virtual string FormatIDictionary(IEnumerable<KeyValuePair<object, object?>> dictionary)
+        {
+            return dictionary?.ToString() ?? DefaultValue;
+        }
+
         internal virtual string FormatTuple(object? tuple, PropertyInfo[] tupleProperties)
         {
             return tuple?.ToString() ?? DefaultValue;
@@ -39,6 +44,14 @@ namespace Common
                 return typed != null ? toStringFunction(typed) : DefaultValue;
             });
         }
+        internal void RegisterValueType<T>(Func<T, string> toStringFunction)
+            where T : struct
+        {
+            _Dictionary.Upsert(typeof(T), obj => {
+                var typed = (T)obj;
+                return toStringFunction(typed);
+            });
+        }
 
         internal string ToString(object? item)
         {
@@ -54,7 +67,12 @@ namespace Common
             {
                 return str;
             }
-            // Check if its "IEnumerable" or "IEnumerable<T>"
+
+
+            if(ReflectionHelpers.TryGetIDictionary(item, out var idictionaryT))
+            {
+                return FormatIDictionary(idictionaryT);
+            }
 
             if (item is IEnumerable enumerable)
             {

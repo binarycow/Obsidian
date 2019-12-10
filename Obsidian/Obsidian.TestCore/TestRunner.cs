@@ -46,6 +46,10 @@ namespace Obsidian.TestCore
 
         public static void TestTemplate(Item test, out string actualOutput, out string expectedOutput)
         {
+            TestTemplate(test, out actualOutput, out expectedOutput, out _);
+        }
+        public static void TestTemplate(Item test, out string actualOutput, out string expectedOutput, out string templateText)
+        {
             test = test ?? throw new ArgumentNullException(nameof(test));
             if(!(test is Test testInfo))
             {
@@ -69,6 +73,9 @@ namespace Obsidian.TestCore
                 { "A", 65 },
                 { "e", 69 },
             });
+
+            templateText = File.ReadAllText(Path.Combine(Path.GetDirectoryName(inputFile), Path.GetFileName(inputFile)));
+
             var environment = new JinjaEnvironment
             {
                 Loader = new FileSystemLoader(searchPath: Path.GetDirectoryName(inputFile)!)

@@ -40,7 +40,7 @@ namespace Obsidian.AST.Nodes.Statements
 
         private string DebuggerDisplay => $"{nameof(ForNode)} : Variables: \"{string.Join(", ", VariableNames)}\" Expression: \"{Expression}\"";
 
-        internal static bool TryParseFor(Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
+        internal static bool TryParseFor(JinjaEnvironment environment, Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
         {
             ContainerNode? elseBlock = null;
             parsedNode = default;
@@ -59,7 +59,7 @@ namespace Obsidian.AST.Nodes.Statements
                 throw new NotImplementedException();
             }
             enumerator.MoveNext();
-            var primaryBlockChildren = ASTGenerator.ParseUntilFailure(lexer, enumerator).ToArray();
+            var primaryBlockChildren = ASTGenerator.ParseUntilFailure(environment, lexer, enumerator).ToArray();
 
             ContainerNode primaryBlock;
 
@@ -67,7 +67,7 @@ namespace Obsidian.AST.Nodes.Statements
             {
                 var elseStartParsingNode = enumerator.Current;
                 enumerator.MoveNext();
-                var elseBlockChildren = ASTGenerator.ParseUntilFailure(lexer, enumerator).ToArray();
+                var elseBlockChildren = ASTGenerator.ParseUntilFailure(environment, lexer, enumerator).ToArray();
                 if (ForParser.EndBlock.TryParse(enumerator.Current, out var elseInsideEnd, out var outsideEnd) == false)
                 {
                     throw new NotImplementedException();
@@ -78,7 +78,7 @@ namespace Obsidian.AST.Nodes.Statements
                     new WhiteSpaceControlSet(primaryInsideStart, primaryInsideEnd));
                 elseBlock = new ContainerNode(elseStartParsingNode, elseBlockChildren, null,
                     new WhiteSpaceControlSet(elseInsideStart, elseInsideEnd));
-                parsedNode = new ForNode(primaryBlock, elseBlock, variableNames, ExpressionNode.FromString(expression), enumerator.Current,
+                parsedNode = new ForNode(primaryBlock, elseBlock, variableNames, ExpressionNode.FromString(environment, expression), enumerator.Current,
                     new WhiteSpaceControlSet(outsideStart, outsideEnd));
                 return true;
             }
@@ -90,12 +90,16 @@ namespace Obsidian.AST.Nodes.Statements
                 }
                 primaryBlock = new ContainerNode(primaryStartParsingNode, primaryBlockChildren, null,
                     new WhiteSpaceControlSet(primaryInsideStart, primaryInsideEnd));
-                parsedNode = new ForNode(primaryBlock, elseBlock, variableNames, ExpressionNode.FromString(expression), enumerator.Current,
+                parsedNode = new ForNode(primaryBlock, elseBlock, variableNames, ExpressionNode.FromString(environment, expression), enumerator.Current,
                     new WhiteSpaceControlSet(outsideStart, outsideEnd));
                 return true;
             }
         }
 
+        public override void Transform(IManualWhiteSpaceTransformVisitor visitor, bool inner = false)
+        {
+            visitor.Transform(this, inner);
+        }
 
         public override TOutput Transform<TOutput>(ITransformVisitor<TOutput> visitor)
         {
