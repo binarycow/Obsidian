@@ -26,23 +26,23 @@ namespace Common
         private Numerical(NumericalType type)
         {
             _Type = type;
-            _sbyte = default;
-            _byte = default;
-            _short = default;
-            _ushort = default;
-            _int = default;
-            _uint = default;
-            _long = default;
-            _ulong = default;
-            _float = default;
-            _double = default;
-            _decimal = default;
+            _Sbyte = default;
+            _Byte = default;
+            _Short = default;
+            _Ushort = default;
+            _Int = default;
+            _Uint = default;
+            _Long = default;
+            _Ulong = default;
+            _Float = default;
+            _Double = default;
+            _Decimal = default;
         }
         public static Numerical Copy(Numerical numerical)
         {
             var newObj = new Numerical(numerical.Type)
             {
-                _decimal = numerical._decimal
+                _Decimal = numerical._Decimal
             };
             return newObj;
         }
@@ -53,27 +53,27 @@ namespace Common
 
 
         [FieldOffset(0)]
-        private sbyte _sbyte;
+        private sbyte _Sbyte;
         [FieldOffset(0)]
-        private byte _byte;
+        private byte _Byte;
         [FieldOffset(0)]
-        private short _short;
+        private short _Short;
         [FieldOffset(0)]
-        private ushort _ushort;
+        private ushort _Ushort;
         [FieldOffset(0)]
-        private int _int;
+        private int _Int;
         [FieldOffset(0)]
-        private uint _uint;
+        private uint _Uint;
         [FieldOffset(0)]
-        private long _long;
+        private long _Long;
         [FieldOffset(0)]
-        private ulong _ulong;
+        private ulong _Ulong;
         [FieldOffset(0)]
-        private float _float;
+        private float _Float;
         [FieldOffset(0)]
-        private double _double;
+        private double _Double;
         [FieldOffset(0)]
-        private decimal _decimal;
+        private decimal _Decimal;
 
         [FieldOffset(16)]
         private readonly NumericalType _Type;
@@ -365,17 +365,17 @@ namespace Common
         {
             return item.Type switch
             {
-                NumericalType.SignedByte => +item._sbyte,
-                NumericalType.UnsignedByte => +item._byte,
-                NumericalType.SignedShort => +item._short,
-                NumericalType.UnsignedShort => +item._ushort,
-                NumericalType.SignedInt => +item._int,
-                NumericalType.UnsignedInt => +item._uint,
-                NumericalType.SignedLong => +item._long,
-                NumericalType.UnsignedLong => +item._ulong,
-                NumericalType.SinglePrecision => +item._float,
-                NumericalType.DoublePrecision => +item._double,
-                NumericalType.DecimalNumber => +item._decimal,
+                NumericalType.SignedByte => +item._Sbyte,
+                NumericalType.UnsignedByte => +item._Byte,
+                NumericalType.SignedShort => +item._Short,
+                NumericalType.UnsignedShort => +item._Ushort,
+                NumericalType.SignedInt => +item._Int,
+                NumericalType.UnsignedInt => +item._Uint,
+                NumericalType.SignedLong => +item._Long,
+                NumericalType.UnsignedLong => +item._Ulong,
+                NumericalType.SinglePrecision => +item._Float,
+                NumericalType.DoublePrecision => +item._Double,
+                NumericalType.DecimalNumber => +item._Decimal,
                 _ => throw new InvalidOperationException(),
             };
         }
@@ -383,26 +383,26 @@ namespace Common
         {
             return item.Type switch
             {
-                NumericalType.SignedByte => -item._sbyte,
-                NumericalType.UnsignedByte => -item._byte,
-                NumericalType.SignedShort => -item._short,
-                NumericalType.UnsignedShort => -item._ushort,
-                NumericalType.SignedInt => -item._int,
-                NumericalType.UnsignedInt => -item._uint,
-                NumericalType.SignedLong => -item._long,
+                NumericalType.SignedByte => -item._Sbyte,
+                NumericalType.UnsignedByte => -item._Byte,
+                NumericalType.SignedShort => -item._Short,
+                NumericalType.UnsignedShort => -item._Ushort,
+                NumericalType.SignedInt => -item._Int,
+                NumericalType.UnsignedInt => -item._Uint,
+                NumericalType.SignedLong => -item._Long,
                 NumericalType.UnsignedLong => TryNegateULong(),
-                NumericalType.SinglePrecision => -item._float,
-                NumericalType.DoublePrecision => -item._double,
-                NumericalType.DecimalNumber => -item._decimal,
+                NumericalType.SinglePrecision => -item._Float,
+                NumericalType.DoublePrecision => -item._Double,
+                NumericalType.DecimalNumber => -item._Decimal,
                 _ => throw new InvalidOperationException(),
             };
 
             Numerical TryNegateULong()
             {
-                if (item._ulong == 9_223_372_036_854_775_808)
+                if (item._Ulong == 9_223_372_036_854_775_808)
                     return -9_223_372_036_854_775_808;
-                if (item._ulong < long.MaxValue)
-                    return -(long)item._ulong;
+                if (item._Ulong < long.MaxValue)
+                    return -(long)item._Ulong;
                 throw new OverflowException();
             }
         }
@@ -410,17 +410,17 @@ namespace Common
         {
             return item.Type switch
             {
-                NumericalType.SignedByte => ++item._sbyte,
-                NumericalType.UnsignedByte => ++item._byte,
-                NumericalType.SignedShort => ++item._short,
-                NumericalType.UnsignedShort => ++item._ushort,
-                NumericalType.SignedInt => ++item._int,
-                NumericalType.UnsignedInt => ++item._uint,
-                NumericalType.SignedLong => ++item._long,
-                NumericalType.UnsignedLong => ++item._ulong,
-                NumericalType.SinglePrecision => ++item._float,
-                NumericalType.DoublePrecision => ++item._double,
-                NumericalType.DecimalNumber => ++item._decimal,
+                NumericalType.SignedByte => ++item._Sbyte,
+                NumericalType.UnsignedByte => ++item._Byte,
+                NumericalType.SignedShort => ++item._Short,
+                NumericalType.UnsignedShort => ++item._Ushort,
+                NumericalType.SignedInt => ++item._Int,
+                NumericalType.UnsignedInt => ++item._Uint,
+                NumericalType.SignedLong => ++item._Long,
+                NumericalType.UnsignedLong => ++item._Ulong,
+                NumericalType.SinglePrecision => ++item._Float,
+                NumericalType.DoublePrecision => ++item._Double,
+                NumericalType.DecimalNumber => ++item._Decimal,
                 _ => throw new InvalidOperationException(),
             };
         }
@@ -428,17 +428,17 @@ namespace Common
         {
             return item.Type switch
             {
-                NumericalType.SignedByte => --item._sbyte,
-                NumericalType.UnsignedByte => --item._byte,
-                NumericalType.SignedShort => --item._short,
-                NumericalType.UnsignedShort => --item._ushort,
-                NumericalType.SignedInt => --item._int,
-                NumericalType.UnsignedInt => --item._uint,
-                NumericalType.SignedLong => --item._long,
-                NumericalType.UnsignedLong => --item._ulong,
-                NumericalType.SinglePrecision => --item._float,
-                NumericalType.DoublePrecision => --item._double,
-                NumericalType.DecimalNumber => --item._decimal,
+                NumericalType.SignedByte => --item._Sbyte,
+                NumericalType.UnsignedByte => --item._Byte,
+                NumericalType.SignedShort => --item._Short,
+                NumericalType.UnsignedShort => --item._Ushort,
+                NumericalType.SignedInt => --item._Int,
+                NumericalType.UnsignedInt => --item._Uint,
+                NumericalType.SignedLong => --item._Long,
+                NumericalType.UnsignedLong => --item._Ulong,
+                NumericalType.SinglePrecision => --item._Float,
+                NumericalType.DoublePrecision => --item._Double,
+                NumericalType.DecimalNumber => --item._Decimal,
                 _ => throw new InvalidOperationException(),
             };
         }
@@ -461,14 +461,14 @@ namespace Common
         {
             return item.Type switch
             {
-                NumericalType.SignedByte => ~item._sbyte,
-                NumericalType.UnsignedByte => ~item._byte,
-                NumericalType.SignedShort => ~item._short,
-                NumericalType.UnsignedShort => ~item._ushort,
-                NumericalType.SignedInt => ~item._int,
-                NumericalType.UnsignedInt => ~item._uint,
-                NumericalType.SignedLong => ~item._long,
-                NumericalType.UnsignedLong => ~item._ulong,
+                NumericalType.SignedByte => ~item._Sbyte,
+                NumericalType.UnsignedByte => ~item._Byte,
+                NumericalType.SignedShort => ~item._Short,
+                NumericalType.UnsignedShort => ~item._Ushort,
+                NumericalType.SignedInt => ~item._Int,
+                NumericalType.UnsignedInt => ~item._Uint,
+                NumericalType.SignedLong => ~item._Long,
+                NumericalType.UnsignedLong => ~item._Ulong,
                 NumericalType.SinglePrecision => throw new InvalidOperationException(),
                 NumericalType.DoublePrecision => throw new InvalidOperationException(),
                 NumericalType.DecimalNumber => throw new InvalidOperationException(),
@@ -492,17 +492,17 @@ namespace Common
             {
                 return left.Type switch
                 {
-                    NumericalType.SignedByte => left._sbyte + right._sbyte,
-                    NumericalType.UnsignedByte => left._byte + right._byte,
-                    NumericalType.SignedShort => left._short + right._short,
-                    NumericalType.UnsignedShort => left._ushort + right._ushort,
-                    NumericalType.SignedInt => left._int + right._int,
-                    NumericalType.UnsignedInt => left._uint + right._uint,
-                    NumericalType.SignedLong => left._long + right._long,
-                    NumericalType.UnsignedLong => left._ulong + right._ulong,
-                    NumericalType.SinglePrecision => left._float + right._float,
-                    NumericalType.DoublePrecision => left._double + right._double,
-                    NumericalType.DecimalNumber => left._decimal + right._decimal,
+                    NumericalType.SignedByte => left._Sbyte + right._Sbyte,
+                    NumericalType.UnsignedByte => left._Byte + right._Byte,
+                    NumericalType.SignedShort => left._Short + right._Short,
+                    NumericalType.UnsignedShort => left._Ushort + right._Ushort,
+                    NumericalType.SignedInt => left._Int + right._Int,
+                    NumericalType.UnsignedInt => left._Uint + right._Uint,
+                    NumericalType.SignedLong => left._Long + right._Long,
+                    NumericalType.UnsignedLong => left._Ulong + right._Ulong,
+                    NumericalType.SinglePrecision => left._Float + right._Float,
+                    NumericalType.DoublePrecision => left._Double + right._Double,
+                    NumericalType.DecimalNumber => left._Decimal + right._Decimal,
                     _ => throw new InvalidOperationException(),
                 };
             }
@@ -511,17 +511,17 @@ namespace Common
                 // convert left to right, return right's type.
                 return right.Type switch
                 {
-                    NumericalType.SignedByte => (sbyte)left + right._sbyte,
-                    NumericalType.UnsignedByte => (byte)left + right._byte,
-                    NumericalType.SignedShort => (short)left + right._short,
-                    NumericalType.UnsignedShort => (ushort)left + right._ushort,
-                    NumericalType.SignedInt => (int)left + right._int,
-                    NumericalType.UnsignedInt => (uint)left + right._uint,
-                    NumericalType.SignedLong => (long)left + right._long,
-                    NumericalType.UnsignedLong => (ulong)left + right._ulong,
-                    NumericalType.SinglePrecision => (float)left + right._float,
-                    NumericalType.DoublePrecision => (double)left + right._double,
-                    NumericalType.DecimalNumber => (decimal)left + right._decimal,
+                    NumericalType.SignedByte => (sbyte)left + right._Sbyte,
+                    NumericalType.UnsignedByte => (byte)left + right._Byte,
+                    NumericalType.SignedShort => (short)left + right._Short,
+                    NumericalType.UnsignedShort => (ushort)left + right._Ushort,
+                    NumericalType.SignedInt => (int)left + right._Int,
+                    NumericalType.UnsignedInt => (uint)left + right._Uint,
+                    NumericalType.SignedLong => (long)left + right._Long,
+                    NumericalType.UnsignedLong => (ulong)left + right._Ulong,
+                    NumericalType.SinglePrecision => (float)left + right._Float,
+                    NumericalType.DoublePrecision => (double)left + right._Double,
+                    NumericalType.DecimalNumber => (decimal)left + right._Decimal,
                     _ => throw new InvalidOperationException(),
                 };
             }
@@ -530,17 +530,17 @@ namespace Common
                 // convert right to left, return left's type.
                 return left.Type switch
                 {
-                    NumericalType.SignedByte => (sbyte)right + left._sbyte,
-                    NumericalType.UnsignedByte => (byte)right + left._byte,
-                    NumericalType.SignedShort => (short)right + left._short,
-                    NumericalType.UnsignedShort => (ushort)right + left._ushort,
-                    NumericalType.SignedInt => (int)right + left._int,
-                    NumericalType.UnsignedInt => (uint)right + left._uint,
-                    NumericalType.SignedLong => (long)right + left._long,
-                    NumericalType.UnsignedLong => (ulong)right + left._ulong,
-                    NumericalType.SinglePrecision => (float)right + left._float,
-                    NumericalType.DoublePrecision => (double)right + left._double,
-                    NumericalType.DecimalNumber => (decimal)right + left._decimal,
+                    NumericalType.SignedByte => (sbyte)right + left._Sbyte,
+                    NumericalType.UnsignedByte => (byte)right + left._Byte,
+                    NumericalType.SignedShort => (short)right + left._Short,
+                    NumericalType.UnsignedShort => (ushort)right + left._Ushort,
+                    NumericalType.SignedInt => (int)right + left._Int,
+                    NumericalType.UnsignedInt => (uint)right + left._Uint,
+                    NumericalType.SignedLong => (long)right + left._Long,
+                    NumericalType.UnsignedLong => (ulong)right + left._Ulong,
+                    NumericalType.SinglePrecision => (float)right + left._Float,
+                    NumericalType.DoublePrecision => (double)right + left._Double,
+                    NumericalType.DecimalNumber => (decimal)right + left._Decimal,
                     _ => throw new InvalidOperationException(),
                 };
             }
@@ -553,17 +553,17 @@ namespace Common
             {
                 return left.Type switch
                 {
-                    NumericalType.SignedByte => left._sbyte - right._sbyte,
-                    NumericalType.UnsignedByte => left._byte - right._byte,
-                    NumericalType.SignedShort => left._short - right._short,
-                    NumericalType.UnsignedShort => left._ushort - right._ushort,
-                    NumericalType.SignedInt => left._int - right._int,
-                    NumericalType.UnsignedInt => left._uint - right._uint,
-                    NumericalType.SignedLong => left._long - right._long,
-                    NumericalType.UnsignedLong => left._ulong - right._ulong,
-                    NumericalType.SinglePrecision => left._float - right._float,
-                    NumericalType.DoublePrecision => left._double - right._double,
-                    NumericalType.DecimalNumber => left._decimal - right._decimal,
+                    NumericalType.SignedByte => left._Sbyte - right._Sbyte,
+                    NumericalType.UnsignedByte => left._Byte - right._Byte,
+                    NumericalType.SignedShort => left._Short - right._Short,
+                    NumericalType.UnsignedShort => left._Ushort - right._Ushort,
+                    NumericalType.SignedInt => left._Int - right._Int,
+                    NumericalType.UnsignedInt => left._Uint - right._Uint,
+                    NumericalType.SignedLong => left._Long - right._Long,
+                    NumericalType.UnsignedLong => left._Ulong - right._Ulong,
+                    NumericalType.SinglePrecision => left._Float - right._Float,
+                    NumericalType.DoublePrecision => left._Double - right._Double,
+                    NumericalType.DecimalNumber => left._Decimal - right._Decimal,
                     _ => throw new InvalidOperationException(),
                 };
             }
@@ -572,17 +572,17 @@ namespace Common
                 // convert left to right, return right's type.
                 return right.Type switch
                 {
-                    NumericalType.SignedByte => (sbyte)left - right._sbyte,
-                    NumericalType.UnsignedByte => (byte)left - right._byte,
-                    NumericalType.SignedShort => (short)left - right._short,
-                    NumericalType.UnsignedShort => (ushort)left - right._ushort,
-                    NumericalType.SignedInt => (int)left - right._int,
-                    NumericalType.UnsignedInt => (uint)left - right._uint,
-                    NumericalType.SignedLong => (long)left - right._long,
-                    NumericalType.UnsignedLong => (ulong)left - right._ulong,
-                    NumericalType.SinglePrecision => (float)left - right._float,
-                    NumericalType.DoublePrecision => (double)left - right._double,
-                    NumericalType.DecimalNumber => (decimal)left - right._decimal,
+                    NumericalType.SignedByte => (sbyte)left - right._Sbyte,
+                    NumericalType.UnsignedByte => (byte)left - right._Byte,
+                    NumericalType.SignedShort => (short)left - right._Short,
+                    NumericalType.UnsignedShort => (ushort)left - right._Ushort,
+                    NumericalType.SignedInt => (int)left - right._Int,
+                    NumericalType.UnsignedInt => (uint)left - right._Uint,
+                    NumericalType.SignedLong => (long)left - right._Long,
+                    NumericalType.UnsignedLong => (ulong)left - right._Ulong,
+                    NumericalType.SinglePrecision => (float)left - right._Float,
+                    NumericalType.DoublePrecision => (double)left - right._Double,
+                    NumericalType.DecimalNumber => (decimal)left - right._Decimal,
                     _ => throw new InvalidOperationException(),
                 };
             }
@@ -591,17 +591,17 @@ namespace Common
                 // convert right to left, return left's type.
                 return left.Type switch
                 {
-                    NumericalType.SignedByte => (sbyte)right - left._sbyte,
-                    NumericalType.UnsignedByte => (byte)right - left._byte,
-                    NumericalType.SignedShort => (short)right - left._short,
-                    NumericalType.UnsignedShort => (ushort)right - left._ushort,
-                    NumericalType.SignedInt => (int)right - left._int,
-                    NumericalType.UnsignedInt => (uint)right - left._uint,
-                    NumericalType.SignedLong => (long)right - left._long,
-                    NumericalType.UnsignedLong => (ulong)right - left._ulong,
-                    NumericalType.SinglePrecision => (float)right - left._float,
-                    NumericalType.DoublePrecision => (double)right - left._double,
-                    NumericalType.DecimalNumber => (decimal)right - left._decimal,
+                    NumericalType.SignedByte => (sbyte)right - left._Sbyte,
+                    NumericalType.UnsignedByte => (byte)right - left._Byte,
+                    NumericalType.SignedShort => (short)right - left._Short,
+                    NumericalType.UnsignedShort => (ushort)right - left._Ushort,
+                    NumericalType.SignedInt => (int)right - left._Int,
+                    NumericalType.UnsignedInt => (uint)right - left._Uint,
+                    NumericalType.SignedLong => (long)right - left._Long,
+                    NumericalType.UnsignedLong => (ulong)right - left._Ulong,
+                    NumericalType.SinglePrecision => (float)right - left._Float,
+                    NumericalType.DoublePrecision => (double)right - left._Double,
+                    NumericalType.DecimalNumber => (decimal)right - left._Decimal,
                     _ => throw new InvalidOperationException(),
                 };
             }
@@ -614,17 +614,17 @@ namespace Common
             {
                 return left.Type switch
                 {
-                    NumericalType.SignedByte => left._sbyte * right._sbyte,
-                    NumericalType.UnsignedByte => left._byte * right._byte,
-                    NumericalType.SignedShort => left._short * right._short,
-                    NumericalType.UnsignedShort => left._ushort * right._ushort,
-                    NumericalType.SignedInt => left._int * right._int,
-                    NumericalType.UnsignedInt => left._uint * right._uint,
-                    NumericalType.SignedLong => left._long * right._long,
-                    NumericalType.UnsignedLong => left._ulong * right._ulong,
-                    NumericalType.SinglePrecision => left._float * right._float,
-                    NumericalType.DoublePrecision => left._double * right._double,
-                    NumericalType.DecimalNumber => left._decimal * right._decimal,
+                    NumericalType.SignedByte => left._Sbyte * right._Sbyte,
+                    NumericalType.UnsignedByte => left._Byte * right._Byte,
+                    NumericalType.SignedShort => left._Short * right._Short,
+                    NumericalType.UnsignedShort => left._Ushort * right._Ushort,
+                    NumericalType.SignedInt => left._Int * right._Int,
+                    NumericalType.UnsignedInt => left._Uint * right._Uint,
+                    NumericalType.SignedLong => left._Long * right._Long,
+                    NumericalType.UnsignedLong => left._Ulong * right._Ulong,
+                    NumericalType.SinglePrecision => left._Float * right._Float,
+                    NumericalType.DoublePrecision => left._Double * right._Double,
+                    NumericalType.DecimalNumber => left._Decimal * right._Decimal,
                     _ => throw new InvalidOperationException(),
                 };
             }
@@ -633,17 +633,17 @@ namespace Common
                 // convert left to right, return right's type.
                 return right.Type switch
                 {
-                    NumericalType.SignedByte => (sbyte)left * right._sbyte,
-                    NumericalType.UnsignedByte => (byte)left * right._byte,
-                    NumericalType.SignedShort => (short)left * right._short,
-                    NumericalType.UnsignedShort => (ushort)left * right._ushort,
-                    NumericalType.SignedInt => (int)left * right._int,
-                    NumericalType.UnsignedInt => (uint)left * right._uint,
-                    NumericalType.SignedLong => (long)left * right._long,
-                    NumericalType.UnsignedLong => (ulong)left * right._ulong,
-                    NumericalType.SinglePrecision => (float)left * right._float,
-                    NumericalType.DoublePrecision => (double)left * right._double,
-                    NumericalType.DecimalNumber => (decimal)left * right._decimal,
+                    NumericalType.SignedByte => (sbyte)left * right._Sbyte,
+                    NumericalType.UnsignedByte => (byte)left * right._Byte,
+                    NumericalType.SignedShort => (short)left * right._Short,
+                    NumericalType.UnsignedShort => (ushort)left * right._Ushort,
+                    NumericalType.SignedInt => (int)left * right._Int,
+                    NumericalType.UnsignedInt => (uint)left * right._Uint,
+                    NumericalType.SignedLong => (long)left * right._Long,
+                    NumericalType.UnsignedLong => (ulong)left * right._Ulong,
+                    NumericalType.SinglePrecision => (float)left * right._Float,
+                    NumericalType.DoublePrecision => (double)left * right._Double,
+                    NumericalType.DecimalNumber => (decimal)left * right._Decimal,
                     _ => throw new InvalidOperationException(),
                 };
             }
@@ -652,17 +652,17 @@ namespace Common
                 // convert right to left, return left's type.
                 return left.Type switch
                 {
-                    NumericalType.SignedByte => (sbyte)right * left._sbyte,
-                    NumericalType.UnsignedByte => (byte)right * left._byte,
-                    NumericalType.SignedShort => (short)right * left._short,
-                    NumericalType.UnsignedShort => (ushort)right * left._ushort,
-                    NumericalType.SignedInt => (int)right * left._int,
-                    NumericalType.UnsignedInt => (uint)right * left._uint,
-                    NumericalType.SignedLong => (long)right * left._long,
-                    NumericalType.UnsignedLong => (ulong)right * left._ulong,
-                    NumericalType.SinglePrecision => (float)right * left._float,
-                    NumericalType.DoublePrecision => (double)right * left._double,
-                    NumericalType.DecimalNumber => (decimal)right * left._decimal,
+                    NumericalType.SignedByte => (sbyte)right * left._Sbyte,
+                    NumericalType.UnsignedByte => (byte)right * left._Byte,
+                    NumericalType.SignedShort => (short)right * left._Short,
+                    NumericalType.UnsignedShort => (ushort)right * left._Ushort,
+                    NumericalType.SignedInt => (int)right * left._Int,
+                    NumericalType.UnsignedInt => (uint)right * left._Uint,
+                    NumericalType.SignedLong => (long)right * left._Long,
+                    NumericalType.UnsignedLong => (ulong)right * left._Ulong,
+                    NumericalType.SinglePrecision => (float)right * left._Float,
+                    NumericalType.DoublePrecision => (double)right * left._Double,
+                    NumericalType.DecimalNumber => (decimal)right * left._Decimal,
                     _ => throw new InvalidOperationException(),
                 };
             }
@@ -675,17 +675,17 @@ namespace Common
             {
                 return left.Type switch
                 {
-                    NumericalType.SignedByte => left._sbyte / right._sbyte,
-                    NumericalType.UnsignedByte => left._byte / right._byte,
-                    NumericalType.SignedShort => left._short / right._short,
-                    NumericalType.UnsignedShort => left._ushort / right._ushort,
-                    NumericalType.SignedInt => left._int / right._int,
-                    NumericalType.UnsignedInt => left._uint / right._uint,
-                    NumericalType.SignedLong => left._long / right._long,
-                    NumericalType.UnsignedLong => left._ulong / right._ulong,
-                    NumericalType.SinglePrecision => left._float / right._float,
-                    NumericalType.DoublePrecision => left._double / right._double,
-                    NumericalType.DecimalNumber => left._decimal / right._decimal,
+                    NumericalType.SignedByte => left._Sbyte / right._Sbyte,
+                    NumericalType.UnsignedByte => left._Byte / right._Byte,
+                    NumericalType.SignedShort => left._Short / right._Short,
+                    NumericalType.UnsignedShort => left._Ushort / right._Ushort,
+                    NumericalType.SignedInt => left._Int / right._Int,
+                    NumericalType.UnsignedInt => left._Uint / right._Uint,
+                    NumericalType.SignedLong => left._Long / right._Long,
+                    NumericalType.UnsignedLong => left._Ulong / right._Ulong,
+                    NumericalType.SinglePrecision => left._Float / right._Float,
+                    NumericalType.DoublePrecision => left._Double / right._Double,
+                    NumericalType.DecimalNumber => left._Decimal / right._Decimal,
                     _ => throw new InvalidOperationException(),
                 };
             }
@@ -694,17 +694,17 @@ namespace Common
                 // convert left to right, return right's type.
                 return right.Type switch
                 {
-                    NumericalType.SignedByte => (sbyte)left / right._sbyte,
-                    NumericalType.UnsignedByte => (byte)left / right._byte,
-                    NumericalType.SignedShort => (short)left / right._short,
-                    NumericalType.UnsignedShort => (ushort)left / right._ushort,
-                    NumericalType.SignedInt => (int)left / right._int,
-                    NumericalType.UnsignedInt => (uint)left / right._uint,
-                    NumericalType.SignedLong => (long)left / right._long,
-                    NumericalType.UnsignedLong => (ulong)left / right._ulong,
-                    NumericalType.SinglePrecision => (float)left / right._float,
-                    NumericalType.DoublePrecision => (double)left / right._double,
-                    NumericalType.DecimalNumber => (decimal)left / right._decimal,
+                    NumericalType.SignedByte => (sbyte)left / right._Sbyte,
+                    NumericalType.UnsignedByte => (byte)left / right._Byte,
+                    NumericalType.SignedShort => (short)left / right._Short,
+                    NumericalType.UnsignedShort => (ushort)left / right._Ushort,
+                    NumericalType.SignedInt => (int)left / right._Int,
+                    NumericalType.UnsignedInt => (uint)left / right._Uint,
+                    NumericalType.SignedLong => (long)left / right._Long,
+                    NumericalType.UnsignedLong => (ulong)left / right._Ulong,
+                    NumericalType.SinglePrecision => (float)left / right._Float,
+                    NumericalType.DoublePrecision => (double)left / right._Double,
+                    NumericalType.DecimalNumber => (decimal)left / right._Decimal,
                     _ => throw new InvalidOperationException(),
                 };
             }
@@ -713,17 +713,17 @@ namespace Common
                 // convert right to left, return left's type.
                 return left.Type switch
                 {
-                    NumericalType.SignedByte => (sbyte)right / left._sbyte,
-                    NumericalType.UnsignedByte => (byte)right / left._byte,
-                    NumericalType.SignedShort => (short)right / left._short,
-                    NumericalType.UnsignedShort => (ushort)right / left._ushort,
-                    NumericalType.SignedInt => (int)right / left._int,
-                    NumericalType.UnsignedInt => (uint)right / left._uint,
-                    NumericalType.SignedLong => (long)right / left._long,
-                    NumericalType.UnsignedLong => (ulong)right / left._ulong,
-                    NumericalType.SinglePrecision => (float)right / left._float,
-                    NumericalType.DoublePrecision => (double)right / left._double,
-                    NumericalType.DecimalNumber => (decimal)right / left._decimal,
+                    NumericalType.SignedByte => (sbyte)right / left._Sbyte,
+                    NumericalType.UnsignedByte => (byte)right / left._Byte,
+                    NumericalType.SignedShort => (short)right / left._Short,
+                    NumericalType.UnsignedShort => (ushort)right / left._Ushort,
+                    NumericalType.SignedInt => (int)right / left._Int,
+                    NumericalType.UnsignedInt => (uint)right / left._Uint,
+                    NumericalType.SignedLong => (long)right / left._Long,
+                    NumericalType.UnsignedLong => (ulong)right / left._Ulong,
+                    NumericalType.SinglePrecision => (float)right / left._Float,
+                    NumericalType.DoublePrecision => (double)right / left._Double,
+                    NumericalType.DecimalNumber => (decimal)right / left._Decimal,
                     _ => throw new InvalidOperationException(),
                 };
             }
@@ -736,17 +736,17 @@ namespace Common
             {
                 return left.Type switch
                 {
-                    NumericalType.SignedByte => left._sbyte % right._sbyte,
-                    NumericalType.UnsignedByte => left._byte % right._byte,
-                    NumericalType.SignedShort => left._short % right._short,
-                    NumericalType.UnsignedShort => left._ushort % right._ushort,
-                    NumericalType.SignedInt => left._int % right._int,
-                    NumericalType.UnsignedInt => left._uint % right._uint,
-                    NumericalType.SignedLong => left._long % right._long,
-                    NumericalType.UnsignedLong => left._ulong % right._ulong,
-                    NumericalType.SinglePrecision => left._float % right._float,
-                    NumericalType.DoublePrecision => left._double % right._double,
-                    NumericalType.DecimalNumber => left._decimal % right._decimal,
+                    NumericalType.SignedByte => left._Sbyte % right._Sbyte,
+                    NumericalType.UnsignedByte => left._Byte % right._Byte,
+                    NumericalType.SignedShort => left._Short % right._Short,
+                    NumericalType.UnsignedShort => left._Ushort % right._Ushort,
+                    NumericalType.SignedInt => left._Int % right._Int,
+                    NumericalType.UnsignedInt => left._Uint % right._Uint,
+                    NumericalType.SignedLong => left._Long % right._Long,
+                    NumericalType.UnsignedLong => left._Ulong % right._Ulong,
+                    NumericalType.SinglePrecision => left._Float % right._Float,
+                    NumericalType.DoublePrecision => left._Double % right._Double,
+                    NumericalType.DecimalNumber => left._Decimal % right._Decimal,
                     _ => throw new InvalidOperationException(),
                 };
             }
@@ -755,17 +755,17 @@ namespace Common
                 // convert left to right, return right's type.
                 return right.Type switch
                 {
-                    NumericalType.SignedByte => (sbyte)left % right._sbyte,
-                    NumericalType.UnsignedByte => (byte)left % right._byte,
-                    NumericalType.SignedShort => (short)left % right._short,
-                    NumericalType.UnsignedShort => (ushort)left % right._ushort,
-                    NumericalType.SignedInt => (int)left % right._int,
-                    NumericalType.UnsignedInt => (uint)left % right._uint,
-                    NumericalType.SignedLong => (long)left % right._long,
-                    NumericalType.UnsignedLong => (ulong)left % right._ulong,
-                    NumericalType.SinglePrecision => (float)left % right._float,
-                    NumericalType.DoublePrecision => (double)left % right._double,
-                    NumericalType.DecimalNumber => (decimal)left % right._decimal,
+                    NumericalType.SignedByte => (sbyte)left % right._Sbyte,
+                    NumericalType.UnsignedByte => (byte)left % right._Byte,
+                    NumericalType.SignedShort => (short)left % right._Short,
+                    NumericalType.UnsignedShort => (ushort)left % right._Ushort,
+                    NumericalType.SignedInt => (int)left % right._Int,
+                    NumericalType.UnsignedInt => (uint)left % right._Uint,
+                    NumericalType.SignedLong => (long)left % right._Long,
+                    NumericalType.UnsignedLong => (ulong)left % right._Ulong,
+                    NumericalType.SinglePrecision => (float)left % right._Float,
+                    NumericalType.DoublePrecision => (double)left % right._Double,
+                    NumericalType.DecimalNumber => (decimal)left % right._Decimal,
                     _ => throw new InvalidOperationException(),
                 };
             }
@@ -774,17 +774,17 @@ namespace Common
                 // convert right to left, return left's type.
                 return left.Type switch
                 {
-                    NumericalType.SignedByte => (sbyte)right % left._sbyte,
-                    NumericalType.UnsignedByte => (byte)right % left._byte,
-                    NumericalType.SignedShort => (short)right % left._short,
-                    NumericalType.UnsignedShort => (ushort)right % left._ushort,
-                    NumericalType.SignedInt => (int)right % left._int,
-                    NumericalType.UnsignedInt => (uint)right % left._uint,
-                    NumericalType.SignedLong => (long)right % left._long,
-                    NumericalType.UnsignedLong => (ulong)right % left._ulong,
-                    NumericalType.SinglePrecision => (float)right % left._float,
-                    NumericalType.DoublePrecision => (double)right % left._double,
-                    NumericalType.DecimalNumber => (decimal)right % left._decimal,
+                    NumericalType.SignedByte => (sbyte)right % left._Sbyte,
+                    NumericalType.UnsignedByte => (byte)right % left._Byte,
+                    NumericalType.SignedShort => (short)right % left._Short,
+                    NumericalType.UnsignedShort => (ushort)right % left._Ushort,
+                    NumericalType.SignedInt => (int)right % left._Int,
+                    NumericalType.UnsignedInt => (uint)right % left._Uint,
+                    NumericalType.SignedLong => (long)right % left._Long,
+                    NumericalType.UnsignedLong => (ulong)right % left._Ulong,
+                    NumericalType.SinglePrecision => (float)right % left._Float,
+                    NumericalType.DoublePrecision => (double)right % left._Double,
+                    NumericalType.DecimalNumber => (decimal)right % left._Decimal,
                     _ => throw new InvalidOperationException(),
                 };
             }
@@ -805,14 +805,14 @@ namespace Common
             {
                 return left.Type switch
                 {
-                    NumericalType.SignedByte => left._sbyte & right._sbyte,
-                    NumericalType.UnsignedByte => left._byte & right._byte,
-                    NumericalType.SignedShort => left._short & right._short,
-                    NumericalType.UnsignedShort => left._ushort & right._ushort,
-                    NumericalType.SignedInt => left._int & right._int,
-                    NumericalType.UnsignedInt => left._uint & right._uint,
-                    NumericalType.SignedLong => left._long & right._long,
-                    NumericalType.UnsignedLong => left._ulong & right._ulong,
+                    NumericalType.SignedByte => left._Sbyte & right._Sbyte,
+                    NumericalType.UnsignedByte => left._Byte & right._Byte,
+                    NumericalType.SignedShort => left._Short & right._Short,
+                    NumericalType.UnsignedShort => left._Ushort & right._Ushort,
+                    NumericalType.SignedInt => left._Int & right._Int,
+                    NumericalType.UnsignedInt => left._Uint & right._Uint,
+                    NumericalType.SignedLong => left._Long & right._Long,
+                    NumericalType.UnsignedLong => left._Ulong & right._Ulong,
                     NumericalType.SinglePrecision => throw new InvalidOperationException(),
                     NumericalType.DoublePrecision => throw new InvalidOperationException(),
                     NumericalType.DecimalNumber => throw new InvalidOperationException(),
@@ -824,14 +824,14 @@ namespace Common
                 // convert left to right, return right's type.
                 return right.Type switch
                 {
-                    NumericalType.SignedByte => (sbyte)left & right._sbyte,
-                    NumericalType.UnsignedByte => (byte)left & right._byte,
-                    NumericalType.SignedShort => (short)left & right._short,
-                    NumericalType.UnsignedShort => (ushort)left & right._ushort,
-                    NumericalType.SignedInt => (int)left & right._int,
-                    NumericalType.UnsignedInt => (uint)left & right._uint,
-                    NumericalType.SignedLong => (long)left & right._long,
-                    NumericalType.UnsignedLong => (ulong)left & right._ulong,
+                    NumericalType.SignedByte => (sbyte)left & right._Sbyte,
+                    NumericalType.UnsignedByte => (byte)left & right._Byte,
+                    NumericalType.SignedShort => (short)left & right._Short,
+                    NumericalType.UnsignedShort => (ushort)left & right._Ushort,
+                    NumericalType.SignedInt => (int)left & right._Int,
+                    NumericalType.UnsignedInt => (uint)left & right._Uint,
+                    NumericalType.SignedLong => (long)left & right._Long,
+                    NumericalType.UnsignedLong => (ulong)left & right._Ulong,
                     NumericalType.SinglePrecision => throw new InvalidOperationException(),
                     NumericalType.DoublePrecision => throw new InvalidOperationException(),
                     NumericalType.DecimalNumber => throw new InvalidOperationException(),
@@ -843,14 +843,14 @@ namespace Common
                 // convert right to left, return left's type.
                 return left.Type switch
                 {
-                    NumericalType.SignedByte => (sbyte)right & left._sbyte,
-                    NumericalType.UnsignedByte => (byte)right & left._byte,
-                    NumericalType.SignedShort => (short)right & left._short,
-                    NumericalType.UnsignedShort => (ushort)right & left._ushort,
-                    NumericalType.SignedInt => (int)right & left._int,
-                    NumericalType.UnsignedInt => (uint)right & left._uint,
-                    NumericalType.SignedLong => (long)right & left._long,
-                    NumericalType.UnsignedLong => (ulong)right & left._ulong,
+                    NumericalType.SignedByte => (sbyte)right & left._Sbyte,
+                    NumericalType.UnsignedByte => (byte)right & left._Byte,
+                    NumericalType.SignedShort => (short)right & left._Short,
+                    NumericalType.UnsignedShort => (ushort)right & left._Ushort,
+                    NumericalType.SignedInt => (int)right & left._Int,
+                    NumericalType.UnsignedInt => (uint)right & left._Uint,
+                    NumericalType.SignedLong => (long)right & left._Long,
+                    NumericalType.UnsignedLong => (ulong)right & left._Ulong,
                     NumericalType.SinglePrecision => throw new InvalidOperationException(),
                     NumericalType.DoublePrecision => throw new InvalidOperationException(),
                     NumericalType.DecimalNumber => throw new InvalidOperationException(),
@@ -866,14 +866,14 @@ namespace Common
             {
                 return left.Type switch
                 {
-                    NumericalType.SignedByte => left._sbyte | right._sbyte,
-                    NumericalType.UnsignedByte => left._byte | right._byte,
-                    NumericalType.SignedShort => left._short | right._short,
-                    NumericalType.UnsignedShort => left._ushort | right._ushort,
-                    NumericalType.SignedInt => left._int | right._int,
-                    NumericalType.UnsignedInt => left._uint | right._uint,
-                    NumericalType.SignedLong => left._long | right._long,
-                    NumericalType.UnsignedLong => left._ulong | right._ulong,
+                    NumericalType.SignedByte => left._Sbyte | right._Sbyte,
+                    NumericalType.UnsignedByte => left._Byte | right._Byte,
+                    NumericalType.SignedShort => left._Short | right._Short,
+                    NumericalType.UnsignedShort => left._Ushort | right._Ushort,
+                    NumericalType.SignedInt => left._Int | right._Int,
+                    NumericalType.UnsignedInt => left._Uint | right._Uint,
+                    NumericalType.SignedLong => left._Long | right._Long,
+                    NumericalType.UnsignedLong => left._Ulong | right._Ulong,
                     NumericalType.SinglePrecision => throw new InvalidOperationException(),
                     NumericalType.DoublePrecision => throw new InvalidOperationException(),
                     NumericalType.DecimalNumber => throw new InvalidOperationException(),
@@ -885,14 +885,14 @@ namespace Common
                 // convert left to right, return right's type.
                 return right.Type switch
                 {
-                    NumericalType.SignedByte => (sbyte)left | right._sbyte,
-                    NumericalType.UnsignedByte => (byte)left | right._byte,
-                    NumericalType.SignedShort => (short)left | right._short,
-                    NumericalType.UnsignedShort => (ushort)left | right._ushort,
-                    NumericalType.SignedInt => (int)left | right._int,
-                    NumericalType.UnsignedInt => (uint)left | right._uint,
-                    NumericalType.SignedLong => (long)left | right._long,
-                    NumericalType.UnsignedLong => (ulong)left | right._ulong,
+                    NumericalType.SignedByte => (sbyte)left | right._Sbyte,
+                    NumericalType.UnsignedByte => (byte)left | right._Byte,
+                    NumericalType.SignedShort => (short)left | right._Short,
+                    NumericalType.UnsignedShort => (ushort)left | right._Ushort,
+                    NumericalType.SignedInt => (int)left | right._Int,
+                    NumericalType.UnsignedInt => (uint)left | right._Uint,
+                    NumericalType.SignedLong => (long)left | right._Long,
+                    NumericalType.UnsignedLong => (ulong)left | right._Ulong,
                     NumericalType.SinglePrecision => throw new InvalidOperationException(),
                     NumericalType.DoublePrecision => throw new InvalidOperationException(),
                     NumericalType.DecimalNumber => throw new InvalidOperationException(),
@@ -904,14 +904,14 @@ namespace Common
                 // convert right to left, return left's type.
                 return left.Type switch
                 {
-                    NumericalType.SignedByte => (sbyte)right | left._sbyte,
-                    NumericalType.UnsignedByte => (byte)right | left._byte,
-                    NumericalType.SignedShort => (short)right | left._short,
-                    NumericalType.UnsignedShort => (ushort)right | left._ushort,
-                    NumericalType.SignedInt => (int)right | left._int,
-                    NumericalType.UnsignedInt => (uint)right | left._uint,
-                    NumericalType.SignedLong => (long)right | left._long,
-                    NumericalType.UnsignedLong => (ulong)right | left._ulong,
+                    NumericalType.SignedByte => (sbyte)right | left._Sbyte,
+                    NumericalType.UnsignedByte => (byte)right | left._Byte,
+                    NumericalType.SignedShort => (short)right | left._Short,
+                    NumericalType.UnsignedShort => (ushort)right | left._Ushort,
+                    NumericalType.SignedInt => (int)right | left._Int,
+                    NumericalType.UnsignedInt => (uint)right | left._Uint,
+                    NumericalType.SignedLong => (long)right | left._Long,
+                    NumericalType.UnsignedLong => (ulong)right | left._Ulong,
                     NumericalType.SinglePrecision => throw new InvalidOperationException(),
                     NumericalType.DoublePrecision => throw new InvalidOperationException(),
                     NumericalType.DecimalNumber => throw new InvalidOperationException(),
@@ -927,14 +927,14 @@ namespace Common
             {
                 return left.Type switch
                 {
-                    NumericalType.SignedByte => left._sbyte ^ right._sbyte,
-                    NumericalType.UnsignedByte => left._byte ^ right._byte,
-                    NumericalType.SignedShort => left._short ^ right._short,
-                    NumericalType.UnsignedShort => left._ushort ^ right._ushort,
-                    NumericalType.SignedInt => left._int ^ right._int,
-                    NumericalType.UnsignedInt => left._uint ^ right._uint,
-                    NumericalType.SignedLong => left._long ^ right._long,
-                    NumericalType.UnsignedLong => left._ulong ^ right._ulong,
+                    NumericalType.SignedByte => left._Sbyte ^ right._Sbyte,
+                    NumericalType.UnsignedByte => left._Byte ^ right._Byte,
+                    NumericalType.SignedShort => left._Short ^ right._Short,
+                    NumericalType.UnsignedShort => left._Ushort ^ right._Ushort,
+                    NumericalType.SignedInt => left._Int ^ right._Int,
+                    NumericalType.UnsignedInt => left._Uint ^ right._Uint,
+                    NumericalType.SignedLong => left._Long ^ right._Long,
+                    NumericalType.UnsignedLong => left._Ulong ^ right._Ulong,
                     NumericalType.SinglePrecision => throw new InvalidOperationException(),
                     NumericalType.DoublePrecision => throw new InvalidOperationException(),
                     NumericalType.DecimalNumber => throw new InvalidOperationException(),
@@ -946,14 +946,14 @@ namespace Common
                 // convert left to right, return right's type.
                 return right.Type switch
                 {
-                    NumericalType.SignedByte => (sbyte)left ^ right._sbyte,
-                    NumericalType.UnsignedByte => (byte)left ^ right._byte,
-                    NumericalType.SignedShort => (short)left ^ right._short,
-                    NumericalType.UnsignedShort => (ushort)left ^ right._ushort,
-                    NumericalType.SignedInt => (int)left ^ right._int,
-                    NumericalType.UnsignedInt => (uint)left ^ right._uint,
-                    NumericalType.SignedLong => (long)left ^ right._long,
-                    NumericalType.UnsignedLong => (ulong)left ^ right._ulong,
+                    NumericalType.SignedByte => (sbyte)left ^ right._Sbyte,
+                    NumericalType.UnsignedByte => (byte)left ^ right._Byte,
+                    NumericalType.SignedShort => (short)left ^ right._Short,
+                    NumericalType.UnsignedShort => (ushort)left ^ right._Ushort,
+                    NumericalType.SignedInt => (int)left ^ right._Int,
+                    NumericalType.UnsignedInt => (uint)left ^ right._Uint,
+                    NumericalType.SignedLong => (long)left ^ right._Long,
+                    NumericalType.UnsignedLong => (ulong)left ^ right._Ulong,
                     NumericalType.SinglePrecision => throw new InvalidOperationException(),
                     NumericalType.DoublePrecision => throw new InvalidOperationException(),
                     NumericalType.DecimalNumber => throw new InvalidOperationException(),
@@ -965,14 +965,14 @@ namespace Common
                 // convert right to left, return left's type.
                 return left.Type switch
                 {
-                    NumericalType.SignedByte => (sbyte)right ^ left._sbyte,
-                    NumericalType.UnsignedByte => (byte)right ^ left._byte,
-                    NumericalType.SignedShort => (short)right ^ left._short,
-                    NumericalType.UnsignedShort => (ushort)right ^ left._ushort,
-                    NumericalType.SignedInt => (int)right ^ left._int,
-                    NumericalType.UnsignedInt => (uint)right ^ left._uint,
-                    NumericalType.SignedLong => (long)right ^ left._long,
-                    NumericalType.UnsignedLong => (ulong)right ^ left._ulong,
+                    NumericalType.SignedByte => (sbyte)right ^ left._Sbyte,
+                    NumericalType.UnsignedByte => (byte)right ^ left._Byte,
+                    NumericalType.SignedShort => (short)right ^ left._Short,
+                    NumericalType.UnsignedShort => (ushort)right ^ left._Ushort,
+                    NumericalType.SignedInt => (int)right ^ left._Int,
+                    NumericalType.UnsignedInt => (uint)right ^ left._Uint,
+                    NumericalType.SignedLong => (long)right ^ left._Long,
+                    NumericalType.UnsignedLong => (ulong)right ^ left._Ulong,
                     NumericalType.SinglePrecision => throw new InvalidOperationException(),
                     NumericalType.DoublePrecision => throw new InvalidOperationException(),
                     NumericalType.DecimalNumber => throw new InvalidOperationException(),
@@ -992,14 +992,14 @@ namespace Common
         {
             return left.Type switch
             {
-                NumericalType.SignedByte => left._sbyte << right,
-                NumericalType.UnsignedByte => left._byte << right,
-                NumericalType.SignedShort => left._short << right,
-                NumericalType.UnsignedShort => left._ushort << right,
-                NumericalType.SignedInt => left._int << right,
-                NumericalType.UnsignedInt => left._uint << right,
-                NumericalType.SignedLong => left._long << right,
-                NumericalType.UnsignedLong => left._ulong << right,
+                NumericalType.SignedByte => left._Sbyte << right,
+                NumericalType.UnsignedByte => left._Byte << right,
+                NumericalType.SignedShort => left._Short << right,
+                NumericalType.UnsignedShort => left._Ushort << right,
+                NumericalType.SignedInt => left._Int << right,
+                NumericalType.UnsignedInt => left._Uint << right,
+                NumericalType.SignedLong => left._Long << right,
+                NumericalType.UnsignedLong => left._Ulong << right,
                 NumericalType.SinglePrecision => throw new InvalidOperationException(),
                 NumericalType.DoublePrecision => throw new InvalidOperationException(),
                 NumericalType.DecimalNumber => throw new InvalidOperationException(),
@@ -1012,14 +1012,14 @@ namespace Common
 
             return left.Type switch
             {
-                NumericalType.SignedByte => left._sbyte >> right,
-                NumericalType.UnsignedByte => left._byte >> right,
-                NumericalType.SignedShort => left._short >> right,
-                NumericalType.UnsignedShort => left._ushort >> right,
-                NumericalType.SignedInt => left._int >> right,
-                NumericalType.UnsignedInt => left._uint >> right,
-                NumericalType.SignedLong => left._long >> right,
-                NumericalType.UnsignedLong => left._ulong >> right,
+                NumericalType.SignedByte => left._Sbyte >> right,
+                NumericalType.UnsignedByte => left._Byte >> right,
+                NumericalType.SignedShort => left._Short >> right,
+                NumericalType.UnsignedShort => left._Ushort >> right,
+                NumericalType.SignedInt => left._Int >> right,
+                NumericalType.UnsignedInt => left._Uint >> right,
+                NumericalType.SignedLong => left._Long >> right,
+                NumericalType.UnsignedLong => left._Ulong >> right,
                 NumericalType.SinglePrecision => throw new InvalidOperationException(),
                 NumericalType.DoublePrecision => throw new InvalidOperationException(),
                 NumericalType.DecimalNumber => throw new InvalidOperationException(),
@@ -1041,17 +1041,17 @@ namespace Common
             {
                 return left.Type switch
                 {
-                    NumericalType.SignedByte => left._sbyte <= right._sbyte,
-                    NumericalType.UnsignedByte => left._byte <= right._byte,
-                    NumericalType.SignedShort => left._short <= right._short,
-                    NumericalType.UnsignedShort => left._ushort <= right._ushort,
-                    NumericalType.SignedInt => left._int <= right._int,
-                    NumericalType.UnsignedInt => left._uint <= right._uint,
-                    NumericalType.SignedLong => left._long <= right._long,
-                    NumericalType.UnsignedLong => left._ulong <= right._ulong,
-                    NumericalType.SinglePrecision => left._float <= right._float,
-                    NumericalType.DoublePrecision => left._double <= right._double,
-                    NumericalType.DecimalNumber => left._decimal <= right._decimal,
+                    NumericalType.SignedByte => left._Sbyte <= right._Sbyte,
+                    NumericalType.UnsignedByte => left._Byte <= right._Byte,
+                    NumericalType.SignedShort => left._Short <= right._Short,
+                    NumericalType.UnsignedShort => left._Ushort <= right._Ushort,
+                    NumericalType.SignedInt => left._Int <= right._Int,
+                    NumericalType.UnsignedInt => left._Uint <= right._Uint,
+                    NumericalType.SignedLong => left._Long <= right._Long,
+                    NumericalType.UnsignedLong => left._Ulong <= right._Ulong,
+                    NumericalType.SinglePrecision => left._Float <= right._Float,
+                    NumericalType.DoublePrecision => left._Double <= right._Double,
+                    NumericalType.DecimalNumber => left._Decimal <= right._Decimal,
                     _ => throw new InvalidOperationException(),
                 };
             }
@@ -1060,17 +1060,17 @@ namespace Common
                 // convert left to right, return right's type.
                 return right.Type switch
                 {
-                    NumericalType.SignedByte => (sbyte)left <= right._sbyte,
-                    NumericalType.UnsignedByte => (byte)left <= right._byte,
-                    NumericalType.SignedShort => (short)left <= right._short,
-                    NumericalType.UnsignedShort => (ushort)left <= right._ushort,
-                    NumericalType.SignedInt => (int)left <= right._int,
-                    NumericalType.UnsignedInt => (uint)left <= right._uint,
-                    NumericalType.SignedLong => (long)left <= right._long,
-                    NumericalType.UnsignedLong => (ulong)left <= right._ulong,
-                    NumericalType.SinglePrecision => (float)left <= right._float,
-                    NumericalType.DoublePrecision => (double)left <= right._double,
-                    NumericalType.DecimalNumber => (decimal)left <= right._decimal,
+                    NumericalType.SignedByte => (sbyte)left <= right._Sbyte,
+                    NumericalType.UnsignedByte => (byte)left <= right._Byte,
+                    NumericalType.SignedShort => (short)left <= right._Short,
+                    NumericalType.UnsignedShort => (ushort)left <= right._Ushort,
+                    NumericalType.SignedInt => (int)left <= right._Int,
+                    NumericalType.UnsignedInt => (uint)left <= right._Uint,
+                    NumericalType.SignedLong => (long)left <= right._Long,
+                    NumericalType.UnsignedLong => (ulong)left <= right._Ulong,
+                    NumericalType.SinglePrecision => (float)left <= right._Float,
+                    NumericalType.DoublePrecision => (double)left <= right._Double,
+                    NumericalType.DecimalNumber => (decimal)left <= right._Decimal,
                     _ => throw new InvalidOperationException(),
                 };
             }
@@ -1079,17 +1079,17 @@ namespace Common
                 // convert right to left, return left's type.
                 return left.Type switch
                 {
-                    NumericalType.SignedByte => (sbyte)right <= left._sbyte,
-                    NumericalType.UnsignedByte => (byte)right <= left._byte,
-                    NumericalType.SignedShort => (short)right <= left._short,
-                    NumericalType.UnsignedShort => (ushort)right <= left._ushort,
-                    NumericalType.SignedInt => (int)right <= left._int,
-                    NumericalType.UnsignedInt => (uint)right <= left._uint,
-                    NumericalType.SignedLong => (long)right <= left._long,
-                    NumericalType.UnsignedLong => (ulong)right <= left._ulong,
-                    NumericalType.SinglePrecision => (float)right <= left._float,
-                    NumericalType.DoublePrecision => (double)right <= left._double,
-                    NumericalType.DecimalNumber => (decimal)right <= left._decimal,
+                    NumericalType.SignedByte => (sbyte)right <= left._Sbyte,
+                    NumericalType.UnsignedByte => (byte)right <= left._Byte,
+                    NumericalType.SignedShort => (short)right <= left._Short,
+                    NumericalType.UnsignedShort => (ushort)right <= left._Ushort,
+                    NumericalType.SignedInt => (int)right <= left._Int,
+                    NumericalType.UnsignedInt => (uint)right <= left._Uint,
+                    NumericalType.SignedLong => (long)right <= left._Long,
+                    NumericalType.UnsignedLong => (ulong)right <= left._Ulong,
+                    NumericalType.SinglePrecision => (float)right <= left._Float,
+                    NumericalType.DoublePrecision => (double)right <= left._Double,
+                    NumericalType.DecimalNumber => (decimal)right <= left._Decimal,
                     _ => throw new InvalidOperationException(),
                 };
             }
@@ -1101,17 +1101,17 @@ namespace Common
             {
                 return left.Type switch
                 {
-                    NumericalType.SignedByte => left._sbyte >= right._sbyte,
-                    NumericalType.UnsignedByte => left._byte >= right._byte,
-                    NumericalType.SignedShort => left._short >= right._short,
-                    NumericalType.UnsignedShort => left._ushort >= right._ushort,
-                    NumericalType.SignedInt => left._int >= right._int,
-                    NumericalType.UnsignedInt => left._uint >= right._uint,
-                    NumericalType.SignedLong => left._long >= right._long,
-                    NumericalType.UnsignedLong => left._ulong >= right._ulong,
-                    NumericalType.SinglePrecision => left._float >= right._float,
-                    NumericalType.DoublePrecision => left._double >= right._double,
-                    NumericalType.DecimalNumber => left._decimal >= right._decimal,
+                    NumericalType.SignedByte => left._Sbyte >= right._Sbyte,
+                    NumericalType.UnsignedByte => left._Byte >= right._Byte,
+                    NumericalType.SignedShort => left._Short >= right._Short,
+                    NumericalType.UnsignedShort => left._Ushort >= right._Ushort,
+                    NumericalType.SignedInt => left._Int >= right._Int,
+                    NumericalType.UnsignedInt => left._Uint >= right._Uint,
+                    NumericalType.SignedLong => left._Long >= right._Long,
+                    NumericalType.UnsignedLong => left._Ulong >= right._Ulong,
+                    NumericalType.SinglePrecision => left._Float >= right._Float,
+                    NumericalType.DoublePrecision => left._Double >= right._Double,
+                    NumericalType.DecimalNumber => left._Decimal >= right._Decimal,
                     _ => throw new InvalidOperationException(),
                 };
             }
@@ -1120,17 +1120,17 @@ namespace Common
                 // convert left to right, return right's type.
                 return right.Type switch
                 {
-                    NumericalType.SignedByte => (sbyte)left >= right._sbyte,
-                    NumericalType.UnsignedByte => (byte)left >= right._byte,
-                    NumericalType.SignedShort => (short)left >= right._short,
-                    NumericalType.UnsignedShort => (ushort)left >= right._ushort,
-                    NumericalType.SignedInt => (int)left >= right._int,
-                    NumericalType.UnsignedInt => (uint)left >= right._uint,
-                    NumericalType.SignedLong => (long)left >= right._long,
-                    NumericalType.UnsignedLong => (ulong)left >= right._ulong,
-                    NumericalType.SinglePrecision => (float)left >= right._float,
-                    NumericalType.DoublePrecision => (double)left >= right._double,
-                    NumericalType.DecimalNumber => (decimal)left >= right._decimal,
+                    NumericalType.SignedByte => (sbyte)left >= right._Sbyte,
+                    NumericalType.UnsignedByte => (byte)left >= right._Byte,
+                    NumericalType.SignedShort => (short)left >= right._Short,
+                    NumericalType.UnsignedShort => (ushort)left >= right._Ushort,
+                    NumericalType.SignedInt => (int)left >= right._Int,
+                    NumericalType.UnsignedInt => (uint)left >= right._Uint,
+                    NumericalType.SignedLong => (long)left >= right._Long,
+                    NumericalType.UnsignedLong => (ulong)left >= right._Ulong,
+                    NumericalType.SinglePrecision => (float)left >= right._Float,
+                    NumericalType.DoublePrecision => (double)left >= right._Double,
+                    NumericalType.DecimalNumber => (decimal)left >= right._Decimal,
                     _ => throw new InvalidOperationException(),
                 };
             }
@@ -1139,17 +1139,17 @@ namespace Common
                 // convert right to left, return left's type.
                 return left.Type switch
                 {
-                    NumericalType.SignedByte => (sbyte)right >= left._sbyte,
-                    NumericalType.UnsignedByte => (byte)right >= left._byte,
-                    NumericalType.SignedShort => (short)right >= left._short,
-                    NumericalType.UnsignedShort => (ushort)right >= left._ushort,
-                    NumericalType.SignedInt => (int)right >= left._int,
-                    NumericalType.UnsignedInt => (uint)right >= left._uint,
-                    NumericalType.SignedLong => (long)right >= left._long,
-                    NumericalType.UnsignedLong => (ulong)right >= left._ulong,
-                    NumericalType.SinglePrecision => (float)right >= left._float,
-                    NumericalType.DoublePrecision => (double)right >= left._double,
-                    NumericalType.DecimalNumber => (decimal)right >= left._decimal,
+                    NumericalType.SignedByte => (sbyte)right >= left._Sbyte,
+                    NumericalType.UnsignedByte => (byte)right >= left._Byte,
+                    NumericalType.SignedShort => (short)right >= left._Short,
+                    NumericalType.UnsignedShort => (ushort)right >= left._Ushort,
+                    NumericalType.SignedInt => (int)right >= left._Int,
+                    NumericalType.UnsignedInt => (uint)right >= left._Uint,
+                    NumericalType.SignedLong => (long)right >= left._Long,
+                    NumericalType.UnsignedLong => (ulong)right >= left._Ulong,
+                    NumericalType.SinglePrecision => (float)right >= left._Float,
+                    NumericalType.DoublePrecision => (double)right >= left._Double,
+                    NumericalType.DecimalNumber => (decimal)right >= left._Decimal,
                     _ => throw new InvalidOperationException(),
                 };
             }
@@ -1161,17 +1161,17 @@ namespace Common
             {
                 return left.Type switch
                 {
-                    NumericalType.SignedByte => left._sbyte < right._sbyte,
-                    NumericalType.UnsignedByte => left._byte < right._byte,
-                    NumericalType.SignedShort => left._short < right._short,
-                    NumericalType.UnsignedShort => left._ushort < right._ushort,
-                    NumericalType.SignedInt => left._int < right._int,
-                    NumericalType.UnsignedInt => left._uint < right._uint,
-                    NumericalType.SignedLong => left._long < right._long,
-                    NumericalType.UnsignedLong => left._ulong < right._ulong,
-                    NumericalType.SinglePrecision => left._float < right._float,
-                    NumericalType.DoublePrecision => left._double < right._double,
-                    NumericalType.DecimalNumber => left._decimal < right._decimal,
+                    NumericalType.SignedByte => left._Sbyte < right._Sbyte,
+                    NumericalType.UnsignedByte => left._Byte < right._Byte,
+                    NumericalType.SignedShort => left._Short < right._Short,
+                    NumericalType.UnsignedShort => left._Ushort < right._Ushort,
+                    NumericalType.SignedInt => left._Int < right._Int,
+                    NumericalType.UnsignedInt => left._Uint < right._Uint,
+                    NumericalType.SignedLong => left._Long < right._Long,
+                    NumericalType.UnsignedLong => left._Ulong < right._Ulong,
+                    NumericalType.SinglePrecision => left._Float < right._Float,
+                    NumericalType.DoublePrecision => left._Double < right._Double,
+                    NumericalType.DecimalNumber => left._Decimal < right._Decimal,
                     _ => throw new InvalidOperationException(),
                 };
             }
@@ -1180,17 +1180,17 @@ namespace Common
                 // convert left to right, return right's type.
                 return right.Type switch
                 {
-                    NumericalType.SignedByte => (sbyte)left < right._sbyte,
-                    NumericalType.UnsignedByte => (byte)left < right._byte,
-                    NumericalType.SignedShort => (short)left < right._short,
-                    NumericalType.UnsignedShort => (ushort)left < right._ushort,
-                    NumericalType.SignedInt => (int)left < right._int,
-                    NumericalType.UnsignedInt => (uint)left < right._uint,
-                    NumericalType.SignedLong => (long)left < right._long,
-                    NumericalType.UnsignedLong => (ulong)left < right._ulong,
-                    NumericalType.SinglePrecision => (float)left < right._float,
-                    NumericalType.DoublePrecision => (double)left < right._double,
-                    NumericalType.DecimalNumber => (decimal)left < right._decimal,
+                    NumericalType.SignedByte => (sbyte)left < right._Sbyte,
+                    NumericalType.UnsignedByte => (byte)left < right._Byte,
+                    NumericalType.SignedShort => (short)left < right._Short,
+                    NumericalType.UnsignedShort => (ushort)left < right._Ushort,
+                    NumericalType.SignedInt => (int)left < right._Int,
+                    NumericalType.UnsignedInt => (uint)left < right._Uint,
+                    NumericalType.SignedLong => (long)left < right._Long,
+                    NumericalType.UnsignedLong => (ulong)left < right._Ulong,
+                    NumericalType.SinglePrecision => (float)left < right._Float,
+                    NumericalType.DoublePrecision => (double)left < right._Double,
+                    NumericalType.DecimalNumber => (decimal)left < right._Decimal,
                     _ => throw new InvalidOperationException(),
                 };
             }
@@ -1199,17 +1199,17 @@ namespace Common
                 // convert right to left, return left's type.
                 return left.Type switch
                 {
-                    NumericalType.SignedByte => (sbyte)right < left._sbyte,
-                    NumericalType.UnsignedByte => (byte)right < left._byte,
-                    NumericalType.SignedShort => (short)right < left._short,
-                    NumericalType.UnsignedShort => (ushort)right < left._ushort,
-                    NumericalType.SignedInt => (int)right < left._int,
-                    NumericalType.UnsignedInt => (uint)right < left._uint,
-                    NumericalType.SignedLong => (long)right < left._long,
-                    NumericalType.UnsignedLong => (ulong)right < left._ulong,
-                    NumericalType.SinglePrecision => (float)right < left._float,
-                    NumericalType.DoublePrecision => (double)right < left._double,
-                    NumericalType.DecimalNumber => (decimal)right < left._decimal,
+                    NumericalType.SignedByte => (sbyte)right < left._Sbyte,
+                    NumericalType.UnsignedByte => (byte)right < left._Byte,
+                    NumericalType.SignedShort => (short)right < left._Short,
+                    NumericalType.UnsignedShort => (ushort)right < left._Ushort,
+                    NumericalType.SignedInt => (int)right < left._Int,
+                    NumericalType.UnsignedInt => (uint)right < left._Uint,
+                    NumericalType.SignedLong => (long)right < left._Long,
+                    NumericalType.UnsignedLong => (ulong)right < left._Ulong,
+                    NumericalType.SinglePrecision => (float)right < left._Float,
+                    NumericalType.DoublePrecision => (double)right < left._Double,
+                    NumericalType.DecimalNumber => (decimal)right < left._Decimal,
                     _ => throw new InvalidOperationException(),
                 };
             }
@@ -1221,17 +1221,17 @@ namespace Common
             {
                 return left.Type switch
                 {
-                    NumericalType.SignedByte => left._sbyte > right._sbyte,
-                    NumericalType.UnsignedByte => left._byte > right._byte,
-                    NumericalType.SignedShort => left._short > right._short,
-                    NumericalType.UnsignedShort => left._ushort > right._ushort,
-                    NumericalType.SignedInt => left._int > right._int,
-                    NumericalType.UnsignedInt => left._uint > right._uint,
-                    NumericalType.SignedLong => left._long > right._long,
-                    NumericalType.UnsignedLong => left._ulong > right._ulong,
-                    NumericalType.SinglePrecision => left._float > right._float,
-                    NumericalType.DoublePrecision => left._double > right._double,
-                    NumericalType.DecimalNumber => left._decimal > right._decimal,
+                    NumericalType.SignedByte => left._Sbyte > right._Sbyte,
+                    NumericalType.UnsignedByte => left._Byte > right._Byte,
+                    NumericalType.SignedShort => left._Short > right._Short,
+                    NumericalType.UnsignedShort => left._Ushort > right._Ushort,
+                    NumericalType.SignedInt => left._Int > right._Int,
+                    NumericalType.UnsignedInt => left._Uint > right._Uint,
+                    NumericalType.SignedLong => left._Long > right._Long,
+                    NumericalType.UnsignedLong => left._Ulong > right._Ulong,
+                    NumericalType.SinglePrecision => left._Float > right._Float,
+                    NumericalType.DoublePrecision => left._Double > right._Double,
+                    NumericalType.DecimalNumber => left._Decimal > right._Decimal,
                     _ => throw new InvalidOperationException(),
                 };
             }
@@ -1240,17 +1240,17 @@ namespace Common
                 // convert left to right, return right's type.
                 return right.Type switch
                 {
-                    NumericalType.SignedByte => (sbyte)left > right._sbyte,
-                    NumericalType.UnsignedByte => (byte)left > right._byte,
-                    NumericalType.SignedShort => (short)left > right._short,
-                    NumericalType.UnsignedShort => (ushort)left > right._ushort,
-                    NumericalType.SignedInt => (int)left > right._int,
-                    NumericalType.UnsignedInt => (uint)left > right._uint,
-                    NumericalType.SignedLong => (long)left > right._long,
-                    NumericalType.UnsignedLong => (ulong)left > right._ulong,
-                    NumericalType.SinglePrecision => (float)left > right._float,
-                    NumericalType.DoublePrecision => (double)left > right._double,
-                    NumericalType.DecimalNumber => (decimal)left > right._decimal,
+                    NumericalType.SignedByte => (sbyte)left > right._Sbyte,
+                    NumericalType.UnsignedByte => (byte)left > right._Byte,
+                    NumericalType.SignedShort => (short)left > right._Short,
+                    NumericalType.UnsignedShort => (ushort)left > right._Ushort,
+                    NumericalType.SignedInt => (int)left > right._Int,
+                    NumericalType.UnsignedInt => (uint)left > right._Uint,
+                    NumericalType.SignedLong => (long)left > right._Long,
+                    NumericalType.UnsignedLong => (ulong)left > right._Ulong,
+                    NumericalType.SinglePrecision => (float)left > right._Float,
+                    NumericalType.DoublePrecision => (double)left > right._Double,
+                    NumericalType.DecimalNumber => (decimal)left > right._Decimal,
                     _ => throw new InvalidOperationException(),
                 };
             }
@@ -1259,17 +1259,17 @@ namespace Common
                 // convert right to left, return left's type.
                 return left.Type switch
                 {
-                    NumericalType.SignedByte => (sbyte)right > left._sbyte,
-                    NumericalType.UnsignedByte => (byte)right > left._byte,
-                    NumericalType.SignedShort => (short)right > left._short,
-                    NumericalType.UnsignedShort => (ushort)right > left._ushort,
-                    NumericalType.SignedInt => (int)right > left._int,
-                    NumericalType.UnsignedInt => (uint)right > left._uint,
-                    NumericalType.SignedLong => (long)right > left._long,
-                    NumericalType.UnsignedLong => (ulong)right > left._ulong,
-                    NumericalType.SinglePrecision => (float)right > left._float,
-                    NumericalType.DoublePrecision => (double)right > left._double,
-                    NumericalType.DecimalNumber => (decimal)right > left._decimal,
+                    NumericalType.SignedByte => (sbyte)right > left._Sbyte,
+                    NumericalType.UnsignedByte => (byte)right > left._Byte,
+                    NumericalType.SignedShort => (short)right > left._Short,
+                    NumericalType.UnsignedShort => (ushort)right > left._Ushort,
+                    NumericalType.SignedInt => (int)right > left._Int,
+                    NumericalType.UnsignedInt => (uint)right > left._Uint,
+                    NumericalType.SignedLong => (long)right > left._Long,
+                    NumericalType.UnsignedLong => (ulong)right > left._Ulong,
+                    NumericalType.SinglePrecision => (float)right > left._Float,
+                    NumericalType.DoublePrecision => (double)right > left._Double,
+                    NumericalType.DecimalNumber => (decimal)right > left._Decimal,
                     _ => throw new InvalidOperationException(),
                 };
             }
@@ -1305,56 +1305,56 @@ namespace Common
 
         public static Numerical FromSByte(sbyte b) => new Numerical(NumericalType.SignedByte)
         {
-            _sbyte = b
+            _Sbyte = b
         };
 
         public static Numerical FromByte(byte b) => new Numerical(NumericalType.UnsignedByte)
         {
-            _byte = b
+            _Byte = b
         };
 
         public static Numerical FromInt16(short b) => new Numerical(NumericalType.SignedShort)
         {
-            _short = b
+            _Short = b
         };
         public static Numerical FromUInt16(ushort b) => new Numerical(NumericalType.UnsignedShort)
         {
-            _ushort = b
+            _Ushort = b
         };
         public static Numerical FromInt32(int b) => new Numerical(NumericalType.SignedInt)
         {
-            _int = b
+            _Int = b
         };
         public static Numerical FromUInt32(uint b) => new Numerical(NumericalType.UnsignedInt)
         {
-            _uint = b
+            _Uint = b
         };
         public static Numerical FromInt64(long b) => new Numerical(NumericalType.SignedLong)
         {
-            _long = b
+            _Long = b
         };
         public static Numerical FromUInt64(ulong b) => new Numerical(NumericalType.UnsignedLong)
         {
-            _ulong = b
+            _Ulong = b
         };
         public static Numerical FromSingle(float b) => new Numerical(NumericalType.SinglePrecision)
         {
-            _float = b
+            _Float = b
         };
         public static Numerical FromDouble(double b) => new Numerical(NumericalType.DoublePrecision)
         {
-            _double = b
+            _Double = b
         };
         public static Numerical FromDecimal(decimal b) => new Numerical(NumericalType.DecimalNumber)
         {
-            _decimal = b
+            _Decimal = b
         };
 
         public sbyte ToSByte()
         {
             return this.Type switch
             {
-                NumericalType.SignedByte => this._sbyte,
+                NumericalType.SignedByte => this._Sbyte,
                 NumericalType.UnsignedByte => throw new InvalidOperationException(),
                 NumericalType.SignedShort => throw new InvalidOperationException(),
                 NumericalType.UnsignedShort => throw new InvalidOperationException(),
@@ -1374,7 +1374,7 @@ namespace Common
             return this.Type switch
             {
                 NumericalType.SignedByte => throw new InvalidOperationException(),
-                NumericalType.UnsignedByte => this._byte,
+                NumericalType.UnsignedByte => this._Byte,
                 NumericalType.SignedShort => throw new InvalidOperationException(),
                 NumericalType.UnsignedShort => throw new InvalidOperationException(),
                 NumericalType.SignedInt => throw new InvalidOperationException(),
@@ -1392,9 +1392,9 @@ namespace Common
         {
             return this.Type switch
             {
-                NumericalType.SignedByte => this._sbyte,
-                NumericalType.UnsignedByte => this._byte,
-                NumericalType.SignedShort => this._short,
+                NumericalType.SignedByte => this._Sbyte,
+                NumericalType.UnsignedByte => this._Byte,
+                NumericalType.SignedShort => this._Short,
                 NumericalType.UnsignedShort => throw new InvalidOperationException(),
                 NumericalType.SignedInt => throw new InvalidOperationException(),
                 NumericalType.UnsignedInt => throw new InvalidOperationException(),
@@ -1412,9 +1412,9 @@ namespace Common
             return this.Type switch
             {
                 NumericalType.SignedByte => throw new InvalidOperationException(),
-                NumericalType.UnsignedByte => this._byte,
+                NumericalType.UnsignedByte => this._Byte,
                 NumericalType.SignedShort => throw new InvalidOperationException(),
-                NumericalType.UnsignedShort => this._ushort,
+                NumericalType.UnsignedShort => this._Ushort,
                 NumericalType.SignedInt => throw new InvalidOperationException(),
                 NumericalType.UnsignedInt => throw new InvalidOperationException(),
                 NumericalType.SignedLong => throw new InvalidOperationException(),
@@ -1430,11 +1430,11 @@ namespace Common
         {
             return this.Type switch
             {
-                NumericalType.SignedByte => this._sbyte,
-                NumericalType.UnsignedByte => this._byte,
-                NumericalType.SignedShort => this._short,
-                NumericalType.UnsignedShort => this._ushort,
-                NumericalType.SignedInt => this._int,
+                NumericalType.SignedByte => this._Sbyte,
+                NumericalType.UnsignedByte => this._Byte,
+                NumericalType.SignedShort => this._Short,
+                NumericalType.UnsignedShort => this._Ushort,
+                NumericalType.SignedInt => this._Int,
                 NumericalType.UnsignedInt => throw new InvalidOperationException(),
                 NumericalType.SignedLong => throw new InvalidOperationException(),
                 NumericalType.UnsignedLong => throw new InvalidOperationException(),
@@ -1450,11 +1450,11 @@ namespace Common
             return this.Type switch
             {
                 NumericalType.SignedByte => throw new InvalidOperationException(),
-                NumericalType.UnsignedByte => this._byte,
+                NumericalType.UnsignedByte => this._Byte,
                 NumericalType.SignedShort => throw new InvalidOperationException(),
-                NumericalType.UnsignedShort => this._ushort,
+                NumericalType.UnsignedShort => this._Ushort,
                 NumericalType.SignedInt => throw new InvalidOperationException(),
-                NumericalType.UnsignedInt => this._uint,
+                NumericalType.UnsignedInt => this._Uint,
                 NumericalType.SignedLong => throw new InvalidOperationException(),
                 NumericalType.UnsignedLong => throw new InvalidOperationException(),
                 NumericalType.SinglePrecision => throw new InvalidOperationException(),
@@ -1468,13 +1468,13 @@ namespace Common
         {
             return this.Type switch
             {
-                NumericalType.SignedByte => this._sbyte,
-                NumericalType.UnsignedByte => this._byte,
-                NumericalType.SignedShort => this._short,
-                NumericalType.UnsignedShort => this._ushort,
-                NumericalType.SignedInt => this._int,
-                NumericalType.UnsignedInt => this._uint,
-                NumericalType.SignedLong => this._long,
+                NumericalType.SignedByte => this._Sbyte,
+                NumericalType.UnsignedByte => this._Byte,
+                NumericalType.SignedShort => this._Short,
+                NumericalType.UnsignedShort => this._Ushort,
+                NumericalType.SignedInt => this._Int,
+                NumericalType.UnsignedInt => this._Uint,
+                NumericalType.SignedLong => this._Long,
                 NumericalType.UnsignedLong => throw new InvalidOperationException(),
                 NumericalType.SinglePrecision => throw new InvalidOperationException(),
                 NumericalType.DoublePrecision => throw new InvalidOperationException(),
@@ -1488,13 +1488,13 @@ namespace Common
             return this.Type switch
             {
                 NumericalType.SignedByte => throw new InvalidOperationException(),
-                NumericalType.UnsignedByte => this._byte,
+                NumericalType.UnsignedByte => this._Byte,
                 NumericalType.SignedShort => throw new InvalidOperationException(),
-                NumericalType.UnsignedShort => this._ushort,
+                NumericalType.UnsignedShort => this._Ushort,
                 NumericalType.SignedInt => throw new InvalidOperationException(),
-                NumericalType.UnsignedInt => this._uint,
+                NumericalType.UnsignedInt => this._Uint,
                 NumericalType.SignedLong => throw new InvalidOperationException(),
-                NumericalType.UnsignedLong => this._ulong,
+                NumericalType.UnsignedLong => this._Ulong,
                 NumericalType.SinglePrecision => throw new InvalidOperationException(),
                 NumericalType.DoublePrecision => throw new InvalidOperationException(),
                 NumericalType.DecimalNumber => throw new InvalidOperationException(),
@@ -1506,15 +1506,15 @@ namespace Common
         {
             return this.Type switch
             {
-                NumericalType.SignedByte => this._sbyte,
-                NumericalType.UnsignedByte => this._byte,
-                NumericalType.SignedShort => this._short,
-                NumericalType.UnsignedShort => this._ushort,
-                NumericalType.SignedInt => this._int,
-                NumericalType.UnsignedInt => this._uint,
-                NumericalType.SignedLong => this._long,
-                NumericalType.UnsignedLong => this._ulong,
-                NumericalType.SinglePrecision => this._float,
+                NumericalType.SignedByte => this._Sbyte,
+                NumericalType.UnsignedByte => this._Byte,
+                NumericalType.SignedShort => this._Short,
+                NumericalType.UnsignedShort => this._Ushort,
+                NumericalType.SignedInt => this._Int,
+                NumericalType.UnsignedInt => this._Uint,
+                NumericalType.SignedLong => this._Long,
+                NumericalType.UnsignedLong => this._Ulong,
+                NumericalType.SinglePrecision => this._Float,
                 NumericalType.DoublePrecision => throw new InvalidOperationException(),
                 NumericalType.DecimalNumber => throw new InvalidOperationException(),
                 _ => throw new InvalidOperationException(),
@@ -1525,16 +1525,16 @@ namespace Common
         {
             return this.Type switch
             {
-                NumericalType.SignedByte => this._sbyte,
-                NumericalType.UnsignedByte => this._byte,
-                NumericalType.SignedShort => this._short,
-                NumericalType.UnsignedShort => this._ushort,
-                NumericalType.SignedInt => this._int,
-                NumericalType.UnsignedInt => this._uint,
-                NumericalType.SignedLong => this._long,
-                NumericalType.UnsignedLong => this._ulong,
-                NumericalType.SinglePrecision => this._float,
-                NumericalType.DoublePrecision => this._double,
+                NumericalType.SignedByte => this._Sbyte,
+                NumericalType.UnsignedByte => this._Byte,
+                NumericalType.SignedShort => this._Short,
+                NumericalType.UnsignedShort => this._Ushort,
+                NumericalType.SignedInt => this._Int,
+                NumericalType.UnsignedInt => this._Uint,
+                NumericalType.SignedLong => this._Long,
+                NumericalType.UnsignedLong => this._Ulong,
+                NumericalType.SinglePrecision => this._Float,
+                NumericalType.DoublePrecision => this._Double,
                 NumericalType.DecimalNumber => throw new InvalidOperationException(),
                 _ => throw new InvalidOperationException(),
             };
@@ -1544,17 +1544,17 @@ namespace Common
         {
             return this.Type switch
             {
-                NumericalType.SignedByte => this._sbyte,
-                NumericalType.UnsignedByte => this._byte,
-                NumericalType.SignedShort => this._short,
-                NumericalType.UnsignedShort => this._ushort,
-                NumericalType.SignedInt => this._int,
-                NumericalType.UnsignedInt => this._uint,
-                NumericalType.SignedLong => this._long,
-                NumericalType.UnsignedLong => this._ulong,
+                NumericalType.SignedByte => this._Sbyte,
+                NumericalType.UnsignedByte => this._Byte,
+                NumericalType.SignedShort => this._Short,
+                NumericalType.UnsignedShort => this._Ushort,
+                NumericalType.SignedInt => this._Int,
+                NumericalType.UnsignedInt => this._Uint,
+                NumericalType.SignedLong => this._Long,
+                NumericalType.UnsignedLong => this._Ulong,
                 NumericalType.SinglePrecision => throw new InvalidOperationException(),
                 NumericalType.DoublePrecision => throw new InvalidOperationException(),
-                NumericalType.DecimalNumber => this._decimal,
+                NumericalType.DecimalNumber => this._Decimal,
                 _ => throw new InvalidOperationException(),
             };
         }
@@ -1609,17 +1609,17 @@ namespace Common
             {
                 return this.Type switch
                 {
-                    NumericalType.SignedByte => this._sbyte == other._sbyte,
-                    NumericalType.UnsignedByte => this._byte == other._byte,
-                    NumericalType.SignedShort => this._short == other._short,
-                    NumericalType.UnsignedShort => this._ushort == other._ushort,
-                    NumericalType.SignedInt => this._int == other._int,
-                    NumericalType.UnsignedInt => this._uint == other._uint,
-                    NumericalType.SignedLong => this._long == other._long,
-                    NumericalType.UnsignedLong => this._ulong == other._ulong,
-                    NumericalType.SinglePrecision => this._float == other._float,
-                    NumericalType.DoublePrecision => this._double == other._double,
-                    NumericalType.DecimalNumber => this._decimal == other._decimal,
+                    NumericalType.SignedByte => this._Sbyte == other._Sbyte,
+                    NumericalType.UnsignedByte => this._Byte == other._Byte,
+                    NumericalType.SignedShort => this._Short == other._Short,
+                    NumericalType.UnsignedShort => this._Ushort == other._Ushort,
+                    NumericalType.SignedInt => this._Int == other._Int,
+                    NumericalType.UnsignedInt => this._Uint == other._Uint,
+                    NumericalType.SignedLong => this._Long == other._Long,
+                    NumericalType.UnsignedLong => this._Ulong == other._Ulong,
+                    NumericalType.SinglePrecision => this._Float == other._Float,
+                    NumericalType.DoublePrecision => this._Double == other._Double,
+                    NumericalType.DecimalNumber => this._Decimal == other._Decimal,
                     _ => false
                 };
             }
@@ -1628,17 +1628,17 @@ namespace Common
                 // convert this to other, return other's type.
                 return other.Type switch
                 {
-                    NumericalType.SignedByte => (sbyte)this == other._sbyte,
-                    NumericalType.UnsignedByte => (byte)this == other._byte,
-                    NumericalType.SignedShort => (short)this == other._short,
-                    NumericalType.UnsignedShort => (ushort)this == other._ushort,
-                    NumericalType.SignedInt => (int)this == other._int,
-                    NumericalType.UnsignedInt => (uint)this == other._uint,
-                    NumericalType.SignedLong => (long)this == other._long,
-                    NumericalType.UnsignedLong => (ulong)this == other._ulong,
-                    NumericalType.SinglePrecision => (float)this == other._float,
-                    NumericalType.DoublePrecision => (double)this == other._double,
-                    NumericalType.DecimalNumber => (decimal)this == other._decimal,
+                    NumericalType.SignedByte => (sbyte)this == other._Sbyte,
+                    NumericalType.UnsignedByte => (byte)this == other._Byte,
+                    NumericalType.SignedShort => (short)this == other._Short,
+                    NumericalType.UnsignedShort => (ushort)this == other._Ushort,
+                    NumericalType.SignedInt => (int)this == other._Int,
+                    NumericalType.UnsignedInt => (uint)this == other._Uint,
+                    NumericalType.SignedLong => (long)this == other._Long,
+                    NumericalType.UnsignedLong => (ulong)this == other._Ulong,
+                    NumericalType.SinglePrecision => (float)this == other._Float,
+                    NumericalType.DoublePrecision => (double)this == other._Double,
+                    NumericalType.DecimalNumber => (decimal)this == other._Decimal,
                     _ => false
                 };
             }
@@ -1647,17 +1647,17 @@ namespace Common
                 // convert other to this, return this's type.
                 return this.Type switch
                 {
-                    NumericalType.SignedByte => (sbyte)other == this._sbyte,
-                    NumericalType.UnsignedByte => (byte)other == this._byte,
-                    NumericalType.SignedShort => (short)other == this._short,
-                    NumericalType.UnsignedShort => (ushort)other == this._ushort,
-                    NumericalType.SignedInt => (int)other == this._int,
-                    NumericalType.UnsignedInt => (uint)other == this._uint,
-                    NumericalType.SignedLong => (long)other == this._long,
-                    NumericalType.UnsignedLong => (ulong)other == this._ulong,
-                    NumericalType.SinglePrecision => (float)other == this._float,
-                    NumericalType.DoublePrecision => (double)other == this._double,
-                    NumericalType.DecimalNumber => (decimal)other == this._decimal,
+                    NumericalType.SignedByte => (sbyte)other == this._Sbyte,
+                    NumericalType.UnsignedByte => (byte)other == this._Byte,
+                    NumericalType.SignedShort => (short)other == this._Short,
+                    NumericalType.UnsignedShort => (ushort)other == this._Ushort,
+                    NumericalType.SignedInt => (int)other == this._Int,
+                    NumericalType.UnsignedInt => (uint)other == this._Uint,
+                    NumericalType.SignedLong => (long)other == this._Long,
+                    NumericalType.UnsignedLong => (ulong)other == this._Ulong,
+                    NumericalType.SinglePrecision => (float)other == this._Float,
+                    NumericalType.DoublePrecision => (double)other == this._Double,
+                    NumericalType.DecimalNumber => (decimal)other == this._Decimal,
                     _ => false
                 };
             }
@@ -1697,17 +1697,17 @@ namespace Common
             {
                 return this.Type switch
                 {
-                    NumericalType.SignedByte => this._sbyte.CompareTo(other._sbyte),
-                    NumericalType.UnsignedByte => this._byte.CompareTo(other._byte),
-                    NumericalType.SignedShort => this._short.CompareTo(other._short),
-                    NumericalType.UnsignedShort => this._ushort.CompareTo(other._ushort),
-                    NumericalType.SignedInt => this._int.CompareTo(other._int),
-                    NumericalType.UnsignedInt => this._uint.CompareTo(other._uint),
-                    NumericalType.SignedLong => this._long.CompareTo(other._long),
-                    NumericalType.UnsignedLong => this._ulong.CompareTo(other._ulong),
-                    NumericalType.SinglePrecision => this._float.CompareTo(other._float),
-                    NumericalType.DoublePrecision => this._double.CompareTo(other._double),
-                    NumericalType.DecimalNumber => this._decimal.CompareTo(other._decimal),
+                    NumericalType.SignedByte => this._Sbyte.CompareTo(other._Sbyte),
+                    NumericalType.UnsignedByte => this._Byte.CompareTo(other._Byte),
+                    NumericalType.SignedShort => this._Short.CompareTo(other._Short),
+                    NumericalType.UnsignedShort => this._Ushort.CompareTo(other._Ushort),
+                    NumericalType.SignedInt => this._Int.CompareTo(other._Int),
+                    NumericalType.UnsignedInt => this._Uint.CompareTo(other._Uint),
+                    NumericalType.SignedLong => this._Long.CompareTo(other._Long),
+                    NumericalType.UnsignedLong => this._Ulong.CompareTo(other._Ulong),
+                    NumericalType.SinglePrecision => this._Float.CompareTo(other._Float),
+                    NumericalType.DoublePrecision => this._Double.CompareTo(other._Double),
+                    NumericalType.DecimalNumber => this._Decimal.CompareTo(other._Decimal),
                     _ => throw new InvalidOperationException(),
                 };
             }
@@ -1716,17 +1716,17 @@ namespace Common
                 // convert this to other, return other's type.
                 return other.Type switch
                 {
-                    NumericalType.SignedByte => ((sbyte)this).CompareTo(other._sbyte),
-                    NumericalType.UnsignedByte => ((byte)this).CompareTo(other._byte),
-                    NumericalType.SignedShort => ((short)this).CompareTo(other._short),
-                    NumericalType.UnsignedShort => ((ushort)this).CompareTo(other._ushort),
-                    NumericalType.SignedInt => ((int)this).CompareTo(other._int),
-                    NumericalType.UnsignedInt => ((uint)this).CompareTo(other._uint),
-                    NumericalType.SignedLong => ((long)this).CompareTo(other._long),
-                    NumericalType.UnsignedLong => ((ulong)this).CompareTo(other._ulong),
-                    NumericalType.SinglePrecision => ((float)this).CompareTo(other._float),
-                    NumericalType.DoublePrecision => ((double)this).CompareTo(other._double),
-                    NumericalType.DecimalNumber => ((decimal)this).CompareTo(other._decimal),
+                    NumericalType.SignedByte => ((sbyte)this).CompareTo(other._Sbyte),
+                    NumericalType.UnsignedByte => ((byte)this).CompareTo(other._Byte),
+                    NumericalType.SignedShort => ((short)this).CompareTo(other._Short),
+                    NumericalType.UnsignedShort => ((ushort)this).CompareTo(other._Ushort),
+                    NumericalType.SignedInt => ((int)this).CompareTo(other._Int),
+                    NumericalType.UnsignedInt => ((uint)this).CompareTo(other._Uint),
+                    NumericalType.SignedLong => ((long)this).CompareTo(other._Long),
+                    NumericalType.UnsignedLong => ((ulong)this).CompareTo(other._Ulong),
+                    NumericalType.SinglePrecision => ((float)this).CompareTo(other._Float),
+                    NumericalType.DoublePrecision => ((double)this).CompareTo(other._Double),
+                    NumericalType.DecimalNumber => ((decimal)this).CompareTo(other._Decimal),
                     _ => throw new InvalidOperationException(),
                 };
             }
@@ -1735,17 +1735,17 @@ namespace Common
                 // convert other to this, return this's type.
                 return this.Type switch
                 {
-                    NumericalType.SignedByte => ((sbyte)other).CompareTo(this._sbyte),
-                    NumericalType.UnsignedByte => ((byte)other).CompareTo(this._byte),
-                    NumericalType.SignedShort => ((short)other).CompareTo(this._short),
-                    NumericalType.UnsignedShort => ((ushort)other).CompareTo(this._ushort),
-                    NumericalType.SignedInt => ((int)other).CompareTo(this._int),
-                    NumericalType.UnsignedInt => ((uint)other).CompareTo(this._uint),
-                    NumericalType.SignedLong => ((long)other).CompareTo(this._long),
-                    NumericalType.UnsignedLong => ((ulong)other).CompareTo(this._ulong),
-                    NumericalType.SinglePrecision => ((float)other).CompareTo(this._float),
-                    NumericalType.DoublePrecision => ((double)other).CompareTo(this._double),
-                    NumericalType.DecimalNumber => ((decimal)other).CompareTo(this._decimal),
+                    NumericalType.SignedByte => ((sbyte)other).CompareTo(this._Sbyte),
+                    NumericalType.UnsignedByte => ((byte)other).CompareTo(this._Byte),
+                    NumericalType.SignedShort => ((short)other).CompareTo(this._Short),
+                    NumericalType.UnsignedShort => ((ushort)other).CompareTo(this._Ushort),
+                    NumericalType.SignedInt => ((int)other).CompareTo(this._Int),
+                    NumericalType.UnsignedInt => ((uint)other).CompareTo(this._Uint),
+                    NumericalType.SignedLong => ((long)other).CompareTo(this._Long),
+                    NumericalType.UnsignedLong => ((ulong)other).CompareTo(this._Ulong),
+                    NumericalType.SinglePrecision => ((float)other).CompareTo(this._Float),
+                    NumericalType.DoublePrecision => ((double)other).CompareTo(this._Double),
+                    NumericalType.DecimalNumber => ((decimal)other).CompareTo(this._Decimal),
                     _ => throw new InvalidOperationException(),
                 };
             }
@@ -1758,19 +1758,19 @@ namespace Common
         {
             return Type switch
             {
-                NumericalType.Unknown => _sbyte.GetHashCode(),
-                NumericalType.SignedByte => _sbyte.GetHashCode(),
-                NumericalType.UnsignedByte => _byte.GetHashCode(),
-                NumericalType.SignedShort => _short.GetHashCode(),
-                NumericalType.UnsignedShort => _ushort.GetHashCode(),
-                NumericalType.SignedInt => _int.GetHashCode(),
-                NumericalType.UnsignedInt => _uint.GetHashCode(),
-                NumericalType.SignedLong => _long.GetHashCode(),
-                NumericalType.UnsignedLong => _ulong.GetHashCode(),
-                NumericalType.SinglePrecision => _float.GetHashCode(),
-                NumericalType.DoublePrecision => _double.GetHashCode(),
-                NumericalType.DecimalNumber => _decimal.GetHashCode(),
-                _ => _decimal.GetHashCode()
+                NumericalType.Unknown => _Sbyte.GetHashCode(),
+                NumericalType.SignedByte => _Sbyte.GetHashCode(),
+                NumericalType.UnsignedByte => _Byte.GetHashCode(),
+                NumericalType.SignedShort => _Short.GetHashCode(),
+                NumericalType.UnsignedShort => _Ushort.GetHashCode(),
+                NumericalType.SignedInt => _Int.GetHashCode(),
+                NumericalType.UnsignedInt => _Uint.GetHashCode(),
+                NumericalType.SignedLong => _Long.GetHashCode(),
+                NumericalType.UnsignedLong => _Ulong.GetHashCode(),
+                NumericalType.SinglePrecision => _Float.GetHashCode(),
+                NumericalType.DoublePrecision => _Double.GetHashCode(),
+                NumericalType.DecimalNumber => _Decimal.GetHashCode(),
+                _ => _Decimal.GetHashCode()
             };
         }
 
@@ -1779,17 +1779,17 @@ namespace Common
         {
             return Type switch
             {
-                NumericalType.SignedByte => Math.Abs(_sbyte),
-                NumericalType.UnsignedByte => _byte,
-                NumericalType.SignedShort => Math.Abs(_short),
-                NumericalType.UnsignedShort => _ushort,
-                NumericalType.SignedInt => Math.Abs(_int),
-                NumericalType.UnsignedInt => _uint,
-                NumericalType.SignedLong => Math.Abs(_long),
-                NumericalType.UnsignedLong => _ulong,
-                NumericalType.SinglePrecision => Math.Abs(_float),
-                NumericalType.DoublePrecision => Math.Abs(_double),
-                NumericalType.DecimalNumber => Math.Abs(_decimal),
+                NumericalType.SignedByte => Math.Abs(_Sbyte),
+                NumericalType.UnsignedByte => _Byte,
+                NumericalType.SignedShort => Math.Abs(_Short),
+                NumericalType.UnsignedShort => _Ushort,
+                NumericalType.SignedInt => Math.Abs(_Int),
+                NumericalType.UnsignedInt => _Uint,
+                NumericalType.SignedLong => Math.Abs(_Long),
+                NumericalType.UnsignedLong => _Ulong,
+                NumericalType.SinglePrecision => Math.Abs(_Float),
+                NumericalType.DoublePrecision => Math.Abs(_Double),
+                NumericalType.DecimalNumber => Math.Abs(_Decimal),
                 _ => throw new InvalidOperationException(),
             };
         }
@@ -1797,17 +1797,17 @@ namespace Common
         {
             return Type switch
             {
-                NumericalType.SignedByte => _sbyte.ToString(provider),
-                NumericalType.UnsignedByte => _byte.ToString(provider),
-                NumericalType.SignedShort => _short.ToString(provider),
-                NumericalType.UnsignedShort => _ushort.ToString(provider),
-                NumericalType.SignedInt => _int.ToString(provider),
-                NumericalType.UnsignedInt => _uint.ToString(provider),
-                NumericalType.SignedLong => _long.ToString(provider),
-                NumericalType.UnsignedLong => _ulong.ToString(provider),
-                NumericalType.SinglePrecision => _float.ToString(provider),
-                NumericalType.DoublePrecision => _double.ToString(provider),
-                NumericalType.DecimalNumber => _decimal.ToString(provider),
+                NumericalType.SignedByte => _Sbyte.ToString(provider),
+                NumericalType.UnsignedByte => _Byte.ToString(provider),
+                NumericalType.SignedShort => _Short.ToString(provider),
+                NumericalType.UnsignedShort => _Ushort.ToString(provider),
+                NumericalType.SignedInt => _Int.ToString(provider),
+                NumericalType.UnsignedInt => _Uint.ToString(provider),
+                NumericalType.SignedLong => _Long.ToString(provider),
+                NumericalType.UnsignedLong => _Ulong.ToString(provider),
+                NumericalType.SinglePrecision => _Float.ToString(provider),
+                NumericalType.DoublePrecision => _Double.ToString(provider),
+                NumericalType.DecimalNumber => _Decimal.ToString(provider),
                 _ => base.ToString()
             };
         }
@@ -1816,19 +1816,23 @@ namespace Common
         {
             return Type switch
             {
-                NumericalType.SignedByte => _sbyte.ToString(CultureInfo.InvariantCulture),
-                NumericalType.UnsignedByte => _byte.ToString(CultureInfo.InvariantCulture),
-                NumericalType.SignedShort => _short.ToString(CultureInfo.InvariantCulture),
-                NumericalType.UnsignedShort => _ushort.ToString(CultureInfo.InvariantCulture),
-                NumericalType.SignedInt => _int.ToString(CultureInfo.InvariantCulture),
-                NumericalType.UnsignedInt => _uint.ToString(CultureInfo.InvariantCulture),
-                NumericalType.SignedLong => _long.ToString(CultureInfo.InvariantCulture),
-                NumericalType.UnsignedLong => _ulong.ToString(CultureInfo.InvariantCulture),
-                NumericalType.SinglePrecision => _float.ToString(CultureInfo.InvariantCulture),
-                NumericalType.DoublePrecision => _double.ToString(CultureInfo.InvariantCulture),
-                NumericalType.DecimalNumber => _decimal.ToString(CultureInfo.InvariantCulture),
+                NumericalType.SignedByte => _Sbyte.ToString(CultureInfo.InvariantCulture),
+                NumericalType.UnsignedByte => _Byte.ToString(CultureInfo.InvariantCulture),
+                NumericalType.SignedShort => _Short.ToString(CultureInfo.InvariantCulture),
+                NumericalType.UnsignedShort => _Ushort.ToString(CultureInfo.InvariantCulture),
+                NumericalType.SignedInt => _Int.ToString(CultureInfo.InvariantCulture),
+                NumericalType.UnsignedInt => _Uint.ToString(CultureInfo.InvariantCulture),
+                NumericalType.SignedLong => _Long.ToString(CultureInfo.InvariantCulture),
+                NumericalType.UnsignedLong => _Ulong.ToString(CultureInfo.InvariantCulture),
+                NumericalType.SinglePrecision => _Float.ToString(CultureInfo.InvariantCulture),
+                NumericalType.DoublePrecision => _Double.ToString(CultureInfo.InvariantCulture),
+                NumericalType.DecimalNumber => _Decimal.ToString(CultureInfo.InvariantCulture),
                 _ => base.ToString()
             };
         }
+
+
+
+
     }
 }

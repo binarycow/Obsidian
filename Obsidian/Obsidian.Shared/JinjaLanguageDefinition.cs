@@ -113,9 +113,29 @@ namespace Obsidian
                 new ParameterDeclaration("by", "key"),
                 new ParameterDeclaration("reverse", false)
             }), JinjaFunctions.DictSort),
-            new UserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(string), "e", new ParameterDeclaration[] {
+            new UserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(string), "escape", new ParameterDeclaration[] {
                 new ParameterDeclaration("s")
             }, aliases: new []{ "e" }), JinjaFunctions.Escape),
+
+            new UserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(string), "filesizeformat", new ParameterDeclaration[] {
+                new ParameterDeclaration("value"),
+                new ParameterDeclaration("binary", false),
+            }), JinjaFunctions.FilesizeFormat),
+            new UserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(string), "first", new ParameterDeclaration[] {
+                new ParameterDeclaration("seq"),
+            }), JinjaFunctions.First),
+            new UserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(string), "float", new ParameterDeclaration[] {
+                new ParameterDeclaration("value"),
+                new ParameterDeclaration("default", 0.0),
+            }), JinjaFunctions.Float),
+            new UserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(string), "forceescape", new ParameterDeclaration[] {
+                new ParameterDeclaration("s"),
+            }), JinjaFunctions.ForceEscape),
+            new UserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(string), "format", new ParameterDeclaration[] {
+                new ParameterDeclaration("value"),
+                new ParameterDeclaration("args", null),
+                new ParameterDeclaration("kwargs", null),
+            }), JinjaFunctions.Format),
 
 
 

@@ -10,9 +10,13 @@ namespace Obsidian.SampleProject
 {
     class Program
     {
+
+
+
         static readonly Dictionary<string, object> _Variables = new Dictionary<string, object>
         {
             { "standalone", false },
+            { "person", new Person() }
         };
 
         private static void UpdateExpected()
@@ -56,7 +60,7 @@ namespace Obsidian.SampleProject
             //AutomaticTest(TestRunner.TestItems["Basic Tests"]["Raw"]);
             //AutomaticTest(TestRunner.TestItems["Basic Tests"]["Inheritance"]);
             //AutomaticTest(TestRunner.TestItems["Macros"]["Basic Macro"]);
-            AutomaticTest(TestRunner.TestItems["Macros"]["Call Macro"]);
+            //AutomaticTest(TestRunner.TestItems["Macros"]["Call Macro"]);
             //AutomaticTest(TestRunner.TestItems["Macros"]["Call Macro With Params"]);
             //AutomaticTest(TestRunner.TestItems["Feature Tests"]["Null Master Fallback"]["Standalone"]);
             //AutomaticTest(TestRunner.TestItems["Feature Tests"]["Null Master Fallback"]["Master"]);
@@ -73,7 +77,7 @@ namespace Obsidian.SampleProject
             //AutomaticTest(TestRunner.TestItems["Filters"]["Filters - Basic"]);
             //AutomaticTest(TestRunner.TestItems["Filters"]["Filters - Batch"]);
 
-            //ManualTest(false, false);
+            ManualTest(false, false);
 
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine("Done.");

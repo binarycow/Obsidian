@@ -158,8 +158,142 @@ namespace Obsidian
             return DictionarySorter.SortDictionaryObj(dictionary, by == "key", reverse, caseSensitive);
         }
 
-        
 
+        internal static object? FilesizeFormat(UserDefinedArgumentData args)
+        {
+            if (args.TryGetArgumentValue<Numerical>("value", out var i) == false) throw new NotImplementedException();
+            if (args.TryGetArgumentValue<bool>("binary", out var binary) == false) throw new NotImplementedException();
+
+            if (binary)
+            {
+                return Binary();
+            }
+            return Decimal();
+
+
+            string Decimal()
+            {
+
+                // Get absolute value
+                long absolute_i = (i < 0 ? -i : i);
+                // Determine the suffix and readable value
+                string suffix;
+                double readable;
+                if (absolute_i >= 0x1000000000000000) // Exabyte
+                {
+                    suffix = "EB";
+                    readable = (i >> 50);
+                }
+                else if (absolute_i >= 0x4000000000000) // Petabyte
+                {
+                    suffix = "PB";
+                    readable = (i >> 40);
+                }
+                else if (absolute_i >= 0x10000000000) // Terabyte
+                {
+                    suffix = "TB";
+                    readable = (i >> 30);
+                }
+                else if (absolute_i >= 0x40000000) // Gigabyte
+                {
+                    suffix = "GB";
+                    readable = (i >> 20);
+                }
+                else if (absolute_i >= 0x100000) // Megabyte
+                {
+                    suffix = "MB";
+                    readable = (i >> 10);
+                }
+                else if (absolute_i >= 0x400) // Kilobyte
+                {
+                    suffix = "KB";
+                    readable = i;
+                }
+                else
+                {
+                    return $"{i:0} B";
+                }
+                // Divide by 1024 to get fractional value
+                readable = (readable / 1024);
+                // Return formatted number with suffix
+                return $"{readable:0.###} {suffix}";
+            }
+
+            string Binary()
+            {
+
+                // Get absolute value
+                long absolute_i = (i < 0 ? -i : i);
+                // Determine the suffix and readable value
+                string suffix;
+                double readable;
+                if (absolute_i >= 0x1000000000000000) // Exabyte
+                {
+                    suffix = "EB";
+                    readable = (i >> 50);
+                }
+                else if (absolute_i >= 0x4000000000000) // Petabyte
+                {
+                    suffix = "PB";
+                    readable = (i >> 40);
+                }
+                else if (absolute_i >= 0x10000000000) // Terabyte
+                {
+                    suffix = "TB";
+                    readable = (i >> 30);
+                }
+                else if (absolute_i >= 0x40000000) // Gigabyte
+                {
+                    suffix = "GB";
+                    readable = (i >> 20);
+                }
+                else if (absolute_i >= 0x100000) // Megabyte
+                {
+                    suffix = "MB";
+                    readable = (i >> 10);
+                }
+                else if (absolute_i >= 0x400) // Kilobyte
+                {
+                    suffix = "KB";
+                    readable = i;
+                }
+                else
+                {
+                    return $"{i:0} B";
+                }
+                // Divide by 1024 to get fractional value
+                readable = (readable / 1024);
+                // Return formatted number with suffix
+                return $"{readable:0.###} {suffix}";
+            }
+        }
+
+
+        internal static object? First(UserDefinedArgumentData args)
+        {
+            if (args.TryGetArgumentValue("seq", out var seq) == false) throw new NotImplementedException();
+            if (ReflectionHelpers.TryGetIEnumerable(seq, out var enumerable) == false) throw new NotImplementedException();
+            return enumerable.First();
+        }
+        internal static object? Float(UserDefinedArgumentData args)
+        {
+            if (args.TryGetArgumentValue("value", out var value) == false) throw new NotImplementedException();
+            if (args.TryGetArgumentValue<Numerical>("default", out var def) == false) throw new NotImplementedException();
+
+            if (Numerical.TryCreate(value, out var numerical))
+            {
+                return numerical.Value.ToDouble();
+            }
+            return def;
+        }
+        internal static object? ForceEscape(UserDefinedArgumentData args)
+        {
+            return Escape(args);
+        }
+        internal static object? Format(UserDefinedArgumentData args)
+        {
+            return string.Empty;
+        }
 
 
 

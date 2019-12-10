@@ -1,13 +1,87 @@
-{% macro render_dialog(title, class='dialog') -%}
-    <div class="{{ class }}">
-        <h2>{{ title }}</h2>
-        <div class="contents">
-            {{ caller() }}
-        </div>
-    </div>
-{%- endmacro %}
+  {# (-10)|abs: {{ (-10)|abs }} #}
 
-{% call render_dialog('Hello World') %}
-    This is a simple dialog rendered by using a macro and
-    a call block.
-{% endcall %}
+  person|attr("name"): {{ person|attr("name") }}
+
+  seq|batch(3, 'XXX'):
+  <table>
+  {% for row in seq|batch(3, 'XXX') %}
+  <tr>
+    {% for column in row %}
+    <td>{{ column }}</td>
+    {% endfor %}
+  </tr>
+  {% endfor %}
+</table>
+
+  seq|batch(3):
+  <table>
+  {% for row in seq|batch(3) %}
+  <tr>
+    {% for column in row %}
+    <td>{{ column }}</td>
+    {% endfor %}
+  </tr>
+  {% endfor %}
+</table>
+
+  "Hello World!"|capitalize: {{ "Hello World!"|capitalize }}
+
+  "Hello World!"|center: {{ "Hello World!"|center }}
+
+  "Hello World!"|center(40): {{ "Hello World!"|center(40) }}
+
+  my_variable|default('my_variable is not defined'): {{ my_variable|default('my_variable is not defined') }}
+
+  seq|default('my_variable is not defined'): {{ seq|default('my_variable is not defined') }}
+
+  ''|default('the string was empty', True): {{ ''|default('the string was empty', True) }}
+
+  'Test'|default('the string was empty', True): {{ 'Test'|default('the string was empty', True) }}
+
+  'Test'|d('the string was empty', True): {{ 'Test'|d('the string was empty', True) }}
+
+  {#
+  
+  dict: {{ dict }}
+
+  dict|dictsort: {{ dict|dictsort }}
+
+  dict|dictsort(reverse=true): {{ dict|dictsort(reverse=true) }}
+
+  dict|dictsort(true): {{ dict|dictsort(true) }}
+
+  dict|dictsort(true, reverse=true): {{ dict|dictsort(true, reverse=true) }}
+
+  dict|dictsort(by='value'): {{ dict|dictsort(by='value') }}
+
+  dict|dictsort(reverse=true, by='value'): {{ dict|dictsort(reverse=true, by='value') }}
+
+  dict|dictsort(true, by='value'): {{ dict|dictsort(true, by='value') }}
+
+  dict|dictsort(true, reverse=true, by='value'): {{ dict|dictsort(true, reverse=true, by='value') }}
+
+  #}
+
+  "&<>'\""|escape: {{ "&<>'\""|escape }}
+
+  "&<>'\""|e: {{ "&<>'\""|e }}
+
+  123456789|filesizeformat: {{ 123456789|filesizeformat }}
+
+  123456789|filesizeformat(true): {{ 123456789|filesizeformat(true) }}
+
+  seq|first: {{ seq|first }}
+  
+  "12.24"|float: {{ "12.24"|float }}
+
+  "12.24"|float(-1.0): {{ "12.24"|float(-1.0) }}
+
+  "12.24A"|float: {{ "12.24A"|float }}
+
+  "12.24A"|float(-1.0): {{ "12.24A"|float(-1.0) }}
+
+  "&amp;&lt;&gt;&#39;&#34;"|forceescape: {{ "&amp;&lt;&gt;&#39;&#34;"|forceescape }}
+
+  "&<>'\""|forceescape: {{ "&<>'\""|forceescape }}
+
+  "%s - %s"|format("Hello?", "Foo!"): {{ "%s - %s"|format("Hello?", "Foo!") }}

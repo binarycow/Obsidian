@@ -7,9 +7,6 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 class Person:
     name = "John Smith"
 
-    def getName(self):
-        return "Jacob Smith"
-
 dict = {
     "D": 68,
     "c": 67,

@@ -4,11 +4,11 @@ using System.Text;
 
 namespace Obsidian.TestCore
 {
-    internal class Person
+    public class Person
     {
-        internal static string name => "John Smith";
+        public static string name => "John Smith";
 
-        internal string getName()
+        public string getName()
         {
             return "Jacob Smith";
         }
