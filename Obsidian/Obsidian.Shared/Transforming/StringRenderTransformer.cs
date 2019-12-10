@@ -291,6 +291,7 @@ namespace Obsidian.Transforming
             };
 
 
+
             if (Environment.Evaluation.TryParseFunctionDeclaration(item.CallerDefinition.Expression, out var functionDeclaration) == false || functionDeclaration == null)
             {
                 throw new NotImplementedException();
@@ -305,6 +306,10 @@ namespace Obsidian.Transforming
                 yield return JinjaCustomStringProvider.Instance.ToString(evalObj);
             }
             Scopes.Pop($"Call: {item.CallerDefinition.Expression}");
+
+            if (!string.IsNullOrEmpty(item.CallerDefinition.Expression))
+            {
+            }
         }
 
         public IEnumerable<string> Transform(FilterNode item)

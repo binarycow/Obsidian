@@ -16,6 +16,11 @@ namespace ExpressionParser.References
         }
         internal string MethodName { get; }
 
+        internal static ScopedFunctionMethodGroup Create(ScopedUserDefinedFunction scopedFunction)
+        {
+            return new ScopedFunctionMethodGroup(scopedFunction);
+        }
+
         internal static MethodGroup Create(UserDefinedFunction functionDefinition)
         {
             return new FunctionMethodGroup(functionDefinition);
@@ -28,5 +33,6 @@ namespace ExpressionParser.References
         {
             return new ExpressionMethodGroup(expression, methodName);
         }
+
     }
 }

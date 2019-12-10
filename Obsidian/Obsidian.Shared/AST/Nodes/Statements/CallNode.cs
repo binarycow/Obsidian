@@ -102,7 +102,7 @@ namespace Obsidian.AST.Nodes.Statements
 
             using var enumerator = lexer.Tokenize(callDefinition).GetEnumerator();
             if (enumerator.MoveNext() == false) throw new NotImplementedException();
-            if (enumerator.Current.TokenType != Paren_Open) throw new NotImplementedException();
+            if (enumerator.Current.TokenType != Paren_Open) activeStringBuilder = macroCallStringBuilder;
 
             do
             {
@@ -134,7 +134,9 @@ namespace Obsidian.AST.Nodes.Statements
 
             if (nestingStack.Count != 0) throw new NotImplementedException();
 
-            argumentList = $"caller{argumentListstringBuilder.ToString().Trim()}";
+
+
+            argumentList = argumentListstringBuilder.Length > 0 ? $"caller{argumentListstringBuilder.ToString().Trim()}" : "caller()";
             macroCall = macroCallStringBuilder.ToString().Trim();
             return true;
         }

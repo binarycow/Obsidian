@@ -63,8 +63,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Parsing\TupleNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Parsing\UnaryASTNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)References\PipelineMethodGroup.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)References\ScopedFunctionMethodGroup.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Reflection\Array.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionResolver.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ScopedUserDefinedFunction.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ScopeStack.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Scopes\CompiledScope.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Scopes\DynamicScope.cs" />

@@ -37,6 +37,7 @@ namespace ExpressionParser
                 FunctionMethodGroup methodGroup => methodGroup.FunctionDefinition.Invoke(args),
                 UserDefinedFunction userDefinedFunction => userDefinedFunction.Invoke(args),
                 PipelineMethodGroup pipelineGroup => pipelineGroup.FunctionDefinition.Invoke(pipelineGroup.ReferredObject, args),
+                ScopedFunctionMethodGroup scopedMethodGroup => scopedMethodGroup.FunctionDefinition.Invoke(scopeStack.Current, args),
                 _ => throw new NotImplementedException(),
             };
 
