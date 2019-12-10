@@ -20,6 +20,10 @@ namespace System
         {
             return char.IsWhiteSpace(c);
         }
+        internal static bool IsNotNewLine(this char c)
+        {
+            return c != '\r' && c != '\n';
+        }
         internal static char ToUpper(this char c)
         {
             return char.ToUpper(c, CultureInfo.InvariantCulture);

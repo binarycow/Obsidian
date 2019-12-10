@@ -33,6 +33,10 @@ namespace Obsidian.AST.Nodes
             visitor.Transform(this);
         }
 
+        public override void Transform(IManualWhiteSpaceTransformVisitor visitor, bool inner = false)
+        {
+            visitor.Transform(this, inner);
+        }
         internal static OutputNode FromString(string @string)
         {
             return new OutputNode(new ParsingNode(ParsingNodeType.Output, new[] { new Token(TokenType.Unknown, @string) }));

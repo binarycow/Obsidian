@@ -215,6 +215,17 @@ Obsidian.JinjaUserDefinedFunction
 Obsidian.JinjaUserDefinedFunction.arguments.get -> Obsidian.ArgumentNameCollection
 Obsidian.JinjaUserDefinedFunction.caller.get -> bool
 Obsidian.JinjaUserDefinedFunction.name.get -> string
+Obsidian.LoopInfoClass<T>
+Obsidian.LoopInfoClass<T>.LoopInfoClass(T[] array, int currentindex) -> void
+Obsidian.LoopInfoClass<T>.first.get -> bool
+Obsidian.LoopInfoClass<T>.index.get -> int
+Obsidian.LoopInfoClass<T>.index0.get -> int
+Obsidian.LoopInfoClass<T>.last.get -> bool
+Obsidian.LoopInfoClass<T>.length.get -> int
+Obsidian.LoopInfoClass<T>.nextitem.get -> T
+Obsidian.LoopInfoClass<T>.previtem.get -> T
+Obsidian.LoopInfoClass<T>.revindex.get -> int
+Obsidian.LoopInfoClass<T>.revindex0.get -> int
 System.Collections.Generic.EnumerableExtensions
 override Common.Numerical.Equals(object obj) -> bool
 override Common.Numerical.GetHashCode() -> int

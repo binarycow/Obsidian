@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Common.Collections;
 using Obsidian.AST;
 using Obsidian.AST.Nodes;
 using Obsidian.AST.Nodes.MiscNodes;
@@ -9,7 +10,7 @@ using Obsidian.Transforming;
 
 namespace Obsidian.WhiteSpaceControl
 {
-    internal class ManualWhiteSpaceVisitor : ITransformVisitor
+    internal class ManualWhiteSpaceVisitor : IManualWhiteSpaceTransformVisitor
     {
         private static readonly Lazy<ManualWhiteSpaceVisitor> _Instance = new Lazy<ManualWhiteSpaceVisitor>(() => new ManualWhiteSpaceVisitor());
         internal static ManualWhiteSpaceVisitor Instance => _Instance.Value;
@@ -17,134 +18,142 @@ namespace Obsidian.WhiteSpaceControl
         readonly List<IWhiteSpace> _PendingWhiteSpace = new List<IWhiteSpace>();
 
 
-        private void SetTrim(WhiteSpaceMode mode)
-        {
-            if (mode == WhiteSpaceMode.Default) return;
-            foreach(var ws in _PendingWhiteSpace)
-            {
-                ws.WhiteSpaceMode = mode;
-            }
-            _PendingWhiteSpace.Clear();
-        }
+        private WhiteSpaceMode _WhiteSpaceMode = WhiteSpaceMode.Default;
+
 
         private void TransformAll(IEnumerable<ASTNode> children)
         {
-            foreach(var child in children)
+            foreach(var item in children)
             {
-                child.Transform(this);
+                item.Transform(this);
             }
         }
 
-
-        public void Transform(TemplateNode item)
+        private void SetTrim(WhiteSpaceMode? mode = null)
         {
-            foreach (var child in item.Children)
+            var modeToSet = mode ?? _WhiteSpaceMode;
+            if (_WhiteSpaceMode != modeToSet)
             {
-                child.Transform(this);
+                foreach (var item in _PendingWhiteSpace)
+                {
+                    item.WhiteSpaceMode = modeToSet;
+                }
             }
-        }
-
-        public void Transform(EmptyNode emptyNode)
-        {
-            return;
-        }
-
-        public void Transform(ForNode item)
-        {
-            SetTrim(item.WhiteSpaceControl.Start);
-            item.PrimaryBlock.Transform(this);
-            item.ElseBlock?.Transform(this);
-            SetTrim(item.WhiteSpaceControl.End);
-        }
-
-        public void Transform(ContainerNode item)
-        {
-            SetTrim(item.WhiteSpaceControl.Start);
-            TransformAll(item.Children);
-            SetTrim(item.WhiteSpaceControl.End);
-        }
-
-        public void Transform(ExpressionNode item)
-        {
             _PendingWhiteSpace.Clear();
+            _WhiteSpaceMode = WhiteSpaceMode.Default;
+        }
+
+
+        public void Transform(TemplateNode item, bool inner = false)
+        {
+            TransformAll(item.Children);
+        }
+
+        public void Transform(EmptyNode emptyNode, bool inner = false)
+        {
             return;
         }
 
-        public void Transform(NewLineNode item)
+        public void Transform(ForNode item, bool inner = false)
         {
+            SetTrim(item.WhiteSpaceControl.Start);
+            item.PrimaryBlock.Transform(this, inner: true);
+            item.ElseBlock?.Transform(this, inner: true);
+            _WhiteSpaceMode = item.WhiteSpaceControl.End;
+        }
+
+        public void Transform(ContainerNode item, bool inner = false)
+        {
+            if(inner)
+                _WhiteSpaceMode = item.WhiteSpaceControl.Start;
+            else
+                SetTrim(item.WhiteSpaceControl.Start);
+            TransformAll(item.Children);
+            if (inner)
+                SetTrim(item.WhiteSpaceControl.End);
+            else
+                _WhiteSpaceMode = item.WhiteSpaceControl.End;
+        }
+
+        public void Transform(ExpressionNode item, bool inner = false)
+        {
+            SetTrim();
+        }
+
+        public void Transform(NewLineNode item, bool inner = false)
+        {
+            if (_WhiteSpaceMode != WhiteSpaceMode.Default)
+            {
+                item.WhiteSpaceMode = _WhiteSpaceMode;
+                return;
+            }
             _PendingWhiteSpace.Add(item);
         }
 
-        public void Transform(OutputNode item)
+        public void Transform(OutputNode item, bool inner = false)
         {
-            _PendingWhiteSpace.Clear();
-            return;
+            SetTrim();
         }
 
-        public void Transform(WhiteSpaceNode item)
+        public void Transform(WhiteSpaceNode item, bool inner = false)
         {
+            if(_WhiteSpaceMode != WhiteSpaceMode.Default)
+            {
+                item.WhiteSpaceMode = _WhiteSpaceMode;
+                return;
+            }
             _PendingWhiteSpace.Add(item);
         }
 
-        public void Transform(IfNode item)
+        public void Transform(IfNode item, bool inner = false)
+        {
+            SetTrim();
+        }
+
+        public void Transform(ConditionalNode item, bool inner = false)
+        {
+            SetTrim();
+        }
+
+        public void Transform(CommentNode item, bool inner = false)
+        {
+            SetTrim();
+        }
+
+        public void Transform(BlockNode item, bool inner = false)
+        {
+            SetTrim();
+        }
+
+        public void Transform(ExtendsNode item, bool inner = false)
+        {
+            SetTrim();
+        }
+
+        public void Transform(RawNode item, bool inner = false)
+        {
+            SetTrim();
+        }
+        public void Transform(MacroNode item, bool inner = false)
         {
             SetTrim(item.WhiteSpaceControl.Start);
-            TransformAll(item.Conditions);
-            SetTrim(item.WhiteSpaceControl.End);
+            item.Contents.Transform(this, inner: true);
+            _WhiteSpaceMode = item.WhiteSpaceControl.End;
         }
 
-        public void Transform(ConditionalNode item)
+        public void Transform(CallNode item, bool inner = false)
         {
-            SetTrim(item.WhiteSpaceControl.Start);
-            TransformAll(item.Children);
-            SetTrim(item.WhiteSpaceControl.End);
+            SetTrim();
         }
 
-        public void Transform(CommentNode item)
+        public void Transform(FilterNode item, bool inner = false)
         {
-            return;
+            SetTrim();
         }
 
-        public void Transform(BlockNode item)
+        public void Transform(SetNode item, bool inner = false)
         {
-            return;
-        }
-
-        public void Transform(ExtendsNode item)
-        {
-            return;
-        }
-
-        public void Transform(RawNode item)
-        {
-            return;
-        }
-        public void Transform(MacroNode item)
-        {
-            SetTrim(item.WhiteSpaceControl.Start);
-            item.Contents.Transform(this);
-            SetTrim(item.WhiteSpaceControl.End);
-        }
-
-        public void Transform(CallNode item)
-        {
-            SetTrim(item.WhiteSpaceControl.Start);
-            item.Contents.Transform(this);
-            SetTrim(item.WhiteSpaceControl.End);
-        }
-
-        public void Transform(FilterNode item)
-        {
-            //SetTrim(item.WhiteSpaceControl.Start);
-            item.FilterContents.Transform(this);
-            //SetTrim(item.WhiteSpaceControl.End);
-        }
-
-        public void Transform(SetNode item)
-        {
-            //SetTrim(item.WhiteSpaceControl.Start);
-            item.AssignmentBlock?.Transform(this);
-            //SetTrim(item.WhiteSpaceControl.End);
+            SetTrim();
         }
     }
 }

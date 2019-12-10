@@ -75,6 +75,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)JinjaLanguageDefinition.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Lexing\Lexer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Lexing\Token.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\IManualWhiteSpaceTransformVisitor.cs" />
     <Compile Include="..\Obsidian.Shared\Lexing\TokenType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Loaders\BaseLoader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Loaders\FileSystemLoader.cs" />

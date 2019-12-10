@@ -37,6 +37,10 @@ namespace Obsidian.AST.Nodes.Statements
         internal ContainerNode? AssignmentBlock { get; set; }
         internal string? AssignmentExpression { get; set; }
 
+        public override void Transform(IManualWhiteSpaceTransformVisitor visitor, bool inner = false)
+        {
+            visitor.Transform(this, inner);
+        }
         public override TOutput Transform<TOutput>(ITransformVisitor<TOutput> visitor)
         {
             return visitor.Transform(this);

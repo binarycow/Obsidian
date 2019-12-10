@@ -33,6 +33,10 @@ namespace Obsidian.AST.Nodes.Statements
             return visitor.Transform(this);
         }
 
+        public override void Transform(IManualWhiteSpaceTransformVisitor visitor, bool inner = false)
+        {
+            visitor.Transform(this, inner);
+        }
         public override void Transform(ITransformVisitor visitor)
         {
             visitor.Transform(this);

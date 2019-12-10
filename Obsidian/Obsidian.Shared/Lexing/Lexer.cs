@@ -178,7 +178,7 @@ namespace Obsidian.Lexing
             var queue = new Queue<char>();
             queue.Enqueue(enumerator.Current);
 
-            while(enumerator.TryGetNext(out var nextChar) && nextChar.IsWhiteSpace())
+            while(enumerator.TryGetNext(out var nextChar) && nextChar.IsWhiteSpace() && nextChar.IsNotNewLine())
             {
                 var result = enumerator.MoveNext();
                 queue.Enqueue(enumerator.Current);
