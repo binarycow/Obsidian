@@ -79,7 +79,7 @@ namespace ExpressionParser.Transforming.Nodes
 
         public object? Transform(PipelineMethodGroup item)
         {
-            return item.FunctionDefinition.Invoke(new object?[] { item.ReferredObject });
+            return item.FunctionDefinition.Invoke(LanguageDefinition, new object?[] { item.ReferredObject });
         }
     }
 }

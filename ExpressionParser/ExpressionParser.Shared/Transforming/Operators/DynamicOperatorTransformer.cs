@@ -35,6 +35,9 @@ namespace ExpressionParser.Transforming.Operators
         {
             switch(item.OperatorType)
             {
+                case OperatorType.Equal:
+                case OperatorType.NotEqual:
+                    return TransformBinary(item, args[0], args[1]);
                 case OperatorType.LogicalNot:
                 case OperatorType.Negate:
                     return TransformUnary(item, args[0]);
@@ -48,6 +51,17 @@ namespace ExpressionParser.Transforming.Operators
                 default:
                     throw new NotImplementedException();
             }
+        }
+
+        private object? TransformBinary(StandardOperator item, ASTNode leftNode, ASTNode rightNode)
+        {
+            var left = leftNode.Transform(NodeTransformer);
+            var right = rightNode.Transform(NodeTransformer);
+            return item.OperatorType switch
+            {
+                OperatorType.Equal => OperatorExecution.Equal(left, right),
+                _ => throw new NotImplementedException(),
+            };
         }
 
         private (string name, object? value) TransformNamedArgument(ASTNode left, ASTNode right)
@@ -131,7 +145,7 @@ namespace ExpressionParser.Transforming.Operators
                 {
                     case ArgumentSetNode argSet:
                         var args = argSet.Arguments.Select(arg => arg.Transform(NodeTransformer)).ToArray();
-                        return DynamicResolver.CallMethod(ScopeStack, left, args);
+                        return DynamicResolver.CallMethod(LanguageDefinition, ScopeStack, left, args);
                     default:
                         throw new NotImplementedException();
                 }

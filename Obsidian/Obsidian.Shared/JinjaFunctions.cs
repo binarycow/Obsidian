@@ -12,6 +12,7 @@ namespace Obsidian
 {
     internal static class JinjaFunctions
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>")]
         internal static object? Super(IScope scope, UserDefinedArgumentData args)
         {
             var rootContext = GetRootContext(scope);
@@ -20,7 +21,8 @@ namespace Obsidian
             if (nextBlock == null) return null;
             nextBlock.Transform(rootContext.Transformer);
             return string.Empty;
-            DynamicRootContext GetRootContext(IScope scope)
+
+            static DynamicRootContext GetRootContext(IScope scope)
             {
                 switch (scope)
                 {
@@ -130,19 +132,14 @@ namespace Obsidian
             if (args.TryGetArgumentValue("value", out var value) == false) throw new NotImplementedException();
             var defaultValue = args.GetArgumentValue("default_value", "");
             var boolean = args.GetArgumentValue("boolean", false);
-
-            object? result = null;
-
+            object? result;
             if (boolean)
             {
-                switch(value)
+                result = value switch
                 {
-                    case string strVal:
-                        result = string.IsNullOrEmpty(strVal) ? defaultValue : strVal;
-                        break;
-                    default:
-                        throw new NotImplementedException();
-                }
+                    string strVal => string.IsNullOrEmpty(strVal) ? defaultValue : strVal,
+                    _ => throw new NotImplementedException(),
+                };
             }
             else
             {
@@ -304,6 +301,8 @@ namespace Obsidian
         {
             return Escape(args);
         }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>")]
         internal static object? Format(UserDefinedArgumentData args)
         {
             throw new NotImplementedException();

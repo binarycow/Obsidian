@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using ExpressionParser.Configuration;
 using ExpressionParser.Scopes;
 using static ExpressionParser.ScopedUserDefinedFunction;
 
@@ -23,9 +24,9 @@ namespace ExpressionParser
 
         public ScopedUserDefinedFunctionDelegate Body { get; }
 
-        internal object? Invoke(IScope scope, object?[] args)
+        internal object? Invoke(ILanguageDefinition languageDefinition, IScope scope, object?[] args)
         {
-            return Invoke(scope, UserDefinedArgumentData.Create(Declaration.Arguments.ToArrayWithoutInstantiation(), args));
+            return Invoke(scope, UserDefinedArgumentData.Create(languageDefinition, Declaration.Arguments.ToArrayWithoutInstantiation(), args));
         }
         protected virtual object? Invoke(IScope scope, UserDefinedArgumentData argumentData)
         {

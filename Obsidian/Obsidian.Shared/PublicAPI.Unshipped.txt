@@ -60,6 +60,7 @@ ExpressionParser.Configuration.ILanguageDefinition.AllowStringIndexersAsProperti
 ExpressionParser.Configuration.ILanguageDefinition.Functions.get -> System.Collections.Generic.IEnumerable<ExpressionParser.UserDefinedFunction>
 ExpressionParser.Configuration.ILanguageDefinition.Keywords.get -> System.Collections.Generic.IEnumerable<ExpressionParser.Configuration.KeywordDefinition>
 ExpressionParser.Configuration.ILanguageDefinition.Operators.get -> System.Collections.Generic.IEnumerable<ExpressionParser.Configuration.OperatorDefinition>
+ExpressionParser.Configuration.ILanguageDefinition.RequireNonDefaultArguments.get -> bool
 ExpressionParser.Configuration.ILanguageDefinition.SingleCharTokens.get -> System.Collections.Generic.IDictionary<char, ExpressionParser.Lexing.TokenType>
 ExpressionParser.Configuration.KeywordDefinition
 ExpressionParser.Configuration.KeywordDefinition.KeywordDefinition(System.Collections.Generic.IEnumerable<string> names) -> void
@@ -193,7 +194,6 @@ Obsidian.Exceptions.LoaderNotDefinedException
 Obsidian.Exceptions.TemplateNotFoundException
 Obsidian.Exceptions.TemplateNotFoundException.TemplateName.get -> string
 Obsidian.Exceptions.TemplateNotFoundException.TemplateNotFoundException() -> void
-Obsidian.Exceptions.TemplateNotFoundException.TemplateNotFoundException(string message) -> void
 Obsidian.Exceptions.TemplateNotFoundException.TemplateNotFoundException(string templateName, System.Exception inner = null) -> void
 Obsidian.FileSystemLoader
 Obsidian.FileSystemLoader.FileSystemLoader(System.Collections.Generic.IEnumerable<string> searchPaths) -> void
@@ -206,8 +206,12 @@ Obsidian.ITemplate.Render(System.Collections.Generic.IDictionary<string, object>
 Obsidian.ITemplate.TemplateName.get -> string
 Obsidian.ITemplate.TemplatePath.get -> string
 Obsidian.JinjaEnvironment
+Obsidian.JinjaEnvironment.FromString(System.Collections.Generic.IEnumerable<string> source) -> Obsidian.ITemplate
+Obsidian.JinjaEnvironment.FromString(params string[] source) -> Obsidian.ITemplate
+Obsidian.JinjaEnvironment.FromString(string source) -> Obsidian.ITemplate
 Obsidian.JinjaEnvironment.GetTemplate(string templateName, System.Collections.Generic.IDictionary<string, object> variableTemplate) -> Obsidian.ITemplate
-Obsidian.JinjaEnvironment.JinjaEnvironment(Obsidian.BaseLoader loader = null) -> void
+Obsidian.JinjaEnvironment.Globals.get -> System.Collections.Generic.IDictionary<string, object>
+Obsidian.JinjaEnvironment.JinjaEnvironment(Obsidian.BaseLoader loader = null, System.Collections.Generic.IDictionary<string, object> globals = null, Obsidian.EnvironmentSettings settings = null) -> void
 Obsidian.JinjaEnvironment.Loader.get -> Obsidian.BaseLoader
 Obsidian.JinjaEnvironment.Loader.set -> void
 Obsidian.JinjaEnvironment.Settings.get -> Obsidian.EnvironmentSettings

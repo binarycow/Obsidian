@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using Common;
+using ExpressionParser.Configuration;
 
 namespace ExpressionParser
 {
@@ -82,7 +83,7 @@ namespace ExpressionParser
         internal IEnumerable<UserDefinedArgument> AllArguments => DefinedPositionalArguments.Concat(AdditionalPositionalArguments).Concat(AdditionalKeywordArguments);
 
 
-        internal static UserDefinedArgumentData Create(ParameterDeclaration[] declaration, object?[] passedValues)
+        internal static UserDefinedArgumentData Create(ILanguageDefinition languageDefinition, ParameterDeclaration[] declaration, object?[] passedValues)
         {
             var additionalPositionalArguments = new List<UserDefinedArgument>();
             var additionalKeywordArguments = new Dictionary<string, UserDefinedArgument>();
@@ -123,6 +124,11 @@ namespace ExpressionParser
                 if(dec.Optional)
                 {
                     declaredArguments[argIndex] = new UserDefinedArgument(dec.Name, dec.DefaultValue, argIndex, false);
+                    continue;
+                }
+                if(languageDefinition.RequireNonDefaultArguments == false)
+                {
+                    declaredArguments[argIndex] = new UserDefinedArgument(dec.Name, null, argIndex, false);
                     continue;
                 }
                 throw new NotImplementedException(); //Argument not provided

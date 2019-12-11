@@ -20,6 +20,7 @@ namespace Obsidian.SampleProject
             { "person", new Person() }
         };
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Code Quality", "IDE0051:Remove unused private members", Justification = "<Pending>")]
         private static void UpdateExpected()
         {
             Console.ForegroundColor = ConsoleColor.Green;

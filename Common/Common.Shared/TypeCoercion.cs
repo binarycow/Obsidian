@@ -11,20 +11,20 @@ namespace Common
     internal static class TypeCoercion
     {
 
-        static readonly Dictionary<Type, List<Type>> ImplicitNumericConversions = new Dictionary<Type, List<Type>>();
+        static readonly Dictionary<Type, List<Type>> _ImplicitNumericConversions = new Dictionary<Type, List<Type>>();
 
         static TypeCoercion()
         {
-            ImplicitNumericConversions.Add(typeof(sbyte), new List<Type> { typeof(short), typeof(int), typeof(long), typeof(float), typeof(double), typeof(decimal) });
-            ImplicitNumericConversions.Add(typeof(byte), new List<Type> { typeof(short), typeof(ushort), typeof(int), typeof(uint), typeof(long), typeof(ulong), typeof(float), typeof(double), typeof(decimal) });
-            ImplicitNumericConversions.Add(typeof(short), new List<Type> { typeof(int), typeof(long), typeof(float), typeof(double), typeof(decimal) });
-            ImplicitNumericConversions.Add(typeof(ushort), new List<Type> { typeof(int), typeof(uint), typeof(long), typeof(ulong), typeof(float), typeof(double), typeof(decimal) });
-            ImplicitNumericConversions.Add(typeof(int), new List<Type> { typeof(long), typeof(float), typeof(double), typeof(decimal) });
-            ImplicitNumericConversions.Add(typeof(uint), new List<Type> { typeof(long), typeof(ulong), typeof(float), typeof(double), typeof(decimal) });
-            ImplicitNumericConversions.Add(typeof(long), new List<Type> { typeof(float), typeof(double), typeof(decimal) });
-            ImplicitNumericConversions.Add(typeof(char), new List<Type> { typeof(ushort), typeof(int), typeof(uint), typeof(long), typeof(ulong), typeof(float), typeof(double), typeof(decimal) });
-            ImplicitNumericConversions.Add(typeof(float), new List<Type> { typeof(double) });
-            ImplicitNumericConversions.Add(typeof(ulong), new List<Type> { typeof(float), typeof(double), typeof(decimal) });
+            _ImplicitNumericConversions.Add(typeof(sbyte), new List<Type> { typeof(short), typeof(int), typeof(long), typeof(float), typeof(double), typeof(decimal) });
+            _ImplicitNumericConversions.Add(typeof(byte), new List<Type> { typeof(short), typeof(ushort), typeof(int), typeof(uint), typeof(long), typeof(ulong), typeof(float), typeof(double), typeof(decimal) });
+            _ImplicitNumericConversions.Add(typeof(short), new List<Type> { typeof(int), typeof(long), typeof(float), typeof(double), typeof(decimal) });
+            _ImplicitNumericConversions.Add(typeof(ushort), new List<Type> { typeof(int), typeof(uint), typeof(long), typeof(ulong), typeof(float), typeof(double), typeof(decimal) });
+            _ImplicitNumericConversions.Add(typeof(int), new List<Type> { typeof(long), typeof(float), typeof(double), typeof(decimal) });
+            _ImplicitNumericConversions.Add(typeof(uint), new List<Type> { typeof(long), typeof(ulong), typeof(float), typeof(double), typeof(decimal) });
+            _ImplicitNumericConversions.Add(typeof(long), new List<Type> { typeof(float), typeof(double), typeof(decimal) });
+            _ImplicitNumericConversions.Add(typeof(char), new List<Type> { typeof(ushort), typeof(int), typeof(uint), typeof(long), typeof(ulong), typeof(float), typeof(double), typeof(decimal) });
+            _ImplicitNumericConversions.Add(typeof(float), new List<Type> { typeof(double) });
+            _ImplicitNumericConversions.Add(typeof(ulong), new List<Type> { typeof(float), typeof(double), typeof(decimal) });
         }
 
         static bool HasImplicitConversion(Type definedOn, Type baseType, Type targetType)
@@ -54,7 +54,7 @@ namespace Common
             {
                 return true;
             }
-            if (ImplicitNumericConversions.TryGetValue(from, out List<Type> list))
+            if (_ImplicitNumericConversions.TryGetValue(from, out List<Type> list))
             {
                 if (list.Contains(to))
                     return true;
@@ -74,7 +74,13 @@ namespace Common
             return false;
         }
 
-
+        internal static bool GetTruthy(object? result)
+        {
+            if (result == null) return false;
+            if (result is bool boolValue) return boolValue;
+            if (Numerical.TryCreate(result, out var numerical)) return numerical != 0;
+            throw new NotImplementedException();
+        }
     }
 
 }

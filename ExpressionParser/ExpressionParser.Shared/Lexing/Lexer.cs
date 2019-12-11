@@ -16,7 +16,7 @@ namespace ExpressionParser.Lexing
 {
     internal class Lexer
     {
-        private const int MIN_LOOKAHEAD_COUNT = 1;
+        private const int _MIN_LOOKAHEAD_COUNT = 1;
 
         internal Lexer(ILanguageDefinition languageDefinition)
         {
@@ -33,7 +33,7 @@ namespace ExpressionParser.Lexing
             };
             _Operators = languageDefinition.Operators.ToDictionary(operatorDef => operatorDef.Text.ToCharArray());
 
-            _LookaheadCount = (byte)Math.Max(_Operators.Keys.Max(arr => arr.Length), MIN_LOOKAHEAD_COUNT);
+            _LookaheadCount = (byte)Math.Max(_Operators.Keys.Max(arr => arr.Length), _MIN_LOOKAHEAD_COUNT);
         }
         internal ILanguageDefinition LanguageDefinition { get; }
 
@@ -145,7 +145,6 @@ namespace ExpressionParser.Lexing
             }
             if (possibleOperators.Count == 0) return false;
             possibleOperators = possibleOperators.Distinct(CharArrayEqualityComparer.Instance).ToList();
-            if (possibleOperators.Count >= 2) throw new NotImplementedException();
             token = new Token(TokenType.Operator, _Operators[possibleOperators[0]].SecondaryTokenType, _Operators[possibleOperators[0]].Text);
             enumerator.MoveNext(possibleOperators[0].Length - 1);
             return true;

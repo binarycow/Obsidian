@@ -1,3 +1,4 @@
+using ExpressionParser.Configuration;
 using ExpressionParser.Scopes;
 using System;
 using System.Collections.Generic;
@@ -21,13 +22,13 @@ namespace ExpressionParser
         public UserDefinedFunctionDelegate Body { get; }
 
 
-        internal object? Invoke(object?[] args)
+        internal object? Invoke(ILanguageDefinition languageDefinition, object?[] args)
         {
-            return Invoke(UserDefinedArgumentData.Create(Declaration.Arguments.ToArrayWithoutInstantiation(), args));
+            return Invoke(UserDefinedArgumentData.Create(languageDefinition, Declaration.Arguments.ToArrayWithoutInstantiation(), args));
         }
-        internal object? Invoke(object? pipelineObject, object?[] args)
+        internal object? Invoke(ILanguageDefinition languageDefinition, object? pipelineObject, object?[] args)
         {
-            return Invoke(UserDefinedArgumentData.Create(Declaration.Arguments.ToArrayWithoutInstantiation(), pipelineObject.YieldOne().Concat(args).ToArray()));
+            return Invoke(UserDefinedArgumentData.Create(languageDefinition, Declaration.Arguments.ToArrayWithoutInstantiation(), pipelineObject.YieldOne().Concat(args).ToArray()));
         }
 
         protected virtual object? Invoke(UserDefinedArgumentData argumentData)
