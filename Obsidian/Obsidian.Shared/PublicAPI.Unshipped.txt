@@ -206,7 +206,6 @@ Obsidian.ITemplate.Render(System.Collections.Generic.IDictionary<string, object>
 Obsidian.ITemplate.TemplateName.get -> string
 Obsidian.ITemplate.TemplatePath.get -> string
 Obsidian.JinjaEnvironment
-Obsidian.JinjaEnvironment.FromString(System.Collections.Generic.IEnumerable<string> source) -> Obsidian.ITemplate
 Obsidian.JinjaEnvironment.FromString(params string[] source) -> Obsidian.ITemplate
 Obsidian.JinjaEnvironment.FromString(string source) -> Obsidian.ITemplate
 Obsidian.JinjaEnvironment.GetTemplate(string templateName, System.Collections.Generic.IDictionary<string, object> variableTemplate) -> Obsidian.ITemplate

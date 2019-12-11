@@ -3,6 +3,8 @@ using Obsidian.Loaders;
 using Obsidian.TestCore;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using System.Text;
 
 namespace Obsidian.Tests.FromJinja.CoreTags
@@ -40,7 +42,17 @@ namespace Obsidian.Tests.FromJinja.CoreTags
         [Test]
         public void TestElifDeep()
         {
-            throw new TestNotFinishedException();
+            var elifs = string.Join("\n", Enumerable.Range(1, 999).Select(index => string.Format(CultureInfo.InvariantCulture, "{{% elif a == {0} %}}{0}", index)));
+            var templateString = string.Format(CultureInfo.InvariantCulture, "{{% if a == 0 %}}0{0}{{% else %}}x{{% endif %}}", elifs);
+
+            dynamic template = new DynamicTemplateRenderer(
+                _Environment.FromString(templateString)
+            );
+            foreach (var x in new[] { 0, 10, 999 })
+            {
+                Assert.AreEqual(x.ToString(CultureInfo.InvariantCulture), template.Render(a: x).Trim());
+            }
+            Assert.AreEqual("x", template.Render(a: 1000).Trim());
         }
 
         [Test]
