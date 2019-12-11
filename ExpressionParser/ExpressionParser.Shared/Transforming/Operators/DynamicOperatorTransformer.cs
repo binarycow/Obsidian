@@ -145,7 +145,7 @@ namespace ExpressionParser.Transforming.Operators
                 {
                     case ArgumentSetNode argSet:
                         var args = argSet.Arguments.Select(arg => arg.Transform(NodeTransformer)).ToArray();
-                        return DynamicResolver.CallMethod(ScopeStack, left, args);
+                        return DynamicResolver.CallMethod(LanguageDefinition, ScopeStack, left, args);
                     default:
                         throw new NotImplementedException();
                 }

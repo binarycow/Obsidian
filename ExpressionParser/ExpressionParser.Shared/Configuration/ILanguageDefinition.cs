@@ -11,6 +11,7 @@ namespace ExpressionParser.Configuration
         IEnumerable<OperatorDefinition> Operators { get; }
         IDictionary<char,TokenType> SingleCharTokens { get; }
         bool AllowStringIndexersAsProperties { get; }
+        bool RequireNonDefaultArguments { get; }
         IEnumerable<UserDefinedFunction> Functions { get; }
         internal IEnumerable<ScopedUserDefinedFunction> ScopedFunctions { get; }
     }

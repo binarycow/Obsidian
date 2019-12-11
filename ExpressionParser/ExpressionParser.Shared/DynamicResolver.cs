@@ -28,16 +28,16 @@ namespace ExpressionParser
 
         [SuppressMessage("Usage", "CA1801:Review unused parameters", Justification = "<Pending>")]
         [SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>")]
-        internal static object? CallMethod<TScope, TRootScope>(ScopeStack<TScope, TRootScope> scopeStack, object? left, object?[] args)
+        internal static object? CallMethod<TScope, TRootScope>(ILanguageDefinition languageDefinition, ScopeStack<TScope, TRootScope> scopeStack, object? left, object?[] args)
             where TScope : class, IScope
             where TRootScope : class, TScope
         {
             return left switch
             {
-                FunctionMethodGroup methodGroup => methodGroup.FunctionDefinition.Invoke(args),
-                UserDefinedFunction userDefinedFunction => userDefinedFunction.Invoke(args),
-                PipelineMethodGroup pipelineGroup => pipelineGroup.FunctionDefinition.Invoke(pipelineGroup.ReferredObject, args),
-                ScopedFunctionMethodGroup scopedMethodGroup => scopedMethodGroup.FunctionDefinition.Invoke(scopeStack.Current, args),
+                FunctionMethodGroup methodGroup => methodGroup.FunctionDefinition.Invoke(languageDefinition, args),
+                UserDefinedFunction userDefinedFunction => userDefinedFunction.Invoke(languageDefinition, args),
+                PipelineMethodGroup pipelineGroup => pipelineGroup.FunctionDefinition.Invoke(languageDefinition, pipelineGroup.ReferredObject, args),
+                ScopedFunctionMethodGroup scopedMethodGroup => scopedMethodGroup.FunctionDefinition.Invoke(languageDefinition, scopeStack.Current, args),
                 _ => throw new NotImplementedException(),
             };
 

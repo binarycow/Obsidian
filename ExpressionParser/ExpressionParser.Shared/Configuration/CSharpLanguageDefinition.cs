@@ -72,6 +72,8 @@ namespace ExpressionParser.Configuration
 
         public IEnumerable<UserDefinedFunction> Functions => Enumerable.Empty<UserDefinedFunction>();
 
+        public bool RequireNonDefaultArguments => true;
+
         IEnumerable<ScopedUserDefinedFunction> ILanguageDefinition.ScopedFunctions => throw new NotImplementedException();
     }
 }

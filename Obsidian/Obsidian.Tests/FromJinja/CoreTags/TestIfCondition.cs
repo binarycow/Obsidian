@@ -40,7 +40,7 @@ namespace Obsidian.Tests.FromJinja.CoreTags
         [Test]
         public void TestElifDeep()
         {
-            throw new NotImplementedException();
+            throw new TestNotFinishedException();
         }
 
         [Test]

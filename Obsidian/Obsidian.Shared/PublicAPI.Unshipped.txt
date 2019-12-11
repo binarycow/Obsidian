@@ -60,6 +60,7 @@ ExpressionParser.Configuration.ILanguageDefinition.AllowStringIndexersAsProperti
 ExpressionParser.Configuration.ILanguageDefinition.Functions.get -> System.Collections.Generic.IEnumerable<ExpressionParser.UserDefinedFunction>
 ExpressionParser.Configuration.ILanguageDefinition.Keywords.get -> System.Collections.Generic.IEnumerable<ExpressionParser.Configuration.KeywordDefinition>
 ExpressionParser.Configuration.ILanguageDefinition.Operators.get -> System.Collections.Generic.IEnumerable<ExpressionParser.Configuration.OperatorDefinition>
+ExpressionParser.Configuration.ILanguageDefinition.RequireNonDefaultArguments.get -> bool
 ExpressionParser.Configuration.ILanguageDefinition.SingleCharTokens.get -> System.Collections.Generic.IDictionary<char, ExpressionParser.Lexing.TokenType>
 ExpressionParser.Configuration.KeywordDefinition
 ExpressionParser.Configuration.KeywordDefinition.KeywordDefinition(System.Collections.Generic.IEnumerable<string> names) -> void

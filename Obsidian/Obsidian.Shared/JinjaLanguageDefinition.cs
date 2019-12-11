@@ -149,5 +149,7 @@ namespace Obsidian
         {
             new ScopedUserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(string), "super", Array.Empty<ParameterDeclaration>()), JinjaFunctions.Super),
         };
+
+        public bool RequireNonDefaultArguments => false;
     }
 }
