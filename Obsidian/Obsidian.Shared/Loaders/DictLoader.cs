@@ -13,7 +13,7 @@ namespace Obsidian.Loaders
         }
 
 
-        private IDictionary<string, string> _Templates;
+        private readonly IDictionary<string, string> _Templates;
 
         internal override bool TryGetSource(JinjaEnvironment environment, string templateName, [NotNullWhen(true)] out TemplateInfo? templateInfo)
         {

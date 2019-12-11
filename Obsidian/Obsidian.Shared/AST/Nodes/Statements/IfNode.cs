@@ -87,7 +87,7 @@ namespace Obsidian.AST.Nodes.Statements
                 conditions.Enqueue(new ConditionalNode(startParsingNode, ExpressionNode.FromString(environment, previousBlockExpression), blockChildren, null,
                     new WhiteSpaceControlSet(thisConditionStart, thisConditionEnd)
                 ));
-                previousBlockExpression = JinjaEnvironment.TRUE;
+                previousBlockExpression = JinjaEnvironment._TRUE;
                 enumerator.MoveNext();
                 blockChildren = ASTGenerator.ParseUntilFailure(environment, lexer, enumerator).ToArray();
                 thisConditionStart = nextConditionStart;

@@ -16,18 +16,21 @@ namespace Obsidian
 {
     public class JinjaEnvironment
     {
-        internal const string TRUE = "True";
-        public JinjaEnvironment(BaseLoader? loader = null)
+        internal const string _TRUE = "True";
+        public JinjaEnvironment(BaseLoader? loader = null, IDictionary<string, object?>? globals = null, EnvironmentSettings? settings = null)
         {
             _Evaluation = new Lazy<ExpressionEval>(() => new ExpressionEval(LanguageDefinition, 
                 lexer: new JinjaLexer(LanguageDefinition),
                 parser: new JinjaParser(LanguageDefinition)
             ));
+            Settings = settings ?? new EnvironmentSettings();
             Settings = new EnvironmentSettings();
             Loader = loader;
+            Globals = globals;
         }
         public EnvironmentSettings Settings { get; }
         public BaseLoader? Loader { get; set; }
+        public IDictionary<string, object?>? Globals { get; }
 
 
         internal static JinjaLanguageDefinition LanguageDefinition => JinjaLanguageDefinition.Instance;
@@ -111,6 +114,19 @@ namespace Obsidian
             if (TryGetTemplateInfo(templateName, out var templateInfo) == false || templateInfo == null) return false;
             template = GetDynamicTemplate(templateInfo.Value.Source, templateName, null);
             return true;
+        }
+
+        public ITemplate FromString(string source)
+        {
+            return GetDynamicTemplate(source, null, null);
+        }
+        public ITemplate FromString(IEnumerable<string> source)
+        {
+            return FromString(string.Join("\n", source));
+        }
+        public ITemplate FromString(params string[] source)
+        {
+            return FromString(string.Join("\n", source));
         }
 
     }

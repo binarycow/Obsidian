@@ -63,8 +63,8 @@ namespace Obsidian
             OperatorDefinition.CreateBinary(">", 40, OperatorType.GreaterThan),
             OperatorDefinition.CreateBinary("<=", 40, OperatorType.LessThanOrEqual),
             OperatorDefinition.CreateBinary(">=", 40, OperatorType.GreaterThanOrEqual),
-            OperatorDefinition.CreateBinary("!=", 40, OperatorType.Equal),
-            OperatorDefinition.CreateBinary("==", 40, OperatorType.NotEqual),
+            OperatorDefinition.CreateBinary("!=", 40, OperatorType.NotEqual),
+            OperatorDefinition.CreateBinary("==", 40, OperatorType.Equal),
 
 
             OperatorDefinition.CreateUnary("not", 30, OperatorType.LogicalNot),

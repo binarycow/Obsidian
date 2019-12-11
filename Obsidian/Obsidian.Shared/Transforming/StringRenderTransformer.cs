@@ -167,8 +167,8 @@ namespace Obsidian.Transforming
             {
                 var result = Environment.Evaluation.EvaluateDynamic(condition.Expression.ExpressionParserNode, ExpressionParserTransformer);
                 if (result == null) throw new NotImplementedException();
-                if (TypeCoercion.CanCast(result.GetType(), typeof(bool)) == false) throw new NotImplementedException();
-                var boolResult = (bool)result;
+
+                var boolResult = TypeCoercion.GetTruthy(result);
 
                 if (boolResult)
                 {
@@ -370,19 +370,12 @@ namespace Obsidian.Transforming
         public IEnumerable<string> Transform(IncludeNode item)
         {
             var evaluatedTemplateList = Environment.Evaluation.EvaluateDynamic(item.Templates.ExpressionParserNode, ExpressionParserTransformer);
-            IEnumerable<string> templateList;
-            switch(evaluatedTemplateList)
+            var templateList = evaluatedTemplateList switch
             {
-                case string str:
-                    templateList = Enumerable.Repeat(str, 1);
-                    break;
-                case IEnumerable<string> strList:
-                    templateList = strList;
-                    break;
-                default:
-                    throw new NotImplementedException();
-            }
-
+                string str => Enumerable.Repeat(str, 1),
+                IEnumerable<string> strList => strList,
+                _ => throw new NotImplementedException(),
+            };
             var template = templateList.Select(templateName =>
                 {
                     var result = Environment.TryGetDynamicTemplate(templateName, out var template);
