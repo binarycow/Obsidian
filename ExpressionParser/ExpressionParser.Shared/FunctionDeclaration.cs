@@ -5,6 +5,17 @@ using System.Text;
 
 namespace ExpressionParser
 {
+
+    public class FunctionDeclaration<T> : FunctionDeclaration
+    {
+        public FunctionDeclaration(string name, ParameterDeclaration[] arguments, string[]? aliases = null)
+            : base(typeof(T), name, arguments, aliases)
+        {
+
+        }
+    }
+
+
     public class FunctionDeclaration
     {
         public FunctionDeclaration(Type returnType, string name, ParameterDeclaration[] arguments, string[]? aliases = null)

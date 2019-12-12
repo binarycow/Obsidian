@@ -32,7 +32,7 @@ namespace Obsidian.Transforming
                 elseBlock = item.ElseBlock.Transform(this) as ContainerNode;
                 if (elseBlock == default) throw new NotImplementedException();
             }
-            return new ForNode(primaryBlock, elseBlock, item.VariableNames, item.Expression, item.EndParsingNode);
+            return new ForNode(primaryBlock, elseBlock, item.VariableNames, item.Expression, item.Filter, item.EndParsingNode);
         }
 
         public virtual ASTNode Transform(ContainerNode item)

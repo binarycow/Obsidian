@@ -280,7 +280,7 @@ namespace Obsidian.Tests.FromJinja.CoreTags
                 _Environment.FromString("{% for s in seq %}[{{ loop.first }}{% for c in s %}",
                 "|{{ loop.first }}{% endfor %}]{% endfor %}")
             );
-            MyAssert.AreEqual("[True|True|False][False|True|False]", template.Render(seq: Tuple.Create("ab", "cd")));
+            MyAssert.AreEqual("[True|True|False][False|True|False]", template.Render(seq: new[] { "ab", "cd" }));
         }
         [Test]
         public void TestScopedLoopVar()

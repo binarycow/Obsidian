@@ -35,6 +35,7 @@ namespace ExpressionParser.Transforming.Operators
         {
             switch(item.OperatorType)
             {
+                case OperatorType.Is:
                 case OperatorType.Equal:
                 case OperatorType.NotEqual:
                     return TransformBinary(item, args[0], args[1]);
@@ -59,6 +60,7 @@ namespace ExpressionParser.Transforming.Operators
             var right = rightNode.Transform(NodeTransformer);
             return item.OperatorType switch
             {
+                OperatorType.Is => OperatorExecution.Is(LanguageDefinition, left, right),
                 OperatorType.Equal => OperatorExecution.Equal(left, right),
                 _ => throw new NotImplementedException(),
             };

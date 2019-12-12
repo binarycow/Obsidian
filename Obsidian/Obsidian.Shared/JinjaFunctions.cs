@@ -272,7 +272,6 @@ namespace Obsidian
             }
         }
 
-
         internal static object? First(UserDefinedArgumentData args)
         {
             if (args.TryGetArgumentValue("seq", out var seq) == false) throw new NotImplementedException();
@@ -307,6 +306,47 @@ namespace Obsidian
         {
             throw new NotImplementedException();
         }
+
+
+        internal static bool Even(UserDefinedArgumentData args)
+        {
+            if (args.TryGetArgumentValue<int>("value", out var value) == false) throw new NotImplementedException();
+            return value % 2 == 0;
+        }
+
+
+        internal static object Range(UserDefinedArgumentData args)
+        {
+            if (args.TryGetArgumentValue<int>("start", out var firstNum) == false) throw new NotImplementedException();
+            if (args.TryGetArgumentValue<int>("stop", out var secondNum) == false) throw new NotImplementedException();
+            if (args.TryGetArgumentValue<int>("step", out var thirdNum) == false) throw new NotImplementedException();
+
+            int start, stop, step;
+
+            if(secondNum == -1)
+            {
+                start = 0;
+                stop = firstNum;
+                step = 1;
+            }
+            else
+            {
+                start = firstNum;
+                stop = secondNum;
+                step = thirdNum;
+            }
+
+            return AlternateRange();
+            IEnumerable<int> AlternateRange()
+            {
+                for (int i = start; i < stop; i += step)
+                {
+                    yield return i;
+                }
+            }
+
+        }
+
 
 
 

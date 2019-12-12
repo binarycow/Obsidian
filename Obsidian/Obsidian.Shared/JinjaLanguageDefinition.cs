@@ -143,6 +143,14 @@ namespace Obsidian
                 new ParameterDeclaration("s")
             }), JinjaFunctions.Upper),
             #endregion Filters
+
+            #region Functions 
+            new UserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(string), "range", new ParameterDeclaration[] {
+                new ParameterDeclaration("start"),
+                new ParameterDeclaration("stop", -1),
+                new ParameterDeclaration("step", 1)
+            }), JinjaFunctions.Range),
+            #endregion Functions
         };
 
         IEnumerable<ScopedUserDefinedFunction> ILanguageDefinition.ScopedFunctions => new ScopedUserDefinedFunction[]
@@ -151,5 +159,12 @@ namespace Obsidian
         };
 
         public bool RequireNonDefaultArguments => false;
+
+        public IEnumerable<UserDefinedTest> Tests => new UserDefinedTest[]
+        {
+            new UserDefinedTest(declaration: new FunctionDeclaration<bool>("even", new ParameterDeclaration[] {
+                new ParameterDeclaration("value")
+            }), JinjaFunctions.Even)
+        };
     }
 }

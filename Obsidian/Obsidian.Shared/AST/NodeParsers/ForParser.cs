@@ -18,6 +18,7 @@ namespace Obsidian.AST.NodeParsers
             Keyword,
             VariableNames,
             Expression,
+            Filter,
             WhiteSpaceOrEndJinja,
             EndJinja,
             Done,
@@ -61,6 +62,16 @@ namespace Obsidian.AST.NodeParsers
                 .Else()
                     .Accumulate(seperator: Comma);
             parser.State(Expression)
+                .Expect(Minus).AndNext(StatementEnd)
+                    .SetWhiteSpaceMode(WhiteSpacePosition.End, WhiteSpaceMode.Trim)
+                    .MoveTo(EndJinja)
+                .Expect(StatementEnd)
+                    .MoveTo(Done)
+                .Expect(Keyword_If)
+                    .MoveTo(Filter)
+                .Else()
+                    .Accumulate();
+            parser.State(Filter)
                 .Expect(Minus).AndNext(StatementEnd)
                     .SetWhiteSpaceMode(WhiteSpacePosition.End, WhiteSpaceMode.Trim)
                     .MoveTo(EndJinja)

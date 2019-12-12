@@ -13,6 +13,7 @@ namespace ExpressionParser.Configuration
         bool AllowStringIndexersAsProperties { get; }
         bool RequireNonDefaultArguments { get; }
         IEnumerable<UserDefinedFunction> Functions { get; }
+        IEnumerable<UserDefinedTest> Tests { get; }
         internal IEnumerable<ScopedUserDefinedFunction> ScopedFunctions { get; }
     }
 }

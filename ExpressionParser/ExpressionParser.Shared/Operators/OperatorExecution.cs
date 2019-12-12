@@ -1,4 +1,6 @@
 using Common;
+using ExpressionParser.Configuration;
+using ExpressionParser.References;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +28,17 @@ namespace ExpressionParser.Operators
             if (Numerical.TryCreate(left, out var leftNumerical) && Numerical.TryCreate(right, out var rightNumerical)) return leftNumerical == rightNumerical;
 
             throw new NotImplementedException();
+        }
+
+        internal static bool Is(ILanguageDefinition languageDefinition, object? left, object? right)
+        {
+            switch(right)
+            {
+                case TestMethodGroup test:
+                    return test.TestDefinition.Invoke(languageDefinition, new object?[] { left });
+                default: 
+                    throw new NotImplementedException();
+            }
         }
     }
 }

@@ -123,6 +123,8 @@ ExpressionParser.FunctionDeclaration.Arguments.get -> System.Collections.Generic
 ExpressionParser.FunctionDeclaration.FunctionDeclaration(System.Type returnType, string name, ExpressionParser.ParameterDeclaration[] arguments, string[] aliases = null) -> void
 ExpressionParser.FunctionDeclaration.Name.get -> string
 ExpressionParser.FunctionDeclaration.ReturnType.get -> System.Type
+ExpressionParser.FunctionDeclaration<T>
+ExpressionParser.FunctionDeclaration<T>.FunctionDeclaration(string name, ExpressionParser.ParameterDeclaration[] arguments, string[] aliases = null) -> void
 ExpressionParser.Lexing.TokenType
 ExpressionParser.Lexing.TokenType.CharacterLiteral = 4 -> ExpressionParser.Lexing.TokenType
 ExpressionParser.Lexing.TokenType.Colon = 10 -> ExpressionParser.Lexing.TokenType

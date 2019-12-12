@@ -25,6 +25,10 @@ namespace ExpressionParser.References
         {
             return new FunctionMethodGroup(functionDefinition);
         }
+        internal static MethodGroup Create(UserDefinedTest functionDefinition)
+        {
+            return new TestMethodGroup(functionDefinition);
+        }
         internal static MethodGroup Create(UserDefinedFunction functionDefinition, object? referredObject)
         {
             return new PipelineMethodGroup(functionDefinition, referredObject);

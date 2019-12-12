@@ -76,6 +76,31 @@ namespace Obsidian.Transforming
             var evalObj = Environment.Evaluation.EvaluateDynamic(item.Expression.Expression, Scopes);
             var arr = CollectionEx.ToArray(evalObj) ?? Array.Empty<object>();
 
+            if (item.Filter != null)
+            {
+                var filtered = new List<object?>();
+                foreach(var arrItem in arr)
+                {
+                    var unpacked = ReflectionHelpers.Unpack(arrItem, item.VariableNames.Length);
+                    Scopes.Push($"ForNode | Filter: {item.Filter} Item: {arrItem}");
+                    for (var i = 0; i < unpacked.Length; ++i)
+                    {
+                        Scopes.Current.DefineAndSetVariable(item.VariableNames[i], unpacked[i]);
+                    }
+                    var result = Environment.Evaluation.EvaluateDynamic(item.Filter.Expression, Scopes);
+                    Scopes.Pop($"ForNode | Filter: {item.Filter} Item: {arrItem}");
+                    if (TypeCoercion.GetTruthy(result))
+                    {
+                        filtered.Add(arrItem);
+                    }
+                }
+                arr = filtered.ToArray();
+            }
+
+
+
+
+
             if (arr.Length == 0 && item.ElseBlock != null)
             {
                 foreach (var output in item.ElseBlock.Transform(this)) yield return output;
