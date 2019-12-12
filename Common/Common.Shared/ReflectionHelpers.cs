@@ -188,7 +188,29 @@ namespace Common
             return constructor.Invoke(tupleItemsArray);
         }
 
+        internal static object?[] Unpack(object? packedObject, int expectedItemCount)
+        {
+            if (expectedItemCount == 1) return new object?[] { packedObject };
+            if (packedObject == null) throw new NullReferenceException();
 
+            var array = CollectionEx.ToArray(packedObject);
+
+
+            if (array != null)
+            {
+                if(array.Length < expectedItemCount)
+                {
+                    throw new RuntimeException($"Not enough values to unpack (expected {expectedItemCount}, got {array.Length})");
+                }
+                if(array.Length > expectedItemCount)
+                {
+                    throw new RuntimeException($"Too many values to unpack (expected {expectedItemCount}, got {array.Length})");
+                }
+                return array;
+            }
+
+            throw new NotImplementedException();
+        }
 
     }
 }

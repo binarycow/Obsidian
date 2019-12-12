@@ -69,7 +69,7 @@ namespace ExpressionParser.Scopes
 
         internal void DefineAndSetVariable(string name, object? valueToSet)
         {
-            _Variables.Add(name, valueToSet);
+            _Variables.Upsert(name, valueToSet);
         }
 
         internal bool TryGetVariable(string name, out object? value)

@@ -11,7 +11,7 @@ namespace Obsidian.Tests
         public static void TestTemplate(Item test)
         {
             TestRunner.TestTemplate(test, out var actualOutput, out var expectedOutput);
-            Assert.AreEqual(expectedOutput, actualOutput);
+            NUnit.Framework.Assert.AreEqual(expectedOutput, actualOutput);
         }
     }
 }

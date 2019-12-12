@@ -3,6 +3,7 @@ using Obsidian.TestCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using static Obsidian.Tests.AssertConfig;
 
 namespace Obsidian.Tests.FromJinja.CoreTags
 {
@@ -25,7 +26,7 @@ namespace Obsidian.Tests.FromJinja.CoreTags
             dynamic template = new DynamicTemplateRenderer(
                 _Environment.FromString("{% set foo = 1 %}{{ foo }}")
             );
-            Assert.AreEqual("1", template.Render());
+            MyAssert.AreEqual("1", template.Render());
         }
         [Test]
         public void TestBlock()
@@ -33,7 +34,7 @@ namespace Obsidian.Tests.FromJinja.CoreTags
             dynamic template = new DynamicTemplateRenderer(
                 _Environment.FromString("{% set foo %}42{% endset %}{{ foo }}")
             );
-            Assert.AreEqual("42", template.Render());
+            MyAssert.AreEqual("42", template.Render());
         }
         [Test]
         public void TestBlockEscaping()
@@ -41,7 +42,7 @@ namespace Obsidian.Tests.FromJinja.CoreTags
             dynamic template = new DynamicTemplateRenderer(
                 _Environment.FromString("{% set foo %}<em>{{ test }}</em>{% endset %}foo: {{ foo }}")
             );
-            Assert.AreEqual("foo: <em>&lt;unsafe&gt;</em>", template.Render(test: "<unsafe>"));
+            MyAssert.AreEqual("foo: <em>&lt;unsafe&gt;</em>", template.Render(test: "<unsafe>"));
         }
         [Test]
         public void TestSetInvalid()
@@ -59,7 +60,7 @@ namespace Obsidian.Tests.FromJinja.CoreTags
             dynamic template = new DynamicTemplateRenderer(
                 _Environment.FromString("{% set ns = namespace() %}{% set ns.bar = \"42\" %}{{ ns.bar }}")
             );
-            Assert.AreEqual("42", template.Render());
+            MyAssert.AreEqual("42", template.Render());
         }
         [Test]
         public void TestNamespaceBlock()
@@ -67,7 +68,7 @@ namespace Obsidian.Tests.FromJinja.CoreTags
             dynamic template = new DynamicTemplateRenderer(
                 _Environment.FromString("{% set ns = namespace() %}{% set ns.bar %}42{% endset %}{{ ns.bar }}")
             );
-            Assert.AreEqual("42", template.Render());
+            MyAssert.AreEqual("42", template.Render());
         }
         [Test]
         public void TestInitNamespace()
@@ -75,7 +76,7 @@ namespace Obsidian.Tests.FromJinja.CoreTags
             dynamic template = new DynamicTemplateRenderer(
                 _Environment.FromString("{% set ns = namespace(d, self=37) %}{% set ns.b = 42 %}{{ ns.a }}|{{ ns.self }}|{{ ns.b }}")
             );
-            Assert.AreEqual("13|37|42", template.Render(d: new Dictionary<string, object?>
+            MyAssert.AreEqual("13|37|42", template.Render(d: new Dictionary<string, object?>
             {
                 { "a", 13 }
             }));
@@ -94,8 +95,8 @@ namespace Obsidian.Tests.FromJinja.CoreTags
                     "{{ ns.found }}"
                 )
             );
-            Assert.AreEqual("True", template.Render(v: 3));
-            Assert.AreEqual("False", template.Render(v: 4));
+            MyAssert.AreEqual("True", template.Render(v: 3));
+            MyAssert.AreEqual("False", template.Render(v: 4));
         }
 
         [Test]
@@ -112,7 +113,7 @@ namespace Obsidian.Tests.FromJinja.CoreTags
                     "{{ ns.a }}|{{ ns.b }}"
                 )
             );
-            Assert.AreEqual("13|37", template.Render());
+            MyAssert.AreEqual("13|37", template.Render());
         }
 
         [Test]
@@ -124,7 +125,7 @@ namespace Obsidian.Tests.FromJinja.CoreTags
                     "{% endset %}foo: {{ foo }}"
                 )
             );
-            Assert.AreEqual("foo: <em>&lt;unsafe&gt;</em>", template.Render(test: "<unsafe>"));
+            MyAssert.AreEqual("foo: <em>&lt;unsafe&gt;</em>", template.Render(test: "<unsafe>"));
         }
         [Test]
         public void TestBlockFiltered()
@@ -135,7 +136,7 @@ namespace Obsidian.Tests.FromJinja.CoreTags
                     "{{ foo }}"
                 )
             );
-            Assert.AreEqual("2", template.Render());
+            MyAssert.AreEqual("2", template.Render());
         }
         [Test]
         public void TestBlockFilteredSet()
@@ -149,7 +150,7 @@ namespace Obsidian.Tests.FromJinja.CoreTags
                     "{{ foo }}"
                 )
             );
-            Assert.AreEqual("11", template.Render());
+            MyAssert.AreEqual("11", template.Render());
         }
     }
 }

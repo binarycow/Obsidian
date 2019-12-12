@@ -120,13 +120,9 @@ namespace Obsidian
         {
             return GetDynamicTemplate(source, null, null);
         }
-        public ITemplate FromString(IEnumerable<string> source)
-        {
-            return FromString(string.Join("\n", source));
-        }
         public ITemplate FromString(params string[] source)
         {
-            return FromString(string.Join("\n", source));
+            return FromString(string.Join(string.Empty, source));
         }
 
     }

@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Obsidian.TestCore\Obsidian.TestCore.csproj" />
+    <ProjectReference Include="..\Obsidian.Tests\Obsidian.Tests.csproj" />
     <ProjectReference Include="..\Obsidian\Obsidian.csproj" />
   </ItemGroup>
 

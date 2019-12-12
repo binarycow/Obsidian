@@ -73,7 +73,6 @@ namespace Obsidian.Transforming
         {
             _EncounteredOutputStyleBlock = true;
             if (!(ShouldRender && _EncounteredOutputStyleBlock)) yield break;
-            if (item.VariableNames.Length != 1) throw new NotImplementedException();
             var evalObj = Environment.Evaluation.EvaluateDynamic(item.Expression.Expression, Scopes);
             var arr = CollectionEx.ToArray(evalObj) ?? Array.Empty<object>();
 
@@ -87,8 +86,13 @@ namespace Obsidian.Transforming
             {
                 var arrItem = arr[index];
                 var loopInfo = new LoopInfoClass<object>(arr, index);
+                var unpacked = ReflectionHelpers.Unpack(arrItem, item.VariableNames.Length);
+
                 Scopes.Push($"ForNode: {item.Expression} Item: {arrItem}");
-                Scopes.Current.DefineAndSetVariable(item.VariableNames[0], arrItem);
+                for (var i = 0; i < unpacked.Length; ++i)
+                {
+                    Scopes.Current.DefineAndSetVariable(item.VariableNames[i], unpacked[i]);
+                }
                 Scopes.Current.DefineAndSetVariable("loop", loopInfo);
 
                 foreach (var output in item.PrimaryBlock.Transform(this)) yield return output;
