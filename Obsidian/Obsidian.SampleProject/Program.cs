@@ -6,6 +6,10 @@ using System.Threading;
 using ExpressionParser;
 using Obsidian.ExpressionParserExt;
 using Obsidian.TestCore;
+using Obsidian.Tests;
+using Obsidian.Tests.FromJinja.CoreTags;
+
+#pragma warning disable CS0162 // Unreachable code detected
 
 namespace Obsidian.SampleProject
 {
@@ -55,33 +59,39 @@ namespace Obsidian.SampleProject
 
         static void Main()
         {
+            AssertConfig.MyAssert = new ConsoleAsserter();
+
+            new TestFor().TestUnpacking();
+            return;
+
+
             //UpdateExpected();
 
             TestRunner.Init(TestRunner.TestFileName);
-            //AutomaticTest(TestRunner.TestItems["Basic Tests"]["Basic Template"]);
-            //AutomaticTest(TestRunner.TestItems["Basic Tests"]["Raw"]);
-            //AutomaticTest(TestRunner.TestItems["Basic Tests"]["Inheritance"]);
-            //AutomaticTest(TestRunner.TestItems["Macros"]["Basic Macro"]);
-            //AutomaticTest(TestRunner.TestItems["Macros"]["Call Macro"]);
-            //AutomaticTest(TestRunner.TestItems["Macros"]["Call Macro With Params"]);
-            //AutomaticTest(TestRunner.TestItems["Feature Tests"]["Null Master Fallback"]["Standalone"]);
-            //AutomaticTest(TestRunner.TestItems["Feature Tests"]["Null Master Fallback"]["Master"]);
-            //AutomaticTest(TestRunner.TestItems["Feature Tests"]["For Loop Variables"]);
-            //AutomaticTest(TestRunner.TestItems["Feature Tests"]["Set"]);
-            //AutomaticTest(TestRunner.TestItems["Other Tests"]["Test1"]);
-            //AutomaticTest(TestRunner.TestItems["Other Tests"]["Test2"]);
-            //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["Defaults"]);
-            //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["TrimBlocks"]);
-            //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["LStrip"]);
-            //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["LStrip And Trim"]);
-            //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["Manual Strip"]);
-            //AutomaticTest(TestRunner.TestItems["Filters"]["Filters - A-F"]);
-            //AutomaticTest(TestRunner.TestItems["Filters"]["Filters - Basic"]);
-            //AutomaticTest(TestRunner.TestItems["Filters"]["Filters - Batch"]);
-            //AutomaticTest(TestRunner.TestItems["Filters"]["Filters - DictSort"]);
-            //AutomaticTest(TestRunner.TestItems["Filters"]["Filters - Abs"]);
-            //AutomaticTest(TestRunner.TestItems["Filters"]["Filters - Format"]);
-            //AutomaticTest(TestRunner.TestItems["Include"]["Basic"]);
+                              //AutomaticTest(TestRunner.TestItems["Basic Tests"]["Basic Template"]);
+                              //AutomaticTest(TestRunner.TestItems["Basic Tests"]["Raw"]);
+                              //AutomaticTest(TestRunner.TestItems["Basic Tests"]["Inheritance"]);
+                              //AutomaticTest(TestRunner.TestItems["Macros"]["Basic Macro"]);
+                              //AutomaticTest(TestRunner.TestItems["Macros"]["Call Macro"]);
+                              //AutomaticTest(TestRunner.TestItems["Macros"]["Call Macro With Params"]);
+                              //AutomaticTest(TestRunner.TestItems["Feature Tests"]["Null Master Fallback"]["Standalone"]);
+                              //AutomaticTest(TestRunner.TestItems["Feature Tests"]["Null Master Fallback"]["Master"]);
+                              //AutomaticTest(TestRunner.TestItems["Feature Tests"]["For Loop Variables"]);
+                              //AutomaticTest(TestRunner.TestItems["Feature Tests"]["Set"]);
+                              //AutomaticTest(TestRunner.TestItems["Other Tests"]["Test1"]);
+                              //AutomaticTest(TestRunner.TestItems["Other Tests"]["Test2"]);
+                              //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["Defaults"]);
+                              //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["TrimBlocks"]);
+                              //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["LStrip"]);
+                              //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["LStrip And Trim"]);
+                              //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["Manual Strip"]);
+                              //AutomaticTest(TestRunner.TestItems["Filters"]["Filters - A-F"]);
+                              //AutomaticTest(TestRunner.TestItems["Filters"]["Filters - Basic"]);
+                              //AutomaticTest(TestRunner.TestItems["Filters"]["Filters - Batch"]);
+                              //AutomaticTest(TestRunner.TestItems["Filters"]["Filters - DictSort"]);
+                              //AutomaticTest(TestRunner.TestItems["Filters"]["Filters - Abs"]);
+                              //AutomaticTest(TestRunner.TestItems["Filters"]["Filters - Format"]);
+                              //AutomaticTest(TestRunner.TestItems["Include"]["Basic"]);
             AutomaticTest(TestRunner.TestItems["Include"]["Ignore Missing"]["Actually Missing"]);
             //AutomaticTest(TestRunner.TestItems["Include"]["Ignore Missing"]["Actually Present"]);
             //AutomaticTest(TestRunner.TestItems["Include"]["Multiple Templates"]["First Missing"]);
@@ -192,3 +202,5 @@ namespace Obsidian.SampleProject
         }
     }
 }
+
+#pragma warning restore CS0162 // Unreachable code detected

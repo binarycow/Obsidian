@@ -4,6 +4,7 @@ using System.Text;
 using NUnit.Framework;
 using Obsidian.Loaders;
 using Obsidian.TestCore;
+using static Obsidian.Tests.AssertConfig;
 
 namespace Obsidian.Tests.FromJinja.CoreTags
 {
@@ -27,7 +28,7 @@ namespace Obsidian.Tests.FromJinja.CoreTags
                 _Environment.FromString(@"{% macro say_hello(name) %}Hello {{ name }}!{% endmacro %}
 {{ say_hello('Peter') }}")
             );
-            Assert.AreEqual("Hello Peter!", template.Render());
+            MyAssert.AreEqual("Hello Peter!", template.Render());
         }
 
         [Test]
@@ -39,7 +40,7 @@ namespace Obsidian.Tests.FromJinja.CoreTags
 {{ level2('bar') }}{% endmacro %}
 {{ level1('foo') }}")
             );
-            Assert.AreEqual("foo|bar", template.Render());
+            MyAssert.AreEqual("foo|bar", template.Render());
         }
         [Test]
         public void TestArguments()
@@ -48,7 +49,7 @@ namespace Obsidian.Tests.FromJinja.CoreTags
                 _Environment.FromString(@"{% macro m(a, b, c='c', d='d') %}{{ a }}|{{ b }}|{{ c }}|{{ d }}{% endmacro %}
 {{ m() }}|{{ m('a') }}|{{ m('a', 'b') }}|{{ m(1, 2, 3) }}")
             );
-            Assert.AreEqual("||c|d|a||c|d|a|b|c|d|1|2|3|d", template.Render());
+            MyAssert.AreEqual("||c|d|a||c|d|a|b|c|d|1|2|3|d", template.Render());
         }
         [Test]
         public void TestArgumentsDefaultsNonsense()
@@ -67,7 +68,7 @@ namespace Obsidian.Tests.FromJinja.CoreTags
                 _Environment.FromString(@"{% macro test() %}{{ varargs|join('|') }}{% endmacro %}\
 {{ test(1, 2, 3) }}")
             );
-            Assert.AreEqual("1|2|3", template.Render());
+            MyAssert.AreEqual("1|2|3", template.Render());
         }
         [Test]
         public void TestSimpleCall()
@@ -76,7 +77,7 @@ namespace Obsidian.Tests.FromJinja.CoreTags
                 _Environment.FromString(@"{% macro test() %}[[{{ caller() }}]]{% endmacro %}\
 {% call test() %}data{% endcall %}")
             );
-            Assert.AreEqual("[[data]]", template.Render());
+            MyAssert.AreEqual("[[data]]", template.Render());
         }
         [Test]
         public void TestComplexCall()
@@ -85,7 +86,7 @@ namespace Obsidian.Tests.FromJinja.CoreTags
                 _Environment.FromString(@"{% macro test() %}[[{{ caller('data') }}]]{% endmacro %}\
 {% call(data) test() %}{{ data }}{% endcall %}")
             );
-            Assert.AreEqual("[[data]]", template.Render());
+            MyAssert.AreEqual("[[data]]", template.Render());
         }
         [Test]
         public void TestCallerUndefined()
@@ -95,7 +96,7 @@ namespace Obsidian.Tests.FromJinja.CoreTags
 {% macro test() %}{{ caller is not defined }}{% endmacro %}\
 {{ test() }}")
             );
-            Assert.AreEqual("True", template.Render());
+            MyAssert.AreEqual("True", template.Render());
         }
         [Test]
         public void TestInclude()
@@ -107,7 +108,7 @@ namespace Obsidian.Tests.FromJinja.CoreTags
             dynamic template = new DynamicTemplateRenderer(
                 environment.FromString("{% from \"include\" import test %}{{ test(\"foo\") }}")
             );
-            Assert.AreEqual("[foo]", template.Render());
+            MyAssert.AreEqual("[foo]", template.Render());
         }
 
         [Test]
@@ -124,7 +125,7 @@ namespace Obsidian.Tests.FromJinja.CoreTags
                                     "{{ foo(x - 1) }}{% endif %}{% endmacro %}",
                                     "{{ foo(5) }}")
             );
-            Assert.AreEqual("5|4|3|2|1", template.Render());
+            MyAssert.AreEqual("5|4|3|2|1", template.Render());
         }
 
         [Test]

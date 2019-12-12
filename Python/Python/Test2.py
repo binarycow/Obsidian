@@ -1,21 +1,14 @@
 
 from jinja2 import Environment, TemplateSyntaxError, TemplateRuntimeError, \
-     UndefinedError, DictLoader
+     UndefinedError, DictLoader, FileSystemLoader
 
+envArgs = { 
+}
+env = Environment(
+    loader=FileSystemLoader("C:\Source\Obsidian\Python\Python"), **envArgs
+)
 
+t = env.from_string("{% for a, b, c, d in [[1, 2, 3]] %}{{ a }}|{{ b }}|{{ c }}{% endfor %}")
 
-def test_env():
-    env = Environment(loader=DictLoader(dict(
-        module='{% macro test() %}[{{ foo }}|{{ bar }}]{% endmacro %}',
-        header='[{{ foo }}|{{ 23 }}]',
-        o_printer='({{ o }})'
-    )))
-    env.globals['bar'] = 23
-    return env
-
-
-testEnvironment = test_env()
-
-t = testEnvironment.from_string('{% import "module" as m %}{{ m.test() }}')
-
-print(t.render(foo=42) == '[|23]')
+results = t.render()
+print(results)

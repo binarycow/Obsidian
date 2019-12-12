@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
 using Obsidian.TestCore;
+using static Obsidian.Tests.AssertConfig;
 
 namespace Obsidian.Tests.FromJinja.CoreTags
 {
@@ -33,7 +34,7 @@ namespace Obsidian.Tests.FromJinja.CoreTags
         {%- endwith -%}
 ")
             );
-            Assert.AreEqual("1|2|3|4|5", template.Render(b: 3, e: 4));
+            MyAssert.AreEqual("1|2|3|4|5", template.Render(b: 3, e: 4));
         }
     }
 }

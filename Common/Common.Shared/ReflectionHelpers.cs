@@ -188,7 +188,13 @@ namespace Common
             return constructor.Invoke(tupleItemsArray);
         }
 
+        internal static object?[] Unpack(object? packedObject, int expectedItemCount)
+        {
+            if (expectedItemCount == 1) return new object?[] { packedObject };
+            if (packedObject == null) throw new NullReferenceException();
 
+            throw new NotImplementedException();
+        }
 
     }
 }

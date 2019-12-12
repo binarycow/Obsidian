@@ -87,8 +87,13 @@ namespace Obsidian.Transforming
             {
                 var arrItem = arr[index];
                 var loopInfo = new LoopInfoClass<object>(arr, index);
+                var unpacked = ReflectionHelpers.Unpack(arrItem, item.VariableNames.Length);
+
                 Scopes.Push($"ForNode: {item.Expression} Item: {arrItem}");
-                Scopes.Current.DefineAndSetVariable(item.VariableNames[0], arrItem);
+                for (var i = 0; i < unpacked.Length; ++i)
+                {
+                    Scopes.Current.DefineAndSetVariable(item.VariableNames[i], unpacked[i]);
+                }
                 Scopes.Current.DefineAndSetVariable("loop", loopInfo);
 
                 foreach (var output in item.PrimaryBlock.Transform(this)) yield return output;

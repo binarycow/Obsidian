@@ -6,11 +6,12 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using static Obsidian.Tests.AssertConfig;
 
 namespace Obsidian.Tests.FromJinja.CoreTags
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1812:Avoid uninstantiated public classes", Justification = "<Pending>")]
-    public class TestIfCondition
+    public class TestIf
     {
         [SetUp]
         public void CreateEnvironment()
@@ -28,7 +29,7 @@ namespace Obsidian.Tests.FromJinja.CoreTags
             dynamic template = new DynamicTemplateRenderer(
                 _Environment.FromString("{% if true %}...{% endif %}")
             );
-            Assert.AreEqual("...", template.Render());
+            MyAssert.AreEqual("...", template.Render());
         }
 
         [Test]
@@ -37,7 +38,7 @@ namespace Obsidian.Tests.FromJinja.CoreTags
             dynamic template = new DynamicTemplateRenderer(
                 _Environment.FromString("{% if false %}XXX{% elif true%}...{% else %}XXX{% endif %}")
             );
-            Assert.AreEqual("...", template.Render());
+            MyAssert.AreEqual("...", template.Render());
         }
         [Test]
         public void TestElifDeep()
@@ -50,9 +51,9 @@ namespace Obsidian.Tests.FromJinja.CoreTags
             );
             foreach (var x in new[] { 0, 10, 999 })
             {
-                Assert.AreEqual(x.ToString(CultureInfo.InvariantCulture), template.Render(a: x).Trim());
+                MyAssert.AreEqual(x.ToString(CultureInfo.InvariantCulture), template.Render(a: x).Trim());
             }
-            Assert.AreEqual("x", template.Render(a: 1000).Trim());
+            MyAssert.AreEqual("x", template.Render(a: 1000).Trim());
         }
 
         [Test]
@@ -61,7 +62,7 @@ namespace Obsidian.Tests.FromJinja.CoreTags
             dynamic template = new DynamicTemplateRenderer(
                 _Environment.FromString("{% if false %}XXX{% else %}...{% endif %}")
             );
-            Assert.AreEqual("...", template.Render());
+            MyAssert.AreEqual("...", template.Render());
         }
 
         [Test]
@@ -70,7 +71,7 @@ namespace Obsidian.Tests.FromJinja.CoreTags
             dynamic template = new DynamicTemplateRenderer(
                 _Environment.FromString("[{% if true %}{% else %}{% endif %}]")
             );
-            Assert.AreEqual("[]", template.Render());
+            MyAssert.AreEqual("[]", template.Render());
         }
 
         [Test]
@@ -79,7 +80,7 @@ namespace Obsidian.Tests.FromJinja.CoreTags
             dynamic template = new DynamicTemplateRenderer(
                 _Environment.FromString("{% if a %}A{% elif b %}B{% elif c == d %}", "C{% else %}D{% endif %}")
             );
-            Assert.AreEqual("C", template.Render(a: 0, b: false, c: 42, d: 42.0));
+            MyAssert.AreEqual("C", template.Render(a: 0, b: false, c: 42, d: 42.0));
         }
         [Test]
         public void TestNoScope()
@@ -87,11 +88,11 @@ namespace Obsidian.Tests.FromJinja.CoreTags
             dynamic template = new DynamicTemplateRenderer(
                 _Environment.FromString("{% if a %}{% set foo = 1 %}{% endif %}{{ foo }}")
             );
-            Assert.AreEqual("1", template.Render(a: true));
+            MyAssert.AreEqual("1", template.Render(a: true));
             template = new DynamicTemplateRenderer(
                 _Environment.FromString("{% if true %}{% set foo = 1 %}{% endif %}{{ foo }}")
             );
-            Assert.AreEqual("1", template.Render(a: true));
+            MyAssert.AreEqual("1", template.Render(a: true));
         }
     }
 }
