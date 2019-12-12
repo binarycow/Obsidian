@@ -61,7 +61,7 @@ namespace Obsidian.SampleProject
         {
             AssertConfig.MyAssert = new ConsoleAsserter();
 
-            new TestFor().TestUnpacking();
+            new TestFor().TestLoopFilter();
             return;
 
 

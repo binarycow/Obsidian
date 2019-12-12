@@ -8,7 +8,7 @@ env = Environment(
     loader=FileSystemLoader("C:\Source\Obsidian\Python\Python"), **envArgs
 )
 
-t = env.from_string("{% for a, b, c, d in [[1, 2, 3]] %}{{ a }}|{{ b }}|{{ c }}{% endfor %}")
+t = env.from_string("{% for a, b in [[1, 2, 3]] %}{{ a }}|{{ b }}|{{ c }}{% endfor %}")
 
 results = t.render()
 print(results)

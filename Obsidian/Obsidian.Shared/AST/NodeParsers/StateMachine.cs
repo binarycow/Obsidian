@@ -50,8 +50,8 @@ namespace Obsidian.AST.NodeParsers
         private readonly Dictionary<TState, State<TState>> _States = new Dictionary<TState, State<TState>>();
         private State<TState>? _ElseState = default;
 
-        private readonly Lazy<Dictionary<State<TState>, Queue<Queue<Token>>>> _Accumulations = new Lazy<Dictionary<State<TState>, Queue<Queue<Token>>>>();
-        private Dictionary<State<TState>, Queue<Queue<Token>>> Accumulations => _Accumulations.Value;
+        private readonly Lazy<Dictionary<State<TState>, Stack<Queue<Token>>>> _Accumulations = new Lazy<Dictionary<State<TState>, Stack<Queue<Token>>>>();
+        private Dictionary<State<TState>, Stack<Queue<Token>>> Accumulations => _Accumulations.Value;
 
         private readonly Lazy<Dictionary<string, (Type Type, object? Value)>> _Variables = new Lazy<Dictionary<string, (Type Type, object? Value)>>();
 
@@ -99,6 +99,7 @@ namespace Obsidian.AST.NodeParsers
                     continue;
                 }
                 accumulations = Accumulations[stateKey]
+                    .Reverse()
                     .Select(queue => string.Join(string.Empty, queue.Select(tok => tok.Value)).Trim())
                     .Where(str => !string.IsNullOrEmpty(str))
                     .ToArray();
@@ -223,13 +224,14 @@ namespace Obsidian.AST.NodeParsers
         {
             if(Accumulations.TryGetValue(currentState, out var outsideQueue) == false)
             {
-                outsideQueue = new Queue<Queue<Token>>();
-                outsideQueue.Enqueue(new Queue<Token>());
+                outsideQueue = new Stack<Queue<Token>>();
+                outsideQueue.Push(new Queue<Token>());
                 Accumulations.Add(currentState, outsideQueue);
             }
             if(currentToken.TokenType == action.Seperator)
             {
-                outsideQueue.Enqueue(new Queue<Token>());
+                outsideQueue.Push(new Queue<Token>());
+                return true;
             }
             outsideQueue.Peek().Enqueue(currentToken);
             return true;

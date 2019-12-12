@@ -19,6 +19,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\System\IntExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Numerical.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)NumericalType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RuntimeException.cs" />
     <Compile Include="..\..\Common\Common.Shared\CharArrayEqualityComparer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CheckoutObject.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CollectionEx.cs" />

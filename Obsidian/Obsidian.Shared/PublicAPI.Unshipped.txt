@@ -55,6 +55,10 @@ Common.NumericalType.UnsignedInt = 6 -> Common.NumericalType
 Common.NumericalType.UnsignedLong = 8 -> Common.NumericalType
 Common.NumericalType.UnsignedShort = 4 -> Common.NumericalType
 Common.ReflectionHelpers
+Common.RuntimeException
+Common.RuntimeException.RuntimeException() -> void
+Common.RuntimeException.RuntimeException(string message) -> void
+Common.RuntimeException.RuntimeException(string message, System.Exception innerException) -> void
 ExpressionParser.Configuration.ILanguageDefinition
 ExpressionParser.Configuration.ILanguageDefinition.AllowStringIndexersAsProperties.get -> bool
 ExpressionParser.Configuration.ILanguageDefinition.Functions.get -> System.Collections.Generic.IEnumerable<ExpressionParser.UserDefinedFunction>
