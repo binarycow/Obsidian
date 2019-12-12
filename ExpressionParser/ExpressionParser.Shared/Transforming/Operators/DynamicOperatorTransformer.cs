@@ -35,7 +35,9 @@ namespace ExpressionParser.Transforming.Operators
         {
             switch(item.OperatorType)
             {
+                case OperatorType.Subtract:
                 case OperatorType.GreaterThan:
+                case OperatorType.IsNot:
                 case OperatorType.Is:
                 case OperatorType.Equal:
                 case OperatorType.NotEqual:
@@ -61,8 +63,10 @@ namespace ExpressionParser.Transforming.Operators
             var right = rightNode.Transform(NodeTransformer);
             return item.OperatorType switch
             {
-                OperatorType.GreaterThan => OperatorExecution.GreaterThan(left, right),
+                OperatorType.Subtract => OperatorExecution.EvaluateOperator(item.OperatorType, left, right),
+                OperatorType.GreaterThan => OperatorExecution.EvaluateOperator(item.OperatorType, left, right),
                 OperatorType.Is => OperatorExecution.Is(LanguageDefinition, left, right),
+                OperatorType.IsNot => OperatorExecution.IsNot(LanguageDefinition, left, right),
                 OperatorType.Equal => OperatorExecution.Equal(left, right),
                 _ => throw new NotImplementedException(),
             };
