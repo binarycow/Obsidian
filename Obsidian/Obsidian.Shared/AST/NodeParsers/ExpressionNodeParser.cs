@@ -15,6 +15,8 @@ namespace Obsidian.AST.NodeParsers
             StartJinja,
             WhiteSpaceOrExpression,
             Expression,
+            IfClause,
+            ElseClause,
             WhiteSpaceOrEndJinja,
             EndJinja,
             Done,
@@ -37,12 +39,31 @@ namespace Obsidian.AST.NodeParsers
                 .Expect(Plus)
                     .SetWhiteSpaceMode(WhiteSpacePosition.Start, WhiteSpaceMode.Keep)
                     .MoveTo(Expression)
-                .Expect(WhiteSpace)
-                    .MoveTo(Expression)
                 .Else()
-                    .Return(false);
+                    .MoveTo(Expression)
+                    .Accumulate();
             parser.State(Expression)
-                .Expect(Minus).AndNext(StatementEnd)
+                .Expect(Minus).AndNext(ExpressionEnd)
+                    .SetWhiteSpaceMode(WhiteSpacePosition.End, WhiteSpaceMode.Trim)
+                    .MoveTo(EndJinja)
+                .Expect(Keyword_If)
+                    .MoveTo(IfClause)
+                .Expect(ExpressionEnd)
+                    .MoveTo(Done)
+                .Else()
+                    .Accumulate();
+            parser.State(IfClause)
+                .Expect(Minus).AndNext(ExpressionEnd)
+                    .SetWhiteSpaceMode(WhiteSpacePosition.End, WhiteSpaceMode.Trim)
+                    .MoveTo(EndJinja)
+                .Expect(Keyword_Else)
+                    .MoveTo(ElseClause)
+                .Expect(ExpressionEnd)
+                    .MoveTo(Done)
+                .Else()
+                    .Accumulate();
+            parser.State(ElseClause)
+                .Expect(Minus).AndNext(ExpressionEnd)
                     .SetWhiteSpaceMode(WhiteSpacePosition.End, WhiteSpaceMode.Trim)
                     .MoveTo(EndJinja)
                 .Expect(ExpressionEnd)

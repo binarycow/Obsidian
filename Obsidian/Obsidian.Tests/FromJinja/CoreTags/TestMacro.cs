@@ -25,8 +25,7 @@ namespace Obsidian.Tests.FromJinja.CoreTags
         public void TestSimple()
         {
             dynamic template = new DynamicTemplateRenderer(
-                _Environment.FromString(@"{% macro say_hello(name) %}Hello {{ name }}!{% endmacro %}
-{{ say_hello('Peter') }}")
+                _Environment.FromString(@"{% macro say_hello(name) %}Hello {{ name }}!{% endmacro %}{{ say_hello('Peter') }}")
             );
             MyAssert.AreEqual("Hello Peter!", template.Render());
         }
@@ -35,10 +34,7 @@ namespace Obsidian.Tests.FromJinja.CoreTags
         public void TestScoping()
         {
             dynamic template = new DynamicTemplateRenderer(
-                _Environment.FromString(@"{% macro level1(data1) %}
-{% macro level2(data2) %}{{ data1 }}|{{ data2 }}{% endmacro %}
-{{ level2('bar') }}{% endmacro %}
-{{ level1('foo') }}")
+                _Environment.FromString(@"{% macro level1(data1) %}{% macro level2(data2) %}{{ data1 }}|{{ data2 }}{% endmacro %}{{ level2('bar') }}{% endmacro %}{{ level1('foo') }}")
             );
             MyAssert.AreEqual("foo|bar", template.Render());
         }
@@ -46,8 +42,7 @@ namespace Obsidian.Tests.FromJinja.CoreTags
         public void TestArguments()
         {
             dynamic template = new DynamicTemplateRenderer(
-                _Environment.FromString(@"{% macro m(a, b, c='c', d='d') %}{{ a }}|{{ b }}|{{ c }}|{{ d }}{% endmacro %}
-{{ m() }}|{{ m('a') }}|{{ m('a', 'b') }}|{{ m(1, 2, 3) }}")
+                _Environment.FromString(@"{% macro m(a, b, c='c', d='d') %}{{ a }}|{{ b }}|{{ c }}|{{ d }}{% endmacro %}{{ m() }}|{{ m('a') }}|{{ m('a', 'b') }}|{{ m(1, 2, 3) }}")
             );
             MyAssert.AreEqual("||c|d|a||c|d|a|b|c|d|1|2|3|d", template.Render());
         }
@@ -65,8 +60,7 @@ namespace Obsidian.Tests.FromJinja.CoreTags
         public void TestVarArgs()
         {
             dynamic template = new DynamicTemplateRenderer(
-                _Environment.FromString(@"{% macro test() %}{{ varargs|join('|') }}{% endmacro %}\
-{{ test(1, 2, 3) }}")
+                _Environment.FromString(@"{% macro test() %}{{ varargs|join('|') }}{% endmacro %}{{ test(1, 2, 3) }}")
             );
             MyAssert.AreEqual("1|2|3", template.Render());
         }
@@ -74,8 +68,7 @@ namespace Obsidian.Tests.FromJinja.CoreTags
         public void TestSimpleCall()
         {
             dynamic template = new DynamicTemplateRenderer(
-                _Environment.FromString(@"{% macro test() %}[[{{ caller() }}]]{% endmacro %}\
-{% call test() %}data{% endcall %}")
+                _Environment.FromString(@"{% macro test() %}[[{{ caller() }}]]{% endmacro %}{% call test() %}data{% endcall %}")
             );
             MyAssert.AreEqual("[[data]]", template.Render());
         }
@@ -83,8 +76,7 @@ namespace Obsidian.Tests.FromJinja.CoreTags
         public void TestComplexCall()
         {
             dynamic template = new DynamicTemplateRenderer(
-                _Environment.FromString(@"{% macro test() %}[[{{ caller('data') }}]]{% endmacro %}\
-{% call(data) test() %}{{ data }}{% endcall %}")
+                _Environment.FromString(@"{% macro test() %}[[{{ caller('data') }}]]{% endmacro %}{% call(data) test() %}{{ data }}{% endcall %}")
             );
             MyAssert.AreEqual("[[data]]", template.Render());
         }
@@ -92,9 +84,7 @@ namespace Obsidian.Tests.FromJinja.CoreTags
         public void TestCallerUndefined()
         {
             dynamic template = new DynamicTemplateRenderer(
-                _Environment.FromString(@"{% set caller = 42 %}\
-{% macro test() %}{{ caller is not defined }}{% endmacro %}\
-{{ test() }}")
+                _Environment.FromString(@"{% set caller = 42 %}{% macro test() %}{{ caller is not defined }}{% endmacro %}{{ test() }}")
             );
             MyAssert.AreEqual("True", template.Render());
         }

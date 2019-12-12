@@ -84,5 +84,10 @@ namespace ExpressionParser.Transforming.Nodes
         {
             return item.FunctionDefinition.Invoke(LanguageDefinition, new object?[] { item.ReferredObject });
         }
+
+        public object? Transform(ArgumentSetNode item)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

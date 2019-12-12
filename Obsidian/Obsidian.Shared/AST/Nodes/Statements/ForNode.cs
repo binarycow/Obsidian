@@ -17,7 +17,7 @@ namespace Obsidian.AST.Nodes.Statements
     internal class ForNode : StatementNode, IWhiteSpaceControlling
     {
         internal ForNode(ContainerNode primaryBlock, ContainerNode? elseBlock,
-            string[] variableNames, ExpressionNode expression, ExpressionNode? filter, ParsingNode? endParsingNode, WhiteSpaceControlSet? whiteSpace = null)
+            string[] variableNames, ExpressionNode expression, ExpressionNode? filter, bool recursive, ParsingNode? endParsingNode, WhiteSpaceControlSet? whiteSpace = null)
             : base(
                   startParsingNode: null,
                   children: primaryBlock.YieldOne().Concat(elseBlock?.YieldOne() ?? Enumerable.Empty<ContainerNode>()),
@@ -30,12 +30,31 @@ namespace Obsidian.AST.Nodes.Statements
             Expression = expression;
             Filter = filter;
             WhiteSpaceControl = whiteSpace ?? new WhiteSpaceControlSet();
+            Recursive = recursive;
+        }
+        internal ForNode(ContainerNode primaryBlock, ContainerNode? elseBlock,
+            string[] variableNames, object? expression, ExpressionNode? filter, bool recursive, ParsingNode? endParsingNode, WhiteSpaceControlSet? whiteSpace = null)
+            : base(
+                  startParsingNode: null,
+                  children: primaryBlock.YieldOne().Concat(elseBlock?.YieldOne() ?? Enumerable.Empty<ContainerNode>()),
+                  endParsingNode: endParsingNode
+            )
+        {
+            PrimaryBlock = primaryBlock;
+            ElseBlock = elseBlock;
+            VariableNames = variableNames;
+            Filter = filter;
+            WhiteSpaceControl = whiteSpace ?? new WhiteSpaceControlSet();
+            Recursive = recursive;
+            AlreadyEvaluatedObject = expression;
         }
 
+        public bool Recursive { get; }
         internal ContainerNode PrimaryBlock { get; }
         internal ContainerNode? ElseBlock { get; }
         internal string[] VariableNames { get; }
-        internal ExpressionNode Expression { get; }
+        internal ExpressionNode? Expression { get; }
+        internal object? AlreadyEvaluatedObject { get; }
         internal ExpressionNode? Filter { get; }
 
         public WhiteSpaceControlSet WhiteSpaceControl { get; }
@@ -45,7 +64,6 @@ namespace Obsidian.AST.Nodes.Statements
         internal static bool TryParseFor(JinjaEnvironment environment, Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
         {
             ContainerNode? elseBlock = null;
-
             ExpressionNode? filterNode = null;
             parsedNode = default;
 
@@ -66,6 +84,7 @@ namespace Obsidian.AST.Nodes.Statements
             {
                 filterNode = ExpressionNode.FromString(environment, filter);
             }
+            ForParser.StartBlock.TryGetVariable<bool>("recursive", out var recursive);
             enumerator.MoveNext();
             var primaryBlockChildren = ASTGenerator.ParseUntilFailure(environment, lexer, enumerator).ToArray();
 
@@ -86,7 +105,7 @@ namespace Obsidian.AST.Nodes.Statements
                 elseBlock = new ContainerNode(elseStartParsingNode, elseBlockChildren, null,
                     new WhiteSpaceControlSet(elseInsideStart, elseInsideEnd));
                 parsedNode = new ForNode(primaryBlock, elseBlock, variableNames, ExpressionNode.FromString(environment, expression),
-                    filterNode, enumerator.Current, new WhiteSpaceControlSet(outsideStart, outsideEnd));
+                    filterNode, recursive, enumerator.Current, new WhiteSpaceControlSet(outsideStart, outsideEnd));
                 return true;
             }
             else
@@ -98,7 +117,7 @@ namespace Obsidian.AST.Nodes.Statements
                 primaryBlock = new ContainerNode(primaryStartParsingNode, primaryBlockChildren, null,
                     new WhiteSpaceControlSet(primaryInsideStart, primaryInsideEnd));
                 parsedNode = new ForNode(primaryBlock, elseBlock, variableNames, ExpressionNode.FromString(environment, expression),
-                    filterNode, enumerator.Current, new WhiteSpaceControlSet(outsideStart, outsideEnd));
+                    filterNode, recursive, enumerator.Current, new WhiteSpaceControlSet(outsideStart, outsideEnd));
                 return true;
             }
         }

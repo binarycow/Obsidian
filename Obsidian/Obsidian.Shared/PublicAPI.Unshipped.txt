@@ -226,8 +226,21 @@ Obsidian.JinjaUserDefinedFunction.caller.get -> bool
 Obsidian.JinjaUserDefinedFunction.name.get -> string
 Obsidian.Loaders.DictLoader
 Obsidian.Loaders.DictLoader.DictLoader(System.Collections.Generic.IDictionary<string, string> templates) -> void
+Obsidian.LoopInfo
+Obsidian.LoopInfo.depth.get -> int
+Obsidian.LoopInfo.depth0.get -> int
+Obsidian.LoopInfo.first.get -> bool
+Obsidian.LoopInfo.index.get -> int
+Obsidian.LoopInfo.index0.get -> int
+Obsidian.LoopInfo.last.get -> bool
+Obsidian.LoopInfo.length.get -> int
+Obsidian.LoopInfo.nextitem.get -> object
+Obsidian.LoopInfo.previtem.get -> object
+Obsidian.LoopInfo.revindex.get -> int
+Obsidian.LoopInfo.revindex0.get -> int
 Obsidian.LoopInfoClass<T>
-Obsidian.LoopInfoClass<T>.LoopInfoClass(T[] array, int currentindex) -> void
+Obsidian.LoopInfoClass<T>.depth.get -> int
+Obsidian.LoopInfoClass<T>.depth0.get -> int
 Obsidian.LoopInfoClass<T>.first.get -> bool
 Obsidian.LoopInfoClass<T>.index.get -> int
 Obsidian.LoopInfoClass<T>.index0.get -> int

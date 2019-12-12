@@ -1,3 +1,4 @@
+using ExpressionParser;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -86,6 +87,14 @@ namespace Common
 
             // There's always at least object
             return tested;
+        }
+
+        internal static MethodInfo? GetCallable(object? left)
+        {
+            left = left ?? throw new ArgumentNullException(nameof(left));
+            var allMethods = left.GetType().GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+            var callable = allMethods.FirstOrDefault(method => method.GetCustomAttribute<CallableAttribute>(true) != null);
+            return callable;
         }
 
         internal static bool TryGetIDictionary(object item, out IEnumerable<KeyValuePair<object, object?>> dictionary)

@@ -4,6 +4,7 @@ using ExpressionParser.References;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace ExpressionParser.Operators
@@ -12,6 +13,7 @@ namespace ExpressionParser.Operators
     internal class OperatorExecution
 #pragma warning restore CA1812 // Avoid uninstantiated internal classes
     {
+
         internal OperatorExecution()
         {
 
@@ -39,6 +41,11 @@ namespace ExpressionParser.Operators
                 default: 
                     throw new NotImplementedException();
             }
+        }
+
+        internal static object GreaterThan(object? left, object? right)
+        {
+            throw new NotImplementedException();
         }
     }
 }

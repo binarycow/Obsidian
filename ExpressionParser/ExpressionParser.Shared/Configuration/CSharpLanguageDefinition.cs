@@ -76,6 +76,8 @@ namespace ExpressionParser.Configuration
 
         public IEnumerable<UserDefinedTest> Tests => Array.Empty<UserDefinedTest>();
 
+        public bool ReturnNullOnNonExistantProperties => false;
+
         IEnumerable<ScopedUserDefinedFunction> ILanguageDefinition.ScopedFunctions => throw new NotImplementedException();
     }
 }

@@ -79,6 +79,7 @@ namespace Obsidian
         public IDictionary<char, TokenType> SingleCharTokens => LanguageDefinition.StandardSingleCharacterTokens;
 
         public bool AllowStringIndexersAsProperties => true;
+        public bool ReturnNullOnNonExistantProperties => true;
 
         public IEnumerable<UserDefinedFunction> Functions => new UserDefinedFunction[]
         {
@@ -164,7 +165,10 @@ namespace Obsidian
         {
             new UserDefinedTest(declaration: new FunctionDeclaration<bool>("even", new ParameterDeclaration[] {
                 new ParameterDeclaration("value")
-            }), JinjaFunctions.Even)
+            }), JinjaFunctions.Even),
+            new UserDefinedTest(declaration: new FunctionDeclaration<bool>("defined", new ParameterDeclaration[] {
+                new ParameterDeclaration("value")
+            }), JinjaFunctions.Defined)
         };
     }
 }

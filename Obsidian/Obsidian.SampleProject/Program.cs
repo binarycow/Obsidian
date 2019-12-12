@@ -60,8 +60,8 @@ namespace Obsidian.SampleProject
         static void Main()
         {
             AssertConfig.MyAssert = new ConsoleAsserter();
-
-            new TestFor().TestLoopFilter();
+            new TestMacro().TestCallSelf();
+            Console.ReadKey();
             return;
 
 

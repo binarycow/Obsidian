@@ -272,6 +272,12 @@ namespace Obsidian
             }
         }
 
+        internal static bool Defined(UserDefinedArgumentData args)
+        {
+            if (args.TryGetArgumentValue("value", out var value) == false) throw new NotImplementedException();
+            return value != null;
+        }
+
         internal static object? First(UserDefinedArgumentData args)
         {
             if (args.TryGetArgumentValue("seq", out var seq) == false) throw new NotImplementedException();

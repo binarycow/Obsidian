@@ -34,6 +34,7 @@ namespace Obsidian.AST.NodeParsers
         private static StateMachine<ForState> CreateStartParser()
         {
             var parser = new StateMachine<ForState>(StartJinja, Done);
+            parser.Set("recursive", false);
             parser.State(StartJinja)
                 .Expect(StatementStart)
                     .MoveTo(WhiteSpaceOrKeyword)
@@ -69,11 +70,17 @@ namespace Obsidian.AST.NodeParsers
                     .MoveTo(Done)
                 .Expect(Keyword_If)
                     .MoveTo(Filter)
+                .Expect(Keyword_Recursive)
+                    .Set("recursive", true)
+                    .MoveTo(EndJinja)
                 .Else()
                     .Accumulate();
             parser.State(Filter)
                 .Expect(Minus).AndNext(StatementEnd)
                     .SetWhiteSpaceMode(WhiteSpacePosition.End, WhiteSpaceMode.Trim)
+                    .MoveTo(EndJinja)
+                .Expect(Keyword_Recursive)
+                    .Set("recursive", true)
                     .MoveTo(EndJinja)
                 .Expect(StatementEnd)
                     .MoveTo(Done)

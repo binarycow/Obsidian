@@ -176,9 +176,7 @@ namespace Obsidian.Tests.FromJinja.CoreTags
         public void TestRecursive()
         {
             dynamic template = new DynamicTemplateRenderer(
-                _Environment.FromString(@"{% for item in seq recursive -%}
-            [{{ item.a }}{% if item.b %}<{{ loop(item.b) }}>{% endif %}]
-        {%- endfor %}")
+                _Environment.FromString(@"{% for item in seq recursive -%}[{{ item.a }}{% if item.b %}<{{ loop(item.b) }}>{% endif %}]{%- endfor %}")
             );
             MyAssert.AreEqual("[1<[1][2]>][2<[1][2]>][3<[a]>]", template.Render(seq: _RecursiveVars));
         }
@@ -188,11 +186,7 @@ namespace Obsidian.Tests.FromJinja.CoreTags
         public void TestRecursiveLookaround()
         {
             dynamic template = new DynamicTemplateRenderer(
-                _Environment.FromString(@"{% for item in seq recursive -%}
-            [{{ loop.previtem.a if loop.previtem is defined else 'x' }}.{{
-            item.a }}.{{ loop.nextitem.a if loop.nextitem is defined else 'x'
-            }}{% if item.b %}<{{ loop(item.b) }}>{% endif %}]
-        {%- endfor %}")
+                _Environment.FromString(@"{% for item in seq recursive -%}[{{ loop.previtem.a if loop.previtem is defined else 'x' }}.{{item.a }}.{{ loop.nextitem.a if loop.nextitem is defined else 'x'}}{% if item.b %}<{{ loop(item.b) }}>{% endif %}]{%- endfor %}")
             );
             MyAssert.AreEqual("[x.1.2<[x.1.2][1.2.x]>][1.2.3<[x.1.2][1.2.x]>][2.3.x<[x.a.x]>]", template.Render(seq: _RecursiveVars));
         }
@@ -202,9 +196,7 @@ namespace Obsidian.Tests.FromJinja.CoreTags
         public void TestRecursiveDepth0()
         {
             dynamic template = new DynamicTemplateRenderer(
-                _Environment.FromString(@"{% for item in seq recursive -%}
-            [{{ loop.depth0 }}:{{ item.a }}{% if item.b %}<{{ loop(item.b) }}>{% endif %}]
-        {%- endfor %}")
+                _Environment.FromString(@"{% for item in seq recursive -%}[{{ loop.depth0 }}:{{ item.a }}{% if item.b %}<{{ loop(item.b) }}>{% endif %}]{%- endfor %}")
             );
             MyAssert.AreEqual("[0:1<[1:1][1:2]>][0:2<[1:1][1:2]>][0:3<[1:a]>]", template.Render(seq: _RecursiveVars));
         }
@@ -213,11 +205,9 @@ namespace Obsidian.Tests.FromJinja.CoreTags
         public void TestRecursiveDepth()
         {
             dynamic template = new DynamicTemplateRenderer(
-                _Environment.FromString(@"{% for item in seq recursive -%}
-            [{{ loop.depth }}:{{ item.a }}{% if item.b %}<{{ loop(item.b) }}>{% endif %}]
-        {%- endfor %}")
+                _Environment.FromString(@"{% for item in seq recursive -%}[{{ loop.depth }}:{{ item.a }}{% if item.b %}<{{ loop(item.b) }}>{% endif %}]{%- endfor %}")
             );
-            MyAssert.AreEqual("[0:1<[1:1][1:2]>][0:2<[1:1][1:2]>][0:3<[1:a]>]", template.Render(seq: _RecursiveVars));
+            MyAssert.AreEqual("[1:1<[2:1][2:2]>][1:2<[2:1][2:2]>][1:3<[2:a]>]", template.Render(seq: _RecursiveVars));
         }
 
 
@@ -226,12 +216,7 @@ namespace Obsidian.Tests.FromJinja.CoreTags
         public void TestLoopLoop()
         {
             dynamic template = new DynamicTemplateRenderer(
-                _Environment.FromString(@"{% for row in table %}
-            {%- set rowloop = loop -%}
-            {% for cell in row -%}
-                [{{ rowloop.index }}|{{ loop.index }}]
-            {%- endfor %}
-        {%- endfor %}")
+                _Environment.FromString(@"{% for row in table %}{%- set rowloop = loop -%}{% for cell in row -%}[{{ rowloop.index }}|{{ loop.index }}]{%- endfor %}{%- endfor %}")
             );
             MyAssert.AreEqual("[1|1][1|2][2|1][2|2]", template.Render(table: new[] { "ab", "cd" }));
         }
@@ -309,17 +294,7 @@ namespace Obsidian.Tests.FromJinja.CoreTags
         public void TestCallInLoop()
         {
             dynamic template = new DynamicTemplateRenderer(
-                _Environment.FromString(@"
-        {%- macro do_something() -%}
-            [{{ caller() }}]
-        {%- endmacro %}
-
-        {%- for i in [1, 2, 3] %}
-            {%- call do_something() -%}
-                {{ i }}
-            {%- endcall %}
-        {%- endfor -%}
-")
+                _Environment.FromString(@"{%- macro do_something() -%}[{{ caller() }}]{%- endmacro %}{%- for i in [1, 2, 3] %}{%- call do_something() -%}{{ i }}{%- endcall %}{%- endfor -%}")
             );
             MyAssert.AreEqual("[1][2][3]", template.Render());
         }
@@ -328,13 +303,9 @@ namespace Obsidian.Tests.FromJinja.CoreTags
         public void TestScopingBug()
         {
             dynamic template = new DynamicTemplateRenderer(
-                _Environment.FromString(@"
-{%- for item in foo %}...{{ item }}...{% endfor %}
-        {%- macro item(a) %}...{{ a }}...{% endmacro %}
-        {{- item(2) -}}
-")
+                _Environment.FromString(@"{%- for item in foo %}...{{ item }}...{% endfor %}{%- macro item(a) %}...{{ a }}...{% endmacro %}{{- item(2) -}}")
             );
-            MyAssert.AreEqual("...1......2...", template.Render(foo: Tuple.Create(1)));
+            MyAssert.AreEqual("...1......2...", template.Render(foo: new[] { 1 }));
         }
         [Test]
         public void TestUnpacking()

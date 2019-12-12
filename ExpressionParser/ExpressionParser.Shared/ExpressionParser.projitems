@@ -11,6 +11,7 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)ArgumentDeclaration.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AssignmentOperatorBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CallableAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\FunctionDefinition.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\MethodOperatorDefinition.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\MultiTypeOverloadDefinition.cs" />

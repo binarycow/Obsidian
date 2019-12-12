@@ -17,10 +17,18 @@ namespace Obsidian.AST.Nodes
     internal class ExpressionNode : ASTNode, IWhiteSpaceControlling
     {
         internal ExpressionNode(JinjaEnvironment environment, ParsingNode parsingNode, 
-            WhiteSpaceMode startWhiteSpace, WhiteSpaceMode endWhiteSpace, string expression) : base(parsingNode)
+            WhiteSpaceMode startWhiteSpace, WhiteSpaceMode endWhiteSpace, string expression, string? ifClause, string? elseClause) : base(parsingNode)
         {
             Expression = expression;
             ExpressionParserNode = environment.Evaluation.Parse(expression);
+            if(ifClause != null)
+            {
+                IfClause = environment.Evaluation.Parse(ifClause);
+            }
+            if(elseClause != null)
+            {
+                ElseClause = new ExpressionNode(environment, elseClause);
+            }
             WhiteSpaceControl = new WhiteSpaceControlSet(startWhiteSpace, endWhiteSpace);
         }
 
@@ -37,6 +45,9 @@ namespace Obsidian.AST.Nodes
         public WhiteSpaceControlSet WhiteSpaceControl { get; }
 
         internal string Expression { get; }
+        internal ExpressionParser.Parsing.ASTNode? IfClause { get; }
+        internal ExpressionNode? ElseClause { get; }
+
         internal bool Output { get; } = true;
 
         private string DebuggerDisplay => $"{nameof(ExpressionNode)} : \"{ToString(debug: true)}\"";
@@ -61,6 +72,8 @@ namespace Obsidian.AST.Nodes
         internal static bool TryParse(JinjaEnvironment environment, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
         {
             parsedNode = default;
+            string? ifClause = null;
+            string? elseClause = null;
             if (ExpressionNodeParser.Parser.TryParse(enumerator.Current, out var startWhiteSpace, out var endWhiteSpace) == false)
             {
                 return false;
@@ -69,9 +82,17 @@ namespace Obsidian.AST.Nodes
             {
                 throw new NotImplementedException();
             }
+            if (ExpressionNodeParser.Parser.TryGetAccumulation(ExpressionNodeParser.ExpressionState.IfClause, 0, out var ifClauseString))
+            {
+                ifClause = ifClauseString;
+            }
+            if (ExpressionNodeParser.Parser.TryGetAccumulation(ExpressionNodeParser.ExpressionState.ElseClause, 0, out var elseClauseString))
+            {
+                elseClause = elseClauseString;
+            }
             if (string.IsNullOrEmpty(expression)) throw new NotImplementedException();
 
-            parsedNode = new ExpressionNode(environment, enumerator.Current, startWhiteSpace, endWhiteSpace, expression);
+            parsedNode = new ExpressionNode(environment, enumerator.Current, startWhiteSpace, endWhiteSpace, expression, ifClause, elseClause);
             return true;
         }
 

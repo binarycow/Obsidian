@@ -73,13 +73,31 @@ namespace Obsidian.Transforming
         {
             _EncounteredOutputStyleBlock = true;
             if (!(ShouldRender && _EncounteredOutputStyleBlock)) yield break;
-            var evalObj = Environment.Evaluation.EvaluateDynamic(item.Expression.Expression, Scopes);
+
+            object? evalObj;
+            if(item.Expression != null)
+            {
+                evalObj = Environment.Evaluation.EvaluateDynamic(item.Expression.Expression, Scopes);
+            }
+            else
+            {
+                evalObj = item.AlreadyEvaluatedObject;
+            }
+
+            Func<object?[], object?> loopFunction = args =>
+            {
+                if (args?.Length != 1) throw new NotImplementedException();
+                return new ForNode(item.PrimaryBlock, item.ElseBlock, item.VariableNames, 
+                    args[0], item.Filter, item.Recursive, 
+                    item.EndParsingNode, item.WhiteSpaceControl);
+            };
+
             var arr = CollectionEx.ToArray(evalObj) ?? Array.Empty<object>();
 
             if (item.Filter != null)
             {
                 var filtered = new List<object?>();
-                foreach(var arrItem in arr)
+                foreach (var arrItem in arr)
                 {
                     var unpacked = ReflectionHelpers.Unpack(arrItem, item.VariableNames.Length);
                     Scopes.Push($"ForNode | Filter: {item.Filter} Item: {arrItem}");
@@ -97,20 +115,27 @@ namespace Obsidian.Transforming
                 arr = filtered.ToArray();
             }
 
-
-
-
-
             if (arr.Length == 0 && item.ElseBlock != null)
             {
-                foreach (var output in item.ElseBlock.Transform(this)) yield return output;
+                foreach (var output in item.ElseBlock.Transform(this))
+                {
+                    yield return output;
+                }
                 yield break;
             }
 
+
+            var depth = 0;
+            if(Scopes.Current.TryGetVariable<LoopInfo>("loop", out var previousLoopInfo) && previousLoopInfo != null)
+            {
+                depth = previousLoopInfo.depth0 + 1;
+            }
+
+            var loopInfo = new LoopInfo(arr, loopFunction, depth);
             for (var index = 0; index < arr.Length; ++index)
             {
+                loopInfo.index0 = index;
                 var arrItem = arr[index];
-                var loopInfo = new LoopInfoClass<object>(arr, index);
                 var unpacked = ReflectionHelpers.Unpack(arrItem, item.VariableNames.Length);
 
                 Scopes.Push($"ForNode: {item.Expression} Item: {arrItem}");
@@ -119,10 +144,13 @@ namespace Obsidian.Transforming
                     Scopes.Current.DefineAndSetVariable(item.VariableNames[i], unpacked[i]);
                 }
                 Scopes.Current.DefineAndSetVariable("loop", loopInfo);
-
-                foreach (var output in item.PrimaryBlock.Transform(this)) yield return output;
+                foreach (var output in item.PrimaryBlock.Transform(this))
+                {
+                    yield return output;
+                }
                 Scopes.Pop($"ForNode: {item.Expression} Item: {arrItem}");
             }
+            yield break;
         }
 
         public IEnumerable<string> Transform(ContainerNode item)
@@ -141,6 +169,21 @@ namespace Obsidian.Transforming
         {
             _EncounteredOutputStyleBlock = true;
             if (!(ShouldRender && _EncounteredOutputStyleBlock)) yield break;
+
+
+            if(item.IfClause != null)
+            {
+                var ifResult = Environment.Evaluation.EvaluateDynamic(item.IfClause, ExpressionParserTransformer);
+                if(TypeCoercion.GetTruthy(ifResult) == false)
+                {
+                    if(item.ElseClause != null)
+                    {
+                        foreach (var subItem in item.ElseClause.Transform(this))
+                            yield return subItem;
+                    }
+                    yield break;
+                }
+            }
 
             
             var result = Environment.Evaluation.EvaluateDynamic(item.ExpressionParserNode, ExpressionParserTransformer);
@@ -195,8 +238,6 @@ namespace Obsidian.Transforming
             foreach (var condition in item.Conditions)
             {
                 var result = Environment.Evaluation.EvaluateDynamic(condition.Expression.ExpressionParserNode, ExpressionParserTransformer);
-                if (result == null) throw new NotImplementedException();
-
                 var boolResult = TypeCoercion.GetTruthy(result);
 
                 if (boolResult)

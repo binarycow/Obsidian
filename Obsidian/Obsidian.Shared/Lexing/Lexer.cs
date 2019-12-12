@@ -69,6 +69,7 @@ namespace Obsidian.Lexing
             { "include".ToCharArray(), TokenType.Keyword_Include },
             { "ignore".ToCharArray(), TokenType.Keyword_Ignore },
             { "missing".ToCharArray(), TokenType.Keyword_Missing },
+            { "recursive".ToCharArray(), TokenType.Keyword_Recursive },
             { "with".ToCharArray(), TokenType.Keyword_With },
             { "without".ToCharArray(), TokenType.Keyword_Without },
             { "context".ToCharArray(), TokenType.Keyword_Context },
