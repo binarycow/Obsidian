@@ -125,5 +125,15 @@ namespace Obsidian
             return FromString(string.Join(string.Empty, source));
         }
 
+        public bool ValidateTemplate(string templateName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool ValidateTemplateFromString(string templateSource)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

@@ -84,21 +84,7 @@ namespace ExpressionParser
 
         internal static UserDefinedArgumentData Create(ILanguageDefinition languageDefinition, ParameterDeclaration[] declaration, object?[] passedValues)
         {
-            var userArguments = new List<UserDefinedArgument>();
-
-            for(var argIndex = 0; argIndex < passedValues.Length; ++argIndex)
-            {
-                var arg = passedValues[argIndex];
-                if(argIndex < declaration.Length)
-                {
-                    if(arg is ValueTuple<string, object?> )
-                }
-            }
-
-
             throw new NotImplementedException();
-
-
             //var additionalPositionalArguments = new List<UserDefinedArgument>();
             //var additionalKeywordArguments = new Dictionary<string, UserDefinedArgument>();
             //var declaredArguments = new UserDefinedArgument?[declaration.Length];
@@ -117,29 +103,29 @@ namespace ExpressionParser
             //    }
             //}
 
-            //for(var argIndex = 0; argIndex < Math.Min(declaration.Length, initialPositionalArguments.Length); ++argIndex)
+            //for (var argIndex = 0; argIndex < Math.Min(declaration.Length, initialPositionalArguments.Length); ++argIndex)
             //{
             //    var dec = declaration[argIndex];
             //    var prov = initialPositionalArguments[argIndex];
             //    declaredArguments[argIndex] = new UserDefinedArgument(dec.Name, prov, argIndex, true);
             //}
 
-            //for(var argIndex = 0; argIndex < declaredArguments.Length; ++argIndex)
+            //for (var argIndex = 0; argIndex < declaredArguments.Length; ++argIndex)
             //{
             //    var dec = declaration[argIndex];
             //    if (declaredArguments[argIndex] != null) continue;
-            //    if(additionalKeywordArguments.TryGetValue(dec.Name, out var providedKeywordArg))
+            //    if (additionalKeywordArguments.TryGetValue(dec.Name, out var providedKeywordArg))
             //    {
             //        declaredArguments[argIndex] = providedKeywordArg;
             //        additionalKeywordArguments.Remove(declaration[argIndex].Name);
             //        continue;
             //    }
-            //    if(dec.Optional)
+            //    if (dec.Optional)
             //    {
             //        declaredArguments[argIndex] = new UserDefinedArgument(dec.Name, dec.DefaultValue, argIndex, false);
             //        continue;
             //    }
-            //    if(languageDefinition.RequireNonDefaultArguments == false)
+            //    if (languageDefinition.RequireNonDefaultArguments == false)
             //    {
             //        declaredArguments[argIndex] = new UserDefinedArgument(dec.Name, null, argIndex, false);
             //        continue;

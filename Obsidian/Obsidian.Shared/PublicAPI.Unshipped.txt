@@ -211,6 +211,7 @@ Obsidian.ITemplate.Environment.get -> Obsidian.JinjaEnvironment
 Obsidian.ITemplate.Render(System.Collections.Generic.IDictionary<string, object> variables) -> string
 Obsidian.ITemplate.TemplateName.get -> string
 Obsidian.ITemplate.TemplatePath.get -> string
+Obsidian.ITemplate.Validate(System.Collections.Generic.IDictionary<string, object> variables) -> bool
 Obsidian.JinjaEnvironment
 Obsidian.JinjaEnvironment.FromString(params string[] source) -> Obsidian.ITemplate
 Obsidian.JinjaEnvironment.FromString(string source) -> Obsidian.ITemplate
@@ -220,6 +221,8 @@ Obsidian.JinjaEnvironment.JinjaEnvironment(Obsidian.BaseLoader loader = null, Sy
 Obsidian.JinjaEnvironment.Loader.get -> Obsidian.BaseLoader
 Obsidian.JinjaEnvironment.Loader.set -> void
 Obsidian.JinjaEnvironment.Settings.get -> Obsidian.EnvironmentSettings
+Obsidian.JinjaEnvironment.ValidateTemplate(string templateName) -> bool
+Obsidian.JinjaEnvironment.ValidateTemplateFromString(string templateSource) -> bool
 Obsidian.JinjaUserDefinedFunction
 Obsidian.JinjaUserDefinedFunction.arguments.get -> Obsidian.ArgumentNameCollection
 Obsidian.JinjaUserDefinedFunction.caller.get -> bool
