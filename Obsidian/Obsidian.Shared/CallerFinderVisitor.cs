@@ -152,7 +152,7 @@ namespace Obsidian
 
         public IEnumerable<bool> Transform(MacroNode item)
         {
-            throw new NotImplementedException();
+            return item.Contents.Transform(this);
         }
 
         public IEnumerable<bool> Transform(CallNode item)

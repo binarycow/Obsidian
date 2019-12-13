@@ -272,6 +272,18 @@ namespace Obsidian
             }
         }
 
+        internal static object Join(UserDefinedArgumentData args)
+        {
+            if (args.TryGetArgumentValue("value", out var value) == false) throw new NotImplementedException();
+            if (args.TryGetArgumentValue<string>("d", out var seperator) == false) throw new NotImplementedException();
+            if (args.TryGetArgumentValue<string>("attribute", out var attribute) == false) throw new NotImplementedException();
+
+            if (attribute != null) throw new NotImplementedException();
+
+            var array = CollectionEx.ToArray(value);
+            return string.Join(seperator, array);
+        }
+
         internal static bool Defined(UserDefinedArgumentData args)
         {
             if (args.TryGetArgumentValue("value", out var value) == false) throw new NotImplementedException();

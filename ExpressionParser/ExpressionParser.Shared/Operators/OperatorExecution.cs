@@ -47,7 +47,7 @@ namespace ExpressionParser.Operators
             }
         }
 
-        internal static object EvaluateOperator(OperatorType operatorType, object? left, object? right)
+        internal static object? EvaluateOperator(OperatorType operatorType, object? left, object? right)
         {
             if (TryExecuteBuiltInOperators(operatorType, left, right, out var result)) return result;
 

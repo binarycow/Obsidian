@@ -140,6 +140,12 @@ namespace Obsidian
 
 
 
+            new UserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(string), "join", new ParameterDeclaration[] {
+                new ParameterDeclaration("value"),
+                new ParameterDeclaration("d", ""),
+                new ParameterDeclaration("attribute", null),
+            }), JinjaFunctions.Join),
+
             new UserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(string), "upper", new ParameterDeclaration[] {
                 new ParameterDeclaration("s")
             }), JinjaFunctions.Upper),

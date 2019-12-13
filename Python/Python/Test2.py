@@ -8,45 +8,10 @@ env = Environment(
     loader=FileSystemLoader("C:\Source\Obsidian\Python\Python"), **envArgs
 )
 
-t = env.from_string('''<ul class="sitemap">
-{%- for item in sitemap recursive if item.title != "Google" %}
-    <li><a href="{{ item.href|e }}">{{ item.title }}</a>
-    {%- if item.children -%}
-        <ul class="submenu">{{ loop(item.children) }}</ul>
-    {%- endif %}</li>
-{%- endfor %}
-</ul>''')
+t = env.from_string("{% set caller = 42 %}{% macro test() %}{{ caller is not defined }}{% endmacro %}{{ test() }}")
+results = t.render()
+print(results)
 
-sitemap = [
-    {
-        "href": "https://www.google.com",
-        "title": "Google",
-        "children": [
-            {
-                "href": "https://mail.google.com",
-                "title": "Gmail"
-            },
-            {
-                "href": "https://hangouts.google.com",
-                "title": "Hangouts"
-            }
-        ]
-    },
-    {
-        "href": "https://www.reddit.com",
-        "title": "Reddit",
-        "children": [
-            {
-                "href": "https://reddit.com/r/networking",
-                "title": "Networking"
-            },
-            {
-                "href": "https://reddit.com/r/sysadmin",
-                "title": "Sysadmin"
-            }
-        ]
-    }
-]
-
-results = t.render(sitemap = sitemap)
+t = env.from_string("{% set caller = 42 %}{% macro test() %}{{ caller is not defined }}{% endmacro %}{% call test() %}{% endcall %}")
+results = t.render()
 print(results)
