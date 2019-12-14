@@ -84,7 +84,39 @@ namespace ExpressionParser
 
         internal static UserDefinedArgumentData Create(ILanguageDefinition languageDefinition, ParameterDeclaration[] declaration, object?[] passedValues)
         {
-            throw new NotImplementedException();
+            var declaredArguments = new List<UserDefinedArgument>();
+            var additionalPositionalArguments = new List<UserDefinedArgument>();
+            for (int argIndex = 0; argIndex < passedValues.Length; ++argIndex)
+            {
+                if (argIndex < declaration.Length)
+                {
+                    if (passedValues[argIndex] is ValueTuple<string, object?> tuple)
+                    {
+                        throw new NotImplementedException();
+                    }
+                    else
+                    {
+                        declaredArguments.Add(new UserDefinedArgument(declaration[argIndex].Name, passedValues[argIndex], argIndex, true));
+                    }
+                }
+                else
+                {
+                    if (passedValues[argIndex] is ValueTuple<string, object?> tuple)
+                    {
+                        throw new NotImplementedException();
+                    }
+                    else
+                    {
+                        additionalPositionalArguments.Add(new UserDefinedArgument(string.Empty, passedValues[argIndex], argIndex, true));
+                    }
+                }
+            }
+            return new UserDefinedArgumentData(
+                Enumerable.Empty<UserDefinedArgument>(),
+                additionalPositionalArguments,
+                Enumerable.Empty<UserDefinedArgument>()
+            );
+
             //var additionalPositionalArguments = new List<UserDefinedArgument>();
             //var additionalKeywordArguments = new Dictionary<string, UserDefinedArgument>();
             //var declaredArguments = new UserDefinedArgument?[declaration.Length];

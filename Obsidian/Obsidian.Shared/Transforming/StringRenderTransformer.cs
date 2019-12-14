@@ -328,8 +328,9 @@ namespace Obsidian.Transforming
                 {
                     Scopes.Current.DefineAndSetVariable(arg.Name, arg.Value);
                 }
-                Scopes.Current.DefineAndSetVariable("varargs", new ArgumentNameCollection(Enumerable.Empty<string>()));
-                Scopes.Current.DefineAndSetVariable("kwargs", new Dictionary<string, object?>());
+                
+                Scopes.Current.DefineAndSetVariable("varargs", arguments.AdditionalPositionalArguments);
+                Scopes.Current.DefineAndSetVariable("kwargs", arguments.AdditionalKeywordArguments);
                 
                 foreach(var output in item.Contents.Transform(this))
                 {
