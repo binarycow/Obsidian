@@ -11,6 +11,7 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)ArgumentDeclaration.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AssignmentOperatorBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CallableAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\FunctionDefinition.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\MethodOperatorDefinition.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\MultiTypeOverloadDefinition.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Parsing\UnaryASTNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)References\PipelineMethodGroup.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)References\ScopedFunctionMethodGroup.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)References\TestMethodGroup.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Reflection\Array.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionResolver.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ScopedUserDefinedFunction.cs" />
@@ -85,6 +87,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)UserDefinedArgument.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UserDefinedArgumentData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UserDefinedFunction.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UserDefinedTest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Void.cs" />
   </ItemGroup>
   <ItemGroup>

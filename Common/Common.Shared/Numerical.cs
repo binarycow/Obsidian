@@ -128,7 +128,7 @@ namespace Common
                     _ = TryParse(str, out numerical);
                     break;
                 default:
-                    throw new ArgumentException($"{item.GetType().Name} with value {item} cannot be converted to {nameof(Numerical)}", nameof(item));
+                    return false;
             }
             return numerical != null;
         }

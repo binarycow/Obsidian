@@ -43,7 +43,7 @@ namespace Obsidian
 
         public IEnumerable<bool> Transform(LiteralNode item)
         {
-            throw new NotImplementedException();
+            yield return false;
         }
 
         public IEnumerable<bool> Transform(IdentifierNode item)
@@ -122,12 +122,12 @@ namespace Obsidian
 
         public IEnumerable<bool> Transform(IfNode item)
         {
-            throw new NotImplementedException();
+            return item.Conditions.SelectMany(condition => condition.Transform(this));
         }
 
         public IEnumerable<bool> Transform(ConditionalNode item)
         {
-            throw new NotImplementedException();
+            return item.Expression.Transform(this).Concat(item.Children.SelectMany(child => child.Transform(this)));
         }
 
         public IEnumerable<bool> Transform(CommentNode item)
@@ -152,7 +152,7 @@ namespace Obsidian
 
         public IEnumerable<bool> Transform(MacroNode item)
         {
-            throw new NotImplementedException();
+            return item.Contents.Transform(this);
         }
 
         public IEnumerable<bool> Transform(CallNode item)
@@ -173,6 +173,11 @@ namespace Obsidian
         public IEnumerable<bool> Transform(IncludeNode item)
         {
             throw new NotImplementedException();
+        }
+
+        public IEnumerable<bool> Transform(ArgumentSetNode item)
+        {
+            yield return false;
         }
     }
 }

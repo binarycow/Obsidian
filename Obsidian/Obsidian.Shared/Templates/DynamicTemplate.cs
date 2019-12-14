@@ -45,5 +45,10 @@ namespace Obsidian.Templates
             }
             throw new NotImplementedException();
         }
+
+        public bool Validate(IDictionary<string, object?> variables)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

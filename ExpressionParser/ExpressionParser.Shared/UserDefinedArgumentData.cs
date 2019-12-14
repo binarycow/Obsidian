@@ -82,65 +82,96 @@ namespace ExpressionParser
 
         internal IEnumerable<UserDefinedArgument> AllArguments => DefinedPositionalArguments.Concat(AdditionalPositionalArguments).Concat(AdditionalKeywordArguments);
 
-
         internal static UserDefinedArgumentData Create(ILanguageDefinition languageDefinition, ParameterDeclaration[] declaration, object?[] passedValues)
         {
+            var declaredArguments = new List<UserDefinedArgument>();
             var additionalPositionalArguments = new List<UserDefinedArgument>();
-            var additionalKeywordArguments = new Dictionary<string, UserDefinedArgument>();
-            var declaredArguments = new UserDefinedArgument?[declaration.Length];
-            var initialPositionalArguments = passedValues.TakeWhile(arg => !(arg is ValueTuple<string, object?>)).ToArray();
-
-
-            for (var argIndex = initialPositionalArguments.Length; argIndex < passedValues.Length; ++argIndex)
+            for (int argIndex = 0; argIndex < passedValues.Length; ++argIndex)
             {
-                var arg = passedValues[argIndex];
-                if (arg is ValueTuple<string, object?> tuple)
+                if (argIndex < declaration.Length)
                 {
-                    additionalKeywordArguments.Add(tuple.Item1, new UserDefinedArgument(tuple.Item1, tuple.Item2, argIndex, true));
+                    if (passedValues[argIndex] is ValueTuple<string, object?> tuple)
+                    {
+                        throw new NotImplementedException();
+                    }
+                    else
+                    {
+                        declaredArguments.Add(new UserDefinedArgument(declaration[argIndex].Name, passedValues[argIndex], argIndex, true));
+                    }
                 }
                 else
                 {
-                    additionalPositionalArguments.Add(new UserDefinedArgument(string.Empty, arg, argIndex, true));
+                    if (passedValues[argIndex] is ValueTuple<string, object?> tuple)
+                    {
+                        throw new NotImplementedException();
+                    }
+                    else
+                    {
+                        additionalPositionalArguments.Add(new UserDefinedArgument(string.Empty, passedValues[argIndex], argIndex, true));
+                    }
                 }
             }
-
-            for(var argIndex = 0; argIndex < Math.Min(declaration.Length, initialPositionalArguments.Length); ++argIndex)
-            {
-                var dec = declaration[argIndex];
-                var prov = initialPositionalArguments[argIndex];
-                declaredArguments[argIndex] = new UserDefinedArgument(dec.Name, prov, argIndex, true);
-            }
-
-            for(var argIndex = 0; argIndex < declaredArguments.Length; ++argIndex)
-            {
-                var dec = declaration[argIndex];
-                if (declaredArguments[argIndex] != null) continue;
-                if(additionalKeywordArguments.TryGetValue(dec.Name, out var providedKeywordArg))
-                {
-                    declaredArguments[argIndex] = providedKeywordArg;
-                    additionalKeywordArguments.Remove(declaration[argIndex].Name);
-                    continue;
-                }
-                if(dec.Optional)
-                {
-                    declaredArguments[argIndex] = new UserDefinedArgument(dec.Name, dec.DefaultValue, argIndex, false);
-                    continue;
-                }
-                if(languageDefinition.RequireNonDefaultArguments == false)
-                {
-                    declaredArguments[argIndex] = new UserDefinedArgument(dec.Name, null, argIndex, false);
-                    continue;
-                }
-                throw new NotImplementedException(); //Argument not provided
-            }
-
-            var nonNullDeclaredArguments = declaredArguments.Where(arg => arg != null).OfType<UserDefinedArgument>().ToArray();
-
             return new UserDefinedArgumentData(
-                nonNullDeclaredArguments,
+                Enumerable.Empty<UserDefinedArgument>(),
                 additionalPositionalArguments,
-                additionalKeywordArguments.Values
+                Enumerable.Empty<UserDefinedArgument>()
             );
+
+            //var additionalPositionalArguments = new List<UserDefinedArgument>();
+            //var additionalKeywordArguments = new Dictionary<string, UserDefinedArgument>();
+            //var declaredArguments = new UserDefinedArgument?[declaration.Length];
+            //var initialPositionalArguments = passedValues.TakeWhile(arg => !(arg is ValueTuple<string, object?>)).ToArray();
+
+            //for (var argIndex = initialPositionalArguments.Length; argIndex < passedValues.Length; ++argIndex)
+            //{
+            //    var arg = passedValues[argIndex];
+            //    if (arg is ValueTuple<string, object?> tuple)
+            //    {
+            //        additionalKeywordArguments.Add(tuple.Item1, new UserDefinedArgument(tuple.Item1, tuple.Item2, argIndex, true));
+            //    }
+            //    else
+            //    {
+            //        additionalPositionalArguments.Add(new UserDefinedArgument(string.Empty, arg, argIndex, true));
+            //    }
+            //}
+
+            //for (var argIndex = 0; argIndex < Math.Min(declaration.Length, initialPositionalArguments.Length); ++argIndex)
+            //{
+            //    var dec = declaration[argIndex];
+            //    var prov = initialPositionalArguments[argIndex];
+            //    declaredArguments[argIndex] = new UserDefinedArgument(dec.Name, prov, argIndex, true);
+            //}
+
+            //for (var argIndex = 0; argIndex < declaredArguments.Length; ++argIndex)
+            //{
+            //    var dec = declaration[argIndex];
+            //    if (declaredArguments[argIndex] != null) continue;
+            //    if (additionalKeywordArguments.TryGetValue(dec.Name, out var providedKeywordArg))
+            //    {
+            //        declaredArguments[argIndex] = providedKeywordArg;
+            //        additionalKeywordArguments.Remove(declaration[argIndex].Name);
+            //        continue;
+            //    }
+            //    if (dec.Optional)
+            //    {
+            //        declaredArguments[argIndex] = new UserDefinedArgument(dec.Name, dec.DefaultValue, argIndex, false);
+            //        continue;
+            //    }
+            //    if (languageDefinition.RequireNonDefaultArguments == false)
+            //    {
+            //        declaredArguments[argIndex] = new UserDefinedArgument(dec.Name, null, argIndex, false);
+            //        continue;
+            //    }
+            //    throw new NotImplementedException(); //Argument not provided
+            //}
+
+            //var nonNullDeclaredArguments = declaredArguments.Where(arg => arg != null).OfType<UserDefinedArgument>().ToArray();
+
+            //return new UserDefinedArgumentData(
+            //    nonNullDeclaredArguments,
+            //    additionalPositionalArguments,
+            //    additionalKeywordArguments.Values
+            //);
 
         }
     }

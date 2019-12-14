@@ -78,7 +78,9 @@ namespace Common
         {
             if (result == null) return false;
             if (result is bool boolValue) return boolValue;
+            if (result is string strValue) return !string.IsNullOrEmpty(strValue);
             if (Numerical.TryCreate(result, out var numerical)) return numerical != 0;
+            if (result.GetType().IsValueType == false) return result != null;
             throw new NotImplementedException();
         }
     }

@@ -20,7 +20,7 @@ namespace ExpressionParser.Parsing
 
         public override TOutput Transform<TOutput>(INodeTransformVisitor<TOutput> visitor)
         {
-            throw new NotImplementedException();
+            return visitor.Transform(this);
         }
     }
 }

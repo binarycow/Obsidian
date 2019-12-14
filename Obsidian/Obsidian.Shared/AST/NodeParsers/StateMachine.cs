@@ -50,8 +50,8 @@ namespace Obsidian.AST.NodeParsers
         private readonly Dictionary<TState, State<TState>> _States = new Dictionary<TState, State<TState>>();
         private State<TState>? _ElseState = default;
 
-        private readonly Lazy<Dictionary<State<TState>, Stack<Queue<Token>>>> _Accumulations = new Lazy<Dictionary<State<TState>, Stack<Queue<Token>>>>();
-        private Dictionary<State<TState>, Stack<Queue<Token>>> Accumulations => _Accumulations.Value;
+        private readonly Lazy<Dictionary<TState, Stack<Queue<Token>>>> _Accumulations = new Lazy<Dictionary<TState, Stack<Queue<Token>>>>();
+        private Dictionary<TState, Stack<Queue<Token>>> Accumulations => _Accumulations.Value;
 
         private readonly Lazy<Dictionary<string, (Type Type, object? Value)>> _Variables = new Lazy<Dictionary<string, (Type Type, object? Value)>>();
 
@@ -81,6 +81,11 @@ namespace Obsidian.AST.NodeParsers
             return returnedValue;
         }
 
+        internal void Set<TVarType>(string name, TVarType value)
+        {
+            Variables.Upsert(name, (Type: typeof(TVarType), Value: value));
+        }
+
         internal bool TryGetAccumulation(TState? state, int index, out string accumulation)
         {
             accumulation = string.Empty;
@@ -94,7 +99,7 @@ namespace Obsidian.AST.NodeParsers
             accumulations = Array.Empty<string>();
             foreach (var stateKey in Accumulations.Keys)
             {
-                if (stateKey.StateEnum.Equals(state) == false)
+                if (stateKey.Equals(state) == false)
                 {
                     continue;
                 }
@@ -154,7 +159,7 @@ namespace Obsidian.AST.NodeParsers
                 }
                 foreach (var action in stateAction.Actions)
                 {
-                    PerformAction(state, action, enumerator.Current, out var returnResult);
+                    PerformAction(action, enumerator.Current, out var returnResult);
                     if (returnResult.HasValue) return returnResult.Value;
                 }
             } while (enumerator.MoveNext());
@@ -187,7 +192,7 @@ namespace Obsidian.AST.NodeParsers
             return action != default;
         }
 
-        private bool PerformAction(State<TState> currentState, AbstractAction<TState> action, Token currentToken, out bool? returnResult)
+        private bool PerformAction(AbstractAction<TState> action, Token currentToken, out bool? returnResult)
         {
             returnResult = null;
             switch (action)
@@ -198,7 +203,7 @@ namespace Obsidian.AST.NodeParsers
                 case ThrowAction<TState> throwAction:
                     throw throwAction.Exception;
                 case AccumulateAction<TState> accumulateAction:
-                    return PerformAction(currentState, accumulateAction, currentToken);
+                    return PerformAction(CurrentState, accumulateAction, currentToken);
                 case IgnoreAction<TState> _:
                     return true;
                 case SetWhiteSpaceAction<TState> whiteSpaceAction:
@@ -220,7 +225,7 @@ namespace Obsidian.AST.NodeParsers
             return true;
         }
 
-        private bool PerformAction(State<TState> currentState, AccumulateAction<TState> action, Token currentToken)
+        private bool PerformAction(TState currentState, AccumulateAction<TState> action, Token currentToken)
         {
             if(Accumulations.TryGetValue(currentState, out var outsideQueue) == false)
             {

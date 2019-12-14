@@ -24,7 +24,8 @@ namespace ExpressionParser
 
         internal object? Invoke(ILanguageDefinition languageDefinition, object?[] args)
         {
-            return Invoke(UserDefinedArgumentData.Create(languageDefinition, Declaration.Arguments.ToArrayWithoutInstantiation(), args));
+            var argumentData = UserDefinedArgumentData.Create(languageDefinition, Declaration.Arguments.ToArrayWithoutInstantiation(), args);
+            return Invoke(argumentData);
         }
         internal object? Invoke(ILanguageDefinition languageDefinition, object? pipelineObject, object?[] args)
         {

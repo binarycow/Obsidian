@@ -79,6 +79,7 @@ namespace Obsidian
         public IDictionary<char, TokenType> SingleCharTokens => LanguageDefinition.StandardSingleCharacterTokens;
 
         public bool AllowStringIndexersAsProperties => true;
+        public bool ReturnNullOnNonExistantProperties => true;
 
         public IEnumerable<UserDefinedFunction> Functions => new UserDefinedFunction[]
         {
@@ -139,10 +140,24 @@ namespace Obsidian
 
 
 
+            new UserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(string), "join", new ParameterDeclaration[] {
+                new ParameterDeclaration("value"),
+                new ParameterDeclaration("d", ""),
+                new ParameterDeclaration("attribute", null),
+            }), JinjaFunctions.Join),
+
             new UserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(string), "upper", new ParameterDeclaration[] {
                 new ParameterDeclaration("s")
             }), JinjaFunctions.Upper),
             #endregion Filters
+
+            #region Functions 
+            new UserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(string), "range", new ParameterDeclaration[] {
+                new ParameterDeclaration("start"),
+                new ParameterDeclaration("stop", -1),
+                new ParameterDeclaration("step", 1)
+            }), JinjaFunctions.Range),
+            #endregion Functions
         };
 
         IEnumerable<ScopedUserDefinedFunction> ILanguageDefinition.ScopedFunctions => new ScopedUserDefinedFunction[]
@@ -151,5 +166,15 @@ namespace Obsidian
         };
 
         public bool RequireNonDefaultArguments => false;
+
+        public IEnumerable<UserDefinedTest> Tests => new UserDefinedTest[]
+        {
+            new UserDefinedTest(declaration: new FunctionDeclaration<bool>("even", new ParameterDeclaration[] {
+                new ParameterDeclaration("value")
+            }), JinjaFunctions.Even),
+            new UserDefinedTest(declaration: new FunctionDeclaration<bool>("defined", new ParameterDeclaration[] {
+                new ParameterDeclaration("value")
+            }), JinjaFunctions.Defined)
+        };
     }
 }

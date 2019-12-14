@@ -1,3 +1,4 @@
+using ExpressionParser;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -7,28 +8,35 @@ using System.Text;
 namespace Obsidian
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
-    public class LoopInfoClass<T> where T : class
+    public class LoopInfo
     {
-        public LoopInfoClass(T?[] array, int currentindex)
+        internal LoopInfo(object?[] array, Func<object?[], object?>? callable = null, int depth = 0)
         {
-            array = array ?? throw new ArgumentNullException(nameof(array));
-            index0 = currentindex;
-            revindex0 = array.Length - 1 - currentindex;
-            first = currentindex == 0;
-            last = currentindex == array.Length - 1;
-            length = array.Length;
-            previtem = (first ? null : array[currentindex - 1])!;
-            nextitem = (last ? null : array[currentindex + 1])!;
+            _Array = array ?? throw new ArgumentNullException(nameof(array));
+            index0 = 0;
+            depth0 = depth;
+            Callable = callable;
         }
 
-        public int index0 { get; }
+        private object?[] _Array;
+        public int depth0 { get; }
+        public int depth => depth0 + 1;
+        public int index0 { get; internal set; }
         public int index => index0 + 1;
-        public int revindex0 { get; }
+        public int revindex0 => _Array.Length - index0;
         public int revindex => revindex0 + 1;
-        public bool first { get; }
-        public bool last { get; }
-        public int length { get; }
-        public T previtem { get; }
-        public T nextitem { get; }
+        public bool first => index0 == 0;
+        public bool last => index0 == _Array.Length - 1;
+        public int length => _Array.Length;
+        public object? previtem => index0 > 0 ? _Array[index0 - 1] : default;
+        public object? nextitem => index0 < _Array.Length - 1 ? _Array[index0 + 1] : default;
+
+
+        internal Func<object?[], object?>? Callable { get; set; }
+        [Callable]
+        internal object? Call(object?[] args)
+        {
+            return Callable?.Invoke(args);
+        }
     }
 }

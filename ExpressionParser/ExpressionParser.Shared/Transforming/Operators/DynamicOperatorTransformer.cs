@@ -35,6 +35,10 @@ namespace ExpressionParser.Transforming.Operators
         {
             switch(item.OperatorType)
             {
+                case OperatorType.Subtract:
+                case OperatorType.GreaterThan:
+                case OperatorType.IsNot:
+                case OperatorType.Is:
                 case OperatorType.Equal:
                 case OperatorType.NotEqual:
                     return TransformBinary(item, args[0], args[1]);
@@ -59,6 +63,10 @@ namespace ExpressionParser.Transforming.Operators
             var right = rightNode.Transform(NodeTransformer);
             return item.OperatorType switch
             {
+                OperatorType.Subtract => OperatorExecution.EvaluateOperator(item.OperatorType, left, right),
+                OperatorType.GreaterThan => OperatorExecution.EvaluateOperator(item.OperatorType, left, right),
+                OperatorType.Is => OperatorExecution.Is(LanguageDefinition, left, right),
+                OperatorType.IsNot => OperatorExecution.IsNot(LanguageDefinition, left, right),
                 OperatorType.Equal => OperatorExecution.Equal(left, right),
                 _ => throw new NotImplementedException(),
             };
@@ -187,6 +195,9 @@ namespace ExpressionParser.Transforming.Operators
                         var allowedTypes = DynamicResolver.MemberTypes.Field | DynamicResolver.MemberTypes.Property;
                         if (LanguageDefinition.AllowStringIndexersAsProperties) allowedTypes |= DynamicResolver.MemberTypes.StringIndexer;
                         if (DynamicResolver.TryGetMember(left, ident.TextValue, allowedTypes, out var result)) return result;
+
+
+                        if (LanguageDefinition.ReturnNullOnNonExistantProperties) return null;
                         throw new NotImplementedException();
                     default:
                         throw new NotImplementedException();

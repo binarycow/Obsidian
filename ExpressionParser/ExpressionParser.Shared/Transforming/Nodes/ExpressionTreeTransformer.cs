@@ -133,5 +133,10 @@ namespace ExpressionParser.Transforming.Nodes
         {
             throw new NotImplementedException();
         }
+
+        public Expression Transform(ArgumentSetNode item)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

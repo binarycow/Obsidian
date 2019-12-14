@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace ExpressionParser
@@ -32,16 +33,24 @@ namespace ExpressionParser
             where TScope : class, IScope
             where TRootScope : class, TScope
         {
-            return left switch
+            switch(left)
             {
-                FunctionMethodGroup methodGroup => methodGroup.FunctionDefinition.Invoke(languageDefinition, args),
-                UserDefinedFunction userDefinedFunction => userDefinedFunction.Invoke(languageDefinition, args),
-                PipelineMethodGroup pipelineGroup => pipelineGroup.FunctionDefinition.Invoke(languageDefinition, pipelineGroup.ReferredObject, args),
-                ScopedFunctionMethodGroup scopedMethodGroup => scopedMethodGroup.FunctionDefinition.Invoke(languageDefinition, scopeStack.Current, args),
-                _ => throw new NotImplementedException(),
-            };
-
-
+                case FunctionMethodGroup methodGroup:
+                    return methodGroup.FunctionDefinition.Invoke(languageDefinition, args);
+                case UserDefinedFunction userDefinedFunction:
+                    return userDefinedFunction.Invoke(languageDefinition, args);
+                case PipelineMethodGroup pipelineGroup:
+                    return pipelineGroup.FunctionDefinition.Invoke(languageDefinition, pipelineGroup.ReferredObject, args);
+                case ScopedFunctionMethodGroup scopedMethodGroup:
+                    return scopedMethodGroup.FunctionDefinition.Invoke(languageDefinition, scopeStack.Current, args);
+                default:
+                    var callable = ReflectionHelpers.GetCallable(left);
+                    if(callable != null)
+                    {
+                        return callable.Invoke(left, new object[] { args });
+                    }
+                    throw new NotImplementedException();
+            }
 
 #pragma warning disable CS8321 // Local function is declared but never used
             static object? FuncMethodGroup(ScopeStack<TScope, TRootScope> scopeStack, FunctionMethodGroup left, object?[] args)
@@ -115,8 +124,15 @@ namespace ExpressionParser
                 var indexInfo = type.GetProperty("Item");
                 if (indexInfo != null)
                 {
-                    result = indexInfo.GetValue(@object, new object[] { memberName });
-                    return true;
+                    try
+                    {
+                        result = indexInfo.GetValue(@object, new object[] { memberName });
+                        return true;
+                    }
+                    catch(TargetInvocationException inv) when (inv.InnerException is KeyNotFoundException)
+                    {
+                        return false;
+                    }
                 }
             }
             return false;

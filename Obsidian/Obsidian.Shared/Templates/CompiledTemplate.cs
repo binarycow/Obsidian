@@ -115,5 +115,9 @@ namespace Obsidian.Templates
             return TemplateNode.Evaluate(variables)?.ToString() ?? string.Empty;
         }
 
+        public bool Validate(IDictionary<string, object?> variables)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

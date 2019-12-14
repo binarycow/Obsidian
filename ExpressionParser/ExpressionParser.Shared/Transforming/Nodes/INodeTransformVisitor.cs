@@ -19,6 +19,7 @@ namespace ExpressionParser.Transforming.Nodes
         TOutput Transform(ListNode item);
 
         TOutput Transform(PipelineMethodGroup item);
+        TOutput Transform(ArgumentSetNode item);
 
     }
 }

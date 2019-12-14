@@ -52,6 +52,9 @@ namespace ExpressionParser.Transforming.Nodes
 
             var function = LanguageDefinition.Functions.FirstOrDefault(func => func.Declaration.Name == item.TextValue);
             if (function != null) return MethodGroup.Create(function);
+
+            var test = LanguageDefinition.Tests.FirstOrDefault(func => func.Declaration.Name == item.TextValue);
+            if (test != null) return MethodGroup.Create(test);
             return null;
         }
 
@@ -80,6 +83,11 @@ namespace ExpressionParser.Transforming.Nodes
         public object? Transform(PipelineMethodGroup item)
         {
             return item.FunctionDefinition.Invoke(LanguageDefinition, new object?[] { item.ReferredObject });
+        }
+
+        public object? Transform(ArgumentSetNode item)
+        {
+            throw new NotImplementedException();
         }
     }
 }
