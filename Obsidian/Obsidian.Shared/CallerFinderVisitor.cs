@@ -179,5 +179,10 @@ namespace Obsidian
         {
             yield return false;
         }
+
+        public IEnumerable<bool> Transform(ImportNode item)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

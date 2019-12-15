@@ -28,6 +28,7 @@ namespace Obsidian.Transforming
         TOutput Transform(FilterNode item);
         TOutput Transform(SetNode item);
         TOutput Transform(IncludeNode item);
+        TOutput Transform(ImportNode item);
     }
 
     internal interface ITransformVisitor
@@ -51,5 +52,6 @@ namespace Obsidian.Transforming
         void Transform(FilterNode item);
         void Transform(SetNode item);
         void Transform(IncludeNode item);
+        void Transform(ImportNode item);
     }
 }

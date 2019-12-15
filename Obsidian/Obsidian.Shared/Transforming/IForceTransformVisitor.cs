@@ -29,5 +29,6 @@ namespace Obsidian.Transforming
         TOutput Transform(FilterNode item, bool force);
         TOutput Transform(SetNode item, bool force);
         TOutput Transform(IncludeNode item, bool force);
+        TOutput Transform(ImportNode item, bool force);
     }
 }

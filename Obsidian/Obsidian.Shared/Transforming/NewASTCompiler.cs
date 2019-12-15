@@ -350,6 +350,11 @@ namespace Obsidian.Transforming
         {
             throw new NotImplementedException();
         }
+
+        public Expression Transform(ImportNode item)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 

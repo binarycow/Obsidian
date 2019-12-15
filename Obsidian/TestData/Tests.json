@@ -220,6 +220,25 @@
     ]
   },
   {
+    "categoryName": "Import",
+    "children": [
+      {
+        "testName": "Complete",
+        "rootPath": "Import\\Complete",
+        "inputFile": "template.html",
+        "expectedFile": "expected.html",
+        "actualFile": "actual.html"
+      },
+      {
+        "testName": "Simple",
+        "rootPath": "Import\\Simple",
+        "inputFile": "template.html",
+        "expectedFile": "expected.html",
+        "actualFile": "actual.html"
+      }
+    ]
+  },
+  {
     "categoryName": "Include",
     "children": [
       {

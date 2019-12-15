@@ -84,6 +84,8 @@ namespace ExpressionParser
 
         internal static UserDefinedArgumentData Create(ILanguageDefinition languageDefinition, ParameterDeclaration[] declaration, object?[] passedValues)
         {
+            var userProvidedArguments = new List<ParameterDeclaration>();
+
             var declaredArguments = new List<UserDefinedArgument>();
             var additionalPositionalArguments = new List<UserDefinedArgument>();
             for (int argIndex = 0; argIndex < passedValues.Length; ++argIndex)
@@ -97,6 +99,7 @@ namespace ExpressionParser
                     else
                     {
                         declaredArguments.Add(new UserDefinedArgument(declaration[argIndex].Name, passedValues[argIndex], argIndex, true));
+                        userProvidedArguments.Add(declaration[argIndex]);
                     }
                 }
                 else
@@ -111,8 +114,19 @@ namespace ExpressionParser
                     }
                 }
             }
+            for(var argIndex = 0; argIndex < declaration.Length; ++argIndex)
+            {
+                var arg = declaration[argIndex];
+                if (userProvidedArguments.Contains(arg)) continue;
+                if (arg.Optional == false)
+                {
+                    if(languageDefinition.RequireNonDefaultArguments) throw new NotImplementedException();
+                }
+                declaredArguments.Add(new UserDefinedArgument(arg.Name, arg.DefaultValue, argIndex, false));
+            }
+
             return new UserDefinedArgumentData(
-                Enumerable.Empty<UserDefinedArgument>(),
+                declaredArguments,
                 additionalPositionalArguments,
                 Enumerable.Empty<UserDefinedArgument>()
             );

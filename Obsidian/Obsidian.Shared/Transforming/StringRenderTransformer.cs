@@ -329,7 +329,7 @@ namespace Obsidian.Transforming
                     Scopes.Current.DefineAndSetVariable(arg.Name, arg.Value);
                 }
                 
-                Scopes.Current.DefineAndSetVariable("varargs", arguments.AdditionalPositionalArguments);
+                Scopes.Current.DefineAndSetVariable("varargs", arguments.AdditionalPositionalArguments.Select(arg => arg.Value));
                 Scopes.Current.DefineAndSetVariable("kwargs", arguments.AdditionalKeywordArguments);
                 
                 foreach(var output in item.Contents.Transform(this))
@@ -438,6 +438,18 @@ namespace Obsidian.Transforming
             }
         }
 
+        public IEnumerable<string> Transform(ImportNode item)
+        {
+            //{% import 'forms.html' as forms %}
+            var importObject = Environment.Evaluation.EvaluateDynamic(item.Import, ExpressionParserTransformer);
+            if (!(importObject is string importString)) throw new NotImplementedException();
+
+            if (Environment.TryGetDynamicTemplate(importString, out var template) == false) throw new NotImplementedException();
+
+            Scopes.Current.DefineAndSetVariable(item.As, template);
+            yield break;
+        }
+
         public IEnumerable<string> Transform(IncludeNode item)
         {
             var evaluatedTemplateList = Environment.Evaluation.EvaluateDynamic(item.Templates.ExpressionParserNode, ExpressionParserTransformer);
@@ -479,5 +491,6 @@ namespace Obsidian.Transforming
                 yield return template.Render();
             }
         }
+
     }
 }

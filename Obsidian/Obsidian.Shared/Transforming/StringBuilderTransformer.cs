@@ -136,5 +136,10 @@ namespace Obsidian.Transforming
         {
             TransformASTNode(item);
         }
+
+        public void Transform(ImportNode item)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
