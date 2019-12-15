@@ -8,30 +8,47 @@ using Common.Collections;
 using Obsidian.Lexing;
 using Obsidian.Parsing;
 using Obsidian.Transforming;
+using Obsidian.AST.NodeParsers;
 using Obsidian.WhiteSpaceControl;
 
 namespace Obsidian.AST.Nodes
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public class ExpressionNode : ASTNode
+    internal class ExpressionNode : ASTNode, IWhiteSpaceControlling
     {
-        public ExpressionNode(ParsingNode parsingNode, string expression, WhiteSpaceControlMode startWhiteSpace, WhiteSpaceControlMode endWhiteSpace) : base(parsingNode)
+        internal ExpressionNode(JinjaEnvironment environment, ParsingNode parsingNode, 
+            WhiteSpaceMode startWhiteSpace, WhiteSpaceMode endWhiteSpace, string expression, string? ifClause, string? elseClause) : base(parsingNode)
         {
-            StartWhiteSpace = startWhiteSpace;
-            EndWhiteSpace = endWhiteSpace;
             Expression = expression;
+            ExpressionParserNode = environment.Evaluation.Parse(expression);
+            if(ifClause != null)
+            {
+                IfClause = environment.Evaluation.Parse(ifClause);
+            }
+            if(elseClause != null)
+            {
+                ElseClause = new ExpressionNode(environment, elseClause);
+            }
+            WhiteSpaceControl = new WhiteSpaceControlSet(startWhiteSpace, endWhiteSpace);
         }
 
-        private ExpressionNode(string expression) : base(new ParsingNode(ParsingNodeType.Expression, new[] { new Token(TokenTypes.Unknown, expression) }))
+        private ExpressionNode(JinjaEnvironment environment, string expression) : base(new ParsingNode(ParsingNodeType.Expression, new[] { new Token(TokenType.Unknown, expression) }))
         {
             Expression = expression;
             Output = false;
+            ExpressionParserNode = environment.Evaluation.Parse(expression);
+            WhiteSpaceControl = new WhiteSpaceControlSet();
         }
 
-        public string Expression { get; }
-        public WhiteSpaceControlMode StartWhiteSpace { get; }
-        public WhiteSpaceControlMode EndWhiteSpace { get; }
-        public bool Output { get; } = true;
+
+        public ExpressionParser.Parsing.ASTNode ExpressionParserNode { get; }
+        public WhiteSpaceControlSet WhiteSpaceControl { get; }
+
+        internal string Expression { get; }
+        internal ExpressionParser.Parsing.ASTNode? IfClause { get; }
+        internal ExpressionNode? ElseClause { get; }
+
+        internal bool Output { get; } = true;
 
         private string DebuggerDisplay => $"{nameof(ExpressionNode)} : \"{ToString(debug: true)}\"";
 
@@ -39,103 +56,50 @@ namespace Obsidian.AST.Nodes
         {
             return visitor.Transform(this);
         }
-        public static bool TryParse(ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
+
+        public override void Transform(IManualWhiteSpaceTransformVisitor visitor, bool inner = false)
         {
-            return ExpressionNodeParser.TryParse(enumerator, out parsedNode);
+            visitor.Transform(this, inner);
+        }
+        public override TOutput Transform<TOutput>(IForceTransformVisitor<TOutput> visitor, bool force)
+        {
+            return visitor.Transform(this, force);
+        }
+        public override void Transform(ITransformVisitor visitor)
+        {
+            visitor.Transform(this);
+        }
+        internal static bool TryParse(JinjaEnvironment environment, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
+        {
+            parsedNode = default;
+            string? ifClause = null;
+            string? elseClause = null;
+            if (ExpressionNodeParser.Parser.TryParse(enumerator.Current, out var startWhiteSpace, out var endWhiteSpace) == false)
+            {
+                return false;
+            }
+            if (ExpressionNodeParser.Parser.TryGetAccumulation(ExpressionNodeParser.ExpressionState.Expression, 0, out var expression) == false)
+            {
+                throw new NotImplementedException();
+            }
+            if (ExpressionNodeParser.Parser.TryGetAccumulation(ExpressionNodeParser.ExpressionState.IfClause, 0, out var ifClauseString))
+            {
+                ifClause = ifClauseString;
+            }
+            if (ExpressionNodeParser.Parser.TryGetAccumulation(ExpressionNodeParser.ExpressionState.ElseClause, 0, out var elseClauseString))
+            {
+                elseClause = elseClauseString;
+            }
+            if (string.IsNullOrEmpty(expression)) throw new NotImplementedException();
+
+            parsedNode = new ExpressionNode(environment, enumerator.Current, startWhiteSpace, endWhiteSpace, expression, ifClause, elseClause);
+            return true;
         }
 
-        public static ExpressionNode FromString(string expression)
+        internal static ExpressionNode FromString(JinjaEnvironment environment, string expression)
         {
-            return new ExpressionNode(expression);
+            return new ExpressionNode(environment, expression);
         }
 
-        private static class ExpressionNodeParser
-        {
-            private enum States
-            {
-                StartJinja,
-                Expression,
-                WhiteSpaceOrExpression,
-                Done,
-                EndJinja,
-            }
-
-
-            public static bool TryParse(ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
-            {
-                return TryParse(enumerator.Current, out parsedNode);
-            }
-            public static bool TryParse(ParsingNode node, [NotNullWhen(true)]out ASTNode? parsedNode)
-            {
-                parsedNode = default;
-                var enumerator = LookaroundEnumeratorFactory.CreateLookaroundEnumerator(node.Tokens, 1);
-                var state = States.StartJinja;
-                var startWhiteSpace = WhiteSpaceControlMode.Default;
-                var endWhiteSpace = WhiteSpaceControlMode.Default;
-                var expressionQueue = new Queue<Token>();
-                while (enumerator.MoveNext())
-                {
-                    var token = enumerator.Current;
-                    switch (state)
-                    {
-                        case States.StartJinja:
-                            switch (token.TokenType)
-                            {
-                                case TokenTypes.ExpressionStart:
-                                    state = States.WhiteSpaceOrExpression;
-                                    continue;
-                                default:
-                                    return false;
-                            }
-                        case States.WhiteSpaceOrExpression:
-                            switch (token.TokenType)
-                            {
-                                case TokenTypes.Minus:
-                                    startWhiteSpace = WhiteSpaceControlMode.Trim;
-                                    continue;
-                                default:
-                                    state = States.Expression;
-                                    expressionQueue.Enqueue(token);
-                                    continue;
-                            }
-                        case States.Expression:
-                            switch (token.TokenType)
-                            {
-                                case TokenTypes.Minus:
-                                    if (enumerator.TryGetNext(out var nextToken) && nextToken.TokenType == TokenTypes.ExpressionEnd)
-                                    {
-                                        endWhiteSpace = WhiteSpaceControlMode.Trim;
-                                        state = States.EndJinja;
-                                        continue;
-                                    }
-                                    expressionQueue.Enqueue(token);
-                                    continue;
-                                case TokenTypes.ExpressionEnd:
-                                    state = States.Done;
-                                    continue;
-                                default:
-                                    expressionQueue.Enqueue(token);
-                                    continue;
-                            }
-                        case States.EndJinja:
-                            switch (token.TokenType)
-                            {
-                                case TokenTypes.ExpressionEnd:
-                                    state = States.Done;
-                                    continue;
-                                default:
-                                    throw new NotImplementedException();
-                            }
-                        case States.Done:
-                            throw new NotImplementedException();
-                        default:
-                            throw new NotImplementedException();
-                    }
-                }
-                var expression = string.Join(string.Empty, expressionQueue.Select(token => token.Value)).Trim();
-                parsedNode = new ExpressionNode(node, expression, startWhiteSpace, endWhiteSpace);
-                return true;
-            }
-        }
     }
 }

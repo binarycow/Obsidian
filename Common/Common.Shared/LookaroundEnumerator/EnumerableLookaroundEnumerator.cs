@@ -8,10 +8,11 @@ using Common.Collections;
 
 namespace Common.LookaroundEnumerator
 {
-    public sealed class EnumerableLookaroundEnumerator<T> : ILookaroundEnumerator<T>
+    internal sealed class EnumerableLookaroundEnumerator<T> : ILookaroundEnumerator<T>
     {
-        public EnumerableLookaroundEnumerator(IEnumerable<T> source, byte lookaheadCount, byte lookbehindCount = 0)
+        internal EnumerableLookaroundEnumerator(IEnumerable<T> source, byte lookaheadCount, byte lookbehindCount = 0)
         {
+            source = source ?? throw new ArgumentNullException(nameof(source));
             _Enumerator = source.GetEnumerator();
             LookaheadCount = lookaheadCount;
             LookbehindCount = lookbehindCount;
@@ -19,12 +20,12 @@ namespace Common.LookaroundEnumerator
             _Next = new T[lookaheadCount];
         }
 
-        private IEnumerator<T> _Enumerator;
+        private readonly IEnumerator<T> _Enumerator;
 
-        private T[] _Previous;
-        private T[] _Next;
+        private readonly T[] _Previous;
+        private readonly T[] _Next;
 
-        //public LookaroundData<T> Data { private get; private set; } = new LookaroundData<T>(Array.Empty<T>(), default!, Array.Empty<T>());
+        //internal LookaroundData<T> Data { private get; private set; } = new LookaroundData<T>(Array.Empty<T>(), default!, Array.Empty<T>());
 
         public int LookaheadCount { get; private set; }
         public int LookbehindCount { get; private set; }
@@ -33,7 +34,7 @@ namespace Common.LookaroundEnumerator
 
         public EnumeratorState State { get; private set; }
         private EnumeratorState _UnderlyingEnumeratorState;
-        public EnumeratorState UnderlyingEnumeratorState 
+        internal EnumeratorState UnderlyingEnumeratorState 
         {
             get => LookaheadCount > 0 ? _UnderlyingEnumeratorState : State;
             private set
@@ -127,6 +128,7 @@ namespace Common.LookaroundEnumerator
             {
                 _Previous.ShiftRight(1);
                 _Previous[0] = Current;
+                _ValidPreviousValues = (_ValidPreviousValues + 1).ClampMax(_Previous.Length);
             }
 
             if(_ValidNextValues == 0)
@@ -201,6 +203,22 @@ namespace Common.LookaroundEnumerator
                 }
             }
             return true;
+        }
+
+        public bool TryGetNextArray(int count, out T[] value)
+        {
+            var items = new List<T>();
+            foreach(var num in Enumerable.Range(1, count))
+            {
+                if(TryGetNext(out var item, num))
+                {
+                    items.Add(item);
+                    continue;
+                }
+                break;
+            }
+            value = items.ToArray();
+            return value.Length == count;
         }
     }
 

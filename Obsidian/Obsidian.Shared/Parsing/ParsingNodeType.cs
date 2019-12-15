@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Obsidian.Parsing
 {
-    public enum ParsingNodeType
+    internal enum ParsingNodeType
     {
         Statement,
         NewLine,
@@ -13,5 +13,6 @@ namespace Obsidian.Parsing
         Expression,
         Output,
         Comment,
+        Empty,
     }
 }

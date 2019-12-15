@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -11,12 +11,13 @@ using ExpressionParser.Operators;
 
 namespace ExpressionParser.Parsing
 {
-    public class Parser
+    internal class Parser
     {
-        public Parser(ILanguageDefinition languageDefinition, byte minimumLookahead = 1, byte minimumLookbehind = 1)
+        internal Parser(ILanguageDefinition languageDefinition, byte minimumLookahead = 1, byte minimumLookbehind = 1)
         {
             LanguageDefinition = languageDefinition;
             _PrecedenceGroups = LanguageDefinition.Operators
+                .Where(op => !(op is MethodOperatorDefinition))
                 .GroupBy(op => op.Precedence)
                 .OrderBy(grp => grp.Key)
                 .ToArray();
@@ -26,23 +27,23 @@ namespace ExpressionParser.Parsing
             MinimumLookbehind = Math.Max(minimumLookbehind, (byte)1);
         }
 
-        public byte MinimumLookahead { get; }
-        public byte MinimumLookbehind { get; }
+        internal byte MinimumLookahead { get; }
+        internal byte MinimumLookbehind { get; }
 
-        public ILanguageDefinition LanguageDefinition { get; }
+        internal ILanguageDefinition LanguageDefinition { get; }
 
-        public delegate bool TryParseDelegate(ILookaroundEnumerator<Token> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode);
+        internal delegate bool TryParseDelegate(ILookaroundEnumerator<Token> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode, AssignmentOperatorBehavior assignmentOperatorBehavior);
 
-        private TryParseDelegate[] _CustomParseDelegates = Array.Empty<TryParseDelegate>();
-        public virtual TryParseDelegate[] CustomParseDelegates => _CustomParseDelegates;
+        private readonly TryParseDelegate[] _CustomParseDelegates = Array.Empty<TryParseDelegate>();
+        internal virtual TryParseDelegate[] CustomParseDelegates => _CustomParseDelegates;
 
-        private TryParseDelegate[] _LiteralParseDelegates = Array.Empty<TryParseDelegate>();
-        public virtual TryParseDelegate[] LiteralParseDelegates => _LiteralParseDelegates;
+        private readonly TryParseDelegate[] _LiteralParseDelegates = Array.Empty<TryParseDelegate>();
+        internal virtual TryParseDelegate[] LiteralParseDelegates => _LiteralParseDelegates;
 
-        private IGrouping<int, OperatorDefinition>[] _PrecedenceGroups;
-        private string[][] _ValidOperatorTextValues;
+        private readonly IGrouping<int, OperatorDefinition>[] _PrecedenceGroups;
+        private readonly string[][] _ValidOperatorTextValues;
 
-        public ASTNode Parse(IEnumerable<Token> tokens)
+        internal ASTNode Parse(IEnumerable<Token> tokens)
         {
             var tokensExcludingWhiteSpace = tokens.Where(token => token.TokenType != TokenType.WhiteSpace);
             using var enumerator = LookaroundEnumeratorFactory.CreateLookaroundEnumerator(tokensExcludingWhiteSpace, 1, 1);
@@ -52,7 +53,7 @@ namespace ExpressionParser.Parsing
                 return LiteralNode.CreateNull();
             }
 
-            if(TryParse(enumerator, out var parsedNode) == false || parsedNode == default)
+            if(TryParse(enumerator, out var parsedNode, AssignmentOperatorBehavior.Assign) == false || parsedNode == default)
             {
                 throw new NotImplementedException(); // Couldn't parse data!
             }
@@ -64,35 +65,34 @@ namespace ExpressionParser.Parsing
             return parsedNode;
         }
 
-        public bool TryParse(ILookaroundEnumerator<Token> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode, int currentPrecedence = 0)
+        internal bool TryParse(ILookaroundEnumerator<Token> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode, AssignmentOperatorBehavior assignmentOperatorBehavior, int currentPrecedence = 0)
         {
             if(currentPrecedence == 0 && CustomParseDelegates != default)
             {
                 var customResult = CustomParseDelegates.Select(del =>
                 {
-                    var Success = del(enumerator, out var Result);
+                    var Success = del(enumerator, out var Result, assignmentOperatorBehavior);
                     return new { Success, Result };
                 }).FirstOrDefault(res => res.Success)?.Result;
                 if(customResult != default)
                 {
+                    enumerator.MoveNext(); // TODO: Is this right?
                     parsedNode = customResult;
                     return true;
                 }
             }
+
             if (currentPrecedence >= _PrecedenceGroups.Length)
             {
-                return TryParseBraces(enumerator, out parsedNode);
+                return TryParseBraces(enumerator, out parsedNode, assignmentOperatorBehavior);
             }
 
-            switch(_PrecedenceGroups[currentPrecedence].First().OperandCount)
+            return _PrecedenceGroups[currentPrecedence].First().OperandCount switch
             {
-                case OperandCount.Binary:
-                    return TryParseBinary(enumerator, currentPrecedence, out parsedNode);
-                case OperandCount.Unary:
-                    return TryParseUnary(enumerator, currentPrecedence, out parsedNode);
-                default:
-                    throw new NotImplementedException();
-            }
+                OperandCount.Binary => TryParseBinary(enumerator, currentPrecedence, out parsedNode, assignmentOperatorBehavior),
+                OperandCount.Unary => TryParseUnary(enumerator, currentPrecedence, out parsedNode),
+                _ => throw new NotImplementedException(),
+            };
         }
 
         private bool TryParseUnary(ILookaroundEnumerator<Token> enumerator, int currentPrecedence, [NotNullWhen(true)]out ASTNode? parsedNode)
@@ -111,20 +111,21 @@ namespace ExpressionParser.Parsing
                 if(TryParseUnary(enumerator, currentPrecedence, out var right))
                 {
                     parsedNode = new UnaryASTNode(@operator, right);
+                    right.SetParent(parsedNode);
                     return true;
                 }
             }
-            return TryParse(enumerator, out parsedNode, currentPrecedence + 1);
+            return TryParse(enumerator, out parsedNode, AssignmentOperatorBehavior.Assign, currentPrecedence + 1);
         }
 
-        private bool TryParseBinary(ILookaroundEnumerator<Token> enumerator, int currentPrecedence, [NotNullWhen(true)]out ASTNode? parsedNode)
+        private bool TryParseBinary(ILookaroundEnumerator<Token> enumerator, int currentPrecedence, [NotNullWhen(true)]out ASTNode? parsedNode, AssignmentOperatorBehavior assignmentOperatorBehavior)
         {
             parsedNode = null;
             var currentPrecedenceOperators = _PrecedenceGroups[currentPrecedence];
             var validOperatorTextValues = _ValidOperatorTextValues[currentPrecedence];
 
             // Check the next precedence level first...
-            if (TryParse(enumerator, out var left, currentPrecedence + 1) == false || left == default)
+            if (TryParse(enumerator, out var left, assignmentOperatorBehavior, currentPrecedence + 1) == false || left == default)
             {
                 return false;
             }
@@ -132,51 +133,76 @@ namespace ExpressionParser.Parsing
             while(enumerator.Current.TokenType == TokenType.Operator && validOperatorTextValues.Contains(enumerator.Current.TextValue))
             {
                 var operatorToken = enumerator.Current;
-                if(enumerator.MoveNext() == false)
-                {
-                    throw new NotImplementedException();
-                }
-                if (TryParse(enumerator, out var right, currentPrecedence + 1) == false || right == default)
-                {
-                    throw new NotImplementedException();
-                }
                 var operatorDefinition = currentPrecedenceOperators.Where(op => op.Text == operatorToken.TextValue).First();
-                var @operator = CreateBinaryOperator(enumerator, operatorToken, operatorDefinition);
-                left = new BinaryASTNode(left, @operator, right);
+
+
+                if (enumerator.MoveNext() == false)
+                {
+                    throw new NotImplementedException();
+                }
+
+                ASTNode? right;
+                if (operatorDefinition is SpecialOperatorDefinition special && special.MaximumArguments != 0)
+                {
+                    if(TryParseArgumentSet(enumerator, out right, special) == false || right == null)
+                    {
+                        throw new NotImplementedException();
+                    }
+                }
+                else
+                {
+                    if (TryParse(enumerator, out right, assignmentOperatorBehavior, currentPrecedence + 1) == false || right == null)
+                    {
+                        throw new NotImplementedException();
+                    }
+                }
+
+                var @operator = CreateBinaryOperator(operatorToken, operatorDefinition, assignmentOperatorBehavior);
+                var newNode = new BinaryASTNode(left, @operator, right);
+                left.SetParent(newNode);
+                right.SetParent(newNode);
+                left = newNode;
             }
             parsedNode = left;
             return true;
         }
 
-        private Operator CreateBinaryOperator(ILookaroundEnumerator<Token> enumerator, Token operatorToken, OperatorDefinition operatorDefinition)
+        private static Operator CreateBinaryOperator(Token operatorToken, OperatorDefinition operatorDefinition, AssignmentOperatorBehavior assignmentOperatorBehavior)
         {
-            if (operatorDefinition is SpecialOperatorDefinition specialOperator && specialOperator.OperatorType == SpecialOperatorType.MemberAccess)
+            return operatorDefinition switch
             {
-                var subType = SpecialOperatorSubType.Property;
-                if (enumerator.TryGetNext(out var nextToken))
-                {
-                    switch (nextToken.TokenType)
-                    {
-                        // TODO: Don't hardcode this - specify with operator definition
-                        case TokenType.Paren_Open:
-                            subType = SpecialOperatorSubType.MethodCall;
-                            break;
-                        case TokenType.SquareBrace_Open:
-                            subType = SpecialOperatorSubType.Index;
-                            break;
-                    }
-                }
-                return Operator.CreateMemberAccess(specialOperator, operatorToken, subType);
-            }
-            return Operator.CreateBinary(operatorDefinition, operatorToken);
+                SpecialOperatorDefinition specialOperator => Operator.CreateSpecial(specialOperator, operatorToken),
+                _ => Operator.CreateBinary(operatorDefinition, operatorToken, assignmentOperatorBehavior),
+            };
         }
 
-        private bool TryParseBraces(ILookaroundEnumerator<Token> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
+        private bool TryParseArgumentSet(ILookaroundEnumerator<Token> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode, SpecialOperatorDefinition operatorDefinition)
+        {
+            var argSeperator = operatorDefinition.ArgumentSeperator ?? throw new NotImplementedException();
+            var endingToken = operatorDefinition.EndingToken ?? throw new NotImplementedException();
+            var arguments = new Queue<ASTNode>();
+
+            if(operatorDefinition.MaximumArguments > 0)
+            {
+                while (TryParse(enumerator, out var argItem, assignmentOperatorBehavior: AssignmentOperatorBehavior.NamedParameter))
+                {
+                    arguments.Enqueue(argItem);
+                    if (enumerator.Current.TokenType != argSeperator) break;
+                    enumerator.MoveNext();
+                }
+            }
+            if (enumerator.Current.TokenType != endingToken) throw new NotImplementedException();
+            parsedNode = new ArgumentSetNode(arguments);
+            return true;
+        }
+
+
+        private bool TryParseBraces(ILookaroundEnumerator<Token> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode, AssignmentOperatorBehavior assignmentOperatorBehavior)
         {
             parsedNode = default;
-            if (enumerator.Current.TokenType.IsOpenBrace() == false)
+            if (enumerator.Current.TokenType.IsOpenBrace() == false && enumerator.Current.SecondaryTokenType?.IsOpenBrace() != true)
             {
-                if(TryParseTerminal(enumerator, out parsedNode))
+                if(TryParseTerminal(enumerator, out parsedNode, assignmentOperatorBehavior))
                 {
                     enumerator.MoveNext();
                     return true;
@@ -191,16 +217,16 @@ namespace ExpressionParser.Parsing
             var braceToken = enumerator.Current;
             if (enumerator.MoveNext() == false) throw new NotImplementedException();
 
-            if(TryParse(enumerator, out parsedNode) == false || parsedNode == default)
+            if(TryParse(enumerator, out parsedNode, assignmentOperatorBehavior) == false || parsedNode == default)
             {
                 throw new NotImplementedException();
             }
 
             if(enumerator.State != EnumeratorState.Active)
             {
-                throw new NotImplementedException(); // Did not find closing brace
+                //throw new NotImplementedException(); // Did not find closing brace
             }
-            if (enumerator.Current.TokenType.IsMatchingBrace(braceToken.TokenType) == false)
+            if (enumerator.Current.TokenType.IsMatchingBrace(braceToken.TokenType) == false && enumerator.Current.TokenType.IsMatchingBrace(braceToken.SecondaryTokenType) != true)
             {
                 throw new NotImplementedException(); // Did not find the right closing brace
             }
@@ -210,7 +236,7 @@ namespace ExpressionParser.Parsing
 
 
 
-        private bool TryParseTerminal(ILookaroundEnumerator<Token> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
+        private bool TryParseTerminal(ILookaroundEnumerator<Token> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode, AssignmentOperatorBehavior assignmentOperatorBehavior)
         {
             parsedNode = default;
 
@@ -239,7 +265,7 @@ namespace ExpressionParser.Parsing
 
             var readNode = LiteralParseDelegates.Select(del =>
             {
-                var Success = del(enumerator, out var Result);
+                var Success = del(enumerator, out var Result, assignmentOperatorBehavior);
                 return new { Success, Result };
             }).FirstOrDefault(res => res.Success)?.Result;
             if(readNode != null)

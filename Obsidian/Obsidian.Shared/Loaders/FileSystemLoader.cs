@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ namespace Obsidian
 {
     public class FileSystemLoader : BaseLoader
     {
-        private Dictionary<string, string> _TemplateContentsCache = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> _TemplateContentsCache = new Dictionary<string, string>();
 
         public FileSystemLoader(IEnumerable<string> searchPaths, Encoding encoding)
         {
@@ -20,9 +21,10 @@ namespace Obsidian
         public FileSystemLoader(string searchPath, Encoding encoding) : this(Enumerable.Repeat(searchPath, 1), encoding) { }
         public FileSystemLoader(string searchPath) : this(Enumerable.Repeat(searchPath, 1), Encoding.UTF8) { }
 
-        public List<string> SearchPaths { get; }
-        public Encoding Encoding { get; set; }
+        internal List<string> SearchPaths { get; }
+        internal Encoding Encoding { get; set; }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "<Pending>")]
         private FileInfo? FindFile(string filename)
         {
             var searchPaths = new Stack<DirectoryInfo>();
@@ -45,7 +47,7 @@ namespace Obsidian
                 {
                     if(item is FileInfo fileInfo)
                     {
-                        if(fileInfo.Name == filename)
+                        if(fileInfo.Name.ToUpperInvariant() == filename.ToUpperInvariant())
                         {
                             return fileInfo;
                         }
@@ -59,18 +61,19 @@ namespace Obsidian
             return null;
         }
 
-        public override TemplateInfo GetSource(JinjaEnvironment environment, string templateName)
+        internal override bool TryGetSource(JinjaEnvironment environment, string templateName, [NotNullWhen(true)] out TemplateInfo? templateInfo)
         {
+            templateInfo = default;
             var upToDate = false;
             var path = FindFile(templateName);
             if (path == null)
             {
-                throw new TemplateNotFoundException(templateName);
+                return false;
             }
             var templateContents = File.ReadAllText(path.FullName, Encoding);
-            if(_TemplateContentsCache.ContainsKey(templateName))
+            if (_TemplateContentsCache.ContainsKey(templateName))
             {
-                if(_TemplateContentsCache[templateName] == templateContents)
+                if (_TemplateContentsCache[templateName] == templateContents)
                 {
                     upToDate = true;
                 }
@@ -83,7 +86,8 @@ namespace Obsidian
             {
                 _TemplateContentsCache.Add(templateName, templateContents);
             }
-            return new TemplateInfo(templateContents, path.FullName, upToDate);
+            templateInfo = new TemplateInfo(templateContents, path.FullName, upToDate);
+            return true;
         }
     }
 }

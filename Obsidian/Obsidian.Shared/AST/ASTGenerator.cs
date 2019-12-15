@@ -5,30 +5,30 @@ using System.Text;
 using Common.Collections;
 using Obsidian.AST.Nodes;
 using Obsidian.AST.Nodes.MiscNodes;
+using Obsidian.Lexing;
 using Obsidian.Parsing;
-using Obsidian.WhiteSpaceControl;
 
 namespace Obsidian.AST
 {
-    public class ASTGenerator
+    internal class ASTGenerator
     {
-        public static ContainerNode ParseTemplate(IEnumerable<ParsingNode> source)
+        internal static TemplateNode ParseTemplate(JinjaEnvironment environment, Lexer lexer, IEnumerable<ParsingNode> source)
         {
-            var enumerator = LookaroundEnumeratorFactory.CreateLookaroundEnumerator(source, 10);
+            using var enumerator = LookaroundEnumeratorFactory.CreateLookaroundEnumerator(source, 10);
 
             while (enumerator.MoveNext())
             {
-                var nodes = ParseUntilFailure(enumerator).ToArray();
+                var nodes = ParseUntilFailure(environment, lexer, enumerator).ToArray();
                 if (enumerator.TryGetNext(out var nextNode))
                 {
                     throw new NotImplementedException();
                 }
-                return new ContainerNode(nodes, WhiteSpaceControlMode.Default, WhiteSpaceControlMode.Default);
+                return new TemplateNode(nodes);
             }
 
             throw new NotImplementedException();
         }
-        public static IEnumerable<ASTNode> ParseUntilFailure(ILookaroundEnumerator<ParsingNode> enumerator)
+        internal static IEnumerable<ASTNode> ParseUntilFailure(JinjaEnvironment environment, Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator)
         {
             do
             {
@@ -36,10 +36,10 @@ namespace Obsidian.AST
                 switch (enumerator.Current.NodeType)
                 {
                     case ParsingNodeType.Statement:
-                        StatementNode.TryParse(enumerator, out astNode);
+                        StatementNode.TryParse(environment, lexer, enumerator, out astNode);
                         break;
                     case ParsingNodeType.NewLine:
-                        astNode = new NewLineNode(enumerator.Current, enumerator.Current.WhiteSpaceControlMode);
+                        astNode = new NewLineNode(enumerator.Current);
                         break;
                     case ParsingNodeType.Comment:
                         astNode = new CommentNode(enumerator.Current);
@@ -48,7 +48,7 @@ namespace Obsidian.AST
                         astNode = WhiteSpaceNode.Parse(enumerator);
                         break;
                     case ParsingNodeType.Expression:
-                        if (ExpressionNode.TryParse(enumerator, out astNode) == false)
+                        if (ExpressionNode.TryParse(environment, enumerator, out astNode) == false)
                         {
                             throw new NotImplementedException();
                         }

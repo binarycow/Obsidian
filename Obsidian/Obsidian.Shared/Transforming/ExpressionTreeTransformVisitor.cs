@@ -6,21 +6,19 @@ using System.Text;
 using Obsidian.AST.Nodes;
 using Obsidian.AST.Nodes.MiscNodes;
 using Obsidian.AST.Nodes.Statements;
-using Obsidian.Rendering.RenderObjects;
-using Obsidian.WhiteSpaceControl;
 
 namespace Obsidian.Transforming
 {
-    public class ExpressionTreeTransformVisitor : ITransformVisitor<Expression>
+    internal class ExpressionTreeTransformVisitor : ITransformVisitor<Expression>
     {
-        public ExpressionTreeTransformVisitor(JinjaEnvironment environment, IDictionary<string, object?> variables)
+        internal ExpressionTreeTransformVisitor(JinjaEnvironment environment, IDictionary<string, object?> variables)
         {
             Environment = environment;
             Variables = variables;
         }
 
-        public JinjaEnvironment Environment { get; set; }
-        public IDictionary<string, object?> Variables { get; set; }
+        internal JinjaEnvironment Environment { get; set; }
+        internal IDictionary<string, object?> Variables { get; }
 
         public Expression Transform(ForNode item)
         {
@@ -63,6 +61,59 @@ namespace Obsidian.Transforming
         }
 
         public Expression Transform(CommentNode item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Expression Transform(BlockNode item)
+        {
+            throw new NotImplementedException();
+        }
+        public Expression Transform(ExtendsNode item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Expression Transform(TemplateNode item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Expression Transform(EmptyNode emptyNode)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Expression Transform(RawNode item)
+        {
+            throw new NotImplementedException();
+        }
+        public Expression Transform(MacroNode item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Expression Transform(CallNode item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Expression Transform(FilterNode item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Expression Transform(SetNode item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Expression Transform(IncludeNode item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Expression Transform(ImportNode item)
         {
             throw new NotImplementedException();
         }

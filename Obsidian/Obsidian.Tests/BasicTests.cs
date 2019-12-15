@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Obsidian.Tests.Utilities;
+using Obsidian.TestCore;
 using NUnit.Framework;
 using System.IO;
 using System.Reflection;
@@ -7,18 +7,26 @@ using System;
 
 namespace Obsidian.Tests
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1812:Avoid uninstantiated public classes", Justification = "<Pending>")]
     public class BasicTests : TestClass
     {
 
         [Test]
         public void BasicTemplate()
         {
-            TestRunner.TestTemplate(TestRunner.TestItems["Basic Tests"]["Basic Template"]);
+            var x = TestRunner.TestItems["Basic Tests"];
+            var y = x["Basic Template"];
+            AssertWrapper.TestTemplate(y);
         }
         [Test]
         public void Inheritance()
         {
-            TestRunner.TestTemplate(TestRunner.TestItems["Basic Tests"]["Inheritance"]);
+            AssertWrapper.TestTemplate(TestRunner.TestItems["Basic Tests"]["Inheritance"]);
+        }
+        [Test]
+        public void Raw()
+        {
+            AssertWrapper.TestTemplate(TestRunner.TestItems["Basic Tests"]["Raw"]);
         }
     }
 }

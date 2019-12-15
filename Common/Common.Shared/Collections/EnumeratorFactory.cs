@@ -7,19 +7,16 @@ using System.Text;
 
 namespace Common.Collections
 {
-    public static class EnumeratorFactory
+    internal static class EnumeratorFactory
     {
         internal static IEnumerator<object?> GetEnumerator(object? obj)
         {
-            switch(obj)
+            return obj switch
             {
-                case IEnumerable<object?> objEnumerable:
-                    return objEnumerable.GetEnumerator();
-                case IEnumerable enumerable:
-                    return enumerable.OfType<object>().GetEnumerator();
-                default:
-                    throw new NotImplementedException();
-            }
+                IEnumerable<object?> objEnumerable => objEnumerable.GetEnumerator(),
+                IEnumerable enumerable => enumerable.OfType<object>().GetEnumerator(),
+                _ => throw new NotImplementedException(),
+            };
         }
     }
 }

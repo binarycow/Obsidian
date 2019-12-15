@@ -1,26 +1,39 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 
 namespace System
 {
-    public static class CharExtensions
+    internal static class CharExtensions
     {
-        public static bool IsDigit(this char c)
+        internal static bool IsDigit(this char c)
         {
             return char.IsDigit(c);
         }
-        public static bool IsLetter(this char c)
+        internal static bool IsLetter(this char c)
         {
             return char.IsLetter(c);
         }
-        public static bool IsWhiteSpace(this char c)
+        internal static bool IsWhiteSpace(this char c)
         {
             return char.IsWhiteSpace(c);
         }
+        internal static bool IsNotNewLine(this char c)
+        {
+            return c != '\r' && c != '\n';
+        }
+        internal static char ToUpper(this char c)
+        {
+            return char.ToUpper(c, CultureInfo.InvariantCulture);
+        }
+        internal static string Concat(this char c, string strValue)
+        {
+            return new string(c, 1) + strValue;
+        }
 
-        public static bool IsValidEscapedChar(this char c)
+        internal static bool IsValidEscapedChar(this char c)
         {
             return c switch
             {
@@ -38,7 +51,7 @@ namespace System
                 _ => false,
             };
         }
-        public static char Escape(this char c)
+        internal static char Escape(this char c)
         {
             return c switch
             {
@@ -54,6 +67,18 @@ namespace System
                 't' => '\t',
                 'v' => '\v',
                 _ => c,
+            };
+        }
+        internal static string HTMLEscape(this char c)
+        {
+            return c switch
+            {
+                '>' => "&gt;",
+                '<' => "&lt;",
+                '&' => "&amp;",
+                '\'' => "&#39;",
+                '"' => "&#34;",
+                _ => c.ToString(CultureInfo.InvariantCulture)
             };
         }
     }

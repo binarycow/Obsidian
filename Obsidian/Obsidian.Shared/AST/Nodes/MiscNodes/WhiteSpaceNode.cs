@@ -11,26 +11,21 @@ using Obsidian.WhiteSpaceControl;
 namespace Obsidian.AST.Nodes.MiscNodes
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public class WhiteSpaceNode : ASTNode
+    internal class WhiteSpaceNode : ASTNode, IWhiteSpace
     {
-        public WhiteSpaceNode(IEnumerable<ParsingNode> parsingNodes, WhiteSpaceControlMode controlMode) : base(parsingNodes)
+        internal WhiteSpaceNode(IEnumerable<ParsingNode> parsingNodes) : base(null, parsingNodes, null)
         {
-            WhiteSpaceControlMode = controlMode;
         }
-        public WhiteSpaceNode(ParsingNode parsingNode, WhiteSpaceControlMode controlMode) : base(parsingNode)
+        internal WhiteSpaceNode(ParsingNode parsingNode) : base(parsingNode)
         {
-            WhiteSpaceControlMode = controlMode;
         }
 
-        public WhiteSpaceControlMode WhiteSpaceControlMode { get; set; }
+        public WhiteSpaceMode WhiteSpaceMode { get; set; }
 
-
-        private string DebuggerDisplay => $"{nameof(WhiteSpaceNode)} : \"{ToString(debug: true)}\" Control: {WhiteSpaceControlMode}";
-        public static WhiteSpaceNode Parse(ILookaroundEnumerator<ParsingNode> enumerator)
+        private string DebuggerDisplay => $"{nameof(WhiteSpaceNode)} : \"{ToString(debug: true)}\" Mode: {WhiteSpaceMode}";
+        internal static WhiteSpaceNode Parse(ILookaroundEnumerator<ParsingNode> enumerator)
         {
             var nodes = new Queue<ParsingNode>();
-
-            var currentMode = enumerator.Current.WhiteSpaceControlMode;
 
             nodes.Enqueue(enumerator.Current);
 
@@ -39,11 +34,24 @@ namespace Obsidian.AST.Nodes.MiscNodes
                 enumerator.MoveNext();
                 nodes.Enqueue(nextNode);
             }
-            return new WhiteSpaceNode(nodes, currentMode);
+            return new WhiteSpaceNode(nodes);
         }
         public override TOutput Transform<TOutput>(ITransformVisitor<TOutput> visitor)
         {
             return visitor.Transform(this);
+        }
+        public override void Transform(ITransformVisitor visitor)
+        {
+            visitor.Transform(this);
+        }
+
+        public override void Transform(IManualWhiteSpaceTransformVisitor visitor, bool inner = false)
+        {
+            visitor.Transform(this, inner);
+        }
+        public override TOutput Transform<TOutput>(IForceTransformVisitor<TOutput> visitor, bool force)
+        {
+            return visitor.Transform(this, force);
         }
     }
 }

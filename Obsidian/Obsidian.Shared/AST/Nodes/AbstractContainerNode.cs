@@ -2,22 +2,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Obsidian.WhiteSpaceControl;
+using Obsidian.Parsing;
 
 namespace Obsidian.AST.Nodes
 {
-    public abstract class AbstractContainerNode : ASTNode
+    internal abstract class AbstractContainerNode : ASTNode, IWithChildren
     {
-        public AbstractContainerNode(IEnumerable<ASTNode> children, WhiteSpaceControlMode startWhiteSpace, WhiteSpaceControlMode endWhiteSpace)
-            : base(children.SelectMany(child => child.ParsingNodes))
+        internal AbstractContainerNode(ParsingNode? startingParsingNode, IEnumerable<ASTNode> children, ParsingNode? endingParsingNode)
+            : base(startingParsingNode, children.SelectMany(child => child.ParsingNodes), endingParsingNode)
         {
             Children = children.ToArrayWithoutInstantiation();
-            StartWhiteSpace = startWhiteSpace;
-            EndWhiteSpace = endWhiteSpace;
         }
 
         public ASTNode[] Children { get; }
-        public WhiteSpaceControlMode StartWhiteSpace { get; }
-        public WhiteSpaceControlMode EndWhiteSpace { get; }
     }
 }

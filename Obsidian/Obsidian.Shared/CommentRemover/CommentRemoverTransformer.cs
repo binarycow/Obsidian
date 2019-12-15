@@ -1,84 +1,97 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Obsidian.AST;
-using Obsidian.AST.Nodes;
-using Obsidian.AST.Nodes.MiscNodes;
-using Obsidian.AST.Nodes.Statements;
-using Obsidian.Transforming;
+//using System;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Text;
+//using Obsidian.AST;
+//using Obsidian.AST.Nodes;
+//using Obsidian.AST.Nodes.MiscNodes;
+//using Obsidian.AST.Nodes.Statements;
+//using Obsidian.Transforming;
 
-namespace Obsidian.CommentRemover
-{
-    public class CommentRemoverTransformer : ITransformVisitor<ASTNode>
-    {
+//namespace Obsidian.CommentRemover
+//{
+//    internal class CommentRemoverTransformer : ITransformVisitor<ASTNode>
+//    {
 
-        private IEnumerable<ASTNode> TransformExceptComment(IEnumerable<ASTNode> items)
-        {
-            foreach(var item in items)
-            {
-                if(item is CommentNode _)
-                {
-                    continue;
-                }
-                yield return item.Transform(this);
-            }
-        }
-        private CommentRemoverTransformer()
-        {
+//        private IEnumerable<ASTNode> TransformAll(IEnumerable<ASTNode> items)
+//        {
+//            return items.Select(child => child.Transform(this));
+//        }
+//        private CommentRemoverTransformer()
+//        {
 
-        }
-        public static Lazy<CommentRemoverTransformer> _Instance = new Lazy<CommentRemoverTransformer>(() => new CommentRemoverTransformer());
-        public static CommentRemoverTransformer Instance => _Instance.Value;
-        public ASTNode Transform(ForNode item)
-        {
-            ContainerNode? elseBlock = null;
-            if(item.ElseBlock != null)
-            {
-                elseBlock = new ContainerNode(TransformExceptComment(item.ElseBlock.Children), item.ElseBlock.StartWhiteSpace, item.ElseBlock.EndWhiteSpace);
-            }
-            var primaryBlock = new ContainerNode(TransformExceptComment(item.PrimaryBlock.Children), item.PrimaryBlock.StartWhiteSpace, item.PrimaryBlock.EndWhiteSpace);
-            return new ForNode(primaryBlock, elseBlock, item.VariableNames, item.Expression, item.StartWhiteSpace, item.EndWhiteSpace);
-        }
+//        }
+//        internal static Lazy<CommentRemoverTransformer> _Instance = new Lazy<CommentRemoverTransformer>(() => new CommentRemoverTransformer());
+//        internal static CommentRemoverTransformer Instance => _Instance.Value;
+//        internal ASTNode Transform(ForNode item)
+//        {
+//            ContainerNode? elseBlock = null;
+//            if(item.ElseBlock != null)
+//            {
+//                elseBlock = new ContainerNode(TransformAll(item.ElseBlock.Children));
+//            }
+//            var primaryBlock = new ContainerNode(TransformAll(item.PrimaryBlock.Children));
+//            return new ForNode(primaryBlock, elseBlock, item.VariableNames, item.Expression);
+//        }
 
-        public ASTNode Transform(ContainerNode item)
-        {
-            return new ContainerNode(TransformExceptComment(item.Children), item.StartWhiteSpace, item.EndWhiteSpace);
-        }
+//        internal ASTNode Transform(ContainerNode item)
+//        {
+//            return new ContainerNode(TransformAll(item.Children));
+//        }
 
-        public ASTNode Transform(ExpressionNode item)
-        {
-            return item;
-        }
+//        internal ASTNode Transform(ExpressionNode item)
+//        {
+//            return item;
+//        }
 
-        public ASTNode Transform(NewLineNode item)
-        {
-            return item;
-        }
+//        internal ASTNode Transform(NewLineNode item)
+//        {
+//            return item;
+//        }
 
-        public ASTNode Transform(OutputNode item)
-        {
-            return item;
-        }
+//        internal ASTNode Transform(OutputNode item)
+//        {
+//            return item;
+//        }
 
-        public ASTNode Transform(WhiteSpaceNode item)
-        {
-            return item;
-        }
+//        internal ASTNode Transform(WhiteSpaceNode item)
+//        {
+//            return item;
+//        }
 
-        public ASTNode Transform(IfNode item)
-        {
-            return item;
-        }
+//        internal ASTNode Transform(IfNode item)
+//        {
+//            return item;
+//        }
 
-        public ASTNode Transform(ConditionalNode item)
-        {
-            return new ConditionalNode(item.Expression, TransformExceptComment(item.Children), item.StartWhiteSpace, item.EndWhiteSpace);
-        }
+//        internal ASTNode Transform(ConditionalNode item)
+//        {
+//            return new ConditionalNode(item.Expression, TransformAll(item.Children));
+//        }
 
-        public ASTNode Transform(CommentNode item)
-        {
-            throw new NotImplementedException();
-        }
-    }
-}
+//        internal ASTNode Transform(CommentNode item)
+//        {
+//            throw new NotImplementedException();
+//        }
+
+//        internal ASTNode Transform(BlockNode item)
+//        {
+//            var contents = new ContainerNode(TransformAll(item.BlockContents.Children));
+//            return new BlockNode(item.Name, contents);
+//        }
+//        internal ASTNode Transform(ExtendsNode item)
+//        {
+//            return item;
+//        }
+
+//        internal ASTNode Transform(TemplateNode item)
+//        {
+//            return item;
+//        }
+
+//        internal ASTNode Transform(EmptyNode emptyNode)
+//        {
+//            throw new NotImplementedException();
+//        }
+//    }
+//}

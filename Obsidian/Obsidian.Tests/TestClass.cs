@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using Obsidian.Tests.Utilities;
+using Obsidian.TestCore;
 using NUnit.Framework;
 
 namespace Obsidian.Tests

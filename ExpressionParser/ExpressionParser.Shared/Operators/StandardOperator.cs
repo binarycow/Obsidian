@@ -5,17 +5,21 @@ using System.Text;
 using ExpressionParser.Configuration;
 using ExpressionParser.Lexing;
 using ExpressionParser.Transforming.Operators;
+using System.Diagnostics;
 
 namespace ExpressionParser.Operators
 {
-    public class StandardOperator : Operator
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
+    internal class StandardOperator : Operator
     {
-        public StandardOperator(Token token, OperatorType operatorType) : base(token)
+        internal StandardOperator(Token token, OperatorType operatorType, AssignmentOperatorBehavior assignmentOperatorBehavior) : base(token)
         {
             OperatorType = operatorType;
+            AssignmentOperatorBehavior = assignmentOperatorBehavior;
         }
 
-        public OperatorType OperatorType { get; }
+        internal OperatorType OperatorType { get; }
+        internal AssignmentOperatorBehavior AssignmentOperatorBehavior { get; }
         public override TOutput Transform<TInput, TOutput>(IOperatorTransformVisitor<TInput, TOutput> visitor, TInput[] arguments)
         {
             return visitor.Transform(this, arguments);

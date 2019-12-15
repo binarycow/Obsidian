@@ -4,27 +4,34 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Obsidian.Lexing;
-using Obsidian.WhiteSpaceControl;
 
 namespace Obsidian.Parsing
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public class ParsingNode
+    internal class ParsingNode
     {
-        public ParsingNode(ParsingNodeType nodeType, IEnumerable<Token> tokens)
+        internal ParsingNode(ParsingNodeType nodeType, IEnumerable<Token> tokens)
         {
             NodeType = nodeType;
             Tokens = tokens.ToArrayWithoutInstantiation();
         }
 
-        public ParsingNodeType NodeType { get; }
-        public IEnumerable<Token> Tokens { get; }
-        public WhiteSpaceControlMode WhiteSpaceControlMode { get; set; }
+        internal ParsingNodeType NodeType { get; }
+        internal IEnumerable<Token> Tokens { get; }
 
-        private string DebuggerDisplay => $"\"{this.ToString().Replace("\n", "\\n")}\" - Control: {WhiteSpaceControlMode}";
+        private string DebuggerDisplay => $"\"{this.ToString().Replace("\n", "\\n")}\"";
         public override string ToString()
         {
             return string.Join(string.Empty, Tokens.SelectMany(x => x.Value));
+        }
+
+
+        internal virtual void ToOriginalText(StringBuilder stringBuilder)
+        {
+            foreach (var token in Tokens)
+            {
+                token.ToOriginalText(stringBuilder);
+            }
         }
     }
 }

@@ -9,60 +9,119 @@
     <Import_RootNamespace>Obsidian</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)ArgumentNameCollection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\ASTGenerator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\ASTNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\CallParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\BlockParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\ImportParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\ImportNode.cs" />
+    <Compile Include="..\Obsidian.Shared\AST\NodeParsers\ExpressionNodeParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\FilterParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\ForParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\IfParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\IncludeParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\MacroParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\RawParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\SetParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\State.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\StateAction.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\AbstractContainerNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\ContainerNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\EmptyNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\ExpressionNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\IWhiteSpaceControlling.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\IWithChildren.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\MiscNodes\CommentNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\MiscNodes\ConditionalNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\MiscNodes\RawNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\Statements\CallNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\Statements\ExtendsNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\MiscNodes\NewLineNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\MiscNodes\WhiteSpaceNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\OutputNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\StatementNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\Statements\BlockNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\Statements\FilterNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\Statements\ForNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\Statements\IfNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\Statements\IncludeNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\Statements\MacroNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\Statements\SetNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\TemplateNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\StateMachine.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Block.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CallerFinderVisitor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CommentRemover\CommentRemoverTransformer.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)CompiledAST\ASTCompiler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicRootContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ITemplate.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicSelf.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)JinjaCustomStringProvider.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)JinjaUserDefinedFunction.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Loaders\DictLoader.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ObsidianStrings.Designer.cs">
+      <DependentUpon>ObsidianStrings.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)SpecialVariableInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Templates\CompiledTemplate.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Templates\DynamicTemplate.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Transforming\ASTCompiler.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EnvironmentSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\LoaderNotDefinedException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\TemplateNotFoundException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpressionCreators\SelfEx.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionParserExt\JinjaLexer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionParserExt\JinjaParser.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Extensions\Templating.Lexing\TokenTypesExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\Obsidian.Lexing\TokenTypesExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)JinjaEnvironment.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)JinjaFunctions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)JinjaLanguageDefinition.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Lexing\Lexer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Lexing\Token.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Lexing\TokenTypes.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\IManualWhiteSpaceTransformVisitor.cs" />
+    <Compile Include="..\Obsidian.Shared\Lexing\TokenType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Loaders\BaseLoader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Loaders\FileSystemLoader.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LoopInfo.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)OutputCombiner\OutputCombineVisitor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)OutputCombiner.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Parsing\Parser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Parsing\ParsingNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Parsing\ParsingNodeType.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Rendering\RenderObjects\LiteralRenderObj.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Rendering\RenderObjects\NewLineRenderObj.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Rendering\RenderObjects\RenderObj.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Rendering\RenderObjects\WhiteSpaceControlRenderObj.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Rendering\RenderObjects\WhiteSpaceRenderObj.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Rendering\Visitors\IRenderable.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Rendering\Visitors\IRenderVisitor.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Rendering\Visitors\StringRenderVisitor.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Template.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RenderMode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CompiledSelf.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Transforming\StringRenderTransformer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Transforming\WhiteSpaceCounterVisitor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TemplateInfo.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)TemporaryStuff\RuntimeScope.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Transforming\BaseASTTransformer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\ExpressionTreeTransformVisitor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Transforming\IForceTransformable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Transforming\IForceTransformVisitor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\ITransformable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\ITransformVisitor.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Transforming\ReflectionVisitor.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\DisableStripBlocksVisitor.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\EnvironmentTrimming.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\ManualTrimAfterVisitor.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\ManualTrimBeforeVisitor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Transforming\NewASTCompiler.cs" />
+    <Compile Include="..\Obsidian.Shared\Transforming\StringBuilderTransformer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Transforming\TemplateContainerAssembler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)VariableSetterWalker.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\IWhiteSpace.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\LStripBlocksVisitor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\ManualWhiteSpaceVisitor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\TrimBlocksVisitor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\WhiteSpaceController.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\WhiteSpaceControlMode.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\WhiteSpaceControlPosition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\WhiteSpaceControlSet.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\WhiteSpaceMode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WhiteSpaceControl\WhiteSpacePosition.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)ObsidianStrings.resx">
+      <LastGenOutput>ObsidianStrings.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AdditionalFiles Include="$(MSBuildThisFileDirectory)PublicAPI.Shipped.txt" />
+    <AdditionalFiles Include="$(MSBuildThisFileDirectory)PublicAPI.Unshipped.txt" />
   </ItemGroup>
 </Project>

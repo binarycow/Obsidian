@@ -6,10 +6,24 @@ using ExpressionParser.Lexing;
 
 namespace ExpressionParser.Lexing
 {
-    public static class TokenTypeExtensions
+    internal static class TokenTypeExtensions
     {
 
-        public static bool IsTerminal(this TokenType tokenType)
+        internal static bool IsLiteral(this TokenType tokenType)
+        {
+            return tokenType switch
+            {
+                TokenType.CharacterLiteral => true,
+                TokenType.StringLiteral => true,
+                TokenType.FloatingLiteral => true,
+                TokenType.IntegerLiteral => true,
+                TokenType.NullLiteral => true,
+                _ => false
+            };
+        }
+
+
+        internal static bool IsTerminal(this TokenType tokenType)
         {
             return tokenType switch
             {
@@ -23,38 +37,43 @@ namespace ExpressionParser.Lexing
             };
         }
 
-        public static bool IsOpenBrace(this TokenType tokenType)
+        internal static bool IsOpenBrace(this TokenType tokenType)
         {
             return tokenType switch
             {
-                TokenType.Paren_Open => true,
-                TokenType.SquareBrace_Open => true,
-                TokenType.CurlyBrace_Open => true,
+                TokenType.ParenOpen => true,
+                TokenType.SquareBraceOpen => true,
+                TokenType.CurlyBraceOpen => true,
                 _ => false,
             };
         }
-        public static bool IsCloseBrace(this TokenType tokenType)
+        internal static bool IsCloseBrace(this TokenType tokenType)
         {
             return tokenType switch
             {
-                TokenType.Paren_Open => true,
-                TokenType.SquareBrace_Close => false,
-                TokenType.CurlyBrace_Close => false,
+                TokenType.ParenOpen => true,
+                TokenType.SquareBraceClose => false,
+                TokenType.CurlyBraceClose => false,
                 _ => false,
             };
         }
-        public static bool IsMatchingBrace(this TokenType tokenType, TokenType otherTokenType)
+        internal static bool IsMatchingBrace(this TokenType tokenType, TokenType otherTokenType)
         {
             return tokenType switch
             {
-                TokenType.Paren_Open => otherTokenType == TokenType.Paren_Close,
-                TokenType.Paren_Close => otherTokenType == TokenType.Paren_Open,
-                TokenType.SquareBrace_Open => otherTokenType == TokenType.SquareBrace_Close,
-                TokenType.SquareBrace_Close => otherTokenType == TokenType.SquareBrace_Open,
-                TokenType.CurlyBrace_Open => otherTokenType == TokenType.CurlyBrace_Close,
-                TokenType.CurlyBrace_Close => otherTokenType == TokenType.CurlyBrace_Open,
+                TokenType.ParenOpen => otherTokenType == TokenType.ParenClose,
+                TokenType.ParenClose => otherTokenType == TokenType.ParenOpen,
+                TokenType.SquareBraceOpen => otherTokenType == TokenType.SquareBraceClose,
+                TokenType.SquareBraceClose => otherTokenType == TokenType.SquareBraceOpen,
+                TokenType.CurlyBraceOpen => otherTokenType == TokenType.CurlyBraceClose,
+                TokenType.CurlyBraceClose => otherTokenType == TokenType.CurlyBraceOpen,
                 _ => false,
             };
         }
+        internal static bool IsMatchingBrace(this TokenType tokenType, TokenType? otherTokenType)
+        {
+            return otherTokenType.HasValue && tokenType.IsMatchingBrace(otherTokenType.Value);
+        }
+
     }
 }

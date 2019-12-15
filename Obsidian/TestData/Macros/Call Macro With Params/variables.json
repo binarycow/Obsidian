@@ -1,0 +1,19 @@
+{
+  "list_of_user": [
+    {
+      "realname": "Donald Duck",
+      "description": "A cartoon duck.",
+      "username": "donald.duck"
+    },
+    {
+      "realname": "Steven Hawking",
+      "description": "Smart guy.",
+      "username": "steven.hawking"
+    },
+    {
+      "realname": "Jason Bourne",
+      "description": "Who's he?",
+      "username": "jason.bourne"
+    }
+  ]
+}

@@ -9,8 +9,17 @@
     <Import_RootNamespace>ExpressionParser</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)ArgumentDeclaration.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AssignmentOperatorBehavior.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CallableAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Configuration\FunctionDefinition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Configuration\MethodOperatorDefinition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Configuration\MultiTypeOverloadDefinition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Configuration\OverloadDefinition.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\SpecialOperatorDefinition.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\SpecialOperatorType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Configuration\SingleTypeOverloadDefinition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DynamicResolver.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\CSharpLanguageDefinition.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\ILanguageDefinition.cs" />
@@ -23,15 +32,26 @@
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\LexingException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exceptions\ParseException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionEval.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IEvaluatable.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Localization\ExpressionParserStrings.Designer.cs">
+      <DependentUpon>ExpressionParserStrings.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ExpressionParser.Lexing\TokenTypeExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FunctionDeclaration.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)FunctionDeclarationParser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LanguageDefinition.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Lexing\Lexer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Lexing\Token.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Lexing\TokenType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Parsing\ArgumentSetNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)References\ExpressionMethodGroup.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)References\FunctionMethodGroup.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)References\MethodGroup.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Operators\Operator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Operators\OperatorExecution.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Operators\SpecialOperator.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Operators\SpecialOperatorSubType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Operators\StandardOperator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Parsing\ASTNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Parsing\BinaryASTNode.cs" />
@@ -43,17 +63,40 @@
     <Compile Include="$(MSBuildThisFileDirectory)Parsing\Parser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Parsing\TupleNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Parsing\UnaryASTNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)References\PipelineMethodGroup.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)References\ScopedFunctionMethodGroup.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)References\TestMethodGroup.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Reflection\Array.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Resolver.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Scopes\RootScope.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Scopes\Scope.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpressionResolver.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ScopedUserDefinedFunction.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ScopeStack.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Scopes\CompiledScope.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Scopes\DynamicScope.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Scopes\RootScope_.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Scopes\RootScope__.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Scopes\IScope.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Scopes\Scope_.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Transforming\Nodes\DynamicTransformer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\Nodes\ExpressionTreeTransformer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\Nodes\INodeTransformVisitor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\Nodes\ITransformableNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Transforming\Operators\DynamicOperatorTransformer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\Operators\ExpressionTreeOperatorTransformer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\Operators\IOperatorTransformVisitor.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\Operators\ITransformableOperator.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)VariableManagement\TypeVariableManager.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)VariableManagement\VariableInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UserDefinedArgument.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UserDefinedArgumentData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UserDefinedFunction.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UserDefinedTest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Void.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)Localization\ExpressionParserStrings.resx">
+      <LastGenOutput>ExpressionParserStrings.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Localization\" />
   </ItemGroup>
 </Project>

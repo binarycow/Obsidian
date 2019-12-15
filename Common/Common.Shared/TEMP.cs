@@ -1,12 +1,13 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Reflection;
 using System.Text;
 
 namespace Common
 {
     // TODO: Find a better home for this stuff.
-    public static class TEMP
+    internal static class TEMP
     {
         /// <summary>
         /// Search for a method by name and parameter types.  
@@ -15,7 +16,7 @@ namespace Common
         /// </summary>
         /// <exception cref="AmbiguousMatchException"/>
         /// <remarks>From: https://stackoverflow.com/a/7182379</remarks>
-        public static MethodInfo? GetMethodExt(this Type thisType,
+        internal static MethodInfo? GetMethodExt(this Type thisType,
                                                 string name,
                                                 params Type[] parameterTypes)
         {
@@ -36,7 +37,7 @@ namespace Common
         /// </summary>
         /// <exception cref="AmbiguousMatchException"/>
         /// <remarks>From: https://stackoverflow.com/a/7182379</remarks>
-        public static MethodInfo? GetMethodExt(this Type thisType,
+        internal static MethodInfo? GetMethodExt(this Type thisType,
                                                 string name,
                                                 BindingFlags bindingFlags,
                                                 params Type[] parameterTypes)
@@ -89,18 +90,20 @@ namespace Common
                         if (matchingMethod == null)
                             matchingMethod = methodInfo;
                         else
-                            throw new AmbiguousMatchException(
-                                   "More than one matching method found!");
+                            throw new AmbiguousMatchException(CommonStrings.ResourceManager.GetString("ReflectionError_AmbiguousMethodMatch", CultureInfo.InvariantCulture));
                     }
                 }
             }
         }
 
+
         /// <summary>
         /// Special type used to match any generic parameter type in GetMethodExt().
         /// </summary>
         /// <remarks>From: https://stackoverflow.com/a/7182379</remarks>
-        public class T
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1034:Nested types should not be visible", Justification = "<Pending>")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1812:Avoid uninstantiated internal classes", Justification = "<Pending>")]
+        internal class T
         { }
 
         /// <summary>

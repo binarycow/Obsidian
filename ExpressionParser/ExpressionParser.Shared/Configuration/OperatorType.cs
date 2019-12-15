@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -11,7 +11,7 @@ namespace ExpressionParser.Configuration
         Subtract,
         Multiply,
         Divide,
-        UnaryAdd,
+        UnaryPlus,
         Range,
         Modulo,
         LeftShift,
@@ -30,5 +30,14 @@ namespace ExpressionParser.Configuration
         LogicalAnd,
         LogicalOr,
         NullCoalesce,
+        LogicalNot,
+        In,
+        NotIn,
+        IsNot,
+        Power,
+        Negate,
+        DivideFloat,
+        DivideInteger,
+        Assign,
     }
 }

@@ -9,12 +9,27 @@
     <Import_RootNamespace>Common</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)CommonStrings.Designer.cs">
+      <DependentUpon>CommonStrings.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="$(MSBuildThisFileDirectory)DictionarySorter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\Common\NumericalTypeExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\System\IntExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Numerical.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)NumericalType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RuntimeException.cs" />
+    <Compile Include="..\..\Common\Common.Shared\CharArrayEqualityComparer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)CheckoutObject.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CollectionEx.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Collections\EnumeratorFactory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Collections\LookaroundEnumeratorFactory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CustomToStringProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionCreators\Console.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionCreators\Enumerable.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionCreators\ExpressionExtensionData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExpressionCreators\Object.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionCreators\StringBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionEx.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\System.Collections.Generic\DictionaryExtensions.cs" />
@@ -33,8 +48,15 @@
     <Compile Include="$(MSBuildThisFileDirectory)Collections\EnumeratorState.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MethodLookups.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ObjectPool.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Reflection.cs" />
+    <Compile Include="..\..\Common\Common.Shared\ReflectionHelpers.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)StringBuilderPool.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)TEMP.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TypeCoercion.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(MSBuildThisFileDirectory)CommonStrings.resx">
+      <LastGenOutput>CommonStrings.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>

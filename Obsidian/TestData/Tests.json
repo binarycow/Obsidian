@@ -15,13 +15,59 @@
         "rootPath": "Basic Tests\\Inheritance",
         "inputFile": "child.html",
         "expectedFile": "expected.html",
-        "actualFile": "actual.html"
+        "actualFile": "actual.html",
+        "variablesFile": ""
+      },
+      {
+        "testName": "Raw",
+        "rootPath": "Basic Tests\\Raw",
+        "inputFile": "template.txt",
+        "expectedFile": "expected.txt",
+        "actualFile": "actual.txt",
+        "variablesFile": "variables.json"
+      }
+    ]
+  },
+  {
+    "categoryName": "Macros",
+    "children": [
+      {
+        "testName": "Basic Macro",
+        "rootPath": "Macros\\Basic Macro",
+        "inputFile": "template.txt",
+        "expectedFile": "expected.txt",
+        "actualFile": "actual.txt",
+        "variablesFile": ""
+      },
+      {
+        "testName": "Call Macro",
+        "rootPath": "Macros\\Call Macro",
+        "inputFile": "template.txt",
+        "expectedFile": "expected.txt",
+        "actualFile": "actual.txt",
+        "variablesFile": ""
+      },
+      {
+        "testName": "Call Macro With Params",
+        "rootPath": "Macros\\Call Macro With Params",
+        "inputFile": "template.txt",
+        "expectedFile": "expected.txt",
+        "actualFile": "actual.txt",
+        "variablesFile": "variables.json"
       }
     ]
   },
   {
     "categoryName": "Feature Tests",
     "children": [
+      {
+        "testName": "Set",
+        "rootPath": "Feature Tests\\Set",
+        "inputFile": "template.txt",
+        "expectedFile": "expected.txt",
+        "actualFile": "actual.txt",
+        "variablesFile": ""
+      },
       {
         "testName": "For Loop Variables",
         "rootPath": "Feature Tests\\For Loop Variables",
@@ -82,7 +128,8 @@
         "rootPath": "Whitespace\\Defaults",
         "inputFile": "template.html",
         "expectedFile": "expected.html",
-        "actualFile": "actual.html"
+        "actualFile": "actual.html",
+        "variablesFile": ""
       },
       {
         "testName": "TrimBlocks",
@@ -90,6 +137,7 @@
         "inputFile": "template.html",
         "expectedFile": "expected.html",
         "actualFile": "actual.html",
+        "variablesFile": "",
         "trim_blocks": true
       },
       {
@@ -98,6 +146,7 @@
         "inputFile": "template.html",
         "expectedFile": "expected.html",
         "actualFile": "actual.html",
+        "variablesFile": "",
         "lstrip_blocks": true
       },
       {
@@ -106,8 +155,9 @@
         "inputFile": "template.html",
         "expectedFile": "expected.html",
         "actualFile": "actual.html",
-        "lstrip_blocks": true,
-        "trim_blocks": true
+        "variablesFile": "",
+        "trim_blocks": true,
+        "lstrip_blocks": true
       },
       {
         "testName": "Manual Strip",
@@ -116,6 +166,150 @@
         "expectedFile": "expected.html",
         "actualFile": "actual.html",
         "variablesFile": "Variables.json"
+      }
+    ]
+  },
+  {
+    "categoryName": "Filters",
+    "children": [
+      {
+        "testName": "Filters - Batch",
+        "rootPath": "Filters\\Batch",
+        "inputFile": "template.txt",
+        "expectedFile": "expected.txt",
+        "actualFile": "actual.txt",
+        "variablesFile": "variables.json"
+      },
+      {
+        "testName": "Filters - Basic",
+        "rootPath": "Filters\\Basic",
+        "inputFile": "template.txt",
+        "expectedFile": "expected.txt",
+        "actualFile": "actual.txt",
+        "variablesFile": ""
+      },
+      {
+        "testName": "Filters - Abs",
+        "rootPath": "Filters\\Abs",
+        "inputFile": "template.txt",
+        "expectedFile": "expected.txt",
+        "actualFile": "actual.txt"
+      },
+      {
+        "testName": "Filters - DictSort",
+        "rootPath": "Filters\\DictSort",
+        "inputFile": "template.txt",
+        "expectedFile": "expected.txt",
+        "actualFile": "actual.txt"
+      },
+      {
+        "testName": "Filters - Format",
+        "rootPath": "Filters\\Format",
+        "inputFile": "template.txt",
+        "expectedFile": "expected.txt",
+        "actualFile": "actual.txt"
+      },
+      {
+        "testName": "Filters - A-F",
+        "rootPath": "Filters\\A-F",
+        "inputFile": "template.txt",
+        "expectedFile": "expected.txt",
+        "actualFile": "actual.txt",
+        "variablesFile": "variables.json"
+      }
+    ]
+  },
+  {
+    "categoryName": "Import",
+    "children": [
+      {
+        "testName": "Complete",
+        "rootPath": "Import\\Complete",
+        "inputFile": "template.html",
+        "expectedFile": "expected.html",
+        "actualFile": "actual.html"
+      },
+      {
+        "testName": "Simple",
+        "rootPath": "Import\\Simple",
+        "inputFile": "template.html",
+        "expectedFile": "expected.html",
+        "actualFile": "actual.html"
+      }
+    ]
+  },
+  {
+    "categoryName": "Include",
+    "children": [
+      {
+        "testName": "Basic",
+        "rootPath": "Include\\Basic",
+        "inputFile": "template.html",
+        "expectedFile": "expected.html",
+        "actualFile": "actual.html"
+      },
+      {
+        "categoryName": "Ignore Missing",
+        "children": [
+          {
+            "testName": "Actually Missing",
+            "rootPath": "Include\\IgnoreMissing - Actually Missing",
+            "inputFile": "template.html",
+            "expectedFile": "expected.html",
+            "actualFile": "actual.html",
+            "variablesFile": "variables.json"
+          },
+          {
+            "testName": "Actually Present",
+            "rootPath": "Include\\IgnoreMissing - Actually Present",
+            "inputFile": "template.html",
+            "expectedFile": "expected.html",
+            "actualFile": "actual.html",
+            "variablesFile": "variables.json"
+          }
+        ]
+      },
+      {
+        "categoryName": "Multiple Templates",
+        "children": [
+          {
+            "testName": "First Missing",
+            "rootPath": "Include\\MultipleTemplates - First Missing",
+            "inputFile": "template.html",
+            "expectedFile": "expected.html",
+            "actualFile": "actual.html",
+            "variablesFile": "variables.json"
+          },
+          {
+            "testName": "First Present",
+            "rootPath": "Include\\MultipleTemplates - First Present",
+            "inputFile": "template.html",
+            "expectedFile": "expected.html",
+            "actualFile": "actual.html",
+            "variablesFile": "variables.json"
+          }
+        ]
+      },
+      {
+        "categoryName": "Context",
+        "children": [
+          {
+            "testName": "With Context",
+            "rootPath": "Include\\With Context",
+            "inputFile": "template.html",
+            "expectedFile": "expected.html",
+            "actualFile": "actual.html",
+            "variablesFile": "variables.json"
+          },
+          {
+            "testName": "Without Context",
+            "rootPath": "Include\\Without Context",
+            "inputFile": "template.html",
+            "expectedFile": "expected.html",
+            "actualFile": "actual.html",
+            "variablesFile": "variables.json"
+          }
+        ]
       }
     ]
   }

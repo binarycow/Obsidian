@@ -1,100 +1,122 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
+using System.Reflection;
+using Common;
 using ExpressionParser.Scopes;
-using ExpressionParser.VariableManagement;
-using ExpressionToString;
 
 namespace ExpressionParser
 {
-    public class ExpressionData
+    internal class ExpressionData
     {
-        private ExpressionData(Expression expression, Func<object?[], object?> compiled, IEnumerable<VariableInfo> variables)
+        internal class ParameterInfo
         {
-            ExpressionTree = expression;
-            VariableData = variables.ToArrayWithoutInstantiation();
-            _CompiledFunction = compiled;
-            _Delegate = null;
-        }
-        private ExpressionData(Expression expression, Delegate @delegate, IEnumerable<VariableInfo> variables)
-        {
-            ExpressionTree = expression;
-            VariableData = variables.ToArrayWithoutInstantiation();
-            _CompiledFunction = null;
-            _Delegate = @delegate;
-        }
-        public Expression ExpressionTree { get; }
-        private Func<object?[], object?>? _CompiledFunction;
-        private Delegate? _Delegate { get; }
-    
-        public VariableInfo[] VariableData { get; }
-
-        public bool IsCompiled => _CompiledFunction != null;
-
-        private object?[] GetArgArray(IDictionary<string, object?> variables)
-        {
-            var argArray = new object?[VariableData.Length];
-            for(int i = 0; i < VariableData.Length; ++i)
+            internal ParameterInfo(string name, Type type)
             {
-                if(variables.TryGetValue(VariableData[i].Name, out var objValue))
-                {
-                    if ((objValue?.GetType() ?? typeof(object)) != VariableData[i].Type) throw new NotImplementedException();
-                    argArray[i] = objValue;
-                    continue;
-                }
+                Name = name;
+                Type = type;
+            }
+            internal string Name { get; }
+            internal Type Type { get; }
+        }
+
+        private ExpressionData(Type returnType, ParameterInfo[] parameters, Expression expressionTree, Delegate @delegate, bool compiled)
+        {
+            ReturnType = returnType;
+            Parameters = parameters;
+            ExpressionTree = expressionTree;
+            Delegate = @delegate;
+            Compiled = compiled;
+        }
+        internal Type ReturnType { get; }
+        internal ParameterInfo[] Parameters { get; }
+        internal Expression ExpressionTree { get; }
+        internal Delegate Delegate { get; }
+        internal bool Compiled { get; }
+
+        internal Type[] ParameterTypes => Parameters.Select(param => param.Type).ToArray();
+
+        internal object? Evaluate(IDictionary<string, object?> variables)
+        {
+            var typedArguments = Parameters.Select(param =>
+            {
+                if (variables.TryGetValue(param.Name, out var paramValue) == false) throw new NotImplementedException();
+                if (TypeCoercion.CanCast(paramValue?.GetType() ?? typeof(object), param.Type) == false) throw new NotImplementedException();
+                return Convert.ChangeType(paramValue, param.Type, CultureInfo.InvariantCulture);
+            }).ToArray();
+            var invokeMethod = Delegate.GetType().GetMethod("Invoke", ParameterTypes);
+
+            if(ReturnType == typeof(void))
+            {
+                invokeMethod.Invoke(Delegate, typedArguments);
+                return Void.Instance;
+            }
+            return invokeMethod.Invoke(Delegate, typedArguments);
+        }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>")]
+        internal T EvaluateAs<T>(IDictionary<string, object?> variables)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static ExpressionData CreateCompiled(Expression expression, CompiledScope scope)
+        {
+            return CreateDynamic(expression, scope);
+        }
+
+        internal static ExpressionData CreateDynamic(Expression expression, CompiledScope scope)
+        {
+            var parameterExpressions = scope.Variables.ToArray();
+            var parameterInfo = parameterExpressions.Select(param => new ParameterInfo(param.Name, param.Type)).ToArray();
+            var parameterTypes = parameterExpressions.Select(param => param.Type).ToArray();
+
+            var funcType = GetDelegateType(expression.Type, parameterTypes, out var genericTypes);
+
+            var lambda = GetLambdaMethod(funcType).Invoke(null, new object[] { expression, parameterExpressions });
+            var compileMethod = lambda.GetType().GetMethod("Compile", Type.EmptyTypes);
+            var compiled = compileMethod.Invoke(lambda, Array.Empty<object>());
+            if (!(compiled is Delegate compiledDelegate))
+            {
                 throw new NotImplementedException();
             }
-            return argArray;
+            return new ExpressionData(expression.Type, parameterInfo, expression, compiledDelegate, true);
         }
 
-
-        public object? Evaluate(IDictionary<string, object?> variables)
+        private static Type GetDelegateType(Type returnType, Type[] parameterTypes, out Type[] genericTypes)
         {
-            var debug = ExpressionTree.ToString("C#");
-            var args = GetArgArray(variables);
-
-            if (_CompiledFunction != null)
+            string openFuncType;
+            if(returnType == typeof(void) && parameterTypes.Length == 0)
             {
-                return _CompiledFunction(args);
+                genericTypes = Type.EmptyTypes;
+                return typeof(Action);
             }
-            if(_Delegate != null)
+            if(returnType == typeof(void))
             {
-                return _Delegate.DynamicInvoke((object)args);
+                genericTypes = parameterTypes;
+                openFuncType = $"System.Action`{genericTypes.Length}";
             }
-            throw new NotImplementedException();
-        }
-        public T EvaluateAs<T>(IDictionary<string, object?> variables)
-        {
-            return (T)Convert.ChangeType(Evaluate(variables), typeof(T));
-        }
-
-        public static ExpressionData CreateCompiled(Expression expression, Scope scope)
-        {
-            if(scope is RootScope rootScope)
+            else
             {
-                return CreateCompiledRoot(expression, rootScope);
+                genericTypes = parameterTypes.Concat(returnType).ToArray();
+                openFuncType = $"System.Func`{genericTypes.Length}";
             }
-            throw new NotImplementedException();
+            return Type.GetType(openFuncType).MakeGenericType(genericTypes);
         }
 
-        private static ExpressionData CreateCompiledRoot(Expression expression, RootScope scope)
+
+
+        private static MethodInfo GetLambdaMethod(Type delegateType)
         {
-            var variableInfo = scope.GetVariableInfo();
-            var castedExpression = Expression.Convert(expression, typeof(object));
-            var lambda = Expression.Lambda<Func<object?[], object?>>(castedExpression, scope.RootParameterExpression);
-            var compiled = lambda.Compile();
-            return new ExpressionData(expression, compiled, variableInfo);
+            var openGenericMethod = typeof(Expression)
+                .GetMethod(
+                    nameof(Expression.Lambda), 1,
+                    new Type[] { typeof(Expression), typeof(ParameterExpression[]) }
+                );
+            return openGenericMethod.MakeGenericMethod(delegateType);
         }
 
-        public static ExpressionData CreateDynamic(Expression expression, RootScope scope)
-        {
-            var variableInfo = scope.GetVariableInfo();
-            var castedExpression = Expression.Convert(expression, typeof(object));
-            var lambda = Expression.Lambda(castedExpression, scope.RootParameterExpression);
-            var compiled = lambda.Compile();
-            return new ExpressionData(expression, compiled, variableInfo);
-        }
     }
 }

@@ -1,13 +1,30 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 
 namespace System
 {
-    public static class StringExtensions
+    internal static class StringExtensions
     {
-        public static string WhiteSpaceEscape(this string str)
+
+        internal static string CapitalizeFirstLetter(this string str)
+        {
+            if (str.Length == 0) return str;
+            if (str.Length == 1) return str.ToUpper(CultureInfo.InvariantCulture);
+            return str[0].ToUpper().Concat(str.Substring(1));
+        }
+        internal static string CapitalizeFirstLetterOfEachWord(this string str)
+        {
+            return string.Join(" ", str.Split(' ').Select(part => part.CapitalizeFirstLetter()));
+        }
+
+        internal static string[] Split(this string str, string seperator)
+        {
+            return str.Split(new string[] { seperator }, StringSplitOptions.None);
+        }
+        internal static string WhiteSpaceEscape(this string str)
         {
             var sb = new StringBuilder();
             foreach (var c in str)
@@ -32,6 +49,11 @@ namespace System
                 }
             }
             return sb.ToString();
+        }
+
+        internal static string HTMLEscape(this string str)
+        {
+            return string.Join(string.Empty, str.ToCharArray().Select(CharExtensions.HTMLEscape));
         }
     }
 }

@@ -1,12 +1,15 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace ExpressionParser.Configuration
 {
-    public enum SpecialOperatorType
+    internal enum SpecialOperatorType
     {
         Unknown = 0,
-        MemberAccess,
+        PropertyAccess,
+        MethodCall,
+        Index,
+        Pipeline,
     }
 }

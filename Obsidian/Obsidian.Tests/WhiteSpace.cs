@@ -2,37 +2,38 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Obsidian.Tests.Utilities;
+using Obsidian.TestCore;
 using NUnit.Framework;
 
 namespace Obsidian.Tests
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1812:Avoid uninstantiated public classes", Justification = "<Pending>")]
     public class WhiteSpace : TestClass
     {
         [Test]
         public void Defaults()
         {
-            TestRunner.TestTemplate(TestRunner.TestItems["WhiteSpace"]["Defaults"]);
+            AssertWrapper.TestTemplate(TestRunner.TestItems["WhiteSpace"]["Defaults"]);
         }
         [Test]
         public void TrimBlocks()
         {
-            TestRunner.TestTemplate(TestRunner.TestItems["WhiteSpace"]["TrimBlocks"]);
+            AssertWrapper.TestTemplate(TestRunner.TestItems["WhiteSpace"]["TrimBlocks"]);
         }
         [Test]
         public void LStrip()
         {
-            TestRunner.TestTemplate(TestRunner.TestItems["WhiteSpace"]["LStrip"]);
+            AssertWrapper.TestTemplate(TestRunner.TestItems["WhiteSpace"]["LStrip"]);
         }
         [Test]
         public void LStripAndTrim()
         {
-            TestRunner.TestTemplate(TestRunner.TestItems["WhiteSpace"]["LStrip And Trim"]);
+            AssertWrapper.TestTemplate(TestRunner.TestItems["WhiteSpace"]["LStrip And Trim"]);
         }
         [Test]
         public void ManualStrip()
         {
-            TestRunner.TestTemplate(TestRunner.TestItems["WhiteSpace"]["Manual Strip"]);
+            AssertWrapper.TestTemplate(TestRunner.TestItems["WhiteSpace"]["Manual Strip"]);
         }
     }
 }

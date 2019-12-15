@@ -1,15 +1,16 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace ExpressionParser.Configuration
 {
     public class KeywordDefinition
     {
-        public KeywordDefinition(string text)
+        public KeywordDefinition(IEnumerable<string> names)
         {
-            Text = text;
+            Names = names.ToArrayWithoutInstantiation();
         }
-        public string Text { get; }
+        public IEnumerable<string> Names { get; }
     }
 }

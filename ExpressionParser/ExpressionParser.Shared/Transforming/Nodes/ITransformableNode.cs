@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ExpressionParser.Transforming.Nodes
 {
-    public interface ITransformableNode
+    internal interface ITransformableNode
     {
         TOutput Transform<TOutput>(INodeTransformVisitor<TOutput> visitor);
     }

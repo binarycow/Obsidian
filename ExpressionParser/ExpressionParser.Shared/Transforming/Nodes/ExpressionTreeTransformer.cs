@@ -6,25 +6,25 @@ using System.Text;
 using ExpressionParser.Configuration;
 using ExpressionParser.Operators;
 using ExpressionParser.Parsing;
+using ExpressionParser.References;
 using ExpressionParser.Scopes;
 using ExpressionParser.Transforming.Operators;
-using ExpressionParser.VariableManagement;
 
 namespace ExpressionParser.Transforming.Nodes
 {
-    public class ExpressionTreeTransformer : INodeTransformVisitor<Expression>
+    internal class ExpressionTreeTransformer : INodeTransformVisitor<Expression>
     {
-        public ExpressionTreeTransformer(ILanguageDefinition languageDefinition, Scope scope)
+        internal ExpressionTreeTransformer(ILanguageDefinition languageDefinition, CompiledScope scope)
         {
             LanguageDefinition = languageDefinition;
             OperatorTransformer = new ExpressionTreeOperatorTransformer(this, languageDefinition);
             Scopes.Push(scope);
         }
-        public IOperatorTransformVisitor<ASTNode, Expression> OperatorTransformer { get; }
-        public ILanguageDefinition LanguageDefinition { get; }
+        internal IOperatorTransformVisitor<ASTNode, Expression> OperatorTransformer { get; }
+        internal ILanguageDefinition LanguageDefinition { get; }
 
-        private Stack<Scope> Scopes { get; } = new Stack<Scope>();
-        public Scope CurrentScope => Scopes.Peek();
+        private Stack<CompiledScope> Scopes { get; } = new Stack<CompiledScope>();
+        internal CompiledScope CurrentScope => Scopes.Peek();
 
         public Expression Transform(BinaryASTNode item)
         {
@@ -43,10 +43,15 @@ namespace ExpressionParser.Transforming.Nodes
 
         public Expression Transform(IdentifierNode item)
         {
-            var valueKeyword = LanguageDefinition.Keywords.OfType<ValueKeywordDefinition>().FirstOrDefault(keyword => keyword.Text == item.TextValue);
+            var valueKeyword = LanguageDefinition.Keywords.OfType<ValueKeywordDefinition>().FirstOrDefault(keyword => keyword.Names.Contains(item.TextValue));
             if(valueKeyword != null)
             {
                 return Expression.Constant(valueKeyword.Value);
+            }
+            var functionDefinition = LanguageDefinition.Functions.Where(func => func.Declaration.Name == item.TextValue).FirstOrDefault();
+            if(functionDefinition != null)
+            {
+                return Expression.Constant(MethodGroup.Create(functionDefinition));
             }
             if (CurrentScope.TryGetVariable(item.TextValue, out var expression))
             {
@@ -94,7 +99,7 @@ namespace ExpressionParser.Transforming.Nodes
             var constructor = genericType.GetConstructor(types);
             return Expression.New(constructor, tupleItems);
 
-            Type GetTupleType(int count)
+            static Type GetTupleType(int count)
             {
                 return count switch
                 {
@@ -122,6 +127,16 @@ namespace ExpressionParser.Transforming.Nodes
             var newExpression = Expression.New(genericType);
             var initExpressions = listItems.Select(item => Expression.ElementInit(addMethod, item));
             return Expression.ListInit(newExpression, initExpressions);
+        }
+
+        public Expression Transform(PipelineMethodGroup item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Expression Transform(ArgumentSetNode item)
+        {
+            throw new NotImplementedException();
         }
     }
 }

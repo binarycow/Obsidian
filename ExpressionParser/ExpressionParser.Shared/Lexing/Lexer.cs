@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Linq;
+using System.Resources;
 using System.Text;
+using System.Threading;
 using Common;
 using Common.Collections;
 using Common.LookaroundEnumerator;
@@ -11,11 +14,11 @@ using ExpressionParser.Exceptions;
 
 namespace ExpressionParser.Lexing
 {
-    public class Lexer
+    internal class Lexer
     {
-        private const int MIN_LOOKAHEAD_COUNT = 1;
+        private const int _MIN_LOOKAHEAD_COUNT = 1;
 
-        public Lexer(ILanguageDefinition languageDefinition)
+        internal Lexer(ILanguageDefinition languageDefinition)
         {
             LanguageDefinition = languageDefinition;
             _Delegates = new TryReadDelegate[]
@@ -30,20 +33,21 @@ namespace ExpressionParser.Lexing
             };
             _Operators = languageDefinition.Operators.ToDictionary(operatorDef => operatorDef.Text.ToCharArray());
 
-            _LookaheadCount = (byte)Math.Max(_Operators.Keys.Max(arr => arr.Length), MIN_LOOKAHEAD_COUNT);
+            _LookaheadCount = (byte)Math.Max(_Operators.Keys.Max(arr => arr.Length), _MIN_LOOKAHEAD_COUNT);
         }
-        public ILanguageDefinition LanguageDefinition { get; }
+        internal ILanguageDefinition LanguageDefinition { get; }
 
-        private TryReadDelegate[] _Delegates;
+        private readonly TryReadDelegate[] _Delegates;
         protected virtual TryReadDelegate[] Delegates => _Delegates;
 
         private readonly Dictionary<char[], OperatorDefinition> _Operators;
         private readonly byte _LookaheadCount;
 
 
-        public delegate bool TryReadDelegate(ILookaroundEnumerator<char> enumerator, [NotNullWhen(true)]out Token? token);
+        internal delegate bool TryReadDelegate(ILookaroundEnumerator<char> enumerator, [NotNullWhen(true)]out Token? token);
 
-        public IEnumerable<Token> Tokenize(IEnumerable<char> inputText)
+
+        internal IEnumerable<Token> Tokenize(IEnumerable<char> inputText)
         {
             using var enumerator = LookaroundEnumeratorFactory.CreateLookaroundEnumerator(inputText, _LookaheadCount);
             var DEBUG = enumerator as EnumerableLookaroundEnumerator<char>;
@@ -58,7 +62,7 @@ namespace ExpressionParser.Lexing
                     var Success = del(enumerator, out var Result);
                     return new { Success, Result };
                 }).FirstOrDefault(res => res.Success)?.Result;
-                if(foundToken == default)
+                if(foundToken == null)
                 {
                     hasUnknown = true;
                     currentUnknownChars.Append(enumerator.Current);
@@ -67,26 +71,26 @@ namespace ExpressionParser.Lexing
                 {
                     if(hasUnknown)
                     {
-                        yield return new Token(TokenType.Unknown, currentUnknownChars);
+                        yield return new Token(TokenType.Unknown, null, currentUnknownChars);
                         currentUnknownChars.Clear();
                         hasUnknown = false;
                     }
-                    yield return foundToken;
+                    yield return foundToken.Value;
                 }
             }
             if (hasUnknown)
             {
-                yield return new Token(TokenType.Unknown, currentUnknownChars);
+                yield return new Token(TokenType.Unknown, null, currentUnknownChars);
             }
         }
-        public virtual bool TryReadSingleChar(ILookaroundEnumerator<char> enumerator, [NotNullWhen(true)]out Token? token)
+        internal virtual bool TryReadSingleChar(ILookaroundEnumerator<char> enumerator, [NotNullWhen(true)]out Token? token)
         {
             token = LanguageDefinition.SingleCharTokens.TryGetValue(enumerator.Current, out var tokenType) ?
-                new Token(tokenType, enumerator.Current) :
+                new Token(tokenType, null, enumerator.Current) :
                 default;
             return token != default;
         }
-        public virtual bool TryReadWhiteSpace(ILookaroundEnumerator<char> enumerator, [NotNullWhen(true)]out Token? token)
+        internal virtual bool TryReadWhiteSpace(ILookaroundEnumerator<char> enumerator, [NotNullWhen(true)]out Token? token)
         {
             token = default;
             if (enumerator.Current.IsWhiteSpace() == false)
@@ -101,45 +105,51 @@ namespace ExpressionParser.Lexing
             {
                 stringBuilder.Append(enumerator.MoveNextAndGetValue(out _));
             }
-            token = new Token(TokenType.WhiteSpace, stringBuilder);
+            token = new Token(TokenType.WhiteSpace, null, stringBuilder);
             return true;
         }
 
-        public virtual bool TryReadOperator(ILookaroundEnumerator<char> enumerator, [NotNullWhen(true)]out Token? token)
+        internal virtual bool TryReadOperator(ILookaroundEnumerator<char> enumerator, [NotNullWhen(true)]out Token? token)
         {
             token = default;
-            var possibleOperator = _Operators.Keys.Where(operatorArr => operatorArr[0] == enumerator.Current).ToArray();
-            if (possibleOperator.Length == 0)
+            var initialPossibleOperators = _Operators.Keys.Where(operatorArr => operatorArr[0] == enumerator.Current).ToArray();
+            if (initialPossibleOperators.Length == 0)
             {
                 return false;
             }
-            var skipCount = 1;
-            var currentLength = 1;
-            for (; skipCount < _LookaheadCount; ++skipCount)
-            {
-                if (enumerator.TryGetNext(out var nextChar, skipCount) == false)
-                {
-                    break;
-                }
-                var newPossibleOperators = possibleOperator.Where(operatorArr => skipCount < operatorArr.Length && operatorArr[skipCount] == nextChar).ToArray();
-                if (newPossibleOperators.Length == 0)
-                {
-                    //--skipCount;
-                    break;
-                }
-                possibleOperator = newPossibleOperators;
-                ++currentLength;
-            }
-            possibleOperator = possibleOperator.Where(operatorArr => operatorArr.Length == currentLength).ToArray();
 
-            if (possibleOperator.Length == 1)
+            List<char[]> possibleOperators = new List<char[]>();
+            foreach(var op in initialPossibleOperators.OrderByDescending(x => x.Length))
             {
-                token = new Token(TokenType.Operator, enumerator.Read(currentLength));
-                return true;
+                if(op[op.Length - 1].IsLetter())
+                {
+                    // If the operator ends in a letter (like "is") - then the *NEXT* char after it should _NOT_ be a letter.
+                    if(enumerator.TryGetNext(out var nextChar, op.Length) && nextChar.IsLetter())
+                    {
+                        continue; // Skip this operator - the next character is a letter, and can't properly terminate the operator
+                    }
+                }
+
+                var valid = true;
+                for (var index = op.Length - 1; index > 0; --index)
+                {
+                    if ((enumerator.TryGetNext(out var nextChar, index) == false) || nextChar != op[index])
+                    {
+                        valid = false;
+                        break;
+                    }
+                }
+                if (valid == false) continue;
+                if (enumerator.Current != op[0]) continue;
+                possibleOperators.Add(op);
             }
-            return false;
+            if (possibleOperators.Count == 0) return false;
+            possibleOperators = possibleOperators.Distinct(CharArrayEqualityComparer.Instance).ToList();
+            token = new Token(TokenType.Operator, _Operators[possibleOperators[0]].SecondaryTokenType, _Operators[possibleOperators[0]].Text);
+            enumerator.MoveNext(possibleOperators[0].Length - 1);
+            return true;
         }
-        public virtual bool TryReadIdentifier(ILookaroundEnumerator<char> enumerator, [NotNullWhen(true)]out Token? token)
+        internal virtual bool TryReadIdentifier(ILookaroundEnumerator<char> enumerator, [NotNullWhen(true)]out Token? token)
         {
             token = default;
             if(enumerator.Current.IsLetter() == false && enumerator.Current != '_')
@@ -153,11 +163,11 @@ namespace ExpressionParser.Lexing
             {
                 stringBuilder.Append(enumerator.MoveNextAndGetValue(out _));
             }
-            token = new Token(TokenType.Identifier, stringBuilder);
+            token = new Token(TokenType.Identifier, null, stringBuilder);
             return true;
         }
 
-        public virtual bool TryReadStringLiteral(ILookaroundEnumerator<char> enumerator, [NotNullWhen(true)]out Token? token)
+        internal virtual bool TryReadStringLiteral(ILookaroundEnumerator<char> enumerator, [NotNullWhen(true)]out Token? token)
         {
             token = default;
             if(enumerator.Current != '"')
@@ -166,7 +176,7 @@ namespace ExpressionParser.Lexing
             }
             throw new NotImplementedException();
         }
-        public virtual bool TryReadCharacterLiteral(ILookaroundEnumerator<char> enumerator, [NotNullWhen(true)]out Token? token)
+        internal virtual bool TryReadCharacterLiteral(ILookaroundEnumerator<char> enumerator, [NotNullWhen(true)]out Token? token)
         {
             token = default;
             var escaped = false;
@@ -177,36 +187,36 @@ namespace ExpressionParser.Lexing
             enumerator.MoveNext(); //Eat the quote.
             if(enumerator.TryGetNext(out var nextChar) == false)
             {
-                throw new LexingException("Newline in constant");
+                throw new LexingException(ExpressionParserStrings.ResourceManager.GetString("LexerError_NewlineInConstant", CultureInfo.InvariantCulture));
             }
             if(enumerator.Current == '\'')
             {
-                throw new LexingException("Empty character literal");
+                throw new LexingException(ExpressionParserStrings.ResourceManager.GetString("LexerError_EmptyCharacterLiteral", CultureInfo.InvariantCulture));
             }
             if(enumerator.Current == '\\')
             {
                 if(nextChar.IsValidEscapedChar() == false)
                 {
-                    throw new LexingException("Unrecognized escape sequence");
+                    throw new LexingException(ExpressionParserStrings.ResourceManager.GetString("LexerError_UnrecognizedEscape", CultureInfo.InvariantCulture));
                 }
                 enumerator.MoveNext(); // Pass the backslash
                 escaped = true;
             }
             if(enumerator.TryGetNext(out nextChar) == false)
             {
-                throw new LexingException("Newline in constant");
+                throw new LexingException(ExpressionParserStrings.ResourceManager.GetString("LexerError_NewlineInConstant", CultureInfo.InvariantCulture));
             }
             if(nextChar != '\'')
             {
-                throw new LexingException("Too many characters in character literal");
+                throw new LexingException(ExpressionParserStrings.ResourceManager.GetString("LexerError_TooManyCharsInCharLiteral", CultureInfo.InvariantCulture));
             }
-            token = new Token(TokenType.CharacterLiteral, escaped ? enumerator.Current.Escape() : enumerator.Current);
+            token = new Token(TokenType.CharacterLiteral, null, escaped ? enumerator.Current.Escape() : enumerator.Current);
             enumerator.MoveNext(); //Move to quote
             return true;
         }
 
 
-        public virtual bool TryReadNumericLiteral(ILookaroundEnumerator<char> enumerator, [NotNullWhen(true)]out Token? token)
+        internal virtual bool TryReadNumericLiteral(ILookaroundEnumerator<char> enumerator, [NotNullWhen(true)]out Token? token)
         {
             token = default;
             if(enumerator.Current.IsDigit() == false)
@@ -238,10 +248,36 @@ namespace ExpressionParser.Lexing
                 stringBuilder.Append(enumerator.MoveNextAndGetValue(out _));
             }
 
-            token = new Token(hasDecimal ? TokenType.FloatingLiteral : TokenType.IntegerLiteral, stringBuilder);
+            token = new Token(hasDecimal ? TokenType.FloatingLiteral : TokenType.IntegerLiteral, null, stringBuilder);
             return true;
         }
 
-        
+
+        internal bool? TryReadOnlyOneToken(IEnumerable<char> inputText, [NotNullWhen(true)]out Token? firstToken)
+        {
+            firstToken = default;
+            bool? result = null;
+            using var enumerator = LookaroundEnumeratorFactory.CreateLookaroundEnumerator(inputText, _LookaheadCount);
+            var continueLoop = true;
+            while (continueLoop && enumerator.MoveNext())
+            {
+                foreach(var del in Delegates)
+                {
+                    if(del(enumerator, out firstToken))
+                    {
+                        continueLoop = false;
+                        result = true;
+                        break;
+                    }
+                }
+            }
+            if (firstToken != default) enumerator.MoveNext();
+            if(enumerator.State != EnumeratorState.Complete)
+            {
+                result = false;
+            }
+            return result;
+        }
+
     }
 }
