@@ -57,5 +57,8 @@ namespace Obsidian.Lexing
         Keyword_Without,
         Keyword_Context,
         Keyword_Recursive,
+        Keyword_From,
+        Keyword_As,
+        Keyword_Import,
     }
 }

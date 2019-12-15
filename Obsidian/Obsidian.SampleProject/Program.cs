@@ -59,45 +59,47 @@ namespace Obsidian.SampleProject
 
         static void Main()
         {
-            AssertConfig.MyAssert = new ConsoleAsserter();
-            new TestMacro().TestVarArgs();
-            Console.ReadKey();
-            return;
+            //AssertConfig.MyAssert = new ConsoleAsserter();
+            //new TestMacro().TestVarArgs();
+            //Console.ReadKey();
+            //return;
 
 
             //UpdateExpected();
 
             TestRunner.Init(TestRunner.TestFileName);
-                              //AutomaticTest(TestRunner.TestItems["Basic Tests"]["Basic Template"]);
-                              //AutomaticTest(TestRunner.TestItems["Basic Tests"]["Raw"]);
-                              //AutomaticTest(TestRunner.TestItems["Basic Tests"]["Inheritance"]);
-                              //AutomaticTest(TestRunner.TestItems["Macros"]["Basic Macro"]);
-                              //AutomaticTest(TestRunner.TestItems["Macros"]["Call Macro"]);
-                              //AutomaticTest(TestRunner.TestItems["Macros"]["Call Macro With Params"]);
-                              //AutomaticTest(TestRunner.TestItems["Feature Tests"]["Null Master Fallback"]["Standalone"]);
-                              //AutomaticTest(TestRunner.TestItems["Feature Tests"]["Null Master Fallback"]["Master"]);
-                              //AutomaticTest(TestRunner.TestItems["Feature Tests"]["For Loop Variables"]);
-                              //AutomaticTest(TestRunner.TestItems["Feature Tests"]["Set"]);
-                              //AutomaticTest(TestRunner.TestItems["Other Tests"]["Test1"]);
-                              //AutomaticTest(TestRunner.TestItems["Other Tests"]["Test2"]);
-                              //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["Defaults"]);
-                              //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["TrimBlocks"]);
-                              //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["LStrip"]);
-                              //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["LStrip And Trim"]);
-                              //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["Manual Strip"]);
-                              //AutomaticTest(TestRunner.TestItems["Filters"]["Filters - A-F"]);
-                              //AutomaticTest(TestRunner.TestItems["Filters"]["Filters - Basic"]);
-                              //AutomaticTest(TestRunner.TestItems["Filters"]["Filters - Batch"]);
-                              //AutomaticTest(TestRunner.TestItems["Filters"]["Filters - DictSort"]);
-                              //AutomaticTest(TestRunner.TestItems["Filters"]["Filters - Abs"]);
-                              //AutomaticTest(TestRunner.TestItems["Filters"]["Filters - Format"]);
-                              //AutomaticTest(TestRunner.TestItems["Include"]["Basic"]);
-            AutomaticTest(TestRunner.TestItems["Include"]["Ignore Missing"]["Actually Missing"]);
+            //AutomaticTest(TestRunner.TestItems["Basic Tests"]["Basic Template"]);
+            //AutomaticTest(TestRunner.TestItems["Basic Tests"]["Raw"]);
+            //AutomaticTest(TestRunner.TestItems["Basic Tests"]["Inheritance"]);
+            //AutomaticTest(TestRunner.TestItems["Macros"]["Basic Macro"]);
+            //AutomaticTest(TestRunner.TestItems["Macros"]["Call Macro"]);
+            //AutomaticTest(TestRunner.TestItems["Macros"]["Call Macro With Params"]);
+            //AutomaticTest(TestRunner.TestItems["Feature Tests"]["Null Master Fallback"]["Standalone"]);
+            //AutomaticTest(TestRunner.TestItems["Feature Tests"]["Null Master Fallback"]["Master"]);
+            //AutomaticTest(TestRunner.TestItems["Feature Tests"]["For Loop Variables"]);
+            //AutomaticTest(TestRunner.TestItems["Feature Tests"]["Set"]);
+            //AutomaticTest(TestRunner.TestItems["Other Tests"]["Test1"]);
+            //AutomaticTest(TestRunner.TestItems["Other Tests"]["Test2"]);
+            //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["Defaults"]);
+            //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["TrimBlocks"]);
+            //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["LStrip"]);
+            //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["LStrip And Trim"]);
+            //AutomaticTest(TestRunner.TestItems["WhiteSpace"]["Manual Strip"]);
+            //AutomaticTest(TestRunner.TestItems["Filters"]["Filters - A-F"]);
+            //AutomaticTest(TestRunner.TestItems["Filters"]["Filters - Basic"]);
+            //AutomaticTest(TestRunner.TestItems["Filters"]["Filters - Batch"]);
+            //AutomaticTest(TestRunner.TestItems["Filters"]["Filters - DictSort"]);
+            //AutomaticTest(TestRunner.TestItems["Filters"]["Filters - Abs"]);
+            //AutomaticTest(TestRunner.TestItems["Filters"]["Filters - Format"]);
+            //AutomaticTest(TestRunner.TestItems["Include"]["Basic"]);
+            //AutomaticTest(TestRunner.TestItems["Include"]["Ignore Missing"]["Actually Missing"]);
             //AutomaticTest(TestRunner.TestItems["Include"]["Ignore Missing"]["Actually Present"]);
             //AutomaticTest(TestRunner.TestItems["Include"]["Multiple Templates"]["First Missing"]);
             //AutomaticTest(TestRunner.TestItems["Include"]["Multiple Templates"]["First Present"]);
             //AutomaticTest(TestRunner.TestItems["Include"]["Context"]["With Context"]);
             //AutomaticTest(TestRunner.TestItems["Include"]["Context"]["Without Context"]);
+            //AutomaticTest(TestRunner.TestItems["Import"]["Complete"]);
+            AutomaticTest(TestRunner.TestItems["Import"]["Simple"]);
             //ManualTest(false, false);
 
             Console.ForegroundColor = ConsoleColor.Yellow;

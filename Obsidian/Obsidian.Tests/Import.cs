@@ -1,8 +1,8 @@
-﻿using NUnit.Framework;
-using Obsidian.TestCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using NUnit.Framework;
+using Obsidian.TestCore;
 
 namespace Obsidian.Tests
 {
@@ -12,39 +12,15 @@ namespace Obsidian.Tests
     {
 
         [Test]
-        public void Basic()
+        public void Complete()
         {
-            AssertWrapper.TestTemplate(TestRunner.TestItems["Include"]["Basic"]);
+            AssertWrapper.TestTemplate(TestRunner.TestItems["Import"]["Complete"]);
         }
+
         [Test]
-        public void IgnoreMissing_ActuallyMissing()
+        public void Simple()
         {
-            AssertWrapper.TestTemplate(TestRunner.TestItems["Include"]["Ignore Missing"]["Actually Missing"]);
-        }
-        [Test]
-        public void IgnoreMissing_ActuallyPresent()
-        {
-            AssertWrapper.TestTemplate(TestRunner.TestItems["Include"]["Ignore Missing"]["Actually Present"]);
-        }
-        [Test]
-        public void MultipleTemplates_FirstMissing()
-        {
-            AssertWrapper.TestTemplate(TestRunner.TestItems["Include"]["Multiple Templates"]["First Missing"]);
-        }
-        [Test]
-        public void MultipleTemplates_FirstPresent()
-        {
-            AssertWrapper.TestTemplate(TestRunner.TestItems["Include"]["Multiple Templates"]["First Present"]);
-        }
-        [Test]
-        public void WithContext()
-        {
-            AssertWrapper.TestTemplate(TestRunner.TestItems["Include"]["Context"]["With Context"]);
-        }
-        [Test]
-        public void WithoutContext()
-        {
-            AssertWrapper.TestTemplate(TestRunner.TestItems["Include"]["Context"]["Without Context"]);
+            AssertWrapper.TestTemplate(TestRunner.TestItems["Import"]["Simple"]);
         }
     }
 }
