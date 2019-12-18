@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
 using Obsidian.Lexing;
@@ -9,7 +10,7 @@ using Obsidian.WhiteSpaceControl;
 
 namespace Obsidian.AST
 {
-    internal abstract class ASTNode : ITransformable, IForceTransformable
+    internal abstract class ASTNode : DynamicObject, ITransformable, IForceTransformable
     {
         private static int _NodeID = 0;
 

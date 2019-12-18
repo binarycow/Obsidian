@@ -10,7 +10,7 @@ namespace Obsidian.Transforming
     internal interface ITransformVisitor<TOutput>
     {
         TOutput Transform(TemplateNode item);
-        TOutput Transform(EmptyNode emptyNode);
+        TOutput Transform(EmptyNode item);
         TOutput Transform(ForNode item);
         TOutput Transform(ContainerNode item);
         TOutput Transform(ExpressionNode item);
@@ -34,7 +34,7 @@ namespace Obsidian.Transforming
     internal interface ITransformVisitor
     {
         void Transform(TemplateNode item);
-        void Transform(EmptyNode emptyNode);
+        void Transform(EmptyNode item);
         void Transform(ForNode item);
         void Transform(ContainerNode item);
         void Transform(ExpressionNode item);

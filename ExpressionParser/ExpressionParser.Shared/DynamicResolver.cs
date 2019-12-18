@@ -5,6 +5,7 @@ using ExpressionParser.Scopes;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Dynamic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -43,6 +44,8 @@ namespace ExpressionParser
                     return pipelineGroup.FunctionDefinition.Invoke(languageDefinition, pipelineGroup.ReferredObject, args);
                 case ScopedFunctionMethodGroup scopedMethodGroup:
                     return scopedMethodGroup.FunctionDefinition.Invoke(languageDefinition, scopeStack.Current, args);
+                case DynamicObject dynamicObject:
+                    throw new NotImplementedException();
                 default:
                     var callable = ReflectionHelpers.GetCallable(left);
                     if(callable != null)

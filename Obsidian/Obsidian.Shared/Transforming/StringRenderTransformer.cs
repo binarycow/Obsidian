@@ -310,10 +310,6 @@ namespace Obsidian.Transforming
         {
             _EncounteredOutputStyleBlock = true;
             if (!(ShouldRender && _EncounteredOutputStyleBlock)) yield break;
-            if (Environment.Evaluation.TryParseFunctionDeclaration(item.MacroText, out var functionDeclaration) == false || functionDeclaration == null)
-            {
-                throw new NotImplementedException();
-            }
 
             var usesCaller = item.Contents.Transform(CallerFinderVisitor.Instance).Any(x => x);
 
@@ -323,7 +319,7 @@ namespace Obsidian.Transforming
                 using var checkout = StringBuilderPool.Instance.Checkout();
                 var stringBuilder = checkout.CheckedOutObject;
 
-                Scopes.Push($"Macro: {functionDeclaration.Name}");
+                Scopes.Push($"Macro: {item.FunctionDeclaration.Name}");
                 foreach (var arg in arguments.AllArguments)
                 {
                     Scopes.Current.DefineAndSetVariable(arg.Name, arg.Value);
@@ -337,13 +333,13 @@ namespace Obsidian.Transforming
                     stringBuilder.Append(output);
                 }
 
-                Scopes.Pop($"Macro: {functionDeclaration.Name}");
+                Scopes.Pop($"Macro: {item.FunctionDeclaration.Name}");
                 return stringBuilder.ToString();
             };
             UserDefinedFunction.UserDefinedFunctionDelegate del = args => func(args);
 
 
-            Scopes.Current.DefineAndSetVariable(functionDeclaration.Name, new JinjaUserDefinedFunction(functionDeclaration, del, usesCaller));
+            Scopes.Current.DefineAndSetVariable(item.FunctionDeclaration.Name, new JinjaUserDefinedFunction(item.FunctionDeclaration, del, usesCaller));
 
             yield break;
         }
