@@ -203,5 +203,10 @@ namespace Obsidian.Transforming
         {
             yield return item;
         }
+
+        public IEnumerable<ASTNode> Transform(FromNode item)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

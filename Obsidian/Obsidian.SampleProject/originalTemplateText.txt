@@ -1,8 +1,8 @@
-{% import 'forms.html' as forms %}
+{% from 'forms.html' import input as input_field, textarea %}
 <dl>
     <dt>Username</dt>
-    <dd>{{ forms.input('username') }}</dd>
+    <dd>{{ input_field('username') }}</dd>
     <dt>Password</dt>
-    <dd>{{ forms.input('password', type='password') }}</dd>
+    <dd>{{ input_field('password', type='password') }}</dd>
 </dl>
-<p>{{ forms.textarea('comment') }}</p>
+<p>{{ textarea('comment') }}</p>

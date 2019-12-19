@@ -130,7 +130,14 @@ namespace ExpressionParser
                 }
                 else
                 {
-                    throw new NotImplementedException();
+                    if(passed is ValueTuple<string, object?> tuple)
+                    {
+                        additionalKeywordArgs.Add(new UserDefinedArgument(tuple.Item1, tuple.Item2, -1, true));
+                    }
+                    else
+                    {
+                        additionalPositionalArgs.Add(new UserDefinedArgument(string.Empty, passed, -1, true));
+                    }
                 }
 
             }

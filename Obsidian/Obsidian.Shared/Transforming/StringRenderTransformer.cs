@@ -437,10 +437,34 @@ namespace Obsidian.Transforming
             }
         }
 
+        public IEnumerable<string> Transform(FromNode item)
+        {
+            //{% from 'forms.html' import input as input_field, textarea %}
+            var importObject = Environment.Evaluation.EvaluateDynamic(item.Template, ExpressionParserTransformer);
+            if (!(importObject is string importString)) throw new NotImplementedException();
+
+            if (Environment.TryGetDynamicTemplate(importString, out var template) == false || template == null) throw new NotImplementedException();
+
+            var macros = NodeFinderVisitor.FindNodes<MacroNode>(template.TemplateNode).ToDictionary(macro => macro.FunctionDeclaration.Name);
+
+            foreach(var import in item.Imports)
+            {
+                if(macros.TryGetValue(import.MacroName, out var macroNode))
+                {
+                    Scopes.Current.DefineAndSetVariable(import.AliasName, ConvertMacroToUserDefinedFunction(macroNode));
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
+            }
+            yield break;
+        }
+
         public IEnumerable<string> Transform(ImportNode item)
         {
             //{% import 'forms.html' as forms %}
-            var importObject = Environment.Evaluation.EvaluateDynamic(item.Import, ExpressionParserTransformer);
+            var importObject = Environment.Evaluation.EvaluateDynamic(item.Template, ExpressionParserTransformer);
             if (!(importObject is string importString)) throw new NotImplementedException();
 
             if (Environment.TryGetDynamicTemplate(importString, out var template) == false || template == null) throw new NotImplementedException();

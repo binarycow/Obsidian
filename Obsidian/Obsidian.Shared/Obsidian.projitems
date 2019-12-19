@@ -14,8 +14,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)AST\ASTNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\CallParser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\BlockParser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\FromParser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\ImportParser.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\ImportNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\Statements\ImportNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AST\Nodes\Statements\FromNode.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Transforming\NodeFinderVisitor.cs" />
     <Compile Include="..\Obsidian.Shared\AST\NodeParsers\ExpressionNodeParser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)AST\NodeParsers\FilterParser.cs" />
