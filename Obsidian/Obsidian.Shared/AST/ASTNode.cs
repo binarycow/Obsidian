@@ -10,7 +10,7 @@ using Obsidian.WhiteSpaceControl;
 
 namespace Obsidian.AST
 {
-    internal abstract class ASTNode : DynamicObject, ITransformable, IForceTransformable
+    internal abstract class ASTNode : ITransformable, IForceTransformable
     {
         private static int _NodeID = 0;
 

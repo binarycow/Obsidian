@@ -9,7 +9,6 @@ namespace Common
 {
     public static class DynamicEval
     {
-
         public static bool TryGetDynamicMember(object item, string memberName, out object? result)
         {
             try

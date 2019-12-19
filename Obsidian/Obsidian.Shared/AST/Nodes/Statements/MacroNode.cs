@@ -33,6 +33,12 @@ namespace Obsidian.AST.Nodes.Statements
         public FunctionDeclaration FunctionDeclaration { get; }
         public WhiteSpaceControlSet WhiteSpaceControl { get; }
 
+
+        [Callable]
+        internal object? Call(object?[] args)
+        {
+            throw new NotImplementedException();
+        }
         public override void Transform(IManualWhiteSpaceTransformVisitor visitor, bool inner = false)
         {
             visitor.Transform(this, inner);
