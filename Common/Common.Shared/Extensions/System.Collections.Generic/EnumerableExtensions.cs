@@ -41,5 +41,20 @@ namespace System.Collections.Generic
                     yield return item;
             }
         }
+
+        public static bool TryGetIndex<T>(this IEnumerable<T> source, Func<T, bool> predicate, out int index)
+        {
+            index = -1;
+            foreach(var item in source)
+            {
+                ++index;
+                if(predicate(item))
+                {
+                    return true;
+                }
+            }
+            index = -1;
+            return false;
+        }
     }
 }

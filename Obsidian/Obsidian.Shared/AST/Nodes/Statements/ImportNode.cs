@@ -12,15 +12,13 @@ namespace Obsidian.AST.Nodes
 {
     internal class ImportNode : ASTNode
     {
-        public ImportNode(ParsingNode parsingNode, string fromDef, ExpressionParser.Parsing.ASTNode importDef, string asDef) : base(parsingNode)
+        public ImportNode(ParsingNode parsingNode, ExpressionParser.Parsing.ASTNode template, string asDef) : base(parsingNode)
         {
-            From = fromDef;
-            Import = importDef;
+            Template = template;
             As = asDef;
         }
 
-        public string From { get; }
-        public ExpressionParser.Parsing.ASTNode Import { get; }
+        public ExpressionParser.Parsing.ASTNode Template { get; }
         public string As { get; }
 
         public override TOutput Transform<TOutput>(ITransformVisitor<TOutput> visitor)
@@ -46,23 +44,20 @@ namespace Obsidian.AST.Nodes
         internal static bool TryParseImport(JinjaEnvironment environment, Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)
         {
             parsedNode = default;
-            if (ImportParser.Parser.TryParse(enumerator.Current) == false)
+            if (ImportParser.ParserImport.TryParse(enumerator.Current) == false)
             {
                 return false;
             }
-            _ = ImportParser.Parser.TryGetAccumulation(ImportParser.ImportState.FromDefinition, 0, out var fromDef);
-            if (ImportParser.Parser.TryGetAccumulation(ImportParser.ImportState.ImportDefinition, 0, out var importDef) == false)
+            if (ImportParser.ParserImport.TryGetAccumulation(ImportParser.ImportState.Template, 0, out var template) == false)
             {
                 throw new NotImplementedException();
             }
-            if (ImportParser.Parser.TryGetAccumulation(ImportParser.ImportState.AsDefinition, 0, out var asDef) == false)
+            if (ImportParser.ParserImport.TryGetAccumulation(ImportParser.ImportState.As, 0, out var asText) == false)
             {
                 throw new NotImplementedException();
             }
-
-            var importNode = environment.Evaluation.Parse(importDef);
-
-            parsedNode = new ImportNode(enumerator.Current, fromDef, importNode, asDef);
+            var templateNode = environment.Evaluation.Parse(template);
+            parsedNode = new ImportNode(enumerator.Current, templateNode, asText);
             return true;
         }
     }

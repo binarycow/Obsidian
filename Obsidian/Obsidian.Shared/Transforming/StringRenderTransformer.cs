@@ -305,45 +305,44 @@ namespace Obsidian.Transforming
             }
         }
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0039:Use local function", Justification = "<Pending>")]
-        public IEnumerable<string> Transform(MacroNode item)
+        private JinjaUserDefinedFunction ConvertMacroToUserDefinedFunction(MacroNode macro)
         {
-            _EncounteredOutputStyleBlock = true;
-            if (!(ShouldRender && _EncounteredOutputStyleBlock)) yield break;
-            if (Environment.Evaluation.TryParseFunctionDeclaration(item.MacroText, out var functionDeclaration) == false || functionDeclaration == null)
-            {
-                throw new NotImplementedException();
-            }
-
-            var usesCaller = item.Contents.Transform(CallerFinderVisitor.Instance).Any(x => x);
-
-
+            var usesCaller = macro.Contents.Transform(CallerFinderVisitor.Instance).Any(x => x);
             Func<UserDefinedArgumentData, object?> func = arguments =>
             {
                 using var checkout = StringBuilderPool.Instance.Checkout();
                 var stringBuilder = checkout.CheckedOutObject;
 
-                Scopes.Push($"Macro: {functionDeclaration.Name}");
+                Scopes.Push($"Macro: {macro.FunctionDeclaration.Name}");
                 foreach (var arg in arguments.AllArguments)
                 {
                     Scopes.Current.DefineAndSetVariable(arg.Name, arg.Value);
                 }
-                
+
                 Scopes.Current.DefineAndSetVariable("varargs", arguments.AdditionalPositionalArguments.Select(arg => arg.Value));
                 Scopes.Current.DefineAndSetVariable("kwargs", arguments.AdditionalKeywordArguments);
-                
-                foreach(var output in item.Contents.Transform(this))
+
+                foreach (var output in macro.Contents.Transform(this))
                 {
                     stringBuilder.Append(output);
                 }
 
-                Scopes.Pop($"Macro: {functionDeclaration.Name}");
+                Scopes.Pop($"Macro: {macro.FunctionDeclaration.Name}");
                 return stringBuilder.ToString();
             };
             UserDefinedFunction.UserDefinedFunctionDelegate del = args => func(args);
 
+            return new JinjaUserDefinedFunction(macro.FunctionDeclaration, del, usesCaller);
+        }
 
-            Scopes.Current.DefineAndSetVariable(functionDeclaration.Name, new JinjaUserDefinedFunction(functionDeclaration, del, usesCaller));
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0039:Use local function", Justification = "<Pending>")]
+        public IEnumerable<string> Transform(MacroNode item)
+        {
+            _EncounteredOutputStyleBlock = true;
+            if (!(ShouldRender && _EncounteredOutputStyleBlock)) yield break;
+
+            Scopes.Current.DefineAndSetVariable(item.FunctionDeclaration.Name, ConvertMacroToUserDefinedFunction(item));
 
             yield break;
         }
@@ -438,13 +437,43 @@ namespace Obsidian.Transforming
             }
         }
 
+        public IEnumerable<string> Transform(FromNode item)
+        {
+            //{% from 'forms.html' import input as input_field, textarea %}
+            var importObject = Environment.Evaluation.EvaluateDynamic(item.Template, ExpressionParserTransformer);
+            if (!(importObject is string importString)) throw new NotImplementedException();
+
+            if (Environment.TryGetDynamicTemplate(importString, out var template) == false || template == null) throw new NotImplementedException();
+
+            var macros = NodeFinderVisitor.FindNodes<MacroNode>(template.TemplateNode).ToDictionary(macro => macro.FunctionDeclaration.Name);
+
+            foreach(var import in item.Imports)
+            {
+                if(macros.TryGetValue(import.MacroName, out var macroNode))
+                {
+                    Scopes.Current.DefineAndSetVariable(import.AliasName, ConvertMacroToUserDefinedFunction(macroNode));
+                }
+                else
+                {
+                    throw new NotImplementedException();
+                }
+            }
+            yield break;
+        }
+
         public IEnumerable<string> Transform(ImportNode item)
         {
             //{% import 'forms.html' as forms %}
-            var importObject = Environment.Evaluation.EvaluateDynamic(item.Import, ExpressionParserTransformer);
+            var importObject = Environment.Evaluation.EvaluateDynamic(item.Template, ExpressionParserTransformer);
             if (!(importObject is string importString)) throw new NotImplementedException();
 
-            if (Environment.TryGetDynamicTemplate(importString, out var template) == false) throw new NotImplementedException();
+            if (Environment.TryGetDynamicTemplate(importString, out var template) == false || template == null) throw new NotImplementedException();
+
+            var macros = NodeFinderVisitor.FindNodes<MacroNode>(template.TemplateNode);
+            foreach(var macro in macros)
+            {
+                template.AddUserDefinedFunction(ConvertMacroToUserDefinedFunction(macro));
+            }
 
             Scopes.Current.DefineAndSetVariable(item.As, template);
             yield break;

@@ -11,5 +11,6 @@ namespace Obsidian
         public string? TemplatePath { get; }
         public string Render(IDictionary<string, object?> variables);
         public bool Validate(IDictionary<string, object?> variables);
+
     }
 }

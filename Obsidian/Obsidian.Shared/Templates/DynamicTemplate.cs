@@ -1,9 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using ExpressionParser.Scopes;
 using Obsidian.AST;
 using Obsidian.AST.Nodes;
+using Obsidian.AST.Nodes.Statements;
 using Obsidian.Transforming;
 
 namespace Obsidian.Templates
@@ -36,6 +40,26 @@ namespace Obsidian.Templates
             return renderer.StringBuilder.ToString();
         }
 
+        private IDictionary<string, JinjaUserDefinedFunction> _UserDefinedFunctions = new Dictionary<string, JinjaUserDefinedFunction>();
+
+        public JinjaUserDefinedFunction? this[string name]
+        {
+            get
+            {
+                if(_UserDefinedFunctions.TryGetValue(name, out var function))
+                {
+                    return function;
+                }
+                return default;
+            }
+        }
+
+        internal void AddUserDefinedFunction(JinjaUserDefinedFunction func)
+        {
+            _UserDefinedFunctions.Add(func.name, func);
+        }
+
+
         internal static DynamicTemplate LoadTemplate(JinjaEnvironment environment, string templateText, string? templateName, string? templatePath)
         {
             var node = ASTNode.GetTemplateNode(environment, templateText);
@@ -50,5 +74,6 @@ namespace Obsidian.Templates
         {
             throw new NotImplementedException();
         }
+
     }
 }

@@ -9,6 +9,7 @@ using ExpressionParser.Transforming.Nodes;
 using System.Linq;
 using Common;
 using ExpressionParser.References;
+using System.Dynamic;
 
 namespace ExpressionParser.Transforming.Operators
 {
@@ -196,6 +197,13 @@ namespace ExpressionParser.Transforming.Operators
                         if (LanguageDefinition.AllowStringIndexersAsProperties) allowedTypes |= DynamicResolver.MemberTypes.StringIndexer;
                         if (DynamicResolver.TryGetMember(left, ident.TextValue, allowedTypes, out var result)) return result;
 
+                        if(left is DynamicObject dynamic)
+                        {
+                            if(DynamicEval.TryGetDynamicMember(dynamic, ident.TextValue, out result))
+                            {
+                                return result;
+                            }
+                        }
 
                         if (LanguageDefinition.ReturnNullOnNonExistantProperties) return null;
                         throw new NotImplementedException();

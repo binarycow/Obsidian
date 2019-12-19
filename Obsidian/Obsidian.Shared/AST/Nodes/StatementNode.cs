@@ -36,6 +36,7 @@ namespace Obsidian.AST.Nodes
             SetNode.TryParseSet,
             IncludeNode.TryParseInclude,
             ImportNode.TryParseImport,
+            FromNode.TryParseFrom,
         };
 
         internal static bool TryParse(JinjaEnvironment environment, Lexer lexer, ILookaroundEnumerator<ParsingNode> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode)

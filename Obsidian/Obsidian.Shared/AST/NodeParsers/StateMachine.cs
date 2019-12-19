@@ -36,7 +36,10 @@ namespace Obsidian.AST.NodeParsers
 
 
 
-        internal StateMachine(TState initialState, TState doneState)
+        internal StateMachine(TState initialState) : this(initialState, null)
+        {
+        }
+        internal StateMachine(TState initialState, TState? doneState)
         {
             InitialState = initialState;
             CurrentState = InitialState;
@@ -44,7 +47,7 @@ namespace Obsidian.AST.NodeParsers
         }
 
         internal TState InitialState { get; }
-        internal TState DoneState { get; }
+        internal TState? DoneState { get; }
         internal TState CurrentState { get; private set; }
 
         private readonly Dictionary<TState, State<TState>> _States = new Dictionary<TState, State<TState>>();
@@ -126,6 +129,13 @@ namespace Obsidian.AST.NodeParsers
             return _ElseState;
         }
 
+        internal bool TryParse(Lexer lexer, string text)
+        {
+            var tokens = lexer.Tokenize(text);
+            using var enumerator = LookaroundEnumeratorFactory.CreateLookaroundEnumerator(tokens);
+            return TryParse(enumerator, out _, out _);
+        }
+
         internal bool TryParse(ParsingNode node)
         {
             return TryParse(node, out _, out _);
@@ -163,7 +173,7 @@ namespace Obsidian.AST.NodeParsers
                     if (returnResult.HasValue) return returnResult.Value;
                 }
             } while (enumerator.MoveNext());
-            if(CurrentState.Equals(DoneState) == false)
+            if(DoneState.HasValue && CurrentState.Equals(DoneState.Value) == false)
             {
                 throw new NotImplementedException();
             }

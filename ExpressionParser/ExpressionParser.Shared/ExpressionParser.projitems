@@ -20,6 +20,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\SpecialOperatorType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\SingleTypeOverloadDefinition.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DynamicResolver.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exceptions\ArgumentNotProvidedException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ExpressionData.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\CSharpLanguageDefinition.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Configuration\ILanguageDefinition.cs" />

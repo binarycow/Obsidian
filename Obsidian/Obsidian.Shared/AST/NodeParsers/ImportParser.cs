@@ -3,58 +3,50 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 using Obsidian.Lexing;
-using static Obsidian.AST.NodeParsers.ImportParser.ImportState;
 using static Obsidian.Lexing.TokenType;
+using static Obsidian.AST.NodeParsers.ImportParser.ImportState;
 
 namespace Obsidian.AST.NodeParsers
 {
     internal static class ImportParser
     {
-
-        internal static readonly Lazy<StateMachine<ImportState>> _Parser = new Lazy<StateMachine<ImportState>>(() => CreateParser());
-        internal static StateMachine<ImportState> Parser => _Parser.Value;
+        internal static readonly Lazy<StateMachine<ImportState>> _ParserImport = new Lazy<StateMachine<ImportState>>(() => CreateImportParser());
+        internal static StateMachine<ImportState> ParserImport => _ParserImport.Value;
 
         internal enum ImportState
         {
             StartJinja,
             Keyword,
-            FromDefinition,
-            ImportDefinition,
-            AsDefinition,
-            Done
+            Template,
+            As,
+            Done,
         }
-        private static StateMachine<ImportState> CreateParser()
+
+        private static StateMachine<ImportState> CreateImportParser()
         {
-            var parser = new StateMachine<ImportState>(StartJinja, Done);
-            parser.State(StartJinja)
+            var parser = new StateMachine<ImportState>(ImportState.StartJinja, ImportState.Done);
+            parser.State(ImportState.StartJinja)
                 .Expect(StatementStart)
-                    .MoveTo(Keyword)
+                    .MoveTo(ImportState.Keyword)
                 .Else()
                     .Return(false);
-            parser.State(Keyword)
+            parser.State(ImportState.Keyword)
                 .Ignore(WhiteSpace)
-                .Expect(Keyword_From)
-                    .MoveTo(FromDefinition)
                 .Expect(Keyword_Import)
-                    .MoveTo(ImportDefinition)
+                    .MoveTo(ImportState.Template)
                 .Else()
                     .Return(false);
-            parser.State(FromDefinition)
-                .Expect(Keyword_Import)
-                    .MoveTo(ImportDefinition)
-                .Else()
-                    .Accumulate();
-            parser.State(ImportDefinition)
+            parser.State(ImportState.Template)
                 .Expect(Keyword_As)
-                    .MoveTo(AsDefinition)
+                    .MoveTo(ImportState.As)
                 .Else()
                     .Accumulate();
-            parser.State(AsDefinition)
+            parser.State(ImportState.As)
                 .Expect(StatementEnd)
-                    .MoveTo(Done)
+                    .MoveTo(ImportState.Done)
                 .Else()
                     .Accumulate();
-            parser.State(Done)
+            parser.State(ImportState.Done)
                 .Throw();
             parser.Else()
                 .Throw(new Exception(

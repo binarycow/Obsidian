@@ -29,5 +29,6 @@ namespace Obsidian.Transforming
         void Transform(SetNode item, bool inner = false);
         void Transform(IncludeNode item, bool inner = false);
         void Transform(ImportNode item, bool inner = false);
+        void Transform(FromNode item, bool inner = false);
     }
 }

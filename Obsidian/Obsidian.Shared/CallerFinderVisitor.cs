@@ -184,5 +184,10 @@ namespace Obsidian
         {
             throw new NotImplementedException();
         }
+
+        public IEnumerable<bool> Transform(FromNode item)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
