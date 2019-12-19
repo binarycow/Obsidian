@@ -305,41 +305,44 @@ namespace Obsidian.Transforming
             }
         }
 
+        private JinjaUserDefinedFunction ConvertMacroToUserDefinedFunction(MacroNode macro)
+        {
+            var usesCaller = macro.Contents.Transform(CallerFinderVisitor.Instance).Any(x => x);
+            Func<UserDefinedArgumentData, object?> func = arguments =>
+            {
+                using var checkout = StringBuilderPool.Instance.Checkout();
+                var stringBuilder = checkout.CheckedOutObject;
+
+                Scopes.Push($"Macro: {macro.FunctionDeclaration.Name}");
+                foreach (var arg in arguments.AllArguments)
+                {
+                    Scopes.Current.DefineAndSetVariable(arg.Name, arg.Value);
+                }
+
+                Scopes.Current.DefineAndSetVariable("varargs", arguments.AdditionalPositionalArguments.Select(arg => arg.Value));
+                Scopes.Current.DefineAndSetVariable("kwargs", arguments.AdditionalKeywordArguments);
+
+                foreach (var output in macro.Contents.Transform(this))
+                {
+                    stringBuilder.Append(output);
+                }
+
+                Scopes.Pop($"Macro: {macro.FunctionDeclaration.Name}");
+                return stringBuilder.ToString();
+            };
+            UserDefinedFunction.UserDefinedFunctionDelegate del = args => func(args);
+
+            return new JinjaUserDefinedFunction(macro.FunctionDeclaration, del, usesCaller);
+        }
+
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0039:Use local function", Justification = "<Pending>")]
         public IEnumerable<string> Transform(MacroNode item)
         {
             _EncounteredOutputStyleBlock = true;
             if (!(ShouldRender && _EncounteredOutputStyleBlock)) yield break;
 
-            var usesCaller = item.Contents.Transform(CallerFinderVisitor.Instance).Any(x => x);
-
-
-            Func<UserDefinedArgumentData, object?> func = arguments =>
-            {
-                using var checkout = StringBuilderPool.Instance.Checkout();
-                var stringBuilder = checkout.CheckedOutObject;
-
-                Scopes.Push($"Macro: {item.FunctionDeclaration.Name}");
-                foreach (var arg in arguments.AllArguments)
-                {
-                    Scopes.Current.DefineAndSetVariable(arg.Name, arg.Value);
-                }
-                
-                Scopes.Current.DefineAndSetVariable("varargs", arguments.AdditionalPositionalArguments.Select(arg => arg.Value));
-                Scopes.Current.DefineAndSetVariable("kwargs", arguments.AdditionalKeywordArguments);
-                
-                foreach(var output in item.Contents.Transform(this))
-                {
-                    stringBuilder.Append(output);
-                }
-
-                Scopes.Pop($"Macro: {item.FunctionDeclaration.Name}");
-                return stringBuilder.ToString();
-            };
-            UserDefinedFunction.UserDefinedFunctionDelegate del = args => func(args);
-
-
-            Scopes.Current.DefineAndSetVariable(item.FunctionDeclaration.Name, new JinjaUserDefinedFunction(item.FunctionDeclaration, del, usesCaller));
+            Scopes.Current.DefineAndSetVariable(item.FunctionDeclaration.Name, ConvertMacroToUserDefinedFunction(item));
 
             yield break;
         }
@@ -440,7 +443,13 @@ namespace Obsidian.Transforming
             var importObject = Environment.Evaluation.EvaluateDynamic(item.Import, ExpressionParserTransformer);
             if (!(importObject is string importString)) throw new NotImplementedException();
 
-            if (Environment.TryGetDynamicTemplate(importString, out var template) == false) throw new NotImplementedException();
+            if (Environment.TryGetDynamicTemplate(importString, out var template) == false || template == null) throw new NotImplementedException();
+
+            var macros = NodeFinderVisitor.FindNodes<MacroNode>(template.TemplateNode);
+            foreach(var macro in macros)
+            {
+                template.AddUserDefinedFunction(ConvertMacroToUserDefinedFunction(macro));
+            }
 
             Scopes.Current.DefineAndSetVariable(item.As, template);
             yield break;

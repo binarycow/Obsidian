@@ -64,7 +64,6 @@ namespace Obsidian.SampleProject
             //Console.ReadKey();
             //return;
 
-
             //UpdateExpected();
 
             TestRunner.Init(TestRunner.TestFileName);

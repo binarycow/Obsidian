@@ -140,7 +140,6 @@ namespace ExpressionParser.Transforming.Operators
         public object? Transform(SpecialOperator item, ASTNode[] args)
         {
             var left = args[0].Transform(NodeTransformer);
-            if (left == null) throw new ArgumentNullException();
             return item.OperatorType switch
             {
                 SpecialOperatorType.MethodCall => Method(left, args[1]),
