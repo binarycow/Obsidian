@@ -97,8 +97,8 @@ namespace Obsidian.SampleProject
             //AutomaticTest(TestRunner.TestItems["Include"]["Multiple Templates"]["First Present"]);
             //AutomaticTest(TestRunner.TestItems["Include"]["Context"]["With Context"]);
             //AutomaticTest(TestRunner.TestItems["Include"]["Context"]["Without Context"]);
-            //AutomaticTest(TestRunner.TestItems["Import"]["Complete"]);
-            AutomaticTest(TestRunner.TestItems["Import"]["Simple"]);
+            AutomaticTest(TestRunner.TestItems["Import"]["Complete"]);
+            //AutomaticTest(TestRunner.TestItems["Import"]["Simple"]);
             //ManualTest(false, false);
 
             Console.ForegroundColor = ConsoleColor.Yellow;

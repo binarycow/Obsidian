@@ -22,8 +22,9 @@ namespace Obsidian.Tests
             PerformTest(result, Array.Empty<(string Name, object? Value, bool Provided)>());
         }
 
+
         [Test]
-        public void TestAllRequiredAndProvided()
+        public void TestAllRequiredAndProvidedViaPositional()
         {
             var result = UserDefinedArgumentData.Create(JinjaLanguageDefinition.Instance,
                 new[]
@@ -47,6 +48,30 @@ namespace Obsidian.Tests
 
 
         [Test]
+        public void TestOutOfOrderNamed()
+        {
+            var result = UserDefinedArgumentData.Create(JinjaLanguageDefinition.Instance,
+                new[]
+                {
+                    new ParameterDeclaration("a"),
+                    new ParameterDeclaration("b"),
+                    new ParameterDeclaration("c"),
+                },
+                new object?[] {
+                    (ValueTuple<string,object?>)("b", 456),
+                    (ValueTuple<string,object?>)("c", 789),
+                    (ValueTuple<string,object?>)("a", 123)
+                }
+            );
+            PerformTest(result, new (string Name, object? Value, bool Provided)[] {
+                (Name: "a", Value: 123, Provided: true),
+                (Name: "b", Value: 456, Provided: true),
+                (Name: "c", Value: 789, Provided: true),
+            });
+        }
+
+
+        [Test]
         public void TestSkippingAnOptional()
         {
             var result = UserDefinedArgumentData.Create(JinjaLanguageDefinition.Instance,
@@ -58,7 +83,7 @@ namespace Obsidian.Tests
                 },
                 new object?[] {
                     "password",
-                    ("type", "password")
+                    (ValueTuple<string,object?>)("type", "password")
                 }
             );
             PerformTest(result, new (string Name, object? Value, bool Provided)[] {

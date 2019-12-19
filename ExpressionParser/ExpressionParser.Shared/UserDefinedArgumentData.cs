@@ -84,31 +84,68 @@ namespace ExpressionParser
 
         internal static UserDefinedArgumentData Create(ILanguageDefinition languageDefinition, ParameterDeclaration[] declaration, object?[] passedValues)
         {
-            var remainingDeclaredArguments = declaration.ToDictionary(dec => dec.Name);
-            var definedPositionalArgs = new List<UserDefinedArgument>();
+            var definedPositionalArgs = declaration.Select((arg, argIndex) => new UserDefinedArgument(arg.Name, arg.DefaultValue, argIndex, false)).ToArray();
             var additionalPositionalArgs = new List<UserDefinedArgument>();
             var additionalKeywordArgs = new List<UserDefinedArgument>();
-            var encounteredOutOfOrderNamedParam = false;
 
-            for (var argIndex = 0; argIndex < passedValues.Length; ++argIndex)
+            var outOfOrderNamed = false;
+
+            for(var argIndex = 0; argIndex < passedValues.Length; ++argIndex)
             {
                 var passed = passedValues[argIndex];
-                if (argIndex < declaration.Length)
+
+                if(argIndex < declaration.Length)
                 {
-                    var declared = declaration[argIndex];
-                    if(passed is ValueTuple<string, object?> tuple)
+                    if (passed is ValueTuple<string, object?> tuple)
                     {
-                        throw new NotImplementedException();
+                        if(definedPositionalArgs[argIndex].Name == tuple.Item1)
+                        {
+                            definedPositionalArgs[argIndex] = new UserDefinedArgument(tuple.Item1, tuple.Item2, argIndex, true);
+                        }
+                        else
+                        {
+                            if(definedPositionalArgs.TryGetIndex(arg => arg.Name == tuple.Item1, out var matchedIndex))
+                            {
+                                if(definedPositionalArgs[matchedIndex].Provided)
+                                {
+                                    throw new NotImplementedException();
+                                }
+                                definedPositionalArgs[matchedIndex] = new UserDefinedArgument(tuple.Item1, tuple.Item2, matchedIndex, true);
+                            }
+                            else
+                            {
+                                additionalKeywordArgs.Add(new UserDefinedArgument(tuple.Item1, tuple.Item2, -1, true));
+                            }
+                            outOfOrderNamed = true;
+                        }
                     }
                     else
                     {
-                        definedPositionalArgs.Add(new UserDefinedArgument(declared.Name, passed, argIndex, true));
-                        remainingDeclaredArguments.Remove(declared.Name);
+                        if(outOfOrderNamed)
+                        {
+                            throw new NotImplementedException();
+                        }
+                        definedPositionalArgs[argIndex] = new UserDefinedArgument(definedPositionalArgs[argIndex].Name, passed, argIndex, true);
                     }
                 }
                 else
                 {
                     throw new NotImplementedException();
+                }
+
+            }
+
+            if(languageDefinition.RequireNonDefaultArguments)
+            {
+                for (var argIndex = 0; argIndex < definedPositionalArgs.Length; ++argIndex)
+                {
+                    if (definedPositionalArgs[argIndex].Provided == false)
+                    {
+                        if (declaration[argIndex].Optional == false)
+                        {
+                            throw new NotImplementedException();
+                        }
+                    }
                 }
             }
 

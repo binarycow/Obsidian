@@ -23,7 +23,7 @@ namespace Obsidian
         public int depth => depth0 + 1;
         public int index0 { get; internal set; }
         public int index => index0 + 1;
-        public int revindex0 => _Array.Length - index0;
+        public int revindex0 => _Array.Length - index0 - 1;
         public int revindex => revindex0 + 1;
         public bool first => index0 == 0;
         public bool last => index0 == _Array.Length - 1;
