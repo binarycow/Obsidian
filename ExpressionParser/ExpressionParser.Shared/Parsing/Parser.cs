@@ -193,6 +193,8 @@ namespace ExpressionParser.Parsing
             }
             if (enumerator.Current.TokenType != endingToken) throw new NotImplementedException();
             parsedNode = new ArgumentSetNode(arguments);
+            // This was put in to fix Filters.Batch2 - is it needed?
+            enumerator.MoveNext();
             return true;
         }
 

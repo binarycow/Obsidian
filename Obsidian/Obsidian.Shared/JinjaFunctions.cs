@@ -272,6 +272,37 @@ namespace Obsidian
             }
         }
 
+        internal static object List(UserDefinedArgumentData args)
+        {
+            if (args.TryGetArgumentValue("value", out var value) == false) throw new NotImplementedException();
+            var arr = CollectionEx.ToArray(value);
+            return new List<object?>(arr);
+        }
+        internal static object WordCount(UserDefinedArgumentData args)
+        {
+            if (args.TryGetArgumentValue("s", out var value) == false) throw new NotImplementedException();
+            var text = value?.ToString() ?? string.Empty;
+            int wordCount = 0, index = 0;
+
+            // skip whitespace until first word
+            while (index < text.Length && char.IsWhiteSpace(text[index]))
+                index++;
+
+            while (index < text.Length)
+            {
+                // check if current char is part of a word
+                while (index < text.Length && !char.IsWhiteSpace(text[index]))
+                    index++;
+
+                wordCount++;
+
+                // skip whitespace until next word
+                while (index < text.Length && char.IsWhiteSpace(text[index]))
+                    index++;
+            }
+            return wordCount;
+        }
+
         internal static object Join(UserDefinedArgumentData args)
         {
             if (args.TryGetArgumentValue("value", out var value) == false) throw new NotImplementedException();

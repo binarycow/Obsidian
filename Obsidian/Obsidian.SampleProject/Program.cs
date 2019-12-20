@@ -61,7 +61,7 @@ namespace Obsidian.SampleProject
         static void Main()
         {
             AssertConfig.MyAssert = new ConsoleAsserter();
-            new TestFilters().TestBatch();
+            new TestFilters().TestBatch2();
             Console.ReadKey();
             return;
 

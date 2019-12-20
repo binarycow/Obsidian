@@ -140,6 +140,10 @@ namespace Obsidian
             }), JinjaFunctions.Format),
 
 
+            new UserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(IList<object?>), "list", new ParameterDeclaration[] {
+                new ParameterDeclaration("value"),
+            }), JinjaFunctions.List),
+
 
             new UserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(string), "join", new ParameterDeclaration[] {
                 new ParameterDeclaration("value"),
@@ -150,6 +154,10 @@ namespace Obsidian
             new UserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(string), "upper", new ParameterDeclaration[] {
                 new ParameterDeclaration("s")
             }), JinjaFunctions.Upper),
+
+            new UserDefinedFunction(declaration: new FunctionDeclaration(returnType: typeof(IList<object?>), "wordcount", new ParameterDeclaration[] {
+                new ParameterDeclaration("s"),
+            }), JinjaFunctions.WordCount),
             #endregion Filters
 
             #region Functions 
