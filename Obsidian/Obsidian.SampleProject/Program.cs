@@ -7,6 +7,7 @@ using ExpressionParser;
 using Obsidian.ExpressionParserExt;
 using Obsidian.TestCore;
 using Obsidian.Tests;
+using Obsidian.Tests.FromJinja;
 using Obsidian.Tests.FromJinja.CoreTags;
 
 #pragma warning disable CS0162 // Unreachable code detected
@@ -60,7 +61,7 @@ namespace Obsidian.SampleProject
         static void Main()
         {
             AssertConfig.MyAssert = new ConsoleAsserter();
-            new TestMacro().TestVarArgs();
+            new TestFilters().TestBatch();
             Console.ReadKey();
             return;
 

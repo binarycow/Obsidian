@@ -90,14 +90,14 @@ namespace Obsidian.ExpressionParserExt
 
         internal bool TryParseList(ILookaroundEnumerator<Token> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode, AssignmentOperatorBehavior assignmentOperatorBehavior)
         {
-            var backtrackID = enumerator.StartBacktrackSession();
+            //var backtrackID = enumerator.StartBacktrackSession();
             if (TryParseCommaSeperatedSet(enumerator, TokenType.Operator, _OPERATOR_SQUARE_BRACE_OPEN, SquareBraceClose, out var parsedListItems, minimumItems: 0, assignmentOperatorBehavior))
             {
                 parsedNode = new ListNode(parsedListItems);
-                enumerator.CommitBacktrackSession(backtrackID);
+                //enumerator.CommitBacktrackSession(backtrackID);
                 return true;
             }
-            enumerator.ResetBacktrackSession(backtrackID);
+            //enumerator.ResetBacktrackSession(backtrackID);
             parsedNode = default;
             return false;
         }
@@ -106,14 +106,14 @@ namespace Obsidian.ExpressionParserExt
 
         internal bool TryParseTuple(ILookaroundEnumerator<Token> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode, AssignmentOperatorBehavior assignmentOperatorBehavior)
         {
-            var backtrackID = enumerator.StartBacktrackSession();
+            //var backtrackID = enumerator.StartBacktrackSession();
             if (TryParseCommaSeperatedSet(enumerator, TokenType.Operator, _OPERATOR_PAREN_OPEN, ParenClose, out var parsedListItems, minimumItems: 1, assignmentOperatorBehavior))
             {
                 parsedNode = new TupleNode(parsedListItems);
-                enumerator.CommitBacktrackSession(backtrackID);
+                //enumerator.CommitBacktrackSession(backtrackID);
                 return true;
             }
-            enumerator.ResetBacktrackSession(backtrackID);
+            //enumerator.ResetBacktrackSession(backtrackID);
             parsedNode = default;
             return false;
         }
@@ -128,7 +128,6 @@ namespace Obsidian.ExpressionParserExt
                 return false;
             }
 
-            var backtrackID = enumerator.StartBacktrackSession();
             var dictionaryItems = new Queue<DictionaryItemNode>();
 
             while(enumerator.MoveNext() && TryParseDictionaryItem(enumerator, out var dictionaryItem, assignmentOperatorBehavior))
@@ -146,7 +145,6 @@ namespace Obsidian.ExpressionParserExt
                 throw new NotImplementedException();
             }
             parsedNode = new DictionaryNode(dictionaryItems);
-            enumerator.CommitBacktrackSession(backtrackID);
             return true;
         }
 

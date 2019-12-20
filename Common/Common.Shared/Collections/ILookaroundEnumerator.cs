@@ -19,8 +19,5 @@ namespace Common.Collections
         public T MoveNextAndGetValue(out bool moveNextReturn);
         public T[] Read(int count);
         public bool MoveNext(int count);
-        public int StartBacktrackSession();
-        public bool ResetBacktrackSession(int id);
-        public bool CommitBacktrackSession(int id);
     }
 }

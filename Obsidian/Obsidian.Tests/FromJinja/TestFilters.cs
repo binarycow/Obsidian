@@ -10,7 +10,7 @@ namespace Obsidian.Tests.FromJinja
 {
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters", Justification = "<Pending>")]
 
-    public class Filters
+    public class TestFilters
     {
 
         JinjaEnvironment _Environment = new JinjaEnvironment();
@@ -48,6 +48,15 @@ namespace Obsidian.Tests.FromJinja
             );
             var output = template.Render(foo: Enumerable.Range(0, 10));
             MyAssert.AreEqual("[[0, 1, 2], [3, 4, 5], [6, 7, 8], [9]]|[[0, 1, 2], [3, 4, 5], [6, 7, 8], [9, 'X', 'X']]", output);
+        }
+        [Test]
+        public void TestBatch2()
+        {
+            dynamic template = new DynamicTemplateRenderer(
+                _Environment.FromString("{{ foo|batch(3)|list }}")
+            );
+            var output = template.Render(foo: Enumerable.Range(0, 10));
+            MyAssert.AreEqual("[[0, 1, 2], [3, 4, 5], [6, 7, 8], [9]]", output);
         }
         [Test]
         public void TestBlock()
