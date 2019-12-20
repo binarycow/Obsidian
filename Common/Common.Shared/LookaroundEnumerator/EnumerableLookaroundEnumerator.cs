@@ -220,6 +220,24 @@ namespace Common.LookaroundEnumerator
             value = items.ToArray();
             return value.Length == count;
         }
+
+
+
+
+        public int StartBacktrackSession()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool ResetBacktrackSession(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool CommitBacktrackSession(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }

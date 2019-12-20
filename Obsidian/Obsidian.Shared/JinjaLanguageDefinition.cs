@@ -37,15 +37,16 @@ namespace Obsidian
 
         public IEnumerable<OperatorDefinition> Operators => new OperatorDefinition[]
         {
+
+            OperatorDefinition.CreateUnary(_STRING_PLUS, 170, OperatorType.UnaryPlus),
+            OperatorDefinition.CreateUnary(_STRING_MINUS, 170, OperatorType.Negate),
+
             OperatorDefinition.CreateMemberAccess(_STRING_MEMBERACCESS, 160),
             OperatorDefinition.CreatePipeline(_STRING_PIPELINE, 160),
-            OperatorDefinition.CreateMethod(_OPERATOR_PAREN_OPEN, TokenType.ParenOpen, TokenType.Comma, TokenType.ParenClose, 160),
+           OperatorDefinition.CreateMethod(_OPERATOR_PAREN_OPEN, TokenType.ParenOpen, TokenType.Comma, TokenType.ParenClose, 160),
             OperatorDefinition.CreateIndex(_OPERATOR_SQUARE_BRACE_OPEN, TokenType.ParenClose, TokenType.Comma, TokenType.SquareBraceClose, 160),
 
             OperatorDefinition.CreateUnary(_STRING_EXPONENT, 80, OperatorType.Power),
-
-            OperatorDefinition.CreateUnary(_STRING_PLUS, 70, OperatorType.UnaryPlus),
-            OperatorDefinition.CreateUnary(_STRING_MINUS, 70, OperatorType.Negate),
 
             OperatorDefinition.CreateBinary("*", 60, OperatorType.Multiply),
             OperatorDefinition.CreateBinary("/", 60, OperatorType.DivideFloat),

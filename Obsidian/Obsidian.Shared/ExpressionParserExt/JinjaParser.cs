@@ -29,7 +29,7 @@ namespace Obsidian.ExpressionParserExt
             TryParseDictionary,
         };
 
-        private bool TryParseCommaSeperatedSet(ILookaroundEnumerator<Token> enumerator, TokenType startTokenType, string? startTokenText, TokenType endTokenType, [NotNullWhen(true)]out IEnumerable<ASTNode>? parsedNodes, int minimumItems, AssignmentOperatorBehavior assignmentOperatorBehavior)
+        private bool TryParseCommaSeperatedSet(ILookaroundEnumerator<Token> enumerator, TokenType startTokenType, string? startTokenText, TokenType endTokenType, [NotNullWhen(true)]out IEnumerable<ASTNode>? parsedNodes, int minimumItems, AssignmentOperatorBehavior assignmentOperatorBehavior, bool requireDanglingCommaForOneItem = true)
         {
             parsedNodes = default;
             if (enumerator.Current.TokenType != startTokenType)
@@ -53,13 +53,29 @@ namespace Obsidian.ExpressionParserExt
             while (TryParse(enumerator, out var listItem, assignmentOperatorBehavior))
             {
                 queue.Enqueue(listItem);
-                if (enumerator.Current.TokenType != TokenType.Comma)
+                if (enumerator.Current.TokenType == endTokenType)
                 {
                     break;
+                }
+                if(enumerator.Current.TokenType != TokenType.Comma)
+                {
+                    throw new NotImplementedException();
                 }
                 if (enumerator.MoveNext() == false)
                 {
                     throw new ParseException(ExpressionParserStrings.ResourceManager.GetString("ParsingError_UnterminatedCollectionLiteral", CultureInfo.InvariantCulture));
+                }
+            }
+
+            if(queue.Count == 1 && minimumItems == 1)
+            {
+                if(enumerator.TryGetPrevious(out prevToken) == false)
+                {
+                    throw new NotImplementedException();
+                }
+                if(requireDanglingCommaForOneItem && prevToken.TokenType != TokenType.Comma)
+                {
+                    return false;
                 }
             }
             if(queue.Count < minimumItems)
@@ -67,10 +83,6 @@ namespace Obsidian.ExpressionParserExt
                 throw new NotImplementedException();
             }
 
-            if (enumerator.Current.TokenType != endTokenType)
-            {
-                throw new NotImplementedException();
-            }
             parsedNodes = queue;
             return true;
         }
@@ -78,11 +90,14 @@ namespace Obsidian.ExpressionParserExt
 
         internal bool TryParseList(ILookaroundEnumerator<Token> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode, AssignmentOperatorBehavior assignmentOperatorBehavior)
         {
+            var backtrackID = enumerator.StartBacktrackSession();
             if (TryParseCommaSeperatedSet(enumerator, TokenType.Operator, _OPERATOR_SQUARE_BRACE_OPEN, SquareBraceClose, out var parsedListItems, minimumItems: 0, assignmentOperatorBehavior))
             {
                 parsedNode = new ListNode(parsedListItems);
+                enumerator.CommitBacktrackSession(backtrackID);
                 return true;
             }
+            enumerator.ResetBacktrackSession(backtrackID);
             parsedNode = default;
             return false;
         }
@@ -91,11 +106,14 @@ namespace Obsidian.ExpressionParserExt
 
         internal bool TryParseTuple(ILookaroundEnumerator<Token> enumerator, [NotNullWhen(true)]out ASTNode? parsedNode, AssignmentOperatorBehavior assignmentOperatorBehavior)
         {
-            if (TryParseCommaSeperatedSet(enumerator, TokenType.Operator, _OPERATOR_PAREN_OPEN, ParenClose, out var parsedListItems, minimumItems: 2, assignmentOperatorBehavior))
+            var backtrackID = enumerator.StartBacktrackSession();
+            if (TryParseCommaSeperatedSet(enumerator, TokenType.Operator, _OPERATOR_PAREN_OPEN, ParenClose, out var parsedListItems, minimumItems: 1, assignmentOperatorBehavior))
             {
                 parsedNode = new TupleNode(parsedListItems);
+                enumerator.CommitBacktrackSession(backtrackID);
                 return true;
             }
+            enumerator.ResetBacktrackSession(backtrackID);
             parsedNode = default;
             return false;
         }
@@ -110,6 +128,7 @@ namespace Obsidian.ExpressionParserExt
                 return false;
             }
 
+            var backtrackID = enumerator.StartBacktrackSession();
             var dictionaryItems = new Queue<DictionaryItemNode>();
 
             while(enumerator.MoveNext() && TryParseDictionaryItem(enumerator, out var dictionaryItem, assignmentOperatorBehavior))
@@ -127,6 +146,7 @@ namespace Obsidian.ExpressionParserExt
                 throw new NotImplementedException();
             }
             parsedNode = new DictionaryNode(dictionaryItems);
+            enumerator.CommitBacktrackSession(backtrackID);
             return true;
         }
 

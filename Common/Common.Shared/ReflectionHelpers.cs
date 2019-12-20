@@ -184,7 +184,7 @@ namespace Common
 
             var tupleItemsArray = tupleItems.ToArray();
 
-            if (tupleItemsArray.Length < 2 || tupleItemsArray.Length > 7) throw new NotImplementedException();
+            if (tupleItemsArray.Length < 1 || tupleItemsArray.Length > 7) throw new NotImplementedException();
 
             var types = tupleItemsArray.Select(listItem => listItem?.GetType() ?? typeof(object)).ToArray();
 
